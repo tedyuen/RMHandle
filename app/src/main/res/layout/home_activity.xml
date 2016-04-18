@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/l_bottom_frame"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/iv_bottom_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bottom_image_1"/>
+            <TextView
+                android:id="@+id/tv_bottom_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/BottomBarTextStyle"
+                android:textColor="@color/bottom_focus"
+                android:text="@string/bottom_text_1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/iv_bottom_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bottom_image_2"/>
+            <TextView
+                android:id="@+id/tv_bottom_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/BottomBarTextStyle"
+                android:textColor="@color/bottom_grey"
+                android:text="@string/bottom_text_2"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/bottom_line"
+        android:layout_above="@id/l_bottom_frame"/>
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:orientation="vertical">
+
+        <include layout="@layout/home_tool_bar"/>
+        <com.google.samples.apps.iosched.ui.widget.SlidingTabLayout
+            android:id="@+id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_height"
+            android:background="@color/home_tab_back" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_line"
+        android:layout_below="@id/header">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+</RelativeLayout>
