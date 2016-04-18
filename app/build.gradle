@@ -1,0 +1,83 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "cn.com.reachmedia.rmhandle"
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0.0"
+        signingConfigs {
+            release {
+                storeFile file("../wojiawang.keystore")
+                storePassword "8uhb0okm"
+                keyAlias "wojiawang"
+                keyPassword "8uhb0okm"
+            }
+            debug {
+                storeFile file("../wojiawang.keystore")
+                storePassword "8uhb0okm"
+                keyAlias "wojiawang"
+                keyPassword "8uhb0okm"
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    //View注解   代码地址-----> https://github.com/JakeWharton/butterknife
+    compile 'com.jakewharton:butterknife:7.0.1'
+    //图片加载  代码地址-----> https://github.com/square/picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    //API网络请求注解库    代码地址-----> https://github.com/square/retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    //网络请求库 代码地址-----> https://github.com/square/okhttp
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    //消息通知数据更新（类似Broadcast）  代码地址-----> https://github.com/greenrobot/EventBus
+    compile 'org.greenrobot:eventbus:3.0.0'
+    //解析JSON数据  代码地址-----> https://code.google.com/p/google-gson/
+    compile 'com.google.code.gson:gson:2.4'
+    //greendao 代码地址-----> https://github.com/SureCase/GreenDaoForAndroidStudio
+    //https://github.com/greenrobot/greenDAO
+    compile 'de.greenrobot:greendao:2.1.0'
+    //圆形头像  代码地址-----> https://github.com/hdodenhof/CircleImageView
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    //logger   代码地址-----> https://github.com/orhanobut/logger
+    compile 'com.orhanobut:logger:1.8'
+    //弹出提示信息    代码地址-----> https://github.com/johnkil/Android-AppMsg
+    compile 'com.github.johnkil.android-appmsg:appmsg:1.2.0'
+    //anim listview 代码地址----->
+    compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
+    compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
+    compile 'com.nhaarman.listviewanimations:lib-core-slh:3.1.0@aar'
+    //首页效果  代码地址-----> https://github.com/ksoichiro/Android-ObservableScrollView
+    compile 'com.github.ksoichiro:android-observablescrollview:1.5.0'
+    compile 'com.nineoldandroids:library:2.4.0'
+
+
+
+
+
+}
