@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <include layout="@layout/tool_bar_base"/>
+
+
+    <LinearLayout
+        android:id="@+id/l_bottom_frame"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/iv_bottom_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bottom_image_1"/>
+            <TextView
+                android:id="@+id/tv_bottom_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/BottomBarTextStyle"
+                android:textColor="@color/bottom_grey"
+                android:text="@string/bottom_text_1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/iv_bottom_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bottom_image_2"/>
+            <TextView
+                android:id="@+id/tv_bottom_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/BottomBarTextStyle"
+                android:textColor="@color/bottom_focus"
+                android:text="@string/bottom_text_2"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/bottom_line"
+        android:layout_above="@id/l_bottom_frame"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:layout_above="@id/bottom_line"
+        android:background="@color/background">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <!-- 顶部 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white">
+                <!-- 个人信息 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="27dp"
+                    android:layout_marginRight="27dp"
+                    android:layout_marginBottom="45dp">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_head_portrait"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/abc"
+                        android:layout_centerInParent="true"
+                        android:scaleType="centerCrop"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="17dp">
+                        <TextView
+                            android:id="@+id/tv_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="张三"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"/>
+                        <TextView
+                            android:id="@+id/tv_userinfo"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="工号:007     分部:黄浦区"
+                            android:textColor="@color/username_color"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- 个人信息 -->
+                <!-- 上刊信息 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <!-- 已上刊 -->
+                    <LinearLayout
+                        android:id="@+id/ll_kan_1"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="80dp"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:id="@+id/tv_kan_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/kan_color_1"
+                            android:textSize="30sp"
+                            android:layout_marginBottom="10dp"
+                            android:text="678"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/username_color"
+                            android:textSize="14sp"
+                            android:text="@string/label_kan_1"/>
+
+                    </LinearLayout>
+                    <!-- 已上刊 -->
+
+                    <!-- 未完成 -->
+                    <LinearLayout
+                        android:id="@+id/ll_kan_2"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="80dp"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:id="@+id/tv_kan_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/kan_color_2"
+                            android:textSize="30sp"
+                            android:layout_marginBottom="10dp"
+                            android:text="37"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/username_color"
+                            android:textSize="14sp"
+                            android:text="@string/label_kan_2"/>
+
+                    </LinearLayout>
+                    <!-- 未完成 -->
+
+                    <!-- 超时 -->
+                    <LinearLayout
+                        android:id="@+id/ll_kan_3"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="80dp"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <TextView
+                            android:id="@+id/tv_kan_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/kan_color_3"
+                            android:textSize="30sp"
+                            android:layout_marginBottom="10dp"
+                            android:text="20"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/username_color"
+                            android:textSize="14sp"
+                            android:text="@string/label_kan_3"/>
+
+                    </LinearLayout>
+                    <!-- 超时 -->
+                </LinearLayout>
+                <!-- 上刊信息 -->
+            </LinearLayout>
+            <!-- 顶部 -->
+
+
+            <!-- 工具 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp">
+                
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+
+                </RelativeLayout>
+                
+            </LinearLayout>
+            <!-- 工具 -->
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+</RelativeLayout>

@@ -5,6 +5,11 @@
     <color name="black">#000000</color>
     <color name="background">#E6E6E6</color>
 
+    <color name="username_color">#4A4A4A</color>
+    <color name="kan_color_1">#F5A623</color>
+    <color name="kan_color_2">#F55A5C</color>
+    <color name="kan_color_3">#4A90E2</color>
+
     <color name="bottom_focus">#4A90E2</color>
     <color name="bottom_grey">#929292</color>
 

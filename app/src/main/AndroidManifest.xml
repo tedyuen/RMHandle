@@ -44,7 +44,14 @@
 
         <activity android:name=".ui.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Toolbar">
+            android:theme="@style/AppTheme.Toolbar"
+            android:launchMode="singleTask">
+        </activity>
+        <activity android:name=".ui.UserInfoActivity"
+            android:theme="@style/AppTheme.Toolbar"
+            android:screenOrientation="portrait"
+            android:label="@string/title_user_info"
+            android:launchMode="singleTask">
         </activity>
     </application>
 

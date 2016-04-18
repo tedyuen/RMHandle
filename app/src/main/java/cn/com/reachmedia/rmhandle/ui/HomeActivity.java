@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
@@ -144,5 +146,11 @@ public class HomeActivity extends BaseActionBarActivity {
     @Override
     public Fragment getFragment() {
         return null;
+    }
+
+    @OnClick(R.id.ll_bottom_2)
+    public void goUserInfoActivity(){
+        startActivity(new Intent(this,UserInfoActivity.class));
+        overridePendingTransition(0, 0);
     }
 }
