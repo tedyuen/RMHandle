@@ -5,6 +5,10 @@
 
     <string name="title_user_info">个人中心</string>
 
+
+    <string name="btn_text_logout">退出登录</string>
+
+
     <string name="label_kan_1">本月已上刊</string>
     <string name="label_kan_2">本月未完成</string>
     <string name="label_kan_3">本月超时</string>

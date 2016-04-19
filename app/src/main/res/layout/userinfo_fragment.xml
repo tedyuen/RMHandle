@@ -215,18 +215,120 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="13dp">
-                
+                android:layout_marginTop="13dp"
+                android:background="@color/white"
+                android:divider="@drawable/shape_divider_line"
+                android:showDividers="middle"
+                android:orientation="vertical">
+                <!-- 报错点位 -->
                 <RelativeLayout
+                    android:id="@+id/rl_baocuo"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp">
+                    android:layout_height="@dimen/panel_height"
+                    android:paddingLeft="@dimen/padding_lr"
+                    android:paddingRight="@dimen/padding_lr">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="最近报错点位数"
+                        android:textColor="@color/username_color"
+                        android:textSize="15sp"/>
 
-
+                    <TextView
+                        android:id="@+id/tv_baocuo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="3点位"
+                        android:textColor="@color/username_color"
+                        android:layout_marginRight="28dp"
+                        android:textSize="15sp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/arrow_right"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
-                
+                <!-- 报错点位 -->
+
+                <!-- 上传 -->
+                <RelativeLayout
+                    android:id="@+id/rl_shangchuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/panel_height"
+                    android:paddingLeft="@dimen/padding_lr"
+                    android:paddingRight="@dimen/padding_lr">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="上传同步"
+                        android:textColor="@color/username_color"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_shangchuan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="183个未同步"
+                        android:textColor="@color/username_color"
+                        android:layout_marginRight="28dp"
+                        android:textSize="15sp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/arrow_right"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+                <!-- 上传 -->
+
+                <!-- 版本检测 -->
+                <RelativeLayout
+                    android:id="@+id/rl_gengxin"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/panel_height"
+                    android:paddingLeft="@dimen/padding_lr"
+                    android:paddingRight="@dimen/padding_lr">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="检测更新"
+                        android:textColor="@color/username_color"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_gengxin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="v1.0.0"
+                        android:textColor="@color/bottom_grey"
+                        android:layout_marginRight="28dp"
+                        android:textSize="15sp"/>
+                </RelativeLayout>
+                <!-- 版本检测 -->
             </LinearLayout>
             <!-- 工具 -->
 
+            <Button
+                android:id="@+id/bt_logout"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="50dp"
+                style="@style/LogoutButtonStyle"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="19dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/btn_text_logout"/>
 
         </LinearLayout>
 
