@@ -2,8 +2,10 @@
 <resources>
 
     <color name="white">#ffffff</color>
+    <color name="red">#ff0000</color>
     <color name="black">#000000</color>
     <color name="background">#E6E6E6</color>
+    <color name="transparent">#00000000</color>
 
     <color name="username_color">#4A4A4A</color>
     <color name="kan_color_1">#F5A623</color>
@@ -11,8 +13,11 @@
     <color name="kan_color_3">#4A90E2</color>
     <color name="line_color">#f1f1f1</color>
 
+    <color name="text_red_color_1">#D0021B</color>
+    <color name="text_blue_color_1">#025696</color>
     <color name="bottom_focus">#4A90E2</color>
     <color name="bottom_grey">#929292</color>
+    <color name="back_grey">#F0F0F0</color>
 
 
     <color name="text_grey">#9B9B9B</color>

@@ -3,25 +3,25 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--<android.support.v4.widget.SwipeRefreshLayout-->
-        <!--android:id="@+id/swipe_container"-->
-        <!--style="@style/MatchActivityStyle"-->
-        <!--android:layout_marginTop="55dp">-->
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        style="@style/MatchActivityStyle"
+        android:background="@color/white">
 
-        <!--&lt;!&ndash;<cn.idelos.myidelos.ui.view.PageListView&ndash;&gt;-->
-            <!--&lt;!&ndash;android:id="@+id/page_list_view"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:cacheColorHint="@color/transparent"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:listSelector="@color/transparent"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:dividerHeight="0dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_marginTop="20dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:background="@color/white"&ndash;&gt;-->
-            <!--&lt;!&ndash;custom:emptyView="@layout/include_empty_view"&ndash;&gt;-->
-            <!--&lt;!&ndash;custom:loadingView="@layout/include_loading_view"&ndash;&gt;-->
-            <!--&lt;!&ndash;custom:errorView="@layout/include_error_view" />&ndash;&gt;-->
+        <cn.com.reachmedia.rmhandle.ui.view.PageListView
+            android:id="@+id/page_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@color/transparent"
+            android:listSelector="@color/transparent"
+            android:dividerHeight="1dp"
+            android:divider="@drawable/shape_divider_line"
+             />
+        <!--custom:emptyView="@layout/include_empty_view"-->
+        <!--custom:loadingView="@layout/include_loading_view"-->
+        <!--custom:errorView="@layout/include_error_view"-->
 
-    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
 </RelativeLayout>

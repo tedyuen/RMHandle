@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:background="@color/white">
+    <!-- 第一行 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/padding_lr"
+        android:paddingRight="@dimen/padding_lr"
+        android:layout_height="22dp">
+        <!-- 公寓名 -->
+        <TextView
+            android:id="@+id/tv_apartment_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新安公寓"
+            android:textColor="@color/username_color"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:maxWidth="150dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            />
+        <!-- 公寓名 -->
+
+        <!-- 卡密 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="9dp"
+            android:layout_toRightOf="@id/tv_apartment_name">
+            <ImageView
+                android:id="@+id/iv_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/home_card_icon"
+                android:layout_marginRight="9dp"/>
+            <ImageView
+                android:id="@+id/iv_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/home_password_icon"/>
+        </LinearLayout>
+        <!-- 卡密 -->
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3月8日"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/username_color"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_kan_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6/15"
+            android:textColor="@color/username_color"
+            android:layout_toLeftOf="@id/tv_date"
+            android:layout_marginRight="15dp"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+    <!-- 第一行 -->
+
+    <!-- 第二行 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="6dp"
+        android:paddingLeft="@dimen/padding_lr"
+        android:paddingRight="@dimen/padding_lr"
+        android:layout_height="22dp">
+        <TextView
+            android:id="@+id/tv_target"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="180dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="房多多/真爱女子医院"
+            android:textColor="@color/username_color"
+            android:layout_marginRight="15dp"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:gravity="right|center_vertical">
+
+            <!-- 上下拍 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:id="@+id/iv_shang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/home_shang_icon"
+                    android:layout_marginRight="5dp"/>
+                <ImageView
+                    android:id="@+id/iv_xia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/home_xia_icon"
+                    android:layout_marginRight="5dp"/>
+
+                <ImageView
+                    android:id="@+id/iv_pai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/home_pai_icon"
+                    android:layout_marginRight="5dp"/>
+
+            </LinearLayout>
+            <!-- 上下拍 -->
+
+            <LinearLayout
+                android:id="@+id/ll_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="9dp"
+                >
+                <View android:layout_width="1dp"
+                    android:layout_height="20dp"
+                    android:background="@color/text_grey"
+                    android:layout_marginRight="14dp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/home_remind_icon"
+                    android:layout_marginRight="2dp"/>
+                <ImageView
+                    android:id="@+id/iv_arrow_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/arrow_up_icon"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+    <!-- 第二行 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:layout_marginTop="8dp"
+        android:text="上画前拿给物业袁经理看！"
+        android:paddingLeft="@dimen/padding_lr"
+        android:paddingRight="@dimen/padding_lr"
+        android:paddingTop="6dp"
+        android:textColor="@color/text_red_color_1"
+        android:textSize="14sp"
+        android:paddingBottom="6dp"
+        android:gravity="center_vertical"
+        android:background="@color/back_grey"/>
+
+    <!-- 第4行 -->
+    <LinearLayout
+        android:id="@+id/ll_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_lr"
+        android:paddingRight="@dimen/padding_lr"
+        android:layout_marginTop="7dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/home_add_icon"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_blue_color_1"
+            android:text="长宁区中山公园安顺路158弄·0.5km"
+            android:layout_marginLeft="1dp"
+            android:textSize="12.5sp"
+            />
+
+    </LinearLayout>
+    <!-- 第4行 -->
+
+</LinearLayout>

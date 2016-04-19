@@ -138,7 +138,7 @@ public class HomeActivity extends BaseActionBarActivity {
                 case 1:
                     return "已完成";
                 default:
-                    return "未完成";
+                    return "error";
             }
         }
     }
