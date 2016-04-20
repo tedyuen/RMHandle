@@ -10,6 +10,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.clusterutil.clustering.ClusterManager;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -22,10 +23,14 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.cache.MyMarkerItem;
 
 /**
  * Author:    tedyuen
@@ -38,7 +43,7 @@ import cn.com.reachmedia.rmhandle.app.AppSpContact;
  * 16/4/20          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class MyMapTabFragment extends BaseFragment {
+public class MyMapTabFragment extends BaseFragment implements BaiduMap.OnMapLoadedCallback {
 
     public static final String ARG_INITIAL_POSITION = "ARG_INITIAL_POSITION";
     public static final String LIST_TYPE = "list_type";
@@ -47,20 +52,19 @@ public class MyMapTabFragment extends BaseFragment {
     @Bind(R.id.bmapView)
     MapView mMapView;
     BaiduMap mBaiduMap;
+    MapStatus ms;
+
 
     boolean isFirstLoc = true; // 是否首次定位
+    //Marker相关
+    View descImg;
+    private ClusterManager<MyMarkerItem> mClusterManager;
 
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
     private MyLocationConfiguration.LocationMode mCurrentMode;
     BitmapDescriptor mCurrentMarker;
-
-
-    private Marker mMarkerA;
-    private Marker mMarkerB;
-    BitmapDescriptor bdA;
-    BitmapDescriptor bdB;
 
 
     @Override
@@ -83,13 +87,7 @@ public class MyMapTabFragment extends BaseFragment {
             listType = args.getInt(LIST_TYPE);
         }
         setUpViewComponent();
-        View descImg = inflater.inflate(R.layout.map_bit_desc_img, container, false);
-        TextView descText = ((TextView)descImg.findViewById(R.id.tv_count));
-        descText.setText("2");
-        bdA = BitmapDescriptorFactory.fromView(descImg);
-        descText.setText("82");
-        bdB = BitmapDescriptorFactory.fromView(descImg);
-
+        descImg = inflater.inflate(R.layout.map_bit_desc_img, container, false);
         initOverlay();
 
         return rootView;
@@ -99,8 +97,12 @@ public class MyMapTabFragment extends BaseFragment {
     private void setUpViewComponent() {
         // 地图初始化
         mBaiduMap = mMapView.getMap();
+        ms = new MapStatus.Builder().target(new LatLng(31.216775, 121.490184)).zoom(8).build();
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
+        mBaiduMap.setOnMapLoadedCallback(this);
+        mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(ms));
+        mClusterManager = new ClusterManager<>(getActivity(), mBaiduMap);
         // 定位初始化
         mLocClient = new LocationClient(getActivity());
         mLocClient.registerLocationListener(myListener);
@@ -116,19 +118,20 @@ public class MyMapTabFragment extends BaseFragment {
     private void initOverlay(){
         LatLng llA = new LatLng(31.216775+0.001, 121.490184+0.001);
         LatLng llB = new LatLng(31.216775-0.002, 121.490184-0.002);
+        LatLng llC = new LatLng(31.216775+0.0025, 121.490184-0.0025);
+        LatLng llD = new LatLng(31.216775-0.002, 121.490184+0.003);
+        LatLng llE = new LatLng(31.216775-0.004, 121.490184-0.004);
 
-        MarkerOptions ooA = new MarkerOptions().position(llA).icon(bdA)
-                .zIndex(9).draggable(true);
-        ooA.animateType(MarkerOptions.MarkerAnimateType.grow);
-        mMarkerA = (Marker) (mBaiduMap.addOverlay(ooA));
+        List<MyMarkerItem> items = new ArrayList<>();
+        items.add(new MyMarkerItem(llA,descImg,"1"));
+        items.add(new MyMarkerItem(llB,descImg,"29"));
+        items.add(new MyMarkerItem(llC,descImg,"5"));
+        items.add(new MyMarkerItem(llD,descImg,"32"));
+        items.add(new MyMarkerItem(llE,descImg,"7"));
 
-        MarkerOptions ooB = new MarkerOptions().position(llB).icon(bdB)
-                .zIndex(9).draggable(true);
-        ooB.animateType(MarkerOptions.MarkerAnimateType.grow);
-        mMarkerB = (Marker) (mBaiduMap.addOverlay(ooB));
-
-
-
+        mClusterManager.addItems(items);
+        // 设置地图监听，当地图状态发生改变时，进行点聚合运算
+        mBaiduMap.setOnMapStatusChangeListener(mClusterManager);
     }
 
 
@@ -188,15 +191,14 @@ public class MyMapTabFragment extends BaseFragment {
             mMapView.onDestroy();
             mMapView = null;
         }
-        if(bdA!=null){
-            bdA.recycle();
-        }
-        if(bdB!=null){
-            bdB.recycle();
-        }
-
 
         super.onDestroy();
+    }
+
+    @Override
+    public void onMapLoaded() {
+        ms = new MapStatus.Builder().zoom(9).build();
+        mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(ms));
     }
 
     @Override
