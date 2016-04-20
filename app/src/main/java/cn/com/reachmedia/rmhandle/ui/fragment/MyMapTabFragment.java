@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -11,9 +12,12 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
@@ -53,6 +57,11 @@ public class MyMapTabFragment extends BaseFragment {
     BitmapDescriptor mCurrentMarker;
 
 
+    private Marker mMarkerA;
+    private Marker mMarkerB;
+    BitmapDescriptor bdA;
+    BitmapDescriptor bdB;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +83,14 @@ public class MyMapTabFragment extends BaseFragment {
             listType = args.getInt(LIST_TYPE);
         }
         setUpViewComponent();
+        View descImg = inflater.inflate(R.layout.map_bit_desc_img, container, false);
+        TextView descText = ((TextView)descImg.findViewById(R.id.tv_count));
+        descText.setText("2");
+        bdA = BitmapDescriptorFactory.fromView(descImg);
+        descText.setText("82");
+        bdB = BitmapDescriptorFactory.fromView(descImg);
+
+        initOverlay();
 
         return rootView;
     }
@@ -96,6 +113,25 @@ public class MyMapTabFragment extends BaseFragment {
     }
 
 
+    private void initOverlay(){
+        LatLng llA = new LatLng(31.216775+0.001, 121.490184+0.001);
+        LatLng llB = new LatLng(31.216775-0.002, 121.490184-0.002);
+
+        MarkerOptions ooA = new MarkerOptions().position(llA).icon(bdA)
+                .zIndex(9).draggable(true);
+        ooA.animateType(MarkerOptions.MarkerAnimateType.grow);
+        mMarkerA = (Marker) (mBaiduMap.addOverlay(ooA));
+
+        MarkerOptions ooB = new MarkerOptions().position(llB).icon(bdB)
+                .zIndex(9).draggable(true);
+        ooB.animateType(MarkerOptions.MarkerAnimateType.grow);
+        mMarkerB = (Marker) (mBaiduMap.addOverlay(ooB));
+
+
+
+    }
+
+
     /**
      * 定位SDK监听函数
      */
@@ -115,12 +151,14 @@ public class MyMapTabFragment extends BaseFragment {
             mBaiduMap.setMyLocationData(locData);
             if (isFirstLoc) {
                 isFirstLoc = false;
+                System.out.println("!!==>   "+location.getLatitude()+":"+location.getLongitude());
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
                 MapStatus.Builder builder = new MapStatus.Builder();
-                builder.target(ll).zoom(18.0f);
+                builder.target(ll).zoom(17.0f);
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
+
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
@@ -150,6 +188,13 @@ public class MyMapTabFragment extends BaseFragment {
             mMapView.onDestroy();
             mMapView = null;
         }
+        if(bdA!=null){
+            bdA.recycle();
+        }
+        if(bdB!=null){
+            bdB.recycle();
+        }
+
 
         super.onDestroy();
     }

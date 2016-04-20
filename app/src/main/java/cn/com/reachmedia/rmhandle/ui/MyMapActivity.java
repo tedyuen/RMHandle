@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
@@ -152,6 +154,11 @@ public class MyMapActivity extends BaseActionBarActivity {
 
     public void needTitle(){
         toolbarTitle.setText(getTitle());
+    }
+
+    @OnClick(R.id.iv_back)
+    public void goBack(){
+        finish();
     }
 
     @Override
