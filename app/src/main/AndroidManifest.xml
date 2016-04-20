@@ -56,6 +56,12 @@
             android:launchMode="singleTask">
         </activity>
 
+        <activity android:name=".ui.MyMapActivity"
+            android:theme="@style/AppTheme.Toolbar"
+            android:screenOrientation="portrait"
+            android:label="@string/title_my_map">
+        </activity>
+
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

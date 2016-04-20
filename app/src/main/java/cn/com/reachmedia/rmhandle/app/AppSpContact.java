@@ -17,4 +17,10 @@ public class AppSpContact {
     //首页tab
     public static final int SP_KEY_UNDONE = 1;//未完成
     public static final int SP_KEY_DONE = 2;//已完成
+    //首页tab
+
+    public static final int SP_KEY_MAP_1 = 1;//小区
+    public static final int SP_KEY_MAP_2 = 2;//点位
+
+
 }

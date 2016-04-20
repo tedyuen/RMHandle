@@ -1,6 +1,5 @@
 package cn.com.reachmedia.rmhandle.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,7 +7,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
@@ -18,24 +17,23 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
-import cn.com.reachmedia.rmhandle.ui.fragment.HomeTabFragment;
+import cn.com.reachmedia.rmhandle.ui.fragment.MyMapTabFragment;
 
 /**
  * Author:    tedyuen
  * Version    V1.0
- * Date:      16/4/18 下午1:37
- * Description: 首页
+ * Date:      16/4/20 上午10:11
+ * Description:
  * Modification  History:
  * Date         	Author        		Version        	Description
  * -----------------------------------------------------------------------------------
- * 16/4/18          tedyuen             1.0             1.0
+ * 16/4/20          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class HomeActivity extends BaseActionBarActivity {
+public class MyMapActivity extends BaseActionBarActivity {
 
     private final ThreadLocal<View> mToolbarView = new ThreadLocal<>();
     SlidingTabLayout slidingTabLayout;
@@ -47,17 +45,18 @@ public class HomeActivity extends BaseActionBarActivity {
     View mHeaderView;
     @Bind(R.id.pager)
     ViewPager mPager;
-    @Bind(R.id.iv_bottom_2)
-    ImageView mIvBottom2;
+    @Bind(R.id.toolbar_title)
+    TextView toolbarTitle;
 
-    Map<Integer,HomeTabFragment> fragmentMap;
+    Map<Integer,MyMapTabFragment> fragmentMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_activity);
+        setContentView(R.layout.activity_map_tab);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
+        needTitle();
         fragmentMap = new HashMap<>();
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
         mToolbarView.set(mToolbar);
@@ -84,18 +83,17 @@ public class HomeActivity extends BaseActionBarActivity {
             }
         });
         mPager.setCurrentItem(0);
-        mIvBottom2.setImageLevel(2);
-//        setPage(0);
     }
+
 
     private static class NavigationAdapter extends CacheFragmentStatePagerAdapter {
 
         private int mScrollY;
 
-        private HomeActivity activity;
+        private MyMapActivity activity;
 
 
-        public NavigationAdapter(FragmentManager fm, HomeActivity activity) {
+        public NavigationAdapter(FragmentManager fm, MyMapActivity activity) {
             super(fm);
             this.activity = activity;
         }
@@ -106,18 +104,18 @@ public class HomeActivity extends BaseActionBarActivity {
 
         @Override
         protected Fragment createItem(int position) {
-            HomeTabFragment f = new HomeTabFragment();
+            MyMapTabFragment f = new MyMapTabFragment();
             activity.fragmentMap.put(position,f);
             Bundle args = new Bundle();
             if (0 < mScrollY) {
-                args.putInt(HomeTabFragment.ARG_INITIAL_POSITION, 1);
+                args.putInt(MyMapTabFragment.ARG_INITIAL_POSITION, 1);
             }
             switch (position){
                 case 0:
-                    args.putInt(HomeTabFragment.LIST_TYPE, AppSpContact.SP_KEY_UNDONE);
+                    args.putInt(MyMapTabFragment.LIST_TYPE, AppSpContact.SP_KEY_UNDONE);
                     break;
                 case 1:
-                    args.putInt(HomeTabFragment.LIST_TYPE, AppSpContact.SP_KEY_DONE);
+                    args.putInt(MyMapTabFragment.LIST_TYPE, AppSpContact.SP_KEY_DONE);
                     break;
             }
             f.setArguments(args);
@@ -134,29 +132,21 @@ public class HomeActivity extends BaseActionBarActivity {
         public CharSequence getPageTitle(int position) {
             switch (position){
                 case 0:
-                    return "未完成";
+                    return "小区";
                 case 1:
-                    return "已完成";
+                    return "点位";
                 default:
                     return "error";
             }
         }
     }
 
+    public void needTitle(){
+        toolbarTitle.setText(getTitle());
+    }
+
     @Override
     public Fragment getFragment() {
         return null;
-    }
-
-    @OnClick(R.id.ll_bottom_2)
-    public void goUserInfoActivity(){
-        startActivity(new Intent(this,UserInfoActivity.class));
-        overridePendingTransition(0, 0);
-    }
-
-    @OnClick(R.id.rl_map)
-    public void goMyMap(){
-        startActivity(new Intent(this,MyMapActivity.class));
-
     }
 }
