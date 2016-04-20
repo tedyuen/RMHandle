@@ -61,6 +61,12 @@
             android:screenOrientation="portrait"
             android:label="@string/title_my_map">
         </activity>
+        <activity android:name=".ui.ApartmentPointActivity"
+            android:theme="@style/AppTheme.Toolbar"
+            android:screenOrientation="portrait"
+            android:label="@string/title_apartment_point">
+        </activity>
+
 
 
         <service

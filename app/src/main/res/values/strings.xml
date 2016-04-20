@@ -5,6 +5,7 @@
 
     <string name="title_user_info">个人中心</string>
     <string name="title_my_map">小区地图</string>
+    <string name="title_apartment_point">小区点位</string>
 
 
     <string name="btn_text_logout">退出登录</string>
