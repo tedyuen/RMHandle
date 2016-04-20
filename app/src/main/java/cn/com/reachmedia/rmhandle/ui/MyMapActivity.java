@@ -1,14 +1,21 @@
 package cn.com.reachmedia.rmhandle.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 
@@ -53,6 +60,7 @@ public class MyMapActivity extends BaseActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_map_tab);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
@@ -83,6 +91,7 @@ public class MyMapActivity extends BaseActionBarActivity {
             }
         });
         mPager.setCurrentItem(0);
+
     }
 
 
@@ -149,4 +158,6 @@ public class MyMapActivity extends BaseActionBarActivity {
     public Fragment getFragment() {
         return null;
     }
+
+
 }

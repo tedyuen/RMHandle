@@ -63,6 +63,11 @@
         </activity>
 
 
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+        </service>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="IfTwDgeweY05u9S5aLM617ZtnAKPR1qe" />
