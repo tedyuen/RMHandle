@@ -75,7 +75,8 @@
             android:id="@+id/sliding_tabs"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tab_height"
-            android:background="@color/home_tab_back" />
+            android:background="@color/home_tab_back"
+            />
     </LinearLayout>
 
     <FrameLayout
@@ -89,4 +90,227 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_filter_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical"
+        android:background="@color/back_black_alpha"
+        android:visibility="gone"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:divider="@drawable/shape_divider_line"
+            android:showDividers="middle"
+            android:orientation="vertical">
+            <!-- 起始时间 -->
+            <RelativeLayout
+                android:id="@+id/rl_start_time"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/panel_height"
+                android:paddingLeft="@dimen/padding_lr"
+                android:paddingRight="@dimen/padding_lr">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="起始时间"
+                    android:textColor="@color/username_color"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/tv_start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="请选择"
+                    android:textColor="@color/username_color"
+                    android:layout_marginRight="28dp"
+                    android:textSize="15sp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/arrow_right"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+            <!-- 起始时间 -->
+
+            <!-- 截止时间 -->
+            <RelativeLayout
+                android:id="@+id/rl_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/panel_height"
+                android:paddingLeft="@dimen/padding_lr"
+                android:paddingRight="@dimen/padding_lr">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="截止时间"
+                    android:textColor="@color/username_color"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/tv_end_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="请选择"
+                    android:textColor="@color/username_color"
+                    android:layout_marginRight="28dp"
+                    android:textSize="15sp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/arrow_right"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+            <!-- 截止时间 -->
+
+            <!-- 快捷键 -->
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/panel_height"
+                android:paddingLeft="@dimen/padding_lr"
+                android:paddingRight="@dimen/padding_lr"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="30dp" />
+                <RadioButton
+                    android:id="@+id/rb_today"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:button="@null"
+                    style="@style/IndexRadioButtonStyle"
+                    android:checked="false"
+                    android:text="@string/rbtn_text_today"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp" />
+                <RadioButton
+                    android:id="@+id/rb_tomorrow"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:button="@null"
+                    android:checked="false"
+                    style="@style/IndexRadioButtonStyle"
+                    android:text="@string/rbtn_text_tomorrow"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp" />
+                <RadioButton
+                    android:id="@+id/rb_toweek"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:button="@null"
+                    android:checked="false"
+                    style="@style/IndexRadioButtonStyle"
+                    android:text="@string/rbtn_text_toweek"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp" />
+            </RadioGroup>
+            <!-- 快捷键 -->
+
+            <!-- 区域 -->
+            <RelativeLayout
+                android:id="@+id/rl_area"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/panel_height"
+                android:paddingLeft="@dimen/padding_lr"
+                android:paddingRight="@dimen/padding_lr">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="区域"
+                    android:textColor="@color/username_color"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/tv_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="全部"
+                    android:textColor="@color/username_color"
+                    android:layout_marginRight="28dp"
+                    android:textSize="15sp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/arrow_right"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+            <!-- 区域 -->
+
+            <!-- 客户 -->
+            <RelativeLayout
+                android:id="@+id/rl_custom"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/panel_height"
+                android:paddingLeft="@dimen/padding_lr"
+                android:paddingRight="@dimen/padding_lr">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="客户"
+                    android:textColor="@color/username_color"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/tv_custom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="全部"
+                    android:textColor="@color/username_color"
+                    android:layout_marginRight="28dp"
+                    android:textSize="15sp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/arrow_right"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+            <!-- 客户 -->
+            
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp">
+                <Button
+                    android:id="@+id/bt_logout"
+                    android:layout_width="99dp"
+                    android:layout_height="35dp"
+                    style="@style/LogoutButtonStyle"
+                    android:layout_gravity="center"
+                    android:text="@string/btn_text_confirm"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View android:id="@+id/v_close_filter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 </RelativeLayout>

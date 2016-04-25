@@ -43,6 +43,16 @@
         <item name="android:background">@drawable/logout_btn_selector</item>
     </style>
 
+    <!-- 首页单选 -->
+    <style name="IndexRadioButtonStyle">
+        <item name="android:textColor">@drawable/color_index_radio_btn</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/index_radio_btn_selector</item>
+    </style>
+
+
+
     <!-- 绿色按钮 -->
     <style name="GreenButtonStyle">
         <item name="android:textColor">@color/white</item>

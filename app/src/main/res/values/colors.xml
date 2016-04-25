@@ -12,6 +12,7 @@
     <color name="kan_color_2">#F55A5C</color>
     <color name="kan_color_3">#4A90E2</color>
     <color name="line_color">#f1f1f1</color>
+    <color name="color_text_radio_uncheck">#B5B5B5</color>
 
     <color name="text_red_color_1">#D0021B</color>
     <color name="text_blue_color_1">#025696</color>
@@ -20,6 +21,7 @@
     <color name="bottom_green_focus">#5aefb6</color>
     <color name="bottom_grey">#929292</color>
     <color name="back_grey">#F0F0F0</color>
+    <color name="back_black_alpha">#66000000</color>
 
 
     <color name="text_grey">#9B9B9B</color>
