@@ -2,6 +2,7 @@ package cn.com.reachmedia.rmhandle.network.http;
 
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
+import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
 import retrofit.Callback;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
@@ -30,4 +31,16 @@ public interface AppApiService {
     @POST(AppApiContact.API_ACTION)
     void onLogin(@Field("json") String json,
                  Callback<BaseModel> cb);
+
+    /**
+     * 3.2 任务首页接口
+     * @param json
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST(AppApiContact.API_ACTION)
+    void getTaskIndex(@Field("json") String json,
+                 Callback<TaskIndexModel> cb);
+
+
 }

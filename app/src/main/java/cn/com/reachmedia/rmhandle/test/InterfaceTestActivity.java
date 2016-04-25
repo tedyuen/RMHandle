@@ -7,9 +7,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
+import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
 import cn.com.reachmedia.rmhandle.model.param.LoginParam;
+import cn.com.reachmedia.rmhandle.model.param.TaskIndexParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.LoginController;
+import cn.com.reachmedia.rmhandle.network.controller.TaskIndexController;
 
 /**
  * Author:    tedyuen
@@ -49,6 +52,33 @@ public class InterfaceTestActivity extends AppCompatActivity {
         param.username = "18616990040";
         param.password = "111111";
         lc.onLogin(param);
+    }
+
+
+    @OnClick(R.id.btn_taskindex)
+    public void testbtn_taskIndex(){
+        TaskIndexController taskIndexController = new TaskIndexController(new UiDisplayListener<TaskIndexModel>() {
+            @Override
+            public void onSuccessDisplay(TaskIndexModel data) {
+
+            }
+
+            @Override
+            public void onFailDisplay(String errorMsg) {
+
+            }
+        });
+
+        TaskIndexParam param = new TaskIndexParam();
+        param.starttime = "2016-03-10";
+        param.endtime = "2016-03-20";
+        param.space = "";
+        param.lon = "123";
+        param.lat = "345";
+        param.customer = "";
+        taskIndexController.getTaskIndex(param);
+
+
     }
 
 }

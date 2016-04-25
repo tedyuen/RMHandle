@@ -29,5 +29,11 @@ public class AppApiContact {
          * 3.1 用户登录
          */
         public static final String LOGIN_METHOD = "RM_GCBAPP_login";
+
+
+        /**
+         * 3.2 任务首页接口
+         */
+        public static final String TASK_INDEX_METHOD = "RM_GCBAPP_taskindex";
     }
 }
