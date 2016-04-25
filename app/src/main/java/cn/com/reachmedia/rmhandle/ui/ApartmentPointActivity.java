@@ -7,6 +7,10 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
@@ -17,6 +21,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
@@ -37,6 +42,20 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
 
     private final ThreadLocal<View> mToolbarView = new ThreadLocal<>();
     SlidingTabLayout slidingTabLayout;
+    @Bind(R.id.bt_clear)
+    Button btClear;
+    @Bind(R.id.bt_edit_save)
+    Button btEditSave;
+    @Bind(R.id.bt_edit_record)
+    Button btEditRecord;
+    @Bind(R.id.ll_password_frame)
+    LinearLayout llPasswordFrame;
+    @Bind(R.id.fragment_frame)
+    FrameLayout fragmentFrame;
+    @Bind(R.id.iv_password_arrow)
+    ImageView ivPasswordArrow;
+    @Bind(R.id.sliding_tabs)
+    SlidingTabLayout slidingTabs;
     private NavigationAdapter mPagerAdapter;
 
     @Bind(R.id.toolbar)
@@ -48,7 +67,7 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
     @Bind(R.id.rl_right_img)
     RelativeLayout mRlRightImg;
 
-    Map<Integer,ApartmentPointTabFragment> fragmentMap;
+    Map<Integer, ApartmentPointTabFragment> fragmentMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +79,7 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
         fragmentMap = new HashMap<>();
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
         mToolbarView.set(mToolbar);
-        mPagerAdapter = new NavigationAdapter(getSupportFragmentManager(),this);
+        mPagerAdapter = new NavigationAdapter(getSupportFragmentManager(), this);
         mPager.setOffscreenPageLimit(2);
         mPager.setAdapter(mPagerAdapter);
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
@@ -104,12 +123,12 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
         @Override
         protected Fragment createItem(int position) {
             ApartmentPointTabFragment f = new ApartmentPointTabFragment();
-            activity.fragmentMap.put(position,f);
+            activity.fragmentMap.put(position, f);
             Bundle args = new Bundle();
             if (0 < mScrollY) {
                 args.putInt(ApartmentPointTabFragment.ARG_INITIAL_POSITION, 1);
             }
-            switch (position){
+            switch (position) {
                 case 0:
                     args.putInt(ApartmentPointTabFragment.LIST_TYPE, AppSpContact.SP_KEY_APAET_POINT_UNDONE);
                     break;
@@ -133,7 +152,7 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return "未上点位";
                 case 1:
@@ -150,5 +169,20 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
     @Override
     public Fragment getFragment() {
         return null;
+    }
+
+    @OnClick(R.id.rl_password)
+    public void swithPassword() {
+        int vis = llPasswordFrame.getVisibility();
+        if (vis == View.VISIBLE) {
+            llPasswordFrame.setVisibility(View.GONE);
+        } else if (vis == View.GONE) {
+            llPasswordFrame.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @OnClick(R.id.iv_back)
+    public void goBack(){
+        finish();
     }
 }

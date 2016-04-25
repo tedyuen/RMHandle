@@ -62,7 +62,7 @@ public class MyMapActivity extends BaseActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SDKInitializer.initialize(getApplicationContext());
+//        SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_map_tab);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);

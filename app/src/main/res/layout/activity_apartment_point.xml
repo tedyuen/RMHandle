@@ -12,6 +12,7 @@
 
         <include layout="@layout/tool_bar_base_nos"/>
         <RelativeLayout
+            android:id="@+id/rl_password"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:background="@color/white"
@@ -25,6 +26,7 @@
                 android:textSize="14sp"
                 android:layout_centerVertical="true"/>
             <ImageView
+                android:id="@+id/iv_password_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -32,6 +34,78 @@
                 android:src="@mipmap/arrow_right"/>
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_password_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/back_grey"
+            android:paddingLeft="@dimen/padding_lr"
+            android:paddingRight="@dimen/padding_lr"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:minLines="2"
+                android:textColor="@color/username_color"
+                android:textSize="14sp"
+                android:text="门卡备注：点击［修改btn］，变成输入状态。默认1行高度，超出部分文字直接换行显示。"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:minLines="2"
+                android:textColor="@color/username_color"
+                android:textSize="14sp"
+                android:text="密码：1号楼2345；2号楼3456；3号楼4578；4号楼5698"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                >
+
+                <Button
+                    android:id="@+id/bt_clear"
+                    android:layout_width="99dp"
+                    android:layout_height="35dp"
+                    style="@style/LogoutButtonStyle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/btn_text_clear"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="35dp"/>
+                <Button
+                    android:id="@+id/bt_edit_save"
+                    android:layout_width="99dp"
+                    android:layout_height="35dp"
+                    style="@style/LogoutButtonStyle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/btn_text_edit"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="35dp"/>
+
+                <Button
+                    android:id="@+id/bt_edit_record"
+                    android:layout_width="99dp"
+                    android:layout_height="35dp"
+                    style="@style/GreenButtonStyle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/btn_text_edit_record"/>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
         <View android:layout_width="match_parent"
             android:layout_height="0.3dp"
             android:background="@color/text_grey"/>

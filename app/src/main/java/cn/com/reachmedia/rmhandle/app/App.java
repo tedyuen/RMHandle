@@ -4,6 +4,7 @@ package cn.com.reachmedia.rmhandle.app;
 import android.app.Application;
 import android.content.Context;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
@@ -57,7 +58,8 @@ public class App extends Application {
 //        EventBus.getDefault().register(this);//注册接收定位信息事件
 
 //        initJPush();
-
+        // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
+        SDKInitializer.initialize(this);
     }
 
     public void setUpApiService() {
