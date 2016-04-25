@@ -1,5 +1,12 @@
 package cn.com.reachmedia.rmhandle.network.http;
 
+import cn.com.reachmedia.rmhandle.app.AppApiContact;
+import cn.com.reachmedia.rmhandle.model.BaseModel;
+import retrofit.Callback;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
+import retrofit.http.POST;
+
 /**
  * Author:    tedyuen
  * Version    V1.0
@@ -12,4 +19,15 @@ package cn.com.reachmedia.rmhandle.network.http;
  * Why & What is modified:
  */
 public interface AppApiService {
+
+    /**
+     * 3.1 用户登录接口
+     *
+     * @param json
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST(AppApiContact.API_ACTION)
+    void onLogin(@Field("json") String json,
+                 Callback<BaseModel> cb);
 }

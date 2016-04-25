@@ -3,6 +3,7 @@ package cn.com.reachmedia.rmhandle.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.telephony.TelephonyManager;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.google.gson.Gson;
@@ -88,12 +89,20 @@ public class App extends Application {
     private void setUpSharedPreferencesHelper(Context context) {
         SharedPreferencesHelper sph = SharedPreferencesHelper.getInstance();
         sph.Builder(context);
-//        String deviceId = ((TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-//        sph.putString(AppSpContact.SP_KEY_DEVICE_ID, deviceId);
+        String deviceId = ((TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        sph.putString(AppSpContact.SP_KEY_DEVICE_ID, deviceId);
     }
 
     public void exit() {
 //        EventBus.getDefault().unregister(this);
         System.exit(0);
+    }
+
+    public static Context getContext() {
+        return sContext;
+    }
+
+    public static AppApiService getAppApiService() {
+        return sAppApiService;
     }
 }

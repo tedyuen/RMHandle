@@ -43,6 +43,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".test.InterfaceTestActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
 
         <activity android:name=".ui.HomeActivity"
             android:screenOrientation="portrait"

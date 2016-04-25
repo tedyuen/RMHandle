@@ -12,11 +12,22 @@ package cn.com.reachmedia.rmhandle.app;
  * Why & What is modified:
  */
 public class AppApiContact {
-    public static final String API_HOST_ST = "http://testv2.idelos.cn";//API Host 测试
-
+    public static final String API_HOST_ST = "http://120.26.65.65:8281/app";//API Host 测试
+    public static final String API_ACTION = "/data.api";//api action
 
     public static String getApiHost(){
 
         return API_HOST_ST;
+    }
+
+
+    /**
+     * 接口method定义
+     */
+    public class InterfaceMethod{
+        /**
+         * 3.1 用户登录
+         */
+        public static final String LOGIN_METHOD = "RM_GCBAPP_login";
     }
 }

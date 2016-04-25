@@ -13,6 +13,9 @@ package cn.com.reachmedia.rmhandle.app;
  */
 public class AppSpContact {
 
+    public static final String SP_KEY_TOKEN = "token";
+    public static final String SP_KEY_USER_ID = "userid";
+    public static final String SP_KEY_DEVICE_ID = "device_id";
 
     //首页tab
     public static final int SP_KEY_UNDONE = 1;//未完成
