@@ -41,5 +41,10 @@ public class AppApiContact {
          * 3.3 首页信息总览
          */
         public static final String TASK_DETAIL_METHOD = "RM_GCBAPP_taskdetail";
+
+        /**
+         * 3.4 首页任务地图
+         */
+        public static final String TASK_MAP_METHOD = "RM_GCBAPP_taskmap";
     }
 }

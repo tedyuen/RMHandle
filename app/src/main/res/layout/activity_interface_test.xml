@@ -26,6 +26,13 @@
             android:layout_height="wrap_content"
             android:text="3.3 首页信息总览"/>
 
+        <Button
+            android:id="@+id/btn_taskmap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3.4 首页任务地图"/>
+
+
 
 
     </LinearLayout>

@@ -4,6 +4,7 @@ import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
 import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
 import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
+import cn.com.reachmedia.rmhandle.model.TaskMapModel;
 import retrofit.Callback;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
@@ -52,6 +53,15 @@ public interface AppApiService {
     @POST(AppApiContact.API_ACTION)
     void getTaskDetail(@Field("json") String json,
                        Callback<TaskDetailModel> cb);
+
+
+    @FormUrlEncoded
+    @POST(AppApiContact.API_ACTION)
+    void getTaskMap(@Field("json") String json,
+                       Callback<TaskMapModel> cb);
+
+
+
 
 
 

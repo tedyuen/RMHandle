@@ -9,13 +9,16 @@ import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
 import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
 import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
+import cn.com.reachmedia.rmhandle.model.TaskMapModel;
 import cn.com.reachmedia.rmhandle.model.param.LoginParam;
 import cn.com.reachmedia.rmhandle.model.param.TaskDetailParam;
 import cn.com.reachmedia.rmhandle.model.param.TaskIndexParam;
+import cn.com.reachmedia.rmhandle.model.param.TaskMapParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.LoginController;
 import cn.com.reachmedia.rmhandle.network.controller.TaskDetailController;
 import cn.com.reachmedia.rmhandle.network.controller.TaskIndexController;
+import cn.com.reachmedia.rmhandle.network.controller.TaskMapController;
 
 /**
  * Author:    tedyuen
@@ -107,4 +110,26 @@ public class InterfaceTestActivity extends AppCompatActivity {
         taskDetailController.getTaskDetail(taskDetailParam);
     }
 
+    @OnClick(R.id.btn_taskmap)
+    public void testbtn_taskmap(){
+        TaskMapController taskMapController = new TaskMapController(new UiDisplayListener<TaskMapModel>() {
+            @Override
+            public void onSuccessDisplay(TaskMapModel data) {
+
+            }
+
+            @Override
+            public void onFailDisplay(String errorMsg) {
+
+            }
+        });
+
+        TaskMapParam taskMapParam = new TaskMapParam();
+        taskMapParam.starttime = "2016-03-10";
+        taskMapParam.endtime = "2016-03-20";
+        taskMapParam.space = "黄浦区";
+        taskMapParam.lon = "黄浦区";
+        taskMapParam.lat = "黄浦区";
+        taskMapController.getTaskMap(taskMapParam);
+    }
 }
