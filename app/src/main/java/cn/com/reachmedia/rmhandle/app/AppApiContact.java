@@ -35,5 +35,11 @@ public class AppApiContact {
          * 3.2 任务首页接口
          */
         public static final String TASK_INDEX_METHOD = "RM_GCBAPP_taskindex";
+
+
+        /**
+         * 3.3 首页信息总览
+         */
+        public static final String TASK_DETAIL_METHOD = "RM_GCBAPP_taskdetail";
     }
 }

@@ -2,7 +2,7 @@ package cn.com.reachmedia.rmhandle.utils;
 
 public class MD5 {
 	
-	public static final String KEY = "";
+	public static final String KEY = "2#3as1!evalmix0&9j!@";
 	
 	private static MD5 md5 = null;
 

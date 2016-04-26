@@ -7,11 +7,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
+import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
 import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
 import cn.com.reachmedia.rmhandle.model.param.LoginParam;
+import cn.com.reachmedia.rmhandle.model.param.TaskDetailParam;
 import cn.com.reachmedia.rmhandle.model.param.TaskIndexParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.LoginController;
+import cn.com.reachmedia.rmhandle.network.controller.TaskDetailController;
 import cn.com.reachmedia.rmhandle.network.controller.TaskIndexController;
 
 /**
@@ -79,6 +82,29 @@ public class InterfaceTestActivity extends AppCompatActivity {
         taskIndexController.getTaskIndex(param);
 
 
+    }
+
+    @OnClick(R.id.btn_taskdetail)
+    public void testbtn_taskdetail(){
+        TaskDetailController taskDetailController = new TaskDetailController(new UiDisplayListener<TaskDetailModel>() {
+            @Override
+            public void onSuccessDisplay(TaskDetailModel data) {
+
+            }
+
+            @Override
+            public void onFailDisplay(String errorMsg) {
+
+            }
+        });
+
+        TaskDetailParam taskDetailParam = new TaskDetailParam();
+        taskDetailParam.starttime = "2016-03-10";
+        taskDetailParam.endtime = "2016-03-20";
+        taskDetailParam.space = "黄浦区";
+        taskDetailParam.lon = "黄浦区";
+        taskDetailParam.lat = "黄浦区";
+        taskDetailController.getTaskDetail(taskDetailParam);
     }
 
 }
