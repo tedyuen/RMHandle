@@ -17,7 +17,7 @@ import cn.com.reachmedia.rmhandle.app.AppApiContact;
  */
 public class TaskDetailParam extends TokenParam {
 
-    public String starttime;
+    public String startime;
 
     public String endtime;
 

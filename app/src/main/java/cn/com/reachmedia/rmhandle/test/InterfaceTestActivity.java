@@ -76,7 +76,7 @@ public class InterfaceTestActivity extends AppCompatActivity {
         });
 
         TaskIndexParam param = new TaskIndexParam();
-        param.starttime = "2016-03-10";
+        param.startime = "2016-03-10";
         param.endtime = "2016-03-20";
         param.space = "";
         param.lon = "123";
@@ -102,7 +102,7 @@ public class InterfaceTestActivity extends AppCompatActivity {
         });
 
         TaskDetailParam taskDetailParam = new TaskDetailParam();
-        taskDetailParam.starttime = "2016-03-10";
+        taskDetailParam.startime = "2016-03-10";
         taskDetailParam.endtime = "2016-03-20";
         taskDetailParam.space = "黄浦区";
         taskDetailParam.lon = "黄浦区";
@@ -125,7 +125,7 @@ public class InterfaceTestActivity extends AppCompatActivity {
         });
 
         TaskMapParam taskMapParam = new TaskMapParam();
-        taskMapParam.starttime = "2016-03-10";
+        taskMapParam.startime = "2016-03-10";
         taskMapParam.endtime = "2016-03-20";
         taskMapParam.space = "黄浦区";
         taskMapParam.lon = "黄浦区";
