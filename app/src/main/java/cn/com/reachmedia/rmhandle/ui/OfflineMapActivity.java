@@ -61,7 +61,7 @@ public class OfflineMapActivity extends BaseActionBarActivity implements MKOffli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        SDKInitializer.initialize(getApplicationContext());
-        setContentView(R.layout.activity_map_tab);
+        setContentView(R.layout.activity_offline_map_tab);
         ButterKnife.bind(this);
         initOfflineMap();
         setSupportActionBar(mToolbar);

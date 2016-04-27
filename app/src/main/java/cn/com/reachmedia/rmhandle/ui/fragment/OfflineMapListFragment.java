@@ -79,7 +79,7 @@ public class OfflineMapListFragment extends BaseFragment {
                 if(temp==-1){
                     activity.startDownloadMap(1);
                 }else{
-                    MKOLSearchRecord record = records1.get(position);
+                    MKOLSearchRecord record = records1.get(temp);
                     if(record!=null){
                         activity.startDownloadMap(record.cityID);
                     }
