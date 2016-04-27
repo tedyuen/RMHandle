@@ -62,7 +62,7 @@ public class OfflineMapListFragment extends BaseFragment {
         // 获取热闹城市列表
         final ArrayList<MKOLSearchRecord> records1 = mOffline.getHotCityList();
         ArrayList<String> hotCities = new ArrayList<>();
-        hotCities.add("全国基础包");
+//        hotCities.add("全国基础包");
         if (records1 != null) {
             for (MKOLSearchRecord r : records1) {
                 hotCities.add(r.cityName + "       --"
@@ -76,14 +76,14 @@ public class OfflineMapListFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int temp = position-1;
-                if(temp==-1){
-                    activity.startDownloadMap(1);
-                }else{
-                    MKOLSearchRecord record = records1.get(temp);
+//                if(temp==-1){
+//                    activity.startDownloadMap(1);
+//                }else{
+                    MKOLSearchRecord record = records1.get(position);
                     if(record!=null){
                         activity.startDownloadMap(record.cityID);
                     }
-                }
+//                }
 
             }
         });

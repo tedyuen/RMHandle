@@ -79,6 +79,9 @@ dependencies {
     //首页效果  代码地址-----> https://github.com/ksoichiro/Android-ObservableScrollView
     compile 'com.github.ksoichiro:android-observablescrollview:1.5.0'
     compile 'com.nineoldandroids:library:2.4.0'
+    //毛玻璃背景对话框 代码地址-----> https://github.com/tvbarthel/BlurDialogFragment
+    compile 'fr.tvbarthel.blurdialogfragment:lib:2.1.2'
+
     compile files('libs/baidumapapi_base_v3_7_3.jar')
     compile files('libs/baidumapapi_cloud_v3_7_3.jar')
     compile files('libs/baidumapapi_map_v3_7_3.jar')

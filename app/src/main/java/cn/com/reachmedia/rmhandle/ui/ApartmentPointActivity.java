@@ -25,6 +25,7 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
+import cn.com.reachmedia.rmhandle.ui.dialog.ApartmentPhoneDialogFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentPointTabFragment;
 
 /**
@@ -179,6 +180,12 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
         } else if (vis == View.GONE) {
             llPasswordFrame.setVisibility(View.VISIBLE);
         }
+    }
+
+    @OnClick(R.id.rl_right_img)
+    public void callPhone(){
+        ApartmentPhoneDialogFragment dialog = new ApartmentPhoneDialogFragment();
+        dialog.show(getSupportFragmentManager(), "Write Comments");
     }
 
     @OnClick(R.id.iv_back)

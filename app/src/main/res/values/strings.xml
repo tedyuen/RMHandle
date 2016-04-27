@@ -10,6 +10,7 @@
 
 
     <string name="btn_text_logout">退出登录</string>
+    <string name="btn_text_call">拨打</string>
     <string name="btn_text_confirm">确定</string>
     <string name="btn_text_clear">清空</string>
     <string name="btn_text_edit">修改</string>
