@@ -12,7 +12,12 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
+import cn.com.reachmedia.rmhandle.model.param.TaskIndexParam;
+import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
+import cn.com.reachmedia.rmhandle.network.controller.TaskIndexController;
 import cn.com.reachmedia.rmhandle.ui.adapter.HomeTabFragmentAdapter;
 import cn.com.reachmedia.rmhandle.ui.view.PageListView;
 
@@ -27,7 +32,7 @@ import cn.com.reachmedia.rmhandle.ui.view.PageListView;
  * 16/4/18          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,PageListView.OnLoadNextListener{
+public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,PageListView.OnLoadNextListener,UiDisplayListener<TaskIndexModel> {
 
     public static final String ARG_INITIAL_POSITION = "ARG_INITIAL_POSITION";
     public static final String LIST_TYPE = "list_type";
@@ -35,10 +40,20 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
 
     private HomeTabFragmentAdapter mAdapter;
 
+    private TaskIndexController taskIndexController;
+    private TaskIndexParam param;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        controller = new MyOrderListController(this);
+        taskIndexController = new TaskIndexController();
+        param = new TaskIndexParam();
+        param.startime = "2016-03-10";
+        param.endtime = "2016-05-20";
+        param.space = "";
+        param.lon = "123";
+        param.lat = "345";
+        param.customer = "";
     }
 
     @Bind(R.id.swipe_container)
@@ -62,6 +77,7 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
         if (args != null ) {
             listType = args.getInt(LIST_TYPE);
         }
+        taskIndexController.setUiDisplayListener(this);
         setUpViewComponent();
 
         return rootView;
@@ -72,10 +88,32 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
     private void setUpViewComponent() {
         mAdapter = new HomeTabFragmentAdapter(getActivity());
         mPageListView.setAdapter(mAdapter);
-//        mPageListView.setLoadMoreEnable(true);
+        mPageListView.setLoadMoreEnable(false);
 //        mPageListView.setLoadNextListener(this);
         mAdapter.notifyDataSetChanged();
-//        tv_empty_text.setText("订单暂无数据");
+
+        mSwipeContainer.setRefreshing(true);
+        onRefresh();
+    }
+
+
+    @Override
+    public void onSuccessDisplay(TaskIndexModel data) {
+        mSwipeContainer.setRefreshing(false);
+        mPageListView.setState(PageListView.PageListViewState.Idle);
+        System.out.println("====>  !!!");
+        if(data!=null){
+            if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
+                mAdapter.updateData(data.getPList());
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void onFailDisplay(String errorMsg) {
+        mSwipeContainer.setRefreshing(false);
+        mPageListView.setState(PageListView.PageListViewState.Idle);
     }
 
     @Override
@@ -85,7 +123,10 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-
+        if(taskIndexController!=null){
+            mPageListView.setState(PageListView.PageListViewState.Loading);
+            taskIndexController.getTaskIndex(param);
+        }
     }
     @Override
     public void onLoadNext() {

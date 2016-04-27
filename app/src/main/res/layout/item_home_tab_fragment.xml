@@ -160,6 +160,7 @@
     </RelativeLayout>
     <!-- 第二行 -->
     <TextView
+        android:id="@+id/tv_tips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="30dp"
@@ -190,6 +191,7 @@
             android:src="@mipmap/home_add_icon"/>
 
         <TextView
+            android:id="@+id/tv_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/text_blue_color_1"

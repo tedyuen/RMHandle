@@ -61,4 +61,21 @@ public class AppApiContact {
 
 
     }
+
+    /**
+     * 错误代码
+     */
+    public class ErrorCode{
+
+        /**
+         * 正确返回
+         */
+        public static final String SUCCESS = "0000";
+
+        /**
+         * 程序异常
+         */
+        public static final String EXCEPTION = "ER99";
+
+    }
 }
