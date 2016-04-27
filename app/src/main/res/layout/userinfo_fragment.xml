@@ -288,6 +288,40 @@
                 </RelativeLayout>
                 <!-- 上传 -->
 
+                <!-- 离线地图 -->
+                <RelativeLayout
+                    android:id="@+id/rl_offline_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/panel_height"
+                    android:paddingLeft="@dimen/padding_lr"
+                    android:paddingRight="@dimen/padding_lr">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="离线地图"
+                        android:textColor="@color/username_color"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_offline_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="已离线1个城市"
+                        android:textColor="@color/username_color"
+                        android:layout_marginRight="28dp"
+                        android:textSize="15sp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/arrow_right"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+                <!-- 离线地图 -->
+
                 <!-- 版本检测 -->
                 <RelativeLayout
                     android:id="@+id/rl_gengxin"

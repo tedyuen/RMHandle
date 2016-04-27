@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
+import cn.com.reachmedia.rmhandle.ui.OfflineMapActivity;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 
 /**
@@ -79,4 +80,11 @@ public class UserInfoFragment extends BaseToolbarFragment {
         startActivity(new Intent(getActivity(),HomeActivity.class));
         getActivity().overridePendingTransition(0, 0);
     }
+
+    @OnClick(R.id.rl_offline_map)
+    public void goOfflineMapActivity(){
+        startActivity(new Intent(getActivity(),OfflineMapActivity.class));
+    }
+
+
 }
