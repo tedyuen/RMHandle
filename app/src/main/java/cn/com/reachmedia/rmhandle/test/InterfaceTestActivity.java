@@ -103,10 +103,10 @@ public class InterfaceTestActivity extends AppCompatActivity {
 
         TaskDetailParam taskDetailParam = new TaskDetailParam();
         taskDetailParam.startime = "2016-03-10";
-        taskDetailParam.endtime = "2016-03-20";
-        taskDetailParam.space = "黄浦区";
-        taskDetailParam.lon = "黄浦区";
-        taskDetailParam.lat = "黄浦区";
+        taskDetailParam.endtime = "2016-05-20";
+        taskDetailParam.space = "";
+        taskDetailParam.lon = "1";
+        taskDetailParam.lat = "1";
         taskDetailController.getTaskDetail(taskDetailParam);
     }
 
@@ -126,10 +126,10 @@ public class InterfaceTestActivity extends AppCompatActivity {
 
         TaskMapParam taskMapParam = new TaskMapParam();
         taskMapParam.startime = "2016-03-10";
-        taskMapParam.endtime = "2016-03-20";
-        taskMapParam.space = "黄浦区";
-        taskMapParam.lon = "黄浦区";
-        taskMapParam.lat = "黄浦区";
+        taskMapParam.endtime = "2016-05-20";
+        taskMapParam.space = "";
+        taskMapParam.lon = "1";
+        taskMapParam.lat = "1";
         taskMapController.getTaskMap(taskMapParam);
     }
 }

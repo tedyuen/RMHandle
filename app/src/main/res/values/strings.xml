@@ -7,6 +7,7 @@
     <string name="title_my_map">小区地图</string>
     <string name="title_my_offline_map">离线地图</string>
     <string name="title_apartment_point">小区点位</string>
+    <string name="title_apartment_info">小区总览</string>
 
 
     <string name="btn_text_logout">退出登录</string>
