@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/padding_lr"
+        android:paddingRight="@dimen/padding_lr"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="200dp"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:text="房多多"
+            android:textColor="@color/username_color"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10月28日－11月24日"
+            android:textColor="@color/color_text_radio_uncheck"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <View android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color_grey"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="@dimen/padding_lr"
+        android:paddingRight="@dimen/padding_lr"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_daohua_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="到画时间：10月27"
+            android:textSize="13sp"
+            android:textColor="@color/text_grey"/>
+
+        <TextView
+            android:id="@+id/tv_shanghua_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上画时间：10月27"
+            android:textSize="13sp"
+            android:textColor="@color/text_grey"
+            android:layout_marginLeft="25dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_yaoqiu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_lr"
+        android:paddingRight="@dimen/padding_lr"
+        android:textSize="14sp"
+        android:textColor="@color/username_color"
+        android:text="拍照要求：每个点位必须提供3张照片：门栋照一张，正面整个公告栏照片一张（框架四边必须齐全，无缺一角），带3月10日日期之前的媒体照一张（日期必须清晰地拍进去）。"/>
+
+
+
+</LinearLayout>

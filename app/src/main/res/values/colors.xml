@@ -12,6 +12,7 @@
     <color name="kan_color_2">#F55A5C</color>
     <color name="kan_color_3">#4A90E2</color>
     <color name="line_color">#f1f1f1</color>
+    <color name="line_color_grey">#E5E5E5</color>
     <color name="color_text_radio_uncheck">#B5B5B5</color>
 
     <color name="text_red_color_1">#D0021B</color>

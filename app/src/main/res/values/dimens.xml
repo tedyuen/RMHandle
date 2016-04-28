@@ -6,6 +6,7 @@
     <dimen name="tab_height">32dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
     <dimen name="padding_lr">12dp</dimen>
+    <dimen name="recycler_view_space">3dp</dimen>
     <dimen name="panel_height">55dp</dimen>
 
 </resources>
