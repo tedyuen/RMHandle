@@ -7,21 +7,26 @@ import cn.com.reachmedia.rmhandle.app.AppApiContact;
 /**
  * Author:    tedyuen
  * Version    V1.0
- * Date:      16/4/25 下午5:34
- * Description: 3.1用户登陆
+ * Date:      16/4/29 上午10:13
+ * Description: 3.7 提交工作工作项接口
  * Modification  History:
  * Date         	Author        		Version        	Description
  * -----------------------------------------------------------------------------------
- * 16/4/25          tedyuen             1.0             1.0
+ * 16/4/29          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class LoginParam extends BaseParam {
-    public String username;
+public class UploadWorkParam extends TokenParam{
 
-    public String pswd;
+    public String workId;
+    public int state;
+    public int errorType;
+    public String errorDesc;
+    public String lon;
+    public String lat;
 
-    public LoginParam(){
-        method = AppApiContact.InterfaceMethod.LOGIN_METHOD;
+
+    public UploadWorkParam(){
+        method = AppApiContact.InterfaceMethod.UPLOAD_WORK_METHOD;
     }
 
     public String toJson(){

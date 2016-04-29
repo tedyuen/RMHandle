@@ -52,6 +52,16 @@ public class AppApiContact {
          */
         public static final String POINT_LIST_METHOD = "RM_GCBAPP_pointList";
 
+
+        /**
+         * 3.7 提交工作工作项接口
+         */
+        public static final String UPLOAD_WORK_METHOD = "RM_GCBAPP_uploadWork";
+
+
+
+
+
         /**
          * 4.1 版本检测接口
          */

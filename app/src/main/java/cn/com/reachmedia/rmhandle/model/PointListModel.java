@@ -1,20 +1,70 @@
 package cn.com.reachmedia.rmhandle.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * Author:    tedyuen
  * Version    V1.0
  * Date:      16/4/26 上午11:40
- * Description:
+ * Description: 3.5 进入小区接口
  * Modification  History:
  * Date         	Author        		Version        	Description
  * -----------------------------------------------------------------------------------
  * 16/4/26          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class PointListModel {
+public class PointListModel extends BaseModel implements Parcelable {
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(communityid);
+        dest.writeString(community);
+        dest.writeString(doordesc);
+        dest.writeString(carddesc);
+        dest.writeInt(newNumber);
+        dest.writeInt(endNumber);
+        dest.writeInt(errorNumber);
+        dest.writeString(telephone);
+        dest.writeString(cGatePic);
+        dest.writeString(cPestPic);
+        dest.writeList(newList);
+        dest.writeList(comList);
+    }
+
+    public PointListModel(){}
+
+    private PointListModel(Parcel in){
+        communityid = in.readString();
+        community = in.readString();
+        doordesc = in.readString();
+        carddesc = in.readString();
+        newNumber = in.readInt();
+        newNumber = in.readInt();
+        errorNumber = in.readInt();
+        telephone = in.readString();
+        cGatePic = in.readString();
+        cPestPic = in.readString();
+        newList = in.readArrayList(NewListBean.class.getClassLoader());
+        comList = in.readArrayList(ComListBean.class.getClassLoader());
+    }
+
+    public static final Creator<PointListModel> CREATOR = new Creator<PointListModel>() {
+        public PointListModel createFromParcel(Parcel source) {
+            return new PointListModel(source);
+        }
+
+        public PointListModel[] newArray(int size) {
+            return new PointListModel[size];
+        }
+    };
 
     /**
      * communityid : 33
@@ -24,12 +74,12 @@ public class PointListModel {
      * newNumber : 32
      * endNumber : 100
      * errorNumber : 223
-     * telephone : 12333337777
-     * newList : [{"workId":"22","cid":"121","cname":"肯德基","doorId":"109","door":"1号楼","workUp":1,"workDown":0,"workDownPhone":1,"workCheck":0,"piontid":1233,"ground":1}]
-     * endList : [{"workId":"23","cid":"122","cname":"再生能源","doorId":"190","door":"2号楼","workUp":1,"workDown":0,"workDownPhone":1,"workCheck":0,"piontid":1233,"ground":0,"isPhoto":0}]
-     * errorList : [{"workId":"24","cid":"126","cname":"杜威斯","doorId":"419","door":"6号楼","workUp":1,"workDown":0,"workDownPhone":1,"workCheck":0,"piontid":1233,"ground":1,"errorDesc":"刊位破损"}]
+     * telephone : 18017494728_58876837
+     * cGatePic : http://aa.ss.s
+     * cPestPic : http://aa.ss.s
+     * newList : [{"workId":"22","cid":"121","cname":"肯德基","doorId":"109","door":"1号楼","workUp":1,"workDown":0,"workDownPhone":1,"workCheck":0,"piontId":1233,"ground":1,"cDoorPic":"http://aa.ss.s","errorDesc":"破损","isPhoto":1,"state":0,"stateType":0}]
+     * comList : [{"cid":"12123","cname":"美莱","memo":"上刊要求富文本"}]
      */
-
     private String communityid;
     private String community;
     private String doordesc;
@@ -38,6 +88,8 @@ public class PointListModel {
     private int endNumber;
     private int errorNumber;
     private String telephone;
+    private String cGatePic;
+    private String cPestPic;
     /**
      * workId : 22
      * cid : 121
@@ -48,43 +100,23 @@ public class PointListModel {
      * workDown : 0
      * workDownPhone : 1
      * workCheck : 0
-     * piontid : 1233
+     * piontId : 1233
      * ground : 1
+     * cDoorPic : http://aa.ss.s
+     * errorDesc : 破损
+     * isPhoto : 1
+     * state : 0
+     * stateType : 0
      */
 
     private List<NewListBean> newList;
     /**
-     * workId : 23
-     * cid : 122
-     * cname : 再生能源
-     * doorId : 190
-     * door : 2号楼
-     * workUp : 1
-     * workDown : 0
-     * workDownPhone : 1
-     * workCheck : 0
-     * piontid : 1233
-     * ground : 0
-     * isPhoto : 0
+     * cid : 12123
+     * cname : 美莱
+     * memo : 上刊要求富文本
      */
 
-    private List<EndListBean> endList;
-    /**
-     * workId : 24
-     * cid : 126
-     * cname : 杜威斯
-     * doorId : 419
-     * door : 6号楼
-     * workUp : 1
-     * workDown : 0
-     * workDownPhone : 1
-     * workCheck : 0
-     * piontid : 1233
-     * ground : 1
-     * errorDesc : 刊位破损
-     */
-
-    private List<ErrorListBean> errorList;
+    private List<ComListBean> comList;
 
     public String getCommunityid() {
         return communityid;
@@ -150,6 +182,22 @@ public class PointListModel {
         this.telephone = telephone;
     }
 
+    public String getCGatePic() {
+        return cGatePic;
+    }
+
+    public void setCGatePic(String cGatePic) {
+        this.cGatePic = cGatePic;
+    }
+
+    public String getCPestPic() {
+        return cPestPic;
+    }
+
+    public void setCPestPic(String cPestPic) {
+        this.cPestPic = cPestPic;
+    }
+
     public List<NewListBean> getNewList() {
         return newList;
     }
@@ -158,20 +206,12 @@ public class PointListModel {
         this.newList = newList;
     }
 
-    public List<EndListBean> getEndList() {
-        return endList;
+    public List<ComListBean> getComList() {
+        return comList;
     }
 
-    public void setEndList(List<EndListBean> endList) {
-        this.endList = endList;
-    }
-
-    public List<ErrorListBean> getErrorList() {
-        return errorList;
-    }
-
-    public void setErrorList(List<ErrorListBean> errorList) {
-        this.errorList = errorList;
+    public void setComList(List<ComListBean> comList) {
+        this.comList = comList;
     }
 
     public static class NewListBean {
@@ -184,111 +224,13 @@ public class PointListModel {
         private int workDown;
         private int workDownPhone;
         private int workCheck;
-        private int piontid;
+        private int piontId;
         private int ground;
-
-        public String getWorkId() {
-            return workId;
-        }
-
-        public void setWorkId(String workId) {
-            this.workId = workId;
-        }
-
-        public String getCid() {
-            return cid;
-        }
-
-        public void setCid(String cid) {
-            this.cid = cid;
-        }
-
-        public String getCname() {
-            return cname;
-        }
-
-        public void setCname(String cname) {
-            this.cname = cname;
-        }
-
-        public String getDoorId() {
-            return doorId;
-        }
-
-        public void setDoorId(String doorId) {
-            this.doorId = doorId;
-        }
-
-        public String getDoor() {
-            return door;
-        }
-
-        public void setDoor(String door) {
-            this.door = door;
-        }
-
-        public int getWorkUp() {
-            return workUp;
-        }
-
-        public void setWorkUp(int workUp) {
-            this.workUp = workUp;
-        }
-
-        public int getWorkDown() {
-            return workDown;
-        }
-
-        public void setWorkDown(int workDown) {
-            this.workDown = workDown;
-        }
-
-        public int getWorkDownPhone() {
-            return workDownPhone;
-        }
-
-        public void setWorkDownPhone(int workDownPhone) {
-            this.workDownPhone = workDownPhone;
-        }
-
-        public int getWorkCheck() {
-            return workCheck;
-        }
-
-        public void setWorkCheck(int workCheck) {
-            this.workCheck = workCheck;
-        }
-
-        public int getPiontid() {
-            return piontid;
-        }
-
-        public void setPiontid(int piontid) {
-            this.piontid = piontid;
-        }
-
-        public int getGround() {
-            return ground;
-        }
-
-        public void setGround(int ground) {
-            this.ground = ground;
-        }
-    }
-
-    public static class EndListBean {
-        private String workId;
-        private String cid;
-        private String cname;
-        private String doorId;
-        private String door;
-        private int workUp;
-        private int workDown;
-        private int workDownPhone;
-        private int workCheck;
-        private int piontid;
-        private int ground;
+        private String cDoorPic;
+        private String errorDesc;
         private int isPhoto;
+        private int state;
+        private int stateType;
 
         public String getWorkId() {
             return workId;
@@ -362,12 +304,12 @@ public class PointListModel {
             this.workCheck = workCheck;
         }
 
-        public int getPiontid() {
-            return piontid;
+        public int getPiontId() {
+            return piontId;
         }
 
-        public void setPiontid(int piontid) {
-            this.piontid = piontid;
+        public void setPiontId(int piontId) {
+            this.piontId = piontId;
         }
 
         public int getGround() {
@@ -376,6 +318,22 @@ public class PointListModel {
 
         public void setGround(int ground) {
             this.ground = ground;
+        }
+
+        public String getCDoorPic() {
+            return cDoorPic;
+        }
+
+        public void setCDoorPic(String cDoorPic) {
+            this.cDoorPic = cDoorPic;
+        }
+
+        public String getErrorDesc() {
+            return errorDesc;
+        }
+
+        public void setErrorDesc(String errorDesc) {
+            this.errorDesc = errorDesc;
         }
 
         public int getIsPhoto() {
@@ -385,29 +343,28 @@ public class PointListModel {
         public void setIsPhoto(int isPhoto) {
             this.isPhoto = isPhoto;
         }
+
+        public int getState() {
+            return state;
+        }
+
+        public void setState(int state) {
+            this.state = state;
+        }
+
+        public int getStateType() {
+            return stateType;
+        }
+
+        public void setStateType(int stateType) {
+            this.stateType = stateType;
+        }
     }
 
-    public static class ErrorListBean {
-        private String workId;
+    public static class ComListBean {
         private String cid;
         private String cname;
-        private String doorId;
-        private String door;
-        private int workUp;
-        private int workDown;
-        private int workDownPhone;
-        private int workCheck;
-        private int piontid;
-        private int ground;
-        private String errorDesc;
-
-        public String getWorkId() {
-            return workId;
-        }
-
-        public void setWorkId(String workId) {
-            this.workId = workId;
-        }
+        private String memo;
 
         public String getCid() {
             return cid;
@@ -425,76 +382,12 @@ public class PointListModel {
             this.cname = cname;
         }
 
-        public String getDoorId() {
-            return doorId;
+        public String getMemo() {
+            return memo;
         }
 
-        public void setDoorId(String doorId) {
-            this.doorId = doorId;
-        }
-
-        public String getDoor() {
-            return door;
-        }
-
-        public void setDoor(String door) {
-            this.door = door;
-        }
-
-        public int getWorkUp() {
-            return workUp;
-        }
-
-        public void setWorkUp(int workUp) {
-            this.workUp = workUp;
-        }
-
-        public int getWorkDown() {
-            return workDown;
-        }
-
-        public void setWorkDown(int workDown) {
-            this.workDown = workDown;
-        }
-
-        public int getWorkDownPhone() {
-            return workDownPhone;
-        }
-
-        public void setWorkDownPhone(int workDownPhone) {
-            this.workDownPhone = workDownPhone;
-        }
-
-        public int getWorkCheck() {
-            return workCheck;
-        }
-
-        public void setWorkCheck(int workCheck) {
-            this.workCheck = workCheck;
-        }
-
-        public int getPiontid() {
-            return piontid;
-        }
-
-        public void setPiontid(int piontid) {
-            this.piontid = piontid;
-        }
-
-        public int getGround() {
-            return ground;
-        }
-
-        public void setGround(int ground) {
-            this.ground = ground;
-        }
-
-        public String getErrorDesc() {
-            return errorDesc;
-        }
-
-        public void setErrorDesc(String errorDesc) {
-            this.errorDesc = errorDesc;
+        public void setMemo(String memo) {
+            this.memo = memo;
         }
     }
 }
