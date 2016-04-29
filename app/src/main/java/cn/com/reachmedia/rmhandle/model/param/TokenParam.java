@@ -21,7 +21,7 @@ public class TokenParam extends BaseParam {
 
     public TokenParam(){
 //        usertoken = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_TOKEN);
-        usertoken = "dj38dj3ujdgfk28";
+        usertoken = "7637E52C131BC6E693287205DD2D629D8DE599547B3C4940EA6DFB68DC416776";
     }
 
     public String toJson(){

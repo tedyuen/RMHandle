@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
+import cn.com.reachmedia.rmhandle.model.LoginModel;
 import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
 import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
 import cn.com.reachmedia.rmhandle.model.TaskMapModel;
@@ -19,6 +21,7 @@ import cn.com.reachmedia.rmhandle.network.controller.LoginController;
 import cn.com.reachmedia.rmhandle.network.controller.TaskDetailController;
 import cn.com.reachmedia.rmhandle.network.controller.TaskIndexController;
 import cn.com.reachmedia.rmhandle.network.controller.TaskMapController;
+import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 
 /**
  * Author:    tedyuen
@@ -42,10 +45,13 @@ public class InterfaceTestActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_login)
     public void testLogin(){
-        LoginController lc = new LoginController(new UiDisplayListener<BaseModel>() {
+        LoginController lc = new LoginController(new UiDisplayListener<LoginModel>() {
             @Override
-            public void onSuccessDisplay(BaseModel data) {
-
+            public void onSuccessDisplay(LoginModel data) {
+                if(data!=null){
+                    String token = data.getUsertoken();
+                    SharedPreferencesHelper.getInstance().putString(AppSpContact.SP_KEY_TOKEN,token);
+                }
             }
 
             @Override
@@ -55,7 +61,7 @@ public class InterfaceTestActivity extends AppCompatActivity {
         });
 
         LoginParam param = new LoginParam();
-        param.username = "18616990040";
+        param.username = "admin";
         param.pswd = "111111";
         lc.onLogin(param);
     }

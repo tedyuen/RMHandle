@@ -1,7 +1,7 @@
 package cn.com.reachmedia.rmhandle.network.controller;
 
 import cn.com.reachmedia.rmhandle.app.App;
-import cn.com.reachmedia.rmhandle.model.BaseModel;
+import cn.com.reachmedia.rmhandle.model.LoginModel;
 import cn.com.reachmedia.rmhandle.model.param.LoginParam;
 import cn.com.reachmedia.rmhandle.network.callback.HttpBaseCallBack;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
@@ -20,13 +20,13 @@ import retrofit.client.Response;
  * 16/4/25          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class LoginController extends BaseHttpController<BaseModel> {
+public class LoginController extends BaseHttpController<LoginModel> {
 
     private LoginParam loginParam;
 
     public LoginController(){}
 
-    public LoginController(UiDisplayListener<BaseModel> uiDisplayListener){
+    public LoginController(UiDisplayListener<LoginModel> uiDisplayListener){
         super(uiDisplayListener);
     }
 
@@ -40,9 +40,9 @@ public class LoginController extends BaseHttpController<BaseModel> {
         LogUtils.json(TAG, loginParam.toJson());
         LogUtils.d(TAG, loginParam.toJson());
         App.getAppApiService().onLogin(loginParam.toJson(),
-                new HttpBaseCallBack<BaseModel>() {
+                new HttpBaseCallBack<LoginModel>() {
                     @Override
-                    public void success(BaseModel data, Response response) {
+                    public void success(LoginModel data, Response response) {
                         super.success(data, response);
                         if (uiDisplayListener != null) {
                             uiDisplayListener.onSuccessDisplay(data);

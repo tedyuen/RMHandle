@@ -2,6 +2,7 @@ package cn.com.reachmedia.rmhandle.network.http;
 
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
+import cn.com.reachmedia.rmhandle.model.LoginModel;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
 import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
@@ -34,7 +35,7 @@ public interface AppApiService {
     @FormUrlEncoded
     @POST(AppApiContact.API_ACTION)
     void onLogin(@Field("json") String json,
-                 Callback<BaseModel> cb);
+                 Callback<LoginModel> cb);
 
     /**
      * 3.2 任务首页接口
