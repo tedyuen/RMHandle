@@ -61,7 +61,7 @@ public class ApartmentInfoTabAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 //        final ViewHolder bean;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_apartment_point_tab_fragment, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_apart_info, null);
 //            bean = new ViewHolder(convertView);
 //            convertView.setTag(R.id.tag, bean);
         } else {

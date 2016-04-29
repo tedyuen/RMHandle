@@ -61,8 +61,8 @@ public class InterfaceTestActivity extends AppCompatActivity {
         });
 
         LoginParam param = new LoginParam();
-        param.username = "admin";
-        param.pswd = "111111";
+        param.username = "123";
+        param.pswd = "a111111";
         lc.onLogin(param);
     }
 
