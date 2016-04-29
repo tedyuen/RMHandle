@@ -89,6 +89,12 @@
             android:label="@string/title_apartment_info">
         </activity>
 
+        <activity android:name=".ui.PointDetailActivity"
+            android:theme="@style/AppTheme.Toolbar"
+            android:screenOrientation="portrait">
+        </activity>
+
+
 
 
 

@@ -1,6 +1,7 @@
 package cn.com.reachmedia.rmhandle.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.ui.PointDetailActivity;
 
 /**
  * Author:    tedyuen
@@ -68,7 +70,12 @@ public class ApartmentPointTabFragmentAdapter extends BaseAdapter {
         } else {
 //            bean = (ViewHolder) convertView.getTag(R.id.tag);
         }
-
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, PointDetailActivity.class));
+            }
+        });
 
 
         return convertView;
