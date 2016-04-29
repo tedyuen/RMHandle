@@ -7,8 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
@@ -20,6 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.HomeTabFragment;
@@ -49,6 +53,10 @@ public class HomeActivity extends BaseActionBarActivity {
     ViewPager mPager;
     @Bind(R.id.iv_bottom_2)
     ImageView mIvBottom2;
+    @Bind(R.id.ll_filter_frame)
+    LinearLayout mLlFilterFrame;
+
+
 
     Map<Integer,HomeTabFragment> fragmentMap;
 
@@ -164,4 +172,79 @@ public class HomeActivity extends BaseActionBarActivity {
     public void goTaskInfo(){
         startActivity(new Intent(this,TaskInforActivity.class));
     }
+
+    @OnClick(R.id.rl_filter)
+    public void alertFilter(){
+        triggleFilter();
+//        HomeFilterDialogFragment dialog = new HomeFilterDialogFragment();
+//        dialog.show(getSupportFragmentManager(), "Write Comments");
+    }
+    @OnClick(R.id.v_close_filter)
+    public void closeFilter(){
+        triggleFilter();
+    }
+    @OnClick(R.id.ll_filter_child_frame)
+    public void blankFilterFrame(){
+
+    }
+
+
+    private void triggleFilter(){
+        int vi = mLlFilterFrame.getVisibility();
+        if(vi == View.VISIBLE){
+            mLlFilterFrame.setVisibility(View.GONE);
+            slidingTabLayout.setVisibility(View.VISIBLE);
+        }else if(vi == View.GONE){
+            mLlFilterFrame.setVisibility(View.VISIBLE);
+            slidingTabLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean isFilterShowing(){
+        int vi = mLlFilterFrame.getVisibility();
+        if(vi==View.VISIBLE){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+
+
+    //home key
+    private int mExitFlag = 0;
+    private long mExitLong = System.currentTimeMillis();
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN
+                    && event.getRepeatCount() == 0) {
+                if(isFilterShowing()) {
+                    triggleFilter();
+                    return true;
+                }
+                if (mExitFlag == 0) {
+                    mExitFlag = 1;
+                    mExitLong = System.currentTimeMillis();
+                    Toast.makeText(this, R.string.quit_redo, Toast.LENGTH_SHORT).show();
+                } else if (mExitFlag == 1) {
+                    if ((System.currentTimeMillis() - mExitLong) <= 2000) {
+                        //清除登录的key
+//                    LoginState.getInstance().clean();
+//                        App.app.exit();
+                        finish();
+                    } else {
+                        mExitLong = System.currentTimeMillis();
+                        Toast.makeText(this, R.string.quit_redo, Toast.LENGTH_SHORT).show();
+                    }
+                }
+                return true;
+            }
+        }
+
+        return super.dispatchKeyEvent(event);
+    }
+    //home key
+
 }

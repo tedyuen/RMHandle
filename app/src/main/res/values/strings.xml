@@ -21,6 +21,7 @@
     <string name="rbtn_text_tomorrow">明天</string>
     <string name="rbtn_text_toweek">本周</string>
 
+    <string name="quit_redo">再按一次退出程序</string>
 
     <string name="label_kan_1">本月已上刊</string>
     <string name="label_kan_2">本月未完成</string>

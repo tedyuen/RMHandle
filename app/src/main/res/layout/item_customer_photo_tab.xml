@@ -65,7 +65,11 @@
         android:paddingRight="@dimen/padding_lr"
         android:textSize="14sp"
         android:textColor="@color/username_color"
+        android:layout_marginBottom="10dp"
         android:text="拍照要求：每个点位必须提供3张照片：门栋照一张，正面整个公告栏照片一张（框架四边必须齐全，无缺一角），带3月10日日期之前的媒体照一张（日期必须清晰地拍进去）。"/>
+
+    <include layout="@layout/line_item_customer_photo"/>
+    <include layout="@layout/line_item_customer_photo"/>
 
 
 
