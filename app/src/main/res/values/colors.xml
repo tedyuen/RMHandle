@@ -10,6 +10,7 @@
     <color name="username_color">#4A4A4A</color>
     <color name="kan_color_1">#F5A623</color>
     <color name="kan_color_2">#F55A5C</color>
+    <color name="kan_color_2_focus">#f97475</color>
     <color name="kan_color_3">#4A90E2</color>
     <color name="line_color">#f1f1f1</color>
     <color name="line_color_grey">#E5E5E5</color>

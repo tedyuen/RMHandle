@@ -1,10 +1,282 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/background">
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/padding_lr"
+                android:paddingRight="@dimen/padding_lr"
+                android:background="@color/white"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="点位照片"
+                    android:textColor="@color/username_color"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@mipmap/picture_add_icon"
+                        android:layout_marginRight="6dp"/>
+
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@mipmap/picture_add_icon"
+                        android:layout_marginRight="6dp"/>
+
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@mipmap/picture_add_icon"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="小区照片"
+                    android:textColor="@color/username_color"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"/>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@drawable/abc"
+                        android:layout_marginRight="6dp"/>
 
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@drawable/abc"
+                        android:layout_marginRight="6dp"/>
+
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@drawable/abc"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="真爱女子医院"
+                    android:textColor="@color/username_color"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@drawable/abc"
+                        android:layout_marginRight="6dp"/>
+
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@drawable/abc"
+                        android:layout_marginRight="6dp"/>
+
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@drawable/abc"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:background="@color/white">
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="拍照要求"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:textColor="@color/username_color"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"/>
+                <View android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/line_color_grey"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:gravity="center_vertical"
+                    android:text="到画时间：10月27    上画时间：10月28"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:layout_marginRight="@dimen/padding_lr"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:text="拍照要求：每个点位必须提供3张照片：门栋照一张，正面整个公告栏照片一张（框架四边必须齐全，无缺一角），带3月10日日期之前的媒体照一张（日期必须清晰地拍进去）。"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:layout_marginRight="@dimen/padding_lr"
+                    android:orientation="horizontal">
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@mipmap/picture_add_icon"
+                        android:layout_marginRight="6dp"/>
+
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@mipmap/picture_add_icon"
+                        android:layout_marginRight="6dp"/>
+
+                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        app:proportion="0.87"
+                        android:src="@mipmap/picture_add_icon"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_color_grey"
+                android:layout_marginTop="14dp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp" />
+                <Button
+                    android:id="@+id/bt_done"
+                    android:layout_width="155dp"
+                    android:layout_height="35dp"
+                    style="@style/LogoutButtonStyle"
+                    android:layout_gravity="center"
+                    android:text="@string/btn_text_shangkan_done"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp" />
+                <Button
+                    android:id="@+id/bt_cant_enter"
+                    android:layout_width="90dp"
+                    android:layout_height="35dp"
+                    style="@style/GreenButtonStyle"
+                    android:layout_gravity="center"
+                    android:text="@string/btn_text_cant_enter"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp" />
+                <Button
+                    android:id="@+id/bt_report_question"
+                    android:layout_width="90dp"
+                    android:layout_height="35dp"
+                    style="@style/RedButtonStyle"
+                    android:layout_gravity="center"
+                    android:text="@string/btn_text_report_question"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="30dp" />
+            </LinearLayout>
+            
+        </LinearLayout>
+    </ScrollView>
     <include layout="@layout/tool_bar_base"/>
 </RelativeLayout>

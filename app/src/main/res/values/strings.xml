@@ -21,6 +21,10 @@
     <string name="rbtn_text_tomorrow">明天</string>
     <string name="rbtn_text_toweek">本周</string>
 
+    <string name="btn_text_shangkan_done">上刊完成</string>
+    <string name="btn_text_cant_enter">无法进入</string>
+    <string name="btn_text_report_question">报告问题</string>
+
     <string name="quit_redo">再按一次退出程序</string>
 
     <string name="label_kan_1">本月已上刊</string>
