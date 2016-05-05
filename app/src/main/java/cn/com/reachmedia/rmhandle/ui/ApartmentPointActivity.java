@@ -129,6 +129,7 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
             if (0 < mScrollY) {
                 args.putInt(ApartmentPointTabFragment.ARG_INITIAL_POSITION, 1);
             }
+            System.out.println("position:===>  "+position);
             switch (position) {
                 case 0:
                     args.putInt(ApartmentPointTabFragment.LIST_TYPE, AppSpContact.SP_KEY_APAET_POINT_UNDONE);
@@ -136,7 +137,7 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
                 case 1:
                     args.putInt(ApartmentPointTabFragment.LIST_TYPE, AppSpContact.SP_KEY_APAET_POINT_DONE);
                     break;
-                case 3:
+                case 2:
                     args.putInt(ApartmentPointTabFragment.LIST_TYPE, AppSpContact.SP_KEY_APAET_POINT_ERROR);
                     break;
 

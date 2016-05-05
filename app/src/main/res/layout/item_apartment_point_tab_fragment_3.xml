@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:background="@color/white">
+
+
+    <!-- 第一行 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/padding_lr"
+        android:paddingRight="@dimen/padding_lr"
+        android:layout_height="68dp">
+        <!-- 公寓名 -->
+        <TextView
+            android:id="@+id/tv_apartment_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1号楼 地上 电梯对面"
+            android:textColor="@color/username_color"
+            android:textSize="14sp"
+            android:maxWidth="130dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            />
+        <!-- 公寓名 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_target"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="房多多/真爱女子医院"
+                android:textColor="@color/username_color"
+                android:layout_alignParentRight="true"
+                android:textSize="14sp"
+                android:maxWidth="100dp"
+                android:maxLines="1"
+                android:layout_centerVertical="true"/>
+
+            <!-- 卡密 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="9dp"
+                android:layout_toRightOf="@id/tv_apartment_name">
+                <ImageView
+                    android:id="@+id/iv_shang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/home_shang_icon"
+                    android:layout_marginRight="5dp"/>
+                <ImageView
+                    android:id="@+id/iv_xia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/home_xia_icon"
+                    android:layout_marginRight="5dp"/>
+
+                <ImageView
+                    android:id="@+id/iv_pai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/home_pai_icon"
+                    android:layout_marginRight="5dp"/>
+            </LinearLayout>
+            <!-- 卡密 -->
+        </LinearLayout>
+    </LinearLayout>
+    <!-- 第一行 -->
+    <Button
+        android:id="@+id/bt_logout"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        style="@style/LogoutButtonStyle"
+        android:layout_marginRight="13dp"
+        android:layout_gravity="center_vertical"
+        android:text="已拍照"/>
+
+</LinearLayout>

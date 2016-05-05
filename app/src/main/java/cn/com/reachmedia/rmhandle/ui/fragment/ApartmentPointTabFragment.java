@@ -10,7 +10,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabBaseAdapter;
 import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabFragmentAdapter;
+import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabFragmentAdapter2;
+import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabFragmentAdapter3;
 import cn.com.reachmedia.rmhandle.ui.view.PageListView;
 
 /**
@@ -30,12 +33,21 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
     public static final String LIST_TYPE = "list_type";
     private int listType = AppSpContact.SP_KEY_APAET_POINT_UNDONE;//默认未完成
 
-    private ApartmentPointTabFragmentAdapter mAdapter;
+    private ApartmentPointTabBaseAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        controller = new MyOrderListController(this);
+        Bundle args = getArguments();
+
+        if (args != null ) {
+            int temp = args.getInt(ApartmentPointTabFragment.LIST_TYPE);
+            if(temp!=0){
+                listType = args.getInt(ApartmentPointTabFragment.LIST_TYPE);
+            }
+            System.out.println("=====>!!  "+listType);
+        }
     }
 
     @Bind(R.id.swipe_container)
@@ -54,11 +66,11 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
                 android.R.color.holo_red_light);
         //设置下拉刷新小球的颜色
 
-        Bundle args = getArguments();
-
-        if (args != null ) {
-            listType = args.getInt(LIST_TYPE);
-        }
+//        Bundle args = getArguments();
+//
+//        if (args != null ) {
+//            listType = args.getInt(ApartmentPointTabFragment.LIST_TYPE);
+//        }
         setUpViewComponent();
 
         return rootView;
@@ -67,7 +79,21 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
 
 
     private void setUpViewComponent() {
-        mAdapter = new ApartmentPointTabFragmentAdapter(getActivity());
+        System.out.println("listType:  "+listType);
+        switch (listType){
+            case 1:
+                mAdapter = new ApartmentPointTabFragmentAdapter(getActivity());
+
+                break;
+            case 2:
+                mAdapter = new ApartmentPointTabFragmentAdapter2(getActivity());
+
+                break;
+            case 3:
+                mAdapter = new ApartmentPointTabFragmentAdapter3(getActivity());
+
+                break;
+        }
         mPageListView.setAdapter(mAdapter);
 //        mPageListView.setLoadMoreEnable(true);
 //        mPageListView.setLoadNextListener(this);

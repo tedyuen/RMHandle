@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,38 +15,35 @@ import cn.com.reachmedia.rmhandle.ui.PointDetailActivity;
 /**
  * Author:    tedyuen
  * Version    V1.0
- * Date:      16/4/19 下午1:32
- * Description: 小区点位adapter
+ * Date:      16/5/5 上午11:44
+ * Description:
  * Modification  History:
  * Date         	Author        		Version        	Description
  * -----------------------------------------------------------------------------------
- * 16/4/19          tedyuen             1.0             1.0
+ * 16/5/5          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class ApartmentPointTabFragmentAdapter extends ApartmentPointTabBaseAdapter {
+public class ApartmentPointTabFragmentAdapter3 extends ApartmentPointTabBaseAdapter {
 
     private List<String> mLists;
 
     private Context mContext;
 
 
-    public ApartmentPointTabFragmentAdapter(Context context, List<String> mLists) {
+    public ApartmentPointTabFragmentAdapter3(Context context, List<String> mLists) {
         this.mLists = mLists;
         this.mContext = context;
     }
 
-    public ApartmentPointTabFragmentAdapter(Context context) {
+    public ApartmentPointTabFragmentAdapter3(Context context) {
         this.mContext = context;
         this.mLists = new ArrayList<>();
     }
 
 
-
-
     @Override
     public int getCount() {
-//        return mLists != null ? mLists.size() : 0;
-        return 10;
+        return 15;
     }
 
     @Override
@@ -64,7 +60,7 @@ public class ApartmentPointTabFragmentAdapter extends ApartmentPointTabBaseAdapt
     public View getView(int position, View convertView, ViewGroup parent) {
 //        final ViewHolder bean;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_apartment_point_tab_fragment, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_apartment_point_tab_fragment_3, null);
 //            bean = new ViewHolder(convertView);
 //            convertView.setTag(R.id.tag, bean);
         } else {
@@ -80,5 +76,4 @@ public class ApartmentPointTabFragmentAdapter extends ApartmentPointTabBaseAdapt
 
         return convertView;
     }
-
 }

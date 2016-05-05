@@ -18,8 +18,8 @@ public class AppSpContact {
     public static final String SP_KEY_DEVICE_ID = "device_id";
 
     //首页tab
-    public static final int SP_KEY_UNDONE = 1;//未完成
-    public static final int SP_KEY_DONE = 2;//已完成
+    public static final int SP_KEY_UNDONE = 0;//未完成
+    public static final int SP_KEY_DONE = 1;//已完成
     //首页tab
 
     //地图
