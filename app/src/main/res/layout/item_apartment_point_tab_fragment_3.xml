@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:paddingLeft="@dimen/padding_lr"
         android:paddingRight="@dimen/padding_lr"
-        android:layout_height="68dp">
+        android:layout_height="50dp">
         <!-- 公寓名 -->
         <TextView
             android:id="@+id/tv_apartment_name"
@@ -27,7 +27,7 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:textStyle="bold"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             />
         <!-- 公寓名 -->
 
@@ -81,11 +81,14 @@
         </LinearLayout>
     </LinearLayout>
     <!-- 第一行 -->
-    <Button
+    <TextView
         android:id="@+id/bt_logout"
         android:layout_width="70dp"
         android:layout_height="30dp"
-        style="@style/LogoutButtonStyle"
+        android:background="@color/apartment_point_bgcolor_blue"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="14sp"
         android:layout_marginRight="13dp"
         android:layout_gravity="center_vertical"
         android:text="已拍照"/>

@@ -42,7 +42,8 @@
             android:background="@color/back_grey"
             android:paddingLeft="@dimen/padding_lr"
             android:paddingRight="@dimen/padding_lr"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
