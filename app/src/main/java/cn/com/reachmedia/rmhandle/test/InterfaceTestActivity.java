@@ -9,15 +9,18 @@ import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
 import cn.com.reachmedia.rmhandle.model.LoginModel;
+import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
 import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
 import cn.com.reachmedia.rmhandle.model.TaskMapModel;
 import cn.com.reachmedia.rmhandle.model.param.LoginParam;
+import cn.com.reachmedia.rmhandle.model.param.PointListParam;
 import cn.com.reachmedia.rmhandle.model.param.TaskDetailParam;
 import cn.com.reachmedia.rmhandle.model.param.TaskIndexParam;
 import cn.com.reachmedia.rmhandle.model.param.TaskMapParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.LoginController;
+import cn.com.reachmedia.rmhandle.network.controller.PointListController;
 import cn.com.reachmedia.rmhandle.network.controller.TaskDetailController;
 import cn.com.reachmedia.rmhandle.network.controller.TaskIndexController;
 import cn.com.reachmedia.rmhandle.network.controller.TaskMapController;
@@ -138,4 +141,34 @@ public class InterfaceTestActivity extends AppCompatActivity {
         taskMapParam.lat = "1";
         taskMapController.getTaskMap(taskMapParam);
     }
+
+    /**
+     * 3.5 进入小区接口
+     */
+    @OnClick(R.id.btn_point_list)
+    public void testbtn_poingList(){
+        PointListController pointListController = new PointListController(new UiDisplayListener<PointListModel>() {
+            @Override
+            public void onSuccessDisplay(PointListModel data) {
+
+            }
+
+            @Override
+            public void onFailDisplay(String errorMsg) {
+
+            }
+        });
+
+        PointListParam param = new PointListParam();
+        param.communityid = "663";
+        param.startime = "2016-03-10";
+        param.endtime = "2016-04-10";
+        param.space = "";
+        param.customer = "";
+        pointListController.getTaskIndex(param);
+
+    }
+
+
+
 }
