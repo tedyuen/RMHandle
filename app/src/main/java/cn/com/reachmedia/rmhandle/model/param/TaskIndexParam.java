@@ -17,6 +17,8 @@ import cn.com.reachmedia.rmhandle.app.AppApiContact;
  */
 public class TaskIndexParam extends TokenParam {
 
+    public int state;
+
     public String startime;
 
     public String endtime;

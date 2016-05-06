@@ -27,6 +27,7 @@ import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.HomeTabFragment;
+import cn.com.reachmedia.rmhandle.ui.interf.HomeUiDataUpdate;
 
 /**
  * Author:    tedyuen
@@ -39,7 +40,7 @@ import cn.com.reachmedia.rmhandle.ui.fragment.HomeTabFragment;
  * 16/4/18          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class HomeActivity extends BaseActionBarActivity {
+public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpdate {
 
     private final ThreadLocal<View> mToolbarView = new ThreadLocal<>();
     SlidingTabLayout slidingTabLayout;
@@ -115,6 +116,7 @@ public class HomeActivity extends BaseActionBarActivity {
         @Override
         protected Fragment createItem(int position) {
             HomeTabFragment f = new HomeTabFragment();
+            f.setUiUpdateListener(activity);
             activity.fragmentMap.put(position,f);
             Bundle args = new Bundle();
             if (0 < mScrollY) {
@@ -247,4 +249,15 @@ public class HomeActivity extends BaseActionBarActivity {
     }
     //home key
 
+
+    @Override
+    public void updateTabCount(int ongoing,int finish) {
+        resetTitle(ongoing,finish);
+    }
+
+    public void resetTitle(int ongoing,int finish){
+        slidingTabLayout.resetTitle("未完成 ("+ongoing+")",
+                "已完成 ("+finish+")"
+        );
+    }
 }

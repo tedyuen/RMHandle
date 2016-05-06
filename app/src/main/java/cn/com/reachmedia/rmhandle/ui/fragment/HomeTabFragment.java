@@ -19,6 +19,7 @@ import cn.com.reachmedia.rmhandle.model.param.TaskIndexParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.TaskIndexController;
 import cn.com.reachmedia.rmhandle.ui.adapter.HomeTabFragmentAdapter;
+import cn.com.reachmedia.rmhandle.ui.interf.HomeUiDataUpdate;
 import cn.com.reachmedia.rmhandle.ui.view.PageListView;
 
 /**
@@ -42,6 +43,8 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
 
     private TaskIndexController taskIndexController;
     private TaskIndexParam param;
+
+    private HomeUiDataUpdate updateListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,6 +106,9 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
         mPageListView.setState(PageListView.PageListViewState.Idle);
         if(data!=null){
             if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
+                if(updateListener!=null){
+                    updateListener.updateTabCount(data.getOngoing(),data.getFinish());
+                }
                 mAdapter.updateData(data.getPList());
                 mAdapter.notifyDataSetChanged();
             }
@@ -124,11 +130,16 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
     public void onRefresh() {
         if(taskIndexController!=null){
             mPageListView.setState(PageListView.PageListViewState.Loading);
+            param.state = listType;
             taskIndexController.getTaskIndex(param);
         }
     }
     @Override
     public void onLoadNext() {
 
+    }
+
+    public void setUiUpdateListener(HomeUiDataUpdate updateListener){
+        this.updateListener = updateListener;
     }
 }
