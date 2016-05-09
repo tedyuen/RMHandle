@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.ui.base;
 
+import android.app.ProgressDialog;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,7 +28,7 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
     protected final String TAG = getClass().getSimpleName();
     protected ActionBar mActionBar;
     protected SharedPreferencesHelper mSharedPreferencesHelper;
-
+    public ProgressDialog mProgressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +36,18 @@ public abstract class BaseActionBarActivity extends AppCompatActivity {
         mSharedPreferencesHelper = SharedPreferencesHelper.getInstance();
 
         showUpActionBar();
+    }
+    public void showProgressDialog(){
+        if(this!=null){
+            mProgressDialog = ProgressDialog.show(this, "", getString(R.string.loading_message));
+            mProgressDialog.setCanceledOnTouchOutside(true);
+        }
+    }
+
+    public void closeProgressDialog(){
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
     }
 
     protected int getActionBarSize() {

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppApiContact;
+import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
 import cn.com.reachmedia.rmhandle.ui.TaskInforActivity;
 import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentInfoTabAdapter;
 import cn.com.reachmedia.rmhandle.ui.view.PageListView;
@@ -70,7 +72,7 @@ public class ApartmentInfoTabFragment extends TaskInfoBaseFragment implements Sw
 
     @Override
     public void onRefresh() {
-
+        activity.onRefresh();
     }
 
     @Override
@@ -79,7 +81,22 @@ public class ApartmentInfoTabFragment extends TaskInfoBaseFragment implements Sw
     }
 
     @Override
-    void updateData() {
+    public void updateData(TaskDetailModel model) {
+        if(mSwipeContainer==null) return;
+        mSwipeContainer.setRefreshing(false);
+        mPageListView.setState(PageListView.PageListViewState.Idle);
+        if(model!=null){
+            if (AppApiContact.ErrorCode.SUCCESS.equals(model.rescode)) {
+                mAdapter.updateData(model.getCrList());
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+    }
 
+    @Override
+    public void onFailDisplay(String errorMsg) {
+        if(mSwipeContainer==null) return;
+        mSwipeContainer.setRefreshing(false);
+        mPageListView.setState(PageListView.PageListViewState.Idle);
     }
 }

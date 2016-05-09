@@ -1,5 +1,8 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
+
+import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
+
 /**
  * Author:    tedyuen
  * Version    V1.0
@@ -13,6 +16,7 @@ package cn.com.reachmedia.rmhandle.ui.fragment;
  */
 public abstract class TaskInfoBaseFragment extends BaseFragment {
 
-    abstract void updateData();
+    public abstract void updateData(TaskDetailModel model);
 
+    public abstract void onFailDisplay(String errorMsg);
 }

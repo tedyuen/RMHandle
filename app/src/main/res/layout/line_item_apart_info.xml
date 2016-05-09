@@ -7,11 +7,15 @@
     <TextView
         android:id="@+id/tv_ap_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:maxWidth="150dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:layout_height="@dimen/panel_height_2"
         android:layout_centerVertical="true"
         android:text="欣逸家园"
         android:textColor="@color/black"
         android:textStyle="bold"
+        android:gravity="center_vertical"
         android:textSize="14sp"/>
 
     <TextView

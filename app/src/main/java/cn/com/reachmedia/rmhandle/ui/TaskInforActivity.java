@@ -18,6 +18,10 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
+import cn.com.reachmedia.rmhandle.model.param.TaskDetailParam;
+import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
+import cn.com.reachmedia.rmhandle.network.controller.TaskDetailController;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarTabActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentInfoTabFragment;
@@ -36,13 +40,14 @@ import cn.com.reachmedia.rmhandle.ui.fragment.TaskInfoBaseFragment;
  * 16/4/28          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class TaskInforActivity extends BaseActionBarTabActivity {
+public class TaskInforActivity extends BaseActionBarTabActivity implements UiDisplayListener<TaskDetailModel> {
 
     private NavigationAdapter mPagerAdapter;
 
 
     Map<Integer,TaskInfoBaseFragment> fragmentMap;
 
+    TaskDetailController taskDetailController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +82,36 @@ public class TaskInforActivity extends BaseActionBarTabActivity {
             }
         });
         mPager.setCurrentItem(0);
+        taskDetailController = new TaskDetailController(this);
+    }
 
+    public void onRefresh(){
+        TaskDetailParam taskDetailParam = new TaskDetailParam();
+        taskDetailParam.startime = "2016-03-10";
+        taskDetailParam.endtime = "2016-05-20";
+        taskDetailParam.space = "";
+        taskDetailParam.lon = "1";
+        taskDetailParam.lat = "1";
+        taskDetailController.getTaskDetail(taskDetailParam);
+    }
+
+
+    @Override
+    public void onSuccessDisplay(TaskDetailModel data) {
+        if(fragmentMap!=null){
+            for(Integer key:fragmentMap.keySet()){
+                fragmentMap.get(key).updateData(data);
+            }
+        }
+    }
+
+    @Override
+    public void onFailDisplay(String errorMsg) {
+        if(fragmentMap!=null){
+            for(Integer key:fragmentMap.keySet()){
+                fragmentMap.get(key).onFailDisplay(errorMsg);
+            }
+        }
     }
 
     private static class NavigationAdapter extends CacheFragmentStatePagerAdapter {

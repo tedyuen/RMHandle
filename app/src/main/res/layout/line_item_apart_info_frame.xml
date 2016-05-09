@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/padding_lr"
     android:paddingRight="@dimen/padding_lr">
     <TextView
+        android:id="@+id/tv_district"
         android:layout_width="79dp"
         android:layout_height="40dp"
         android:text="浦东新区"
@@ -14,6 +15,7 @@
         android:textSize="14sp"/>
 
     <LinearLayout
+        android:id="@+id/ll_inner_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

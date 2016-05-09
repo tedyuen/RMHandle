@@ -96,6 +96,9 @@ public class InterfaceTestActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 3.3 首页信息总览
+     */
     @OnClick(R.id.btn_taskdetail)
     public void testbtn_taskdetail(){
         TaskDetailController taskDetailController = new TaskDetailController(new UiDisplayListener<TaskDetailModel>() {
