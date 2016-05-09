@@ -83,6 +83,8 @@ public class TaskInforActivity extends BaseActionBarTabActivity implements UiDis
         });
         mPager.setCurrentItem(0);
         taskDetailController = new TaskDetailController(this);
+        onRefresh();
+        showProgressDialog();
     }
 
     public void onRefresh(){
@@ -98,6 +100,7 @@ public class TaskInforActivity extends BaseActionBarTabActivity implements UiDis
 
     @Override
     public void onSuccessDisplay(TaskDetailModel data) {
+        closeProgressDialog();
         if(fragmentMap!=null){
             for(Integer key:fragmentMap.keySet()){
                 fragmentMap.get(key).updateData(data);
@@ -107,6 +110,7 @@ public class TaskInforActivity extends BaseActionBarTabActivity implements UiDis
 
     @Override
     public void onFailDisplay(String errorMsg) {
+        closeProgressDialog();
         if(fragmentMap!=null){
             for(Integer key:fragmentMap.keySet()){
                 fragmentMap.get(key).onFailDisplay(errorMsg);

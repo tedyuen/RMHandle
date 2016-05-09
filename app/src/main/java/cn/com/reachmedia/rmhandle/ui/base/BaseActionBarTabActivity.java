@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 
 /**
@@ -35,8 +36,23 @@ public abstract class BaseActionBarTabActivity extends BaseActionBarActivity {
     @Bind(R.id.toolbar_title)
     public TextView toolbarTitle;
 
+    @OnClick(R.id.iv_back)
+    public void back(){
+        if(backListener==null){
+            finish();//默认的返回按钮
 
+        }else{
+            backListener.goBack();
+        }
+    }
+    public interface BackListener{
+        void goBack();
+    }
+    private BackListener backListener;
 
+    public void setBackListener(BackListener backListener){
+        this.backListener = backListener;
+    }
     public void needTitle(){
         toolbarTitle.setText(getTitle());
     }

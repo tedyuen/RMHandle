@@ -87,9 +87,8 @@ public class CustomerPhotoTabFragment extends TaskInfoBaseFragment implements Sw
         mPageListView.setState(PageListView.PageListViewState.Idle);
         if(model!=null){
             if (AppApiContact.ErrorCode.SUCCESS.equals(model.rescode)) {
-
-
-
+                mAdapter.updateData(model.getClList());
+                mAdapter.notifyDataSetChanged();
             }
         }
     }

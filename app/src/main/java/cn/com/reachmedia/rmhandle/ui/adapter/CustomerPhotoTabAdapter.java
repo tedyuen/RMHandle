@@ -5,11 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
+import cn.com.reachmedia.rmhandle.ui.view.SquareImageView;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 
 /**
  * Author:    tedyuen
@@ -24,12 +33,12 @@ import cn.com.reachmedia.rmhandle.R;
  */
 public class CustomerPhotoTabAdapter extends BaseAdapter {
 
-    private List<String> mLists;
+    private List<TaskDetailModel.ClListBean> mLists;
 
     private Context mContext;
 
 
-    public CustomerPhotoTabAdapter(Context context, List<String> mLists) {
+    public CustomerPhotoTabAdapter(Context context, List<TaskDetailModel.ClListBean> mLists) {
         this.mLists = mLists;
         this.mContext = context;
     }
@@ -39,13 +48,15 @@ public class CustomerPhotoTabAdapter extends BaseAdapter {
         this.mLists = new ArrayList<>();
     }
 
-
+    public void updateData(List<TaskDetailModel.ClListBean> list) {
+        this.mLists = list;
+    }
 
 
     @Override
     public int getCount() {
-//        return mLists != null ? mLists.size() : 0;
-        return 10;
+        return mLists != null ? mLists.size() : 0;
+//        return 10;
     }
 
     @Override
@@ -60,17 +71,95 @@ public class CustomerPhotoTabAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        final ViewHolder bean;
+        final ViewHolder1 bean;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_customer_photo_tab, null);
-//            bean = new ViewHolder(convertView);
-//            convertView.setTag(R.id.tag, bean);
+            bean = new ViewHolder1(convertView);
+            convertView.setTag(R.id.tag, bean);
         } else {
-//            bean = (ViewHolder) convertView.getTag(R.id.tag);
+            bean = (ViewHolder1) convertView.getTag(R.id.tag);
         }
 
+        TaskDetailModel.ClListBean data = mLists.get(position);
+        if (data != null) {
+            bean.tvCname.setText(data.getCname());
+            bean.tvShowtime.setText(data.getShowtime());
+            bean.tvDaohuaTime.setText("到画时间：" + data.getPictime());
+            bean.tvShanghuaTime.setText("上画时间：" + data.getWorktime());
+            bean.tvYaoqiu.setText(data.getDescs());
 
+            bean.llPhotoFrame.removeAllViews();
+            LinearLayout tempLine = null;
+            ViewHolder2 tempBean = null;
+            for (int i = 0; i < data.getPicList().size(); i++) {
+                if(i>=6) break;
+                TaskDetailModel.ClListBean.PicListBean bean2 = data.getPicList().get(i);
+                int tempMod = i % 3;
+                if (tempMod == 0) {
+                    tempLine = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.line_item_customer_photo, null);
+                    tempBean = new ViewHolder2(tempLine);
+                    tempLine.setTag(R.id.tag, tempBean);
+                    bean.llPhotoFrame.addView(tempLine);
+                } else {
+                    tempBean = (ViewHolder2) tempLine.getTag(R.id.tag);
+                }
+
+                switch (tempMod){
+                    case 0:
+                        if (StringUtils.notEmpty(bean2.getPicurlS())) {
+                            Picasso.with(this.mContext).load(bean2.getPicurlS()).placeholder(R.drawable.abc).into(tempBean.ivPhoto1);
+                        }
+                        break;
+                    case 1:
+                        if (StringUtils.notEmpty(bean2.getPicurlS())) {
+                            tempBean.ivPhoto2.setVisibility(View.VISIBLE);
+                            Picasso.with(this.mContext).load(bean2.getPicurlS()).placeholder(R.drawable.abc).into(tempBean.ivPhoto2);
+                        }
+                        break;
+                    case 2:
+                        if (StringUtils.notEmpty(bean2.getPicurlS())) {
+                            tempBean.ivPhoto3.setVisibility(View.VISIBLE);
+                            Picasso.with(this.mContext).load(bean2.getPicurlS()).placeholder(R.drawable.abc).into(tempBean.ivPhoto3);
+                        }
+                        break;
+                }
+
+            }
+
+        }
 
         return convertView;
+    }
+
+    static class ViewHolder1 {
+        @Bind(R.id.tv_cname)
+        TextView tvCname;
+        @Bind(R.id.tv_daohua_time)
+        TextView tvDaohuaTime;
+        @Bind(R.id.tv_shanghua_time)
+        TextView tvShanghuaTime;
+        @Bind(R.id.tv_yaoqiu)
+        TextView tvYaoqiu;
+        @Bind(R.id.ll_photo_frame)
+        LinearLayout llPhotoFrame;
+        @Bind(R.id.tv_showtime)
+        TextView tvShowtime;
+
+        ViewHolder1(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    static class ViewHolder2 {
+        @Bind(R.id.iv_photo_1)
+        SquareImageView ivPhoto1;
+        @Bind(R.id.iv_photo_2)
+        SquareImageView ivPhoto2;
+        @Bind(R.id.iv_photo_3)
+        SquareImageView ivPhoto3;
+
+        ViewHolder2(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

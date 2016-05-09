@@ -5,27 +5,42 @@
     android:paddingLeft="@dimen/padding_lr"
     android:paddingRight="@dimen/padding_lr"
     android:layout_marginBottom="10dp"
-    android:orientation="horizontal">
-    <cn.com.reachmedia.rmhandle.ui.view.SquareImageView
-        android:layout_width="0dp"
-        android:layout_weight="1"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/abc"
-        android:layout_marginRight="10dp"/>
+        android:orientation="horizontal">
+        <cn.com.reachmedia.rmhandle.ui.view.SquareImageView
+            android:id="@+id/iv_photo_1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/abc"
+            android:layout_marginRight="10dp"/>
 
-    <cn.com.reachmedia.rmhandle.ui.view.SquareImageView
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/abc"
-        android:layout_marginRight="10dp"/>
+        <cn.com.reachmedia.rmhandle.ui.view.SquareImageView
+            android:id="@+id/iv_photo_2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/abc"
+            android:layout_marginRight="10dp"
+            android:visibility="invisible"/>
 
-    <cn.com.reachmedia.rmhandle.ui.view.SquareImageView
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/abc"/>
+        <cn.com.reachmedia.rmhandle.ui.view.SquareImageView
+            android:id="@+id/iv_photo_3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:visibility="invisible"
+            android:src="@drawable/abc"/>
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:text=" "/>
 </LinearLayout>
