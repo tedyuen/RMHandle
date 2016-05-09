@@ -102,6 +102,7 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void onSuccessDisplay(TaskIndexModel data) {
+        if(mSwipeContainer==null) return;
         mSwipeContainer.setRefreshing(false);
         mPageListView.setState(PageListView.PageListViewState.Idle);
         if(data!=null){

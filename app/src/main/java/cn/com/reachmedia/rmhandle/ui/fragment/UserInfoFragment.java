@@ -2,17 +2,24 @@ package cn.com.reachmedia.rmhandle.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.App;
+import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
+import cn.com.reachmedia.rmhandle.ui.LoginActivity;
 import cn.com.reachmedia.rmhandle.ui.OfflineMapActivity;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 
@@ -44,7 +51,7 @@ public class UserInfoFragment extends BaseToolbarFragment {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.userinfo_fragment;
+        return 0;
     }
 
     @Override
@@ -59,7 +66,7 @@ public class UserInfoFragment extends BaseToolbarFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        View rootView = inflater.inflate(R.layout.userinfo_fragment, container, false);
         ButterKnife.bind(this, rootView);
         setUpViewComponent();
         return rootView;
@@ -84,6 +91,33 @@ public class UserInfoFragment extends BaseToolbarFragment {
     @OnClick(R.id.rl_offline_map)
     public void goOfflineMapActivity(){
         startActivity(new Intent(getActivity(),OfflineMapActivity.class));
+    }
+
+    @OnClick(R.id.bt_logout)
+    public void logout(){
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
+                .title("确定要退出吗?")
+                .positiveText("确定")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        mSharedPreferencesHelper.remove(AppSpContact.SP_KEY_TOKEN);
+                        App.getIns().closeHomeActivity();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        dialog.dismiss();
+                        getActivity().finish();
+                    }
+                })
+                .negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                });
+        MaterialDialog dialog = builder.build();
+        dialog.show();
+
     }
 
 

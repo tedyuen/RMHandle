@@ -94,6 +94,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         });
         mPager.setCurrentItem(0);
         mIvBottom2.setImageLevel(2);
+        App.getIns().addHomeActivity(this);
 //        setPage(0);
     }
 

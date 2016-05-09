@@ -39,7 +39,8 @@ android {
     }
 
     repositories {
-        mavenCentral()
+        maven { url "https://jitpack.io" }
+//        mavenCentral()
     }
 }
 
@@ -83,7 +84,10 @@ dependencies {
     compile 'fr.tvbarthel.blurdialogfragment:lib:2.1.2'
     //弹出提示信息    代码地址-----> https://github.com/johnkil/Android-AppMsg
     compile 'com.github.johnkil.android-appmsg:appmsg:1.2.0'
-
+    //弹出框    代码地址-----> https://github.com/afollestad/material-dialogs
+    compile('com.github.afollestad.material-dialogs:commons:0.8.5.8@aar') {
+        transitive = true
+    }
 
     compile files('libs/baidumapapi_base_v3_7_3.jar')
     compile files('libs/baidumapapi_cloud_v3_7_3.jar')

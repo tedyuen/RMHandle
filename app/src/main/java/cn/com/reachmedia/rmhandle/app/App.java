@@ -1,6 +1,7 @@
 package cn.com.reachmedia.rmhandle.app;
 
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.telephony.TelephonyManager;
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import cn.com.reachmedia.rmhandle.network.cookie.PersistentCookieStore;
 import cn.com.reachmedia.rmhandle.network.http.AppApiService;
+import cn.com.reachmedia.rmhandle.ui.HomeActivity;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -92,6 +94,17 @@ public class App extends Application {
         String deviceId = ((TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
         sph.putString(AppSpContact.SP_KEY_DEVICE_ID, deviceId);
     }
+
+    private HomeActivity homeActivity;
+    public void addHomeActivity(HomeActivity activity){
+        this.homeActivity = activity;
+    }
+    public void closeHomeActivity(){
+        if(this.homeActivity!=null){
+            this.homeActivity.finish();
+        }
+    }
+
 
     public void exit() {
 //        EventBus.getDefault().unregister(this);

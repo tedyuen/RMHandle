@@ -58,7 +58,11 @@ public class LoginFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.login_fragment, container, false);
         ButterKnife.bind(this, rootView);
-
+        String userToken = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_TOKEN,null);
+        if(null!=userToken){
+            startActivity(new Intent(getActivity(),HomeActivity.class));
+            getActivity().finish();
+        }
         return rootView;
     }
 
