@@ -18,6 +18,25 @@ import java.util.List;
  */
 public class TaskDetailModel extends BaseModel implements Parcelable {
 
+    /**
+     * cid : 4
+     * cname : 帮宝适
+     * descs :
+     * pictime : 05月05日
+     * showtime : 04月07日至04月27日
+     * worktime : 周六
+     */
+
+    private List<ClListBean> clList;
+    /**
+     * cid : 4
+     * cname : 帮宝适
+     * comcount : 2
+     * pointcount : 0
+     */
+
+    private List<CrListBean> crList;
+
     @Override
     public int describeContents() {
         return 0;
@@ -46,27 +65,6 @@ public class TaskDetailModel extends BaseModel implements Parcelable {
         }
     };
 
-
-    /**
-     * cid : 121
-     * cname : 阿波罗男子医院
-     * showtime : 6月20日至7月1日
-     * pictime : 6月05日
-     * worktime : 周四
-     * descs :
-     */
-
-    private List<ClListBean> clList;
-    /**
-     * cid : 121
-     * cname : 阿波罗男子医院
-     * comcount : 59
-     * pointcount : 998
-     * comList : [{"communityid":"12","communityname":"南开大厦","district":"卢湾区","pointing":"10","pointcount":"15"}]
-     */
-
-    private List<CrListBean> crList;
-
     public List<ClListBean> getClList() {
         return clList;
     }
@@ -83,19 +81,26 @@ public class TaskDetailModel extends BaseModel implements Parcelable {
         this.crList = crList;
     }
 
-    public static class ClListBean {
-        private int cid;
-        private String cname;
-        private String showtime;
-        private String pictime;
-        private String worktime;
-        private String descs;
 
-        public int getCid() {
+    public static class ClListBean {
+        private String cid;
+        private String cname;
+        private String descs;
+        private String pictime;
+        private String showtime;
+        private String worktime;
+        /**
+         * picurlB : http://120.26.65.65:8085/img/res/images/advsales/admin/scheduling/5/s_20160412173541134_0.png
+         * picurlS : http://120.26.65.65:8085/img/res/images/advsales/admin/scheduling/5/s_20160412173541134_0.png
+         */
+
+        private List<PicListBean> picList;
+
+        public String getCid() {
             return cid;
         }
 
-        public void setCid(int cid) {
+        public void setCid(String cid) {
             this.cid = cid;
         }
 
@@ -107,12 +112,12 @@ public class TaskDetailModel extends BaseModel implements Parcelable {
             this.cname = cname;
         }
 
-        public String getShowtime() {
-            return showtime;
+        public String getDescs() {
+            return descs;
         }
 
-        public void setShowtime(String showtime) {
-            this.showtime = showtime;
+        public void setDescs(String descs) {
+            this.descs = descs;
         }
 
         public String getPictime() {
@@ -123,6 +128,14 @@ public class TaskDetailModel extends BaseModel implements Parcelable {
             this.pictime = pictime;
         }
 
+        public String getShowtime() {
+            return showtime;
+        }
+
+        public void setShowtime(String showtime) {
+            this.showtime = showtime;
+        }
+
         public String getWorktime() {
             return worktime;
         }
@@ -131,35 +144,56 @@ public class TaskDetailModel extends BaseModel implements Parcelable {
             this.worktime = worktime;
         }
 
-        public String getDescs() {
-            return descs;
+        public List<PicListBean> getPicList() {
+            return picList;
         }
 
-        public void setDescs(String descs) {
-            this.descs = descs;
+        public void setPicList(List<PicListBean> picList) {
+            this.picList = picList;
+        }
+
+        public static class PicListBean {
+            private String picurlB;
+            private String picurlS;
+
+            public String getPicurlB() {
+                return picurlB;
+            }
+
+            public void setPicurlB(String picurlB) {
+                this.picurlB = picurlB;
+            }
+
+            public String getPicurlS() {
+                return picurlS;
+            }
+
+            public void setPicurlS(String picurlS) {
+                this.picurlS = picurlS;
+            }
         }
     }
 
     public static class CrListBean {
-        private int cid;
+        private String cid;
         private String cname;
-        private String comcount;
-        private String pointcount;
+        private int comcount;
+        private int pointcount;
         /**
-         * communityid : 12
-         * communityname : 南开大厦
-         * district : 卢湾区
-         * pointing : 10
-         * pointcount : 15
+         * communityid : 663
+         * communityname : 宝宸怡景苑
+         * district : 宝山区
+         * pointcount : 0
+         * pointing : 0
          */
 
         private List<ComListBean> comList;
 
-        public int getCid() {
+        public String getCid() {
             return cid;
         }
 
-        public void setCid(int cid) {
+        public void setCid(String cid) {
             this.cid = cid;
         }
 
@@ -171,19 +205,19 @@ public class TaskDetailModel extends BaseModel implements Parcelable {
             this.cname = cname;
         }
 
-        public String getComcount() {
+        public int getComcount() {
             return comcount;
         }
 
-        public void setComcount(String comcount) {
+        public void setComcount(int comcount) {
             this.comcount = comcount;
         }
 
-        public String getPointcount() {
+        public int getPointcount() {
             return pointcount;
         }
 
-        public void setPointcount(String pointcount) {
+        public void setPointcount(int pointcount) {
             this.pointcount = pointcount;
         }
 
@@ -199,8 +233,8 @@ public class TaskDetailModel extends BaseModel implements Parcelable {
             private String communityid;
             private String communityname;
             private String district;
-            private String pointing;
-            private String pointcount;
+            private int pointcount;
+            private int pointing;
 
             public String getCommunityid() {
                 return communityid;
@@ -226,20 +260,20 @@ public class TaskDetailModel extends BaseModel implements Parcelable {
                 this.district = district;
             }
 
-            public String getPointing() {
-                return pointing;
-            }
-
-            public void setPointing(String pointing) {
-                this.pointing = pointing;
-            }
-
-            public String getPointcount() {
+            public int getPointcount() {
                 return pointcount;
             }
 
-            public void setPointcount(String pointcount) {
+            public void setPointcount(int pointcount) {
                 this.pointcount = pointcount;
+            }
+
+            public int getPointing() {
+                return pointing;
+            }
+
+            public void setPointing(int pointing) {
+                this.pointing = pointing;
             }
         }
     }

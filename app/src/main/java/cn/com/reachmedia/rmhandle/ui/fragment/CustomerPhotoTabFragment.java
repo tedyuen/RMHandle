@@ -25,7 +25,7 @@ import cn.com.reachmedia.rmhandle.ui.view.PageListView;
  * 16/4/28          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class CustomerPhotoTabFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class CustomerPhotoTabFragment extends TaskInfoBaseFragment implements SwipeRefreshLayout.OnRefreshListener{
     public static final String ARG_INITIAL_POSITION = "ARG_INITIAL_POSITION";
 
     TaskInforActivity activity;
@@ -76,5 +76,10 @@ public class CustomerPhotoTabFragment extends BaseFragment implements SwipeRefre
     @Override
     protected int getLayoutResId() {
         return 0;
+    }
+
+    @Override
+    void updateData() {
+
     }
 }

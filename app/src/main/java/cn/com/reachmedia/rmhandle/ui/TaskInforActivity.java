@@ -23,6 +23,7 @@ import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarTabActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentInfoTabFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.BaseFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.CustomerPhotoTabFragment;
+import cn.com.reachmedia.rmhandle.ui.fragment.TaskInfoBaseFragment;
 
 /**
  * Author:    tedyuen
@@ -40,7 +41,7 @@ public class TaskInforActivity extends BaseActionBarTabActivity {
     private NavigationAdapter mPagerAdapter;
 
 
-    Map<Integer,BaseFragment> fragmentMap;
+    Map<Integer,TaskInfoBaseFragment> fragmentMap;
 
 
     @Override
@@ -97,7 +98,7 @@ public class TaskInforActivity extends BaseActionBarTabActivity {
 
         @Override
         protected Fragment createItem(int position) {
-            BaseFragment f=null;
+            TaskInfoBaseFragment f=null;
             Bundle args = new Bundle();
 
             switch (position){
