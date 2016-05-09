@@ -81,6 +81,9 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     //毛玻璃背景对话框 代码地址-----> https://github.com/tvbarthel/BlurDialogFragment
     compile 'fr.tvbarthel.blurdialogfragment:lib:2.1.2'
+    //弹出提示信息    代码地址-----> https://github.com/johnkil/Android-AppMsg
+    compile 'com.github.johnkil.android-appmsg:appmsg:1.2.0'
+
 
     compile files('libs/baidumapapi_base_v3_7_3.jar')
     compile files('libs/baidumapapi_cloud_v3_7_3.jar')

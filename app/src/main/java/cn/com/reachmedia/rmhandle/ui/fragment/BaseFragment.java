@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
+import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 
 /**
@@ -43,6 +44,19 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected abstract int getLayoutResId();
+
+    public void showProgressDialog(){
+        if(getActivity()!=null){
+            mProgressDialog = ProgressDialog.show(getActivity(), "", getString(R.string.loading_message));
+            mProgressDialog.setCanceledOnTouchOutside(true);
+        }
+    }
+
+    public void closeProgressDialog(){
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
+    }
 
     @Override
     public void onDestroyView() {
