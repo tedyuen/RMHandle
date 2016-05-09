@@ -33,6 +33,8 @@
     <color name="apartment_point_bgcolor_green">#59C69D</color>
     <color name="apartment_point_bgcolor_blue">#4A90E2</color>
 
+    <color name="normal_log_color">#0880DB</color>
+    <color name="normal_log_reg_color">#7F0880DB</color>
 
     <color name="text_grey">#9B9B9B</color>
     <color name="colorPrimary">#0880DB</color>

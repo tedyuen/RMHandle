@@ -9,6 +9,7 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.test.InterfaceTestActivity;
 import cn.com.reachmedia.rmhandle.test.TestRecyclerViewActivity;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
+import cn.com.reachmedia.rmhandle.ui.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +24,12 @@ public class MainActivity extends AppCompatActivity {
     public void goHome(){
         startActivity(new Intent(this,HomeActivity.class));
     }
+
+    @OnClick(R.id.btn_login)
+    public void goLogin(){
+        startActivity(new Intent(this,LoginActivity.class));
+    }
+
 
 
     @OnClick(R.id.btn_interface)
