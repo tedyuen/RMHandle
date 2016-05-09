@@ -19,6 +19,7 @@ import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
 import cn.com.reachmedia.rmhandle.ui.view.SquareImageView;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 
 /**
  * Author:    tedyuen
@@ -91,6 +92,11 @@ public class CustomerPhotoTabAdapter extends BaseAdapter {
             bean.llPhotoFrame.removeAllViews();
             LinearLayout tempLine = null;
             ViewHolder2 tempBean = null;
+            final List<String> imgList = new ArrayList<String>();
+            for(int i=0;i<data.getPicList().size();i++){
+                if(i>=6) break;
+                imgList.add(data.getPicList().get(i).getPicurlB());
+            }
             for (int i = 0; i < data.getPicList().size(); i++) {
                 if(i>=6) break;
                 TaskDetailModel.ClListBean.PicListBean bean2 = data.getPicList().get(i);
@@ -103,23 +109,41 @@ public class CustomerPhotoTabAdapter extends BaseAdapter {
                 } else {
                     tempBean = (ViewHolder2) tempLine.getTag(R.id.tag);
                 }
-
+                final int tempIndex = i;
                 switch (tempMod){
                     case 0:
                         if (StringUtils.notEmpty(bean2.getPicurlS())) {
                             Picasso.with(this.mContext).load(bean2.getPicurlS()).placeholder(R.drawable.abc).into(tempBean.ivPhoto1);
+                            tempBean.ivPhoto1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ViewHelper.getImagePager(mContext, imgList, tempIndex);
+                                }
+                            });
                         }
                         break;
                     case 1:
                         if (StringUtils.notEmpty(bean2.getPicurlS())) {
                             tempBean.ivPhoto2.setVisibility(View.VISIBLE);
                             Picasso.with(this.mContext).load(bean2.getPicurlS()).placeholder(R.drawable.abc).into(tempBean.ivPhoto2);
+                            tempBean.ivPhoto2.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ViewHelper.getImagePager(mContext, imgList, tempIndex);
+                                }
+                            });
                         }
                         break;
                     case 2:
                         if (StringUtils.notEmpty(bean2.getPicurlS())) {
                             tempBean.ivPhoto3.setVisibility(View.VISIBLE);
                             Picasso.with(this.mContext).load(bean2.getPicurlS()).placeholder(R.drawable.abc).into(tempBean.ivPhoto3);
+                            tempBean.ivPhoto3.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ViewHelper.getImagePager(mContext, imgList, tempIndex);
+                                }
+                            });
                         }
                         break;
                 }
