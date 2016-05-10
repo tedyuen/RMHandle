@@ -194,6 +194,8 @@
             android:id="@+id/tv_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:lines="1"
+            android:ellipsize="end"
             android:textColor="@color/text_blue_color_1"
             android:text="长宁区中山公园安顺路158弄·0.5km"
             android:layout_marginLeft="1dp"

@@ -72,7 +72,7 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
     private final static String path = Environment
             .getExternalStorageDirectory().getAbsolutePath()
             + File.separator
-            + "WoJiaWang/";
+            + "RMHandle/";
     //    private String portrait_path;
     private ProgressDialog mSaveDialog = null;
     private String mSaveMessage;

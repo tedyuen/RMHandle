@@ -164,8 +164,8 @@ public class InterfaceTestActivity extends AppCompatActivity {
 
         PointListParam param = new PointListParam();
         param.communityid = "663";
-        param.startime = "2016-03-10";
-        param.endtime = "2016-04-10";
+        param.startime = "2016-05-05";
+        param.endtime = "2016-05-11";
         param.space = "";
         param.customer = "";
         pointListController.getTaskIndex(param);
