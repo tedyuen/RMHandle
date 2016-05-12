@@ -19,6 +19,7 @@ import java.net.CookiePolicy;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import cn.com.reachmedia.rmhandle.db.DatabaseLoader;
 import cn.com.reachmedia.rmhandle.network.cookie.PersistentCookieStore;
 import cn.com.reachmedia.rmhandle.network.http.AppApiService;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
@@ -59,7 +60,7 @@ public class App extends Application {
         setUpSharedPreferencesHelper(getApplicationContext());//初始化SharedPreferences
         setUpApiService();//初始化APP API
 //        EventBus.getDefault().register(this);//注册接收定位信息事件
-
+        DatabaseLoader.init(getApplicationContext());
 //        initJPush();
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);

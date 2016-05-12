@@ -25,7 +25,14 @@ public class PointBean {
     private Integer state;
     private Integer stateType;
     private String updateTime;
-
+    @Override
+    public String toString() {
+        return "id:"+id+"\t"
+                +"userId:"+userId+"\t"
+                +"workId:"+workId+"\t"
+                +"pointId:"+pointId+"\t"
+                +"cname:"+cname;
+    }
     public PointBean() {
     }
 
@@ -206,5 +213,6 @@ public class PointBean {
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
+
 
 }

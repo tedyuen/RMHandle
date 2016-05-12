@@ -28,6 +28,7 @@ public class LoginModel extends BaseModel implements Parcelable{
         dest.writeString(cityId);
         dest.writeString(name);
         dest.writeString(title);
+        dest.writeString(userId);
     }
 
     public LoginModel(){}
@@ -38,6 +39,7 @@ public class LoginModel extends BaseModel implements Parcelable{
         cityId = in.readString();
         name = in.readString();
         title = in.readString();
+        userId = in.readString();
     }
 
     public static final Creator<LoginModel> CREATOR = new Creator<LoginModel>() {
@@ -63,6 +65,15 @@ public class LoginModel extends BaseModel implements Parcelable{
     private String cityId;
     private String name;
     private String title;
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getUsertoken() {
         return usertoken;

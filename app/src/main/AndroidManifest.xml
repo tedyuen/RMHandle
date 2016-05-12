@@ -51,6 +51,11 @@
             android:screenOrientation="portrait"
             >
         </activity>
+        <activity android:name=".test.DBTestActivity"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
 
 
 

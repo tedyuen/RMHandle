@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.com.reachmedia.rmhandle.test.DBTestActivity;
 import cn.com.reachmedia.rmhandle.test.InterfaceTestActivity;
 import cn.com.reachmedia.rmhandle.test.TestRecyclerViewActivity;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
@@ -40,5 +41,10 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btn_recyclerview)
     public void goRecyclerView(){
         startActivity(new Intent(this, TestRecyclerViewActivity.class));
+    }
+
+    @OnClick(R.id.btn_dbtest)
+    public void goDbTest(){
+        startActivity(new Intent(this, DBTestActivity.class));
     }
 }

@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import java.util.List;
 
+import cn.com.reachmedia.rmhandle.bean.PointBean;
+
 /**
  * Author:    tedyuen
  * Version    V1.0
@@ -224,13 +226,35 @@ public class PointListModel extends BaseModel implements Parcelable {
         private int workDown;
         private int workDownPhone;
         private int workCheck;
-        private int piontId;
+        private String pointId;
         private int ground;
         private String cDoorPic;
         private String errorDesc;
         private int isPhoto;
         private int state;
         private int stateType;
+
+        public PointBean toBean(String userId){
+            PointBean bean = new PointBean();
+            bean.setWorkId(this.workId);
+            bean.setCid(this.cid);
+            bean.setCname(this.cname);
+            bean.setDoorId(this.doorId);
+            bean.setDoor(this.door);
+            bean.setWorkUp(this.workUp);
+            bean.setWorkDown(this.workDown);
+            bean.setWorkDownPhone(this.workDownPhone);
+            bean.setWorkCheck(this.workCheck);
+            bean.setPointId(this.pointId);
+            bean.setGround(this.ground);
+            bean.setCDoorPic(this.cDoorPic);
+            bean.setErrorDesc(this.errorDesc);
+            bean.setIsPhoto(this.isPhoto);
+            bean.setState(this.state);
+            bean.setStateType(this.stateType);
+            bean.setUserId(userId);
+            return bean;
+        }
 
         public String getWorkId() {
             return workId;
@@ -304,12 +328,12 @@ public class PointListModel extends BaseModel implements Parcelable {
             this.workCheck = workCheck;
         }
 
-        public int getPiontId() {
-            return piontId;
+        public String getPointId() {
+            return pointId;
         }
 
-        public void setPiontId(int piontId) {
-            this.piontId = piontId;
+        public void setPointId(String pointId) {
+            this.pointId = pointId;
         }
 
         public int getGround() {
