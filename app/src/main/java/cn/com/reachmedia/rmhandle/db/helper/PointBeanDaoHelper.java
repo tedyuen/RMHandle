@@ -99,4 +99,9 @@ public class PointBeanDaoHelper implements DaoHelperInterface {
             pointBeanDao.deleteAll();
         }
     }
+
+    @Override
+    public PointBeanDao getDao() {
+        return pointBeanDao;
+    }
 }

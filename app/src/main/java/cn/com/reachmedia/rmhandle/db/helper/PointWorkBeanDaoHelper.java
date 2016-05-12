@@ -100,4 +100,9 @@ public class PointWorkBeanDaoHelper implements DaoHelperInterface {
             pointBeanDao.deleteAll();
         }
     }
+
+    @Override
+    public PointWorkBeanDao getDao() {
+        return pointBeanDao;
+    }
 }

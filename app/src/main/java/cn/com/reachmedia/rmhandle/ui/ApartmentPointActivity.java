@@ -17,13 +17,22 @@ import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePager
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.db.helper.PointBeanDaoHelper;
+import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
+import cn.com.reachmedia.rmhandle.model.PointListModel;
+import cn.com.reachmedia.rmhandle.model.param.PointListParam;
+import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
+import cn.com.reachmedia.rmhandle.network.controller.PointListController;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.dialog.ApartmentPhoneDialogFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentPointTabFragment;
@@ -39,7 +48,7 @@ import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentPointTabFragment;
  * 16/4/20          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class ApartmentPointActivity extends BaseActionBarActivity {
+public class ApartmentPointActivity extends BaseActionBarActivity implements UiDisplayListener<PointListModel> {
 
     private final ThreadLocal<View> mToolbarView = new ThreadLocal<>();
     SlidingTabLayout slidingTabLayout;
@@ -69,7 +78,7 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
     RelativeLayout mRlRightImg;
 
     Map<Integer, ApartmentPointTabFragment> fragmentMap;
-
+    PointListController pointListController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +88,7 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
         mRlRightImg.setVisibility(View.VISIBLE);
         fragmentMap = new HashMap<>();
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
+        pointListController = new PointListController(this);
         mToolbarView.set(mToolbar);
         mPagerAdapter = new NavigationAdapter(getSupportFragmentManager(), this);
         mPager.setOffscreenPageLimit(2);
@@ -103,6 +113,7 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
             }
         });
         mPager.setCurrentItem(0);
+        onRefresh();
     }
 
     private static class NavigationAdapter extends CacheFragmentStatePagerAdapter {
@@ -192,5 +203,46 @@ public class ApartmentPointActivity extends BaseActionBarActivity {
     @OnClick(R.id.iv_back)
     public void goBack(){
         finish();
+    }
+
+
+    //------------ 以下是获取数据
+
+    public void onRefresh(){
+        PointListParam param = new PointListParam();
+        param.communityid = "663";
+        param.startime = "2016-05-05";
+        param.endtime = "2016-05-11";
+        param.space = "";
+        param.customer = "";
+        pointListController.getTaskIndex(param);
+    }
+
+    @Override
+    public void onSuccessDisplay(PointListModel data) {
+        if (data != null) {
+            if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
+                List<PointListModel.NewListBean> newList = data.getNewList();
+
+                PointBeanDbUtil util = PointBeanDbUtil.getIns();
+                util.insertData(newList);
+                resetTitle(util.getItemNumber());
+
+
+
+            }
+        }
+    }
+
+    @Override
+    public void onFailDisplay(String errorMsg) {
+
+    }
+
+
+    public void resetTitle(long[] number){
+        slidingTabLayout.resetTitle("未上点位 ("+number[0]+")",
+                "完成点位 ("+number[1]+")","报错 ("+number[2]+")"
+        );
     }
 }

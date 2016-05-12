@@ -21,4 +21,5 @@ public interface DaoHelperInterface {
     public boolean hasKey(long id);
     public long getTotalCount();
     public void deleteAll();
+    <T> T getDao();
 }

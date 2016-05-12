@@ -112,6 +112,9 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
 
     }
 
+
+
+
     @Override
     protected int getLayoutResId() {
         return 0;
