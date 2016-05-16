@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.ui.PointDetailActivity;
+import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 
 /**
  * Author:    tedyuen
@@ -87,6 +88,8 @@ public class ApartmentPointTabFragmentAdapter3 extends ApartmentPointTabBaseAdap
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ApartmentPointUtils.getIns().pointId = data.getPointId();
+                    ApartmentPointUtils.getIns().workId = data.getWorkId();
                     mContext.startActivity(new Intent(mContext, PointDetailActivity.class));
                 }
             });

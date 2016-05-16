@@ -100,6 +100,13 @@ public class PointBeanDbUtil {
                 .list();
     }
 
+    public PointBean getPointBeanByWPID(String workId,String pointId){
+        return pointBeanDaoHelper.getDao().queryBuilder()
+                .where(PointBeanDao.Properties.WorkId.eq(workId),
+                        PointBeanDao.Properties.PointId.eq(pointId),
+                        PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                .unique();
+    }
 
 
 }

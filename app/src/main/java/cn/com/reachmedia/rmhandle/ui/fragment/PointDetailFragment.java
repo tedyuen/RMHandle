@@ -9,7 +9,11 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppParamContact;
+import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
+import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
+import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 
 /**
  * Author:    tedyuen
@@ -33,9 +37,19 @@ public class PointDetailFragment extends BaseToolbarFragment {
     }
     public PointDetailFragment(){}
 
+    private ApartmentPointUtils apartmentPointUtils;
+    private PointBeanDbUtil pointBeanDbUtil;
+    private PointBean bean;
+    private PointListModel pointListModel;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        apartmentPointUtils = ApartmentPointUtils.getIns();
+        pointBeanDbUtil = PointBeanDbUtil.getIns();
+        bean = pointBeanDbUtil.getPointBeanByWPID(apartmentPointUtils.workId,apartmentPointUtils.pointId);
+        pointListModel = apartmentPointUtils.pointListModel;
     }
 
 
@@ -53,7 +67,13 @@ public class PointDetailFragment extends BaseToolbarFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        setCoupon();
+        try{
+            int tempName = Integer.parseInt(bean.getDoor());
+            setTitle(tempName+"号楼点位");
+        }catch (Exception e){
+            setTitle(bean.getDoor()+"点位");
+        }
+
     }
 
 

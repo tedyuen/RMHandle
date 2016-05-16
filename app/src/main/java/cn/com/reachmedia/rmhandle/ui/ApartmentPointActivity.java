@@ -40,6 +40,7 @@ import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarTabActivity;
 import cn.com.reachmedia.rmhandle.ui.dialog.ApartmentPhoneDialogFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentPointTabFragment;
+import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 
 /**
  * Author:    tedyuen
@@ -243,10 +244,9 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     public void onSuccessDisplay(PointListModel data) {
         if (data != null) {
             if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
-
                 tv_carddesc.setText("密码："+data.getCarddesc());
                 tv_doordesc.setText("门卡备注："+data.getDoordesc());
-
+                ApartmentPointUtils.getIns().pointListModel = data;
                 List<PointListModel.NewListBean> newList = data.getNewList();
                 PointBeanDbUtil util = PointBeanDbUtil.getIns();
                 util.insertData(newList,communityId,starttime,endtime);
