@@ -2,6 +2,10 @@ package cn.com.reachmedia.rmhandle.ui.adapter;
 
 import android.widget.BaseAdapter;
 
+import java.util.List;
+
+import cn.com.reachmedia.rmhandle.bean.PointBean;
+
 /**
  * Author:    tedyuen
  * Version    V1.0
@@ -14,4 +18,6 @@ import android.widget.BaseAdapter;
  * Why & What is modified:
  */
 public abstract class ApartmentPointTabBaseAdapter extends BaseAdapter {
+
+    public abstract void updateData(List<PointBean> mLists);
 }

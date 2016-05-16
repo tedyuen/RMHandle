@@ -6,11 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppParamContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.db.helper.PointBeanDaoHelper;
+import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
+import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.ApartmentPointActivity;
 import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabBaseAdapter;
 import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabFragmentAdapter;
@@ -36,6 +42,8 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
     private int listType = AppSpContact.SP_KEY_APAET_POINT_UNDONE;//默认未完成
 
     private String communityid;
+    private String starttime;
+    private String endtime;
 
     private ApartmentPointTabBaseAdapter mAdapter;
 
@@ -55,8 +63,11 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
             if(tempCommunityid!=null){
                 communityid = tempCommunityid;
             }
-            System.out.println("=====>!!  "+listType);
-            System.out.println("=====>!!  "+tempCommunityid);
+            String tempstarttime = args.getString(AppParamContact.PARAM_KEY_STARTTIME);
+            if(tempstarttime!=null){
+                starttime = tempstarttime;
+            }
+
         }
     }
 
@@ -118,8 +129,35 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
         activity.onRefresh();
     }
 
-    public void onUpdateData(String workId,String pointId){
+    public void onSuccessDisplay(PointListModel data){
+        if(mSwipeContainer==null) return;
+        mSwipeContainer.setRefreshing(false);
+        mPageListView.setState(PageListView.PageListViewState.Idle);
+        if(data!=null) {
+            PointBeanDaoHelper pointBeanDaoHelper = PointBeanDaoHelper.getInstance();
+            List<PointBean> list = null;
+            switch (listType){
+                case 1:
+                    list = PointBeanDbUtil.getIns().getNewList(communityid,starttime);
+                    break;
+                case 2:
+                    list = PointBeanDbUtil.getIns().getEndList(communityid,starttime);
+                    break;
+                case 3:
+                    list = PointBeanDbUtil.getIns().getErrorList(communityid,starttime);
+                    break;
+            }
+            mAdapter.updateData(list);
+            mAdapter.notifyDataSetChanged();
+        }
 
+    }
+
+
+    public void onFailDisplay(){
+        if(mSwipeContainer==null) return;
+        mSwipeContainer.setRefreshing(false);
+        mPageListView.setState(PageListView.PageListViewState.Idle);
     }
 
 

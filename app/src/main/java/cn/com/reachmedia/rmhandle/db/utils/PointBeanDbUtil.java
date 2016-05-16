@@ -2,10 +2,13 @@ package cn.com.reachmedia.rmhandle.db.utils;
 
 import java.util.List;
 
+import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.dao.PointBeanDao;
 import cn.com.reachmedia.rmhandle.db.helper.PointBeanDaoHelper;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
+import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 
 /**
  * Author:    tedyuen
@@ -37,7 +40,7 @@ public class PointBeanDbUtil {
     public void insertData(List<PointListModel.NewListBean> newList,String communityid,String starttime,String endtime){
         pointBeanDaoHelper.deleteAll();
         for(PointListModel.NewListBean tempBean:newList){
-            PointBean bean = tempBean.toBean("abc",communityid,starttime,endtime);
+            PointBean bean = tempBean.toBean(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID),communityid,starttime,endtime);
             pointBeanDaoHelper.addData(bean);
         }
     }
@@ -66,5 +69,37 @@ public class PointBeanDbUtil {
                         PointBeanDao.Properties.StateType.notEq(1))
                 .count();
     }
+//---------------------------------------------
+    public List<PointBean> getNewList(String communityid,String starttime){
+        return pointBeanDaoHelper.getDao().queryBuilder()
+                .where(PointBeanDao.Properties.State.eq(0),
+                        PointBeanDao.Properties.StateType.eq(0),
+                        PointBeanDao.Properties.Communityid.eq(communityid),
+                        PointBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
+                        PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                .list();
+    }
+
+    public List<PointBean> getEndList(String communityid,String starttime){
+        return pointBeanDaoHelper.getDao().queryBuilder()
+                .where(PointBeanDao.Properties.State.eq(1),
+                        PointBeanDao.Properties.StateType.eq(1),
+                        PointBeanDao.Properties.Communityid.eq(communityid),
+                        PointBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
+                        PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                .list();
+    }
+
+    public List<PointBean> getErrorList(String communityid,String starttime){
+        return pointBeanDaoHelper.getDao().queryBuilder()
+                .where(PointBeanDao.Properties.State.eq(1),
+                        PointBeanDao.Properties.StateType.notEq(1),
+                        PointBeanDao.Properties.Communityid.eq(communityid),
+                        PointBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
+                        PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                .list();
+    }
+
+
 
 }

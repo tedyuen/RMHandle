@@ -31,20 +31,21 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
         public final static Property DoorId = new Property(5, String.class, "doorId", false, "DOOR_ID");
         public final static Property Door = new Property(6, String.class, "door", false, "DOOR");
         public final static Property WorkUp = new Property(7, Integer.class, "workUp", false, "WORK_UP");
-        public final static Property WorkDown = new Property(8, Integer.class, "workDown", false, "WORK_DOWN");
-        public final static Property WorkDownPhone = new Property(9, Integer.class, "workDownPhone", false, "WORK_DOWN_PHONE");
-        public final static Property WorkCheck = new Property(10, Integer.class, "workCheck", false, "WORK_CHECK");
-        public final static Property PointId = new Property(11, String.class, "pointId", false, "POINT_ID");
-        public final static Property Ground = new Property(12, Integer.class, "ground", false, "GROUND");
-        public final static Property CDoorPic = new Property(13, String.class, "cDoorPic", false, "C_DOOR_PIC");
-        public final static Property ErrorDesc = new Property(14, String.class, "errorDesc", false, "ERROR_DESC");
-        public final static Property IsPhoto = new Property(15, Integer.class, "isPhoto", false, "IS_PHOTO");
-        public final static Property State = new Property(16, Integer.class, "state", false, "STATE");
-        public final static Property StateType = new Property(17, Integer.class, "stateType", false, "STATE_TYPE");
-        public final static Property UpdateTime = new Property(18, String.class, "updateTime", false, "UPDATE_TIME");
-        public final static Property Starttime = new Property(19, java.util.Date.class, "starttime", false, "STARTTIME");
-        public final static Property Endtime = new Property(20, java.util.Date.class, "endtime", false, "ENDTIME");
-        public final static Property Communityid = new Property(21, String.class, "communityid", false, "COMMUNITYID");
+        public final static Property WorkUpPhone = new Property(8, Integer.class, "workUpPhone", false, "WORK_UP_PHONE");
+        public final static Property WorkDown = new Property(9, Integer.class, "workDown", false, "WORK_DOWN");
+        public final static Property WorkDownPhone = new Property(10, Integer.class, "workDownPhone", false, "WORK_DOWN_PHONE");
+        public final static Property WorkCheck = new Property(11, Integer.class, "workCheck", false, "WORK_CHECK");
+        public final static Property PointId = new Property(12, String.class, "pointId", false, "POINT_ID");
+        public final static Property Ground = new Property(13, Integer.class, "ground", false, "GROUND");
+        public final static Property CDoorPic = new Property(14, String.class, "cDoorPic", false, "C_DOOR_PIC");
+        public final static Property ErrorDesc = new Property(15, String.class, "errorDesc", false, "ERROR_DESC");
+        public final static Property IsPhoto = new Property(16, Integer.class, "isPhoto", false, "IS_PHOTO");
+        public final static Property State = new Property(17, Integer.class, "state", false, "STATE");
+        public final static Property StateType = new Property(18, Integer.class, "stateType", false, "STATE_TYPE");
+        public final static Property UpdateTime = new Property(19, String.class, "updateTime", false, "UPDATE_TIME");
+        public final static Property Starttime = new Property(20, java.util.Date.class, "starttime", false, "STARTTIME");
+        public final static Property Endtime = new Property(21, java.util.Date.class, "endtime", false, "ENDTIME");
+        public final static Property Communityid = new Property(22, String.class, "communityid", false, "COMMUNITYID");
     };
 
 
@@ -68,20 +69,21 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
                 "'DOOR_ID' TEXT," + // 5: doorId
                 "'DOOR' TEXT," + // 6: door
                 "'WORK_UP' INTEGER," + // 7: workUp
-                "'WORK_DOWN' INTEGER," + // 8: workDown
-                "'WORK_DOWN_PHONE' INTEGER," + // 9: workDownPhone
-                "'WORK_CHECK' INTEGER," + // 10: workCheck
-                "'POINT_ID' TEXT," + // 11: pointId
-                "'GROUND' INTEGER," + // 12: ground
-                "'C_DOOR_PIC' TEXT," + // 13: cDoorPic
-                "'ERROR_DESC' TEXT," + // 14: errorDesc
-                "'IS_PHOTO' INTEGER," + // 15: isPhoto
-                "'STATE' INTEGER," + // 16: state
-                "'STATE_TYPE' INTEGER," + // 17: stateType
-                "'UPDATE_TIME' TEXT," + // 18: updateTime
-                "'STARTTIME' INTEGER," + // 19: starttime
-                "'ENDTIME' INTEGER," + // 20: endtime
-                "'COMMUNITYID' TEXT);"); // 21: communityid
+                "'WORK_UP_PHONE' INTEGER," + // 8: workUpPhone
+                "'WORK_DOWN' INTEGER," + // 9: workDown
+                "'WORK_DOWN_PHONE' INTEGER," + // 10: workDownPhone
+                "'WORK_CHECK' INTEGER," + // 11: workCheck
+                "'POINT_ID' TEXT," + // 12: pointId
+                "'GROUND' INTEGER," + // 13: ground
+                "'C_DOOR_PIC' TEXT," + // 14: cDoorPic
+                "'ERROR_DESC' TEXT," + // 15: errorDesc
+                "'IS_PHOTO' INTEGER," + // 16: isPhoto
+                "'STATE' INTEGER," + // 17: state
+                "'STATE_TYPE' INTEGER," + // 18: stateType
+                "'UPDATE_TIME' TEXT," + // 19: updateTime
+                "'STARTTIME' INTEGER," + // 20: starttime
+                "'ENDTIME' INTEGER," + // 21: endtime
+                "'COMMUNITYID' TEXT);"); // 22: communityid
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_POINT_BEAN_ID ON POINT_BEAN" +
                 " (ID);");
@@ -138,74 +140,79 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
             stmt.bindLong(8, workUp);
         }
  
+        Integer workUpPhone = entity.getWorkUpPhone();
+        if (workUpPhone != null) {
+            stmt.bindLong(9, workUpPhone);
+        }
+ 
         Integer workDown = entity.getWorkDown();
         if (workDown != null) {
-            stmt.bindLong(9, workDown);
+            stmt.bindLong(10, workDown);
         }
  
         Integer workDownPhone = entity.getWorkDownPhone();
         if (workDownPhone != null) {
-            stmt.bindLong(10, workDownPhone);
+            stmt.bindLong(11, workDownPhone);
         }
  
         Integer workCheck = entity.getWorkCheck();
         if (workCheck != null) {
-            stmt.bindLong(11, workCheck);
+            stmt.bindLong(12, workCheck);
         }
  
         String pointId = entity.getPointId();
         if (pointId != null) {
-            stmt.bindString(12, pointId);
+            stmt.bindString(13, pointId);
         }
  
         Integer ground = entity.getGround();
         if (ground != null) {
-            stmt.bindLong(13, ground);
+            stmt.bindLong(14, ground);
         }
  
         String cDoorPic = entity.getCDoorPic();
         if (cDoorPic != null) {
-            stmt.bindString(14, cDoorPic);
+            stmt.bindString(15, cDoorPic);
         }
  
         String errorDesc = entity.getErrorDesc();
         if (errorDesc != null) {
-            stmt.bindString(15, errorDesc);
+            stmt.bindString(16, errorDesc);
         }
  
         Integer isPhoto = entity.getIsPhoto();
         if (isPhoto != null) {
-            stmt.bindLong(16, isPhoto);
+            stmt.bindLong(17, isPhoto);
         }
  
         Integer state = entity.getState();
         if (state != null) {
-            stmt.bindLong(17, state);
+            stmt.bindLong(18, state);
         }
  
         Integer stateType = entity.getStateType();
         if (stateType != null) {
-            stmt.bindLong(18, stateType);
+            stmt.bindLong(19, stateType);
         }
  
         String updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindString(19, updateTime);
+            stmt.bindString(20, updateTime);
         }
  
         java.util.Date starttime = entity.getStarttime();
         if (starttime != null) {
-            stmt.bindLong(20, starttime.getTime());
+            stmt.bindLong(21, starttime.getTime());
         }
  
         java.util.Date endtime = entity.getEndtime();
         if (endtime != null) {
-            stmt.bindLong(21, endtime.getTime());
+            stmt.bindLong(22, endtime.getTime());
         }
  
         String communityid = entity.getCommunityid();
         if (communityid != null) {
-            stmt.bindString(22, communityid);
+            stmt.bindString(23, communityid);
         }
     }
 
@@ -227,20 +234,21 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // doorId
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // door
             cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // workUp
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // workDown
-            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // workDownPhone
-            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // workCheck
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // pointId
-            cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12), // ground
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // cDoorPic
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // errorDesc
-            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // isPhoto
-            cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16), // state
-            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // stateType
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // updateTime
-            cursor.isNull(offset + 19) ? null : new java.util.Date(cursor.getLong(offset + 19)), // starttime
-            cursor.isNull(offset + 20) ? null : new java.util.Date(cursor.getLong(offset + 20)), // endtime
-            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21) // communityid
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // workUpPhone
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // workDown
+            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // workDownPhone
+            cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11), // workCheck
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // pointId
+            cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // ground
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // cDoorPic
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // errorDesc
+            cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16), // isPhoto
+            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // state
+            cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18), // stateType
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // updateTime
+            cursor.isNull(offset + 20) ? null : new java.util.Date(cursor.getLong(offset + 20)), // starttime
+            cursor.isNull(offset + 21) ? null : new java.util.Date(cursor.getLong(offset + 21)), // endtime
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22) // communityid
         );
         return entity;
     }
@@ -256,20 +264,21 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
         entity.setDoorId(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setDoor(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setWorkUp(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
-        entity.setWorkDown(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setWorkDownPhone(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setWorkCheck(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
-        entity.setPointId(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setGround(cursor.isNull(offset + 12) ? null : cursor.getInt(offset + 12));
-        entity.setCDoorPic(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setErrorDesc(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setIsPhoto(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
-        entity.setState(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
-        entity.setStateType(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
-        entity.setUpdateTime(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
-        entity.setStarttime(cursor.isNull(offset + 19) ? null : new java.util.Date(cursor.getLong(offset + 19)));
-        entity.setEndtime(cursor.isNull(offset + 20) ? null : new java.util.Date(cursor.getLong(offset + 20)));
-        entity.setCommunityid(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
+        entity.setWorkUpPhone(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setWorkDown(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setWorkDownPhone(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
+        entity.setWorkCheck(cursor.isNull(offset + 11) ? null : cursor.getInt(offset + 11));
+        entity.setPointId(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setGround(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
+        entity.setCDoorPic(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setErrorDesc(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setIsPhoto(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
+        entity.setState(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
+        entity.setStateType(cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18));
+        entity.setUpdateTime(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setStarttime(cursor.isNull(offset + 20) ? null : new java.util.Date(cursor.getLong(offset + 20)));
+        entity.setEndtime(cursor.isNull(offset + 21) ? null : new java.util.Date(cursor.getLong(offset + 21)));
+        entity.setCommunityid(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
      }
     
     /** @inheritdoc */

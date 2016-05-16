@@ -18,5 +18,7 @@ public class AppParamContact {
 
     public final static String PARAM_KEY_TITLE = "_title";
     public final static String PARAM_KEY_ID = "_id";
+    public final static String PARAM_KEY_STARTTIME = "_starttime";
+    public final static String PARAM_KEY_ENDTIME = "_endtime";
 
 }

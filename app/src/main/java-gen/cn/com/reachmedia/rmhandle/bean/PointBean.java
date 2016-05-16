@@ -14,6 +14,7 @@ public class PointBean {
     private String doorId;
     private String door;
     private Integer workUp;
+    private Integer workUpPhone;
     private Integer workDown;
     private Integer workDownPhone;
     private Integer workCheck;
@@ -36,7 +37,7 @@ public class PointBean {
         this.id = id;
     }
 
-    public PointBean(Long id, String userId, String workId, String cid, String cname, String doorId, String door, Integer workUp, Integer workDown, Integer workDownPhone, Integer workCheck, String pointId, Integer ground, String cDoorPic, String errorDesc, Integer isPhoto, Integer state, Integer stateType, String updateTime, java.util.Date starttime, java.util.Date endtime, String communityid) {
+    public PointBean(Long id, String userId, String workId, String cid, String cname, String doorId, String door, Integer workUp, Integer workUpPhone, Integer workDown, Integer workDownPhone, Integer workCheck, String pointId, Integer ground, String cDoorPic, String errorDesc, Integer isPhoto, Integer state, Integer stateType, String updateTime, java.util.Date starttime, java.util.Date endtime, String communityid) {
         this.id = id;
         this.userId = userId;
         this.workId = workId;
@@ -45,6 +46,7 @@ public class PointBean {
         this.doorId = doorId;
         this.door = door;
         this.workUp = workUp;
+        this.workUpPhone = workUpPhone;
         this.workDown = workDown;
         this.workDownPhone = workDownPhone;
         this.workCheck = workCheck;
@@ -123,6 +125,14 @@ public class PointBean {
 
     public void setWorkUp(Integer workUp) {
         this.workUp = workUp;
+    }
+
+    public Integer getWorkUpPhone() {
+        return workUpPhone;
+    }
+
+    public void setWorkUpPhone(Integer workUpPhone) {
+        this.workUpPhone = workUpPhone;
     }
 
     public Integer getWorkDown() {

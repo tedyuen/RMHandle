@@ -224,6 +224,7 @@ public class PointListModel extends BaseModel implements Parcelable {
         private String doorId;
         private String door;
         private int workUp;
+        private int workUpPhone;
         private int workDown;
         private int workDownPhone;
         private int workCheck;
@@ -243,6 +244,7 @@ public class PointListModel extends BaseModel implements Parcelable {
             bean.setDoorId(this.doorId);
             bean.setDoor(this.door);
             bean.setWorkUp(this.workUp);
+            bean.setWorkUpPhone(this.workUpPhone);
             bean.setWorkDown(this.workDown);
             bean.setWorkDownPhone(this.workDownPhone);
             bean.setWorkCheck(this.workCheck);
@@ -386,6 +388,22 @@ public class PointListModel extends BaseModel implements Parcelable {
 
         public void setStateType(int stateType) {
             this.stateType = stateType;
+        }
+
+        public int getWorkUpPhone() {
+            return workUpPhone;
+        }
+
+        public void setWorkUpPhone(int workUpPhone) {
+            this.workUpPhone = workUpPhone;
+        }
+
+        public String getcDoorPic() {
+            return cDoorPic;
+        }
+
+        public void setcDoorPic(String cDoorPic) {
+            this.cDoorPic = cDoorPic;
         }
     }
 

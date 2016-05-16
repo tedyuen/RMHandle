@@ -85,7 +85,7 @@
         android:id="@+id/bt_logout"
         android:layout_width="70dp"
         android:layout_height="30dp"
-        android:background="@color/apartment_point_bgcolor_blue"
+        android:background="@color/apartment_point_bgcolor_red"
         android:textColor="@color/white"
         android:gravity="center"
         android:textSize="14sp"

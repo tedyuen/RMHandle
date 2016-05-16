@@ -25,6 +25,7 @@ public class MyDaoGenerator {
         pointBean.addStringProperty("doorId");
         pointBean.addStringProperty("door");
         pointBean.addIntProperty("workUp");
+        pointBean.addIntProperty("workUpPhone");
         pointBean.addIntProperty("workDown");
         pointBean.addIntProperty("workDownPhone");
         pointBean.addIntProperty("workCheck");

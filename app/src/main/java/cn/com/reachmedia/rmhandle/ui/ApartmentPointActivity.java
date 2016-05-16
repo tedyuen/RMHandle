@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
@@ -69,6 +70,13 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     ImageView ivPasswordArrow;
     @Bind(R.id.sliding_tabs)
     SlidingTabLayout slidingTabs;
+
+    @Bind(R.id.tv_carddesc)
+    TextView tv_carddesc;
+    @Bind(R.id.tv_doordesc)
+    TextView tv_doordesc;
+
+
     private NavigationAdapter mPagerAdapter;
 
     @Bind(R.id.rl_right_img)
@@ -154,18 +162,19 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
             switch (position) {
                 case 0:
                     args.putInt(ApartmentPointTabFragment.LIST_TYPE, AppSpContact.SP_KEY_APAET_POINT_UNDONE);
-                    args.putString(AppParamContact.PARAM_KEY_ID, activity.communityId);
                     break;
                 case 1:
                     args.putInt(ApartmentPointTabFragment.LIST_TYPE, AppSpContact.SP_KEY_APAET_POINT_DONE);
-                    args.putString(AppParamContact.PARAM_KEY_ID, activity.communityId);
                     break;
                 case 2:
                     args.putInt(ApartmentPointTabFragment.LIST_TYPE, AppSpContact.SP_KEY_APAET_POINT_ERROR);
-                    args.putString(AppParamContact.PARAM_KEY_ID, activity.communityId);
                     break;
 
             }
+            args.putString(AppParamContact.PARAM_KEY_ID, activity.communityId);
+            args.putString(AppParamContact.PARAM_KEY_STARTTIME, activity.starttime);
+            args.putString(AppParamContact.PARAM_KEY_ENDTIME, activity.endtime);
+
             f.setArguments(args);
 
             return f;
@@ -234,12 +243,16 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     public void onSuccessDisplay(PointListModel data) {
         if (data != null) {
             if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
+
+                tv_carddesc.setText("密码："+data.getCarddesc());
+                tv_doordesc.setText("门卡备注："+data.getDoordesc());
+
                 List<PointListModel.NewListBean> newList = data.getNewList();
                 PointBeanDbUtil util = PointBeanDbUtil.getIns();
                 util.insertData(newList,communityId,starttime,endtime);
                 resetTitle(util.getItemNumber());
                 for(Integer key:fragmentMap.keySet()){
-//                    fragmentMap.get(key).onUpdateData();
+                    fragmentMap.get(key).onSuccessDisplay(data);
                 }
 
 
@@ -249,7 +262,9 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 
     @Override
     public void onFailDisplay(String errorMsg) {
-
+        for(Integer key:fragmentMap.keySet()){
+            fragmentMap.get(key).onFailDisplay();
+        }
     }
 
 

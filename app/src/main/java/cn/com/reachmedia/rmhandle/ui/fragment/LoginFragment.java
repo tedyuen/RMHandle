@@ -90,6 +90,7 @@ public class LoginFragment extends BaseFragment {
                                     if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
                                         String token = data.getUsertoken();
                                         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_TOKEN,token);
+                                        mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_USER_ID,data.getUserId());
 
                                         startActivity(new Intent(getActivity(),HomeActivity.class));
                                         getActivity().finish();
