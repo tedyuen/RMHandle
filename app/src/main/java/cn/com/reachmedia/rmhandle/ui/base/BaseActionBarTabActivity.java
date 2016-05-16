@@ -36,6 +36,20 @@ public abstract class BaseActionBarTabActivity extends BaseActionBarActivity {
     @Bind(R.id.toolbar_title)
     public TextView toolbarTitle;
 
+    /**
+     * 需要label作title时调用
+     */
+    public void needTitle(){
+        toolbarTitle.setText(getTitle());
+    }
+
+    public void setTitle(String title){
+        if(toolbarTitle!=null){
+            toolbarTitle.setText(title != null ? title : "");
+
+        }
+    }
+
     @OnClick(R.id.iv_back)
     public void back(){
         if(backListener==null){
@@ -52,8 +66,5 @@ public abstract class BaseActionBarTabActivity extends BaseActionBarActivity {
 
     public void setBackListener(BackListener backListener){
         this.backListener = backListener;
-    }
-    public void needTitle(){
-        toolbarTitle.setText(getTitle());
     }
 }

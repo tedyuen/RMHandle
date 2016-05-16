@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppParamContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.ui.ApartmentPointActivity;
 import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabBaseAdapter;
 import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabFragmentAdapter;
 import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabFragmentAdapter2;
@@ -27,26 +29,34 @@ import cn.com.reachmedia.rmhandle.ui.view.PageListView;
  * 16/4/20          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,PageListView.OnLoadNextListener{
+public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
 
     public static final String ARG_INITIAL_POSITION = "ARG_INITIAL_POSITION";
     public static final String LIST_TYPE = "list_type";
     private int listType = AppSpContact.SP_KEY_APAET_POINT_UNDONE;//默认未完成
 
+    private String communityid;
+
     private ApartmentPointTabBaseAdapter mAdapter;
+
+    private ApartmentPointActivity activity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        controller = new MyOrderListController(this);
         Bundle args = getArguments();
-
+        activity = (ApartmentPointActivity)getActivity();
         if (args != null ) {
             int temp = args.getInt(ApartmentPointTabFragment.LIST_TYPE);
             if(temp!=0){
                 listType = args.getInt(ApartmentPointTabFragment.LIST_TYPE);
             }
+            String tempCommunityid = args.getString(AppParamContact.PARAM_KEY_ID);
+            if(tempCommunityid!=null){
+                communityid = tempCommunityid;
+            }
             System.out.println("=====>!!  "+listType);
+            System.out.println("=====>!!  "+tempCommunityid);
         }
     }
 
@@ -102,16 +112,15 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
     }
 
 
-    @Override
-    public void onLoadNext() {
-
-    }
 
     @Override
     public void onRefresh() {
-
+        activity.onRefresh();
     }
 
+    public void onUpdateData(String workId,String pointId){
+
+    }
 
 
 

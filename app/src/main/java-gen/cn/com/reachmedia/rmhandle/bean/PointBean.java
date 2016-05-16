@@ -25,14 +25,10 @@ public class PointBean {
     private Integer state;
     private Integer stateType;
     private String updateTime;
-    @Override
-    public String toString() {
-        return "id:"+id+"\t"
-                +"userId:"+userId+"\t"
-                +"workId:"+workId+"\t"
-                +"pointId:"+pointId+"\t"
-                +"cname:"+cname;
-    }
+    private java.util.Date starttime;
+    private java.util.Date endtime;
+    private String communityid;
+
     public PointBean() {
     }
 
@@ -40,7 +36,7 @@ public class PointBean {
         this.id = id;
     }
 
-    public PointBean(Long id, String userId, String workId, String cid, String cname, String doorId, String door, Integer workUp, Integer workDown, Integer workDownPhone, Integer workCheck, String pointId, Integer ground, String cDoorPic, String errorDesc, Integer isPhoto, Integer state, Integer stateType, String updateTime) {
+    public PointBean(Long id, String userId, String workId, String cid, String cname, String doorId, String door, Integer workUp, Integer workDown, Integer workDownPhone, Integer workCheck, String pointId, Integer ground, String cDoorPic, String errorDesc, Integer isPhoto, Integer state, Integer stateType, String updateTime, java.util.Date starttime, java.util.Date endtime, String communityid) {
         this.id = id;
         this.userId = userId;
         this.workId = workId;
@@ -60,6 +56,9 @@ public class PointBean {
         this.state = state;
         this.stateType = stateType;
         this.updateTime = updateTime;
+        this.starttime = starttime;
+        this.endtime = endtime;
+        this.communityid = communityid;
     }
 
     public Long getId() {
@@ -214,5 +213,28 @@ public class PointBean {
         this.updateTime = updateTime;
     }
 
+    public java.util.Date getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(java.util.Date starttime) {
+        this.starttime = starttime;
+    }
+
+    public java.util.Date getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(java.util.Date endtime) {
+        this.endtime = endtime;
+    }
+
+    public String getCommunityid() {
+        return communityid;
+    }
+
+    public void setCommunityid(String communityid) {
+        this.communityid = communityid;
+    }
 
 }

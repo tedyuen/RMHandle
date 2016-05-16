@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
+import cn.com.reachmedia.rmhandle.app.AppParamContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.db.helper.PointBeanDaoHelper;
@@ -34,6 +36,7 @@ import cn.com.reachmedia.rmhandle.model.param.PointListParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.PointListController;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
+import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarTabActivity;
 import cn.com.reachmedia.rmhandle.ui.dialog.ApartmentPhoneDialogFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentPointTabFragment;
 
@@ -48,7 +51,7 @@ import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentPointTabFragment;
  * 16/4/20          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class ApartmentPointActivity extends BaseActionBarActivity implements UiDisplayListener<PointListModel> {
+public class ApartmentPointActivity extends BaseActionBarTabActivity implements UiDisplayListener<PointListModel> {
 
     private final ThreadLocal<View> mToolbarView = new ThreadLocal<>();
     SlidingTabLayout slidingTabLayout;
@@ -68,23 +71,30 @@ public class ApartmentPointActivity extends BaseActionBarActivity implements UiD
     SlidingTabLayout slidingTabs;
     private NavigationAdapter mPagerAdapter;
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-    @Bind(R.id.header)
-    View mHeaderView;
-    @Bind(R.id.pager)
-    ViewPager mPager;
     @Bind(R.id.rl_right_img)
     RelativeLayout mRlRightImg;
 
     Map<Integer, ApartmentPointTabFragment> fragmentMap;
     PointListController pointListController;
+
+    private String communityId;
+    private String starttime;
+    private String endtime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apartment_point);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
+        Intent intent = getIntent();
+        if(intent!=null){
+            communityId = intent.getStringExtra(AppParamContact.PARAM_KEY_ID);
+            communityId = "663";
+            starttime = "2016-05-05";
+            endtime = "2016-05-11";
+            setTitle(intent.getStringExtra(AppParamContact.PARAM_KEY_TITLE));
+        }
         mRlRightImg.setVisibility(View.VISIBLE);
         fragmentMap = new HashMap<>();
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
@@ -144,12 +154,15 @@ public class ApartmentPointActivity extends BaseActionBarActivity implements UiD
             switch (position) {
                 case 0:
                     args.putInt(ApartmentPointTabFragment.LIST_TYPE, AppSpContact.SP_KEY_APAET_POINT_UNDONE);
+                    args.putString(AppParamContact.PARAM_KEY_ID, activity.communityId);
                     break;
                 case 1:
                     args.putInt(ApartmentPointTabFragment.LIST_TYPE, AppSpContact.SP_KEY_APAET_POINT_DONE);
+                    args.putString(AppParamContact.PARAM_KEY_ID, activity.communityId);
                     break;
                 case 2:
                     args.putInt(ApartmentPointTabFragment.LIST_TYPE, AppSpContact.SP_KEY_APAET_POINT_ERROR);
+                    args.putString(AppParamContact.PARAM_KEY_ID, activity.communityId);
                     break;
 
             }
@@ -207,12 +220,11 @@ public class ApartmentPointActivity extends BaseActionBarActivity implements UiD
 
 
     //------------ 以下是获取数据
-
     public void onRefresh(){
         PointListParam param = new PointListParam();
-        param.communityid = "663";
-        param.startime = "2016-05-05";
-        param.endtime = "2016-05-11";
+        param.communityid = communityId;
+        param.startime = starttime;
+        param.endtime = endtime;
         param.space = "";
         param.customer = "";
         pointListController.getTaskIndex(param);
@@ -223,11 +235,12 @@ public class ApartmentPointActivity extends BaseActionBarActivity implements UiD
         if (data != null) {
             if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
                 List<PointListModel.NewListBean> newList = data.getNewList();
-
                 PointBeanDbUtil util = PointBeanDbUtil.getIns();
-                util.insertData(newList);
+                util.insertData(newList,communityId,starttime,endtime);
                 resetTitle(util.getItemNumber());
-
+                for(Integer key:fragmentMap.keySet()){
+//                    fragmentMap.get(key).onUpdateData();
+                }
 
 
             }

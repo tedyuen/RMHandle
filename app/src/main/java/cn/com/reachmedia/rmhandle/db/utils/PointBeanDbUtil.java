@@ -34,10 +34,10 @@ public class PointBeanDbUtil {
     }
 
 
-    public void insertData(List<PointListModel.NewListBean> newList){
+    public void insertData(List<PointListModel.NewListBean> newList,String communityid,String starttime,String endtime){
         pointBeanDaoHelper.deleteAll();
         for(PointListModel.NewListBean tempBean:newList){
-            PointBean bean = tempBean.toBean("abc");
+            PointBean bean = tempBean.toBean("abc",communityid,starttime,endtime);
             pointBeanDaoHelper.addData(bean);
         }
     }

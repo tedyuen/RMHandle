@@ -16,8 +16,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppParamContact;
 import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
 import cn.com.reachmedia.rmhandle.ui.ApartmentPointActivity;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 
 /**
  * Author:    tedyuen
@@ -79,19 +81,46 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
             bean = (ViewHolder) convertView.getTag(R.id.tag);
         }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, ApartmentPointActivity.class));
-            }
-        });
+
         final TaskIndexModel.PListBean data = mLists.get(position);
         if(data!=null){
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, ApartmentPointActivity.class);
+                    intent.putExtra(AppParamContact.PARAM_KEY_TITLE,data.getCommunity());
+                    intent.putExtra(AppParamContact.PARAM_KEY_ID,data.getCommunityid());
+                    mContext.startActivity(intent);
+                }
+            });
             bean.tvApartmentName.setText(data.getCommunity());
             bean.tvKanCount.setText(data.getLocA()+"/"+data.getLocS());
             bean.tvDate.setText(data.getWorktime());
             bean.tvAddress.setText(data.getAddress()+"·"+data.getDistance());
 
+            if(StringUtils.isEmpty(data.getTips())){
+                bean.llWarning.setVisibility(View.GONE);
+                bean.tvTips.setVisibility(View.GONE);
+                bean.llWarning.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            }else{
+                bean.llWarning.setVisibility(View.VISIBLE);
+                bean.tvTips.setVisibility(View.VISIBLE);
+                bean.llWarning.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(bean.tvTips.getVisibility()==View.GONE){
+                            bean.tvTips.setVisibility(View.VISIBLE);
+                        }else if(bean.tvTips.getVisibility()==View.VISIBLE){
+                            bean.tvTips.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            }
 
             if(data.getIsCard()==0){
                 bean.ivCard.setVisibility(View.GONE);

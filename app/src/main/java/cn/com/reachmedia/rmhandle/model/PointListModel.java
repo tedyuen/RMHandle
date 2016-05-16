@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.util.List;
 
 import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 
 /**
  * Author:    tedyuen
@@ -234,7 +235,7 @@ public class PointListModel extends BaseModel implements Parcelable {
         private int state;
         private int stateType;
 
-        public PointBean toBean(String userId){
+        public PointBean toBean(String userId,String communityid,String starttime,String endtime){
             PointBean bean = new PointBean();
             bean.setWorkId(this.workId);
             bean.setCid(this.cid);
@@ -253,6 +254,9 @@ public class PointListModel extends BaseModel implements Parcelable {
             bean.setState(this.state);
             bean.setStateType(this.stateType);
             bean.setUserId(userId);
+            bean.setCommunityid(communityid);
+            bean.setStarttime(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd"));
+            bean.setEndtime(TimeUtils.simpleDateParse(endtime,"yyyy-MM-dd"));
             return bean;
         }
 

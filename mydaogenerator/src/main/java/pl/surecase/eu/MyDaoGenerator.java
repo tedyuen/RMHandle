@@ -36,6 +36,9 @@ public class MyDaoGenerator {
         pointBean.addIntProperty("state");
         pointBean.addIntProperty("stateType");
         pointBean.addStringProperty("updateTime");
+        pointBean.addDateProperty("starttime");
+        pointBean.addDateProperty("endtime");
+        pointBean.addStringProperty("communityid");
     }
 
     private static void initPointWorkBean(Schema schema){

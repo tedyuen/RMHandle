@@ -42,6 +42,9 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
         public final static Property State = new Property(16, Integer.class, "state", false, "STATE");
         public final static Property StateType = new Property(17, Integer.class, "stateType", false, "STATE_TYPE");
         public final static Property UpdateTime = new Property(18, String.class, "updateTime", false, "UPDATE_TIME");
+        public final static Property Starttime = new Property(19, java.util.Date.class, "starttime", false, "STARTTIME");
+        public final static Property Endtime = new Property(20, java.util.Date.class, "endtime", false, "ENDTIME");
+        public final static Property Communityid = new Property(21, String.class, "communityid", false, "COMMUNITYID");
     };
 
 
@@ -75,7 +78,10 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
                 "'IS_PHOTO' INTEGER," + // 15: isPhoto
                 "'STATE' INTEGER," + // 16: state
                 "'STATE_TYPE' INTEGER," + // 17: stateType
-                "'UPDATE_TIME' TEXT);"); // 18: updateTime
+                "'UPDATE_TIME' TEXT," + // 18: updateTime
+                "'STARTTIME' INTEGER," + // 19: starttime
+                "'ENDTIME' INTEGER," + // 20: endtime
+                "'COMMUNITYID' TEXT);"); // 21: communityid
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_POINT_BEAN_ID ON POINT_BEAN" +
                 " (ID);");
@@ -186,6 +192,21 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
         if (updateTime != null) {
             stmt.bindString(19, updateTime);
         }
+ 
+        java.util.Date starttime = entity.getStarttime();
+        if (starttime != null) {
+            stmt.bindLong(20, starttime.getTime());
+        }
+ 
+        java.util.Date endtime = entity.getEndtime();
+        if (endtime != null) {
+            stmt.bindLong(21, endtime.getTime());
+        }
+ 
+        String communityid = entity.getCommunityid();
+        if (communityid != null) {
+            stmt.bindString(22, communityid);
+        }
     }
 
     /** @inheritdoc */
@@ -216,7 +237,10 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
             cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // isPhoto
             cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16), // state
             cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // stateType
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18) // updateTime
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // updateTime
+            cursor.isNull(offset + 19) ? null : new java.util.Date(cursor.getLong(offset + 19)), // starttime
+            cursor.isNull(offset + 20) ? null : new java.util.Date(cursor.getLong(offset + 20)), // endtime
+            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21) // communityid
         );
         return entity;
     }
@@ -243,6 +267,9 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
         entity.setState(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
         entity.setStateType(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
         entity.setUpdateTime(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setStarttime(cursor.isNull(offset + 19) ? null : new java.util.Date(cursor.getLong(offset + 19)));
+        entity.setEndtime(cursor.isNull(offset + 20) ? null : new java.util.Date(cursor.getLong(offset + 20)));
+        entity.setCommunityid(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
      }
     
     /** @inheritdoc */

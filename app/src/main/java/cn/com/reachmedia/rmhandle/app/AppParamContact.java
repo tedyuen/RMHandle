@@ -16,4 +16,7 @@ public class AppParamContact {
     public final static String PARAM_KEY_JSON = "json";
     public final static String PARAM_KEY_MODEL = "model";
 
+    public final static String PARAM_KEY_TITLE = "_title";
+    public final static String PARAM_KEY_ID = "_id";
+
 }
