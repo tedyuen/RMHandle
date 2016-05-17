@@ -235,6 +235,9 @@ public class PointListModel extends BaseModel implements Parcelable {
         private int isPhoto;
         private int state;
         private int stateType;
+        private String updateTime;
+        private String pictime;
+        private String worktime;
 
         public PointBean toBean(String userId,String communityid,String starttime,String endtime){
             PointBean bean = new PointBean();
@@ -255,6 +258,9 @@ public class PointListModel extends BaseModel implements Parcelable {
             bean.setIsPhoto(this.isPhoto);
             bean.setState(this.state);
             bean.setStateType(this.stateType);
+            bean.setUpdateTime(this.updateTime);
+            bean.setPictime(this.pictime);
+            bean.setWorktime(this.worktime);
             bean.setUserId(userId);
             bean.setCommunityid(communityid);
             bean.setStarttime(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd"));
@@ -404,6 +410,30 @@ public class PointListModel extends BaseModel implements Parcelable {
 
         public void setcDoorPic(String cDoorPic) {
             this.cDoorPic = cDoorPic;
+        }
+
+        public String getUpdateTime() {
+            return updateTime;
+        }
+
+        public void setUpdateTime(String updateTime) {
+            this.updateTime = updateTime;
+        }
+
+        public String getPictime() {
+            return pictime;
+        }
+
+        public void setPictime(String pictime) {
+            this.pictime = pictime;
+        }
+
+        public String getWorktime() {
+            return worktime;
+        }
+
+        public void setWorktime(String worktime) {
+            this.worktime = worktime;
         }
     }
 

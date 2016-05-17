@@ -26,6 +26,8 @@ public class PointBean {
     private Integer state;
     private Integer stateType;
     private String updateTime;
+    private String pictime;
+    private String worktime;
     private java.util.Date starttime;
     private java.util.Date endtime;
     private String communityid;
@@ -37,7 +39,7 @@ public class PointBean {
         this.id = id;
     }
 
-    public PointBean(Long id, String userId, String workId, String cid, String cname, String doorId, String door, Integer workUp, Integer workUpPhone, Integer workDown, Integer workDownPhone, Integer workCheck, String pointId, Integer ground, String cDoorPic, String errorDesc, Integer isPhoto, Integer state, Integer stateType, String updateTime, java.util.Date starttime, java.util.Date endtime, String communityid) {
+    public PointBean(Long id, String userId, String workId, String cid, String cname, String doorId, String door, Integer workUp, Integer workUpPhone, Integer workDown, Integer workDownPhone, Integer workCheck, String pointId, Integer ground, String cDoorPic, String errorDesc, Integer isPhoto, Integer state, Integer stateType, String updateTime, String pictime, String worktime, java.util.Date starttime, java.util.Date endtime, String communityid) {
         this.id = id;
         this.userId = userId;
         this.workId = workId;
@@ -58,6 +60,8 @@ public class PointBean {
         this.state = state;
         this.stateType = stateType;
         this.updateTime = updateTime;
+        this.pictime = pictime;
+        this.worktime = worktime;
         this.starttime = starttime;
         this.endtime = endtime;
         this.communityid = communityid;
@@ -221,6 +225,22 @@ public class PointBean {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getPictime() {
+        return pictime;
+    }
+
+    public void setPictime(String pictime) {
+        this.pictime = pictime;
+    }
+
+    public String getWorktime() {
+        return worktime;
+    }
+
+    public void setWorktime(String worktime) {
+        this.worktime = worktime;
     }
 
     public java.util.Date getStarttime() {
