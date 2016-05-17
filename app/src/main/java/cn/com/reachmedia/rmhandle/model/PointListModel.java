@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.util.List;
 
 import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 
 /**
@@ -20,6 +21,63 @@ import cn.com.reachmedia.rmhandle.utils.TimeUtils;
  * Why & What is modified:
  */
 public class PointListModel extends BaseModel implements Parcelable {
+
+    /**
+     * communityid : 33
+     * community : 黄埔新苑
+     * doordesc : 1号楼2121
+     * carddesc : 找老袁
+     * newNumber : 32
+     * endNumber : 100
+     * errorNumber : 223
+     * telephone : 18017494728_58876837
+     * cGatePic : http://aa.ss.s
+     * cPestPic : http://aa.ss.s
+     * newList : [{"workId":"22","cid":"121","cname":"肯德基","doorId":"109","door":"1号楼","workUp":1,"workDown":0,"workDownPhone":1,"workCheck":0,"pointId":"1233","ground":1,"cDoorPic":"http://aa.ss.s","errorDesc":"破损","isPhoto":1,"state":0,"stateType":0,"updateTime":"2016-05-09 10:00:00","pictime":"6月05日","worktime":"周四"}]
+     * comList : [{"cid":"12123","cname":"美莱","memo":"上刊要求富文本","picList":[{"picurlB":"http://aa.ss.s","picurlS":"http://aa.ss.s"}]}]
+     */
+
+    private String communityid;
+    private String community;
+    private String doordesc;
+    private String carddesc;
+    private int newNumber;
+    private int endNumber;
+    private int errorNumber;
+    private String telephone;
+    private String cGatePic;
+    private String cPestPic;
+    /**
+     * workId : 22
+     * cid : 121
+     * cname : 肯德基
+     * doorId : 109
+     * door : 1号楼
+     * workUp : 1
+     * workDown : 0
+     * workDownPhone : 1
+     * workCheck : 0
+     * pointId : 1233
+     * ground : 1
+     * cDoorPic : http://aa.ss.s
+     * errorDesc : 破损
+     * isPhoto : 1
+     * state : 0
+     * stateType : 0
+     * updateTime : 2016-05-09 10:00:00
+     * pictime : 6月05日
+     * worktime : 周四
+     */
+
+    private List<NewListBean> newList;
+    /**
+     * cid : 12123
+     * cname : 美莱
+     * memo : 上刊要求富文本
+     * picList : [{"picurlB":"http://aa.ss.s","picurlS":"http://aa.ss.s"}]
+     */
+
+    private List<ComListBean> comList;
 
     @Override
     public int describeContents() {
@@ -68,58 +126,6 @@ public class PointListModel extends BaseModel implements Parcelable {
             return new PointListModel[size];
         }
     };
-
-    /**
-     * communityid : 33
-     * community : 黄埔新苑
-     * doordesc : 1号楼2121
-     * carddesc : 找老袁
-     * newNumber : 32
-     * endNumber : 100
-     * errorNumber : 223
-     * telephone : 18017494728_58876837
-     * cGatePic : http://aa.ss.s
-     * cPestPic : http://aa.ss.s
-     * newList : [{"workId":"22","cid":"121","cname":"肯德基","doorId":"109","door":"1号楼","workUp":1,"workDown":0,"workDownPhone":1,"workCheck":0,"piontId":1233,"ground":1,"cDoorPic":"http://aa.ss.s","errorDesc":"破损","isPhoto":1,"state":0,"stateType":0}]
-     * comList : [{"cid":"12123","cname":"美莱","memo":"上刊要求富文本"}]
-     */
-    private String communityid;
-    private String community;
-    private String doordesc;
-    private String carddesc;
-    private int newNumber;
-    private int endNumber;
-    private int errorNumber;
-    private String telephone;
-    private String cGatePic;
-    private String cPestPic;
-    /**
-     * workId : 22
-     * cid : 121
-     * cname : 肯德基
-     * doorId : 109
-     * door : 1号楼
-     * workUp : 1
-     * workDown : 0
-     * workDownPhone : 1
-     * workCheck : 0
-     * piontId : 1233
-     * ground : 1
-     * cDoorPic : http://aa.ss.s
-     * errorDesc : 破损
-     * isPhoto : 1
-     * state : 0
-     * stateType : 0
-     */
-
-    private List<NewListBean> newList;
-    /**
-     * cid : 12123
-     * cname : 美莱
-     * memo : 上刊要求富文本
-     */
-
-    private List<ComListBean> comList;
 
     public String getCommunityid() {
         return communityid;
@@ -217,6 +223,7 @@ public class PointListModel extends BaseModel implements Parcelable {
         this.comList = comList;
     }
 
+
     public static class NewListBean {
         private String workId;
         private String cid;
@@ -224,9 +231,9 @@ public class PointListModel extends BaseModel implements Parcelable {
         private String doorId;
         private String door;
         private int workUp;
-        private int workUpPhone;
         private int workDown;
         private int workDownPhone;
+        private int workUpPhone;
         private int workCheck;
         private String pointId;
         private int ground;
@@ -239,7 +246,7 @@ public class PointListModel extends BaseModel implements Parcelable {
         private String pictime;
         private String worktime;
 
-        public PointBean toBean(String userId,String communityid,String starttime,String endtime){
+        public PointBean toBean(String userId, String communityid, String starttime, String endtime){
             PointBean bean = new PointBean();
             bean.setWorkId(this.workId);
             bean.setCid(this.cid);
@@ -265,6 +272,17 @@ public class PointListModel extends BaseModel implements Parcelable {
             bean.setCommunityid(communityid);
             bean.setStarttime(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd"));
             bean.setEndtime(TimeUtils.simpleDateParse(endtime,"yyyy-MM-dd"));
+            return bean;
+        }
+
+        public PointWorkBean toWorkBean(String userId){
+            PointWorkBean bean = new PointWorkBean();
+            bean.setWorkId(this.workId);
+            bean.setNativeState("0");
+            bean.setPointId(this.pointId);
+            bean.setErrorDesc(this.errorDesc);
+            bean.setState(this.state==0?1:0);
+            bean.setUserId(userId);
             return bean;
         }
 
@@ -396,22 +414,6 @@ public class PointListModel extends BaseModel implements Parcelable {
             this.stateType = stateType;
         }
 
-        public int getWorkUpPhone() {
-            return workUpPhone;
-        }
-
-        public void setWorkUpPhone(int workUpPhone) {
-            this.workUpPhone = workUpPhone;
-        }
-
-        public String getcDoorPic() {
-            return cDoorPic;
-        }
-
-        public void setcDoorPic(String cDoorPic) {
-            this.cDoorPic = cDoorPic;
-        }
-
         public String getUpdateTime() {
             return updateTime;
         }
@@ -435,12 +437,34 @@ public class PointListModel extends BaseModel implements Parcelable {
         public void setWorktime(String worktime) {
             this.worktime = worktime;
         }
+
+        public int getWorkUpPhone() {
+            return workUpPhone;
+        }
+
+        public void setWorkUpPhone(int workUpPhone) {
+            this.workUpPhone = workUpPhone;
+        }
+
+        public String getcDoorPic() {
+            return cDoorPic;
+        }
+
+        public void setcDoorPic(String cDoorPic) {
+            this.cDoorPic = cDoorPic;
+        }
     }
 
     public static class ComListBean {
         private String cid;
         private String cname;
         private String memo;
+        /**
+         * picurlB : http://aa.ss.s
+         * picurlS : http://aa.ss.s
+         */
+
+        private List<PicListBean> picList;
 
         public String getCid() {
             return cid;
@@ -464,6 +488,35 @@ public class PointListModel extends BaseModel implements Parcelable {
 
         public void setMemo(String memo) {
             this.memo = memo;
+        }
+
+        public List<PicListBean> getPicList() {
+            return picList;
+        }
+
+        public void setPicList(List<PicListBean> picList) {
+            this.picList = picList;
+        }
+
+        public static class PicListBean {
+            private String picurlB;
+            private String picurlS;
+
+            public String getPicurlB() {
+                return picurlB;
+            }
+
+            public void setPicurlB(String picurlB) {
+                this.picurlB = picurlB;
+            }
+
+            public String getPicurlS() {
+                return picurlS;
+            }
+
+            public void setPicurlS(String picurlS) {
+                this.picurlS = picurlS;
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.test;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -10,6 +11,9 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.dao.PointBeanDao;
+import cn.com.reachmedia.rmhandle.dao.PointWorkBeanDao;
+import cn.com.reachmedia.rmhandle.db.DatabaseLoader;
 import cn.com.reachmedia.rmhandle.db.helper.PointBeanDaoHelper;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.model.param.PointListParam;
@@ -79,6 +83,44 @@ public class DBTestActivity extends AppCompatActivity {
         List<PointBean> list = pointBeanDaoHelper.getAllData();
         for(PointBean bean:list){
             System.out.println(bean.toString());
+        }
+
+    }
+
+
+    @OnClick(R.id.bt_select2)
+    public void selectData2(){
+        String temp = PointBeanDao.TABLENAME + PointWorkBeanDao.TABLENAME;
+
+
+        String sql = "select *,(select b.STATE from POINT_WORK_BEAN b where a.WORK_ID=b.WORK_ID and a.POINT_ID=b.POINT_ID ) bstate,(select case when b.STATE > a.STATE then b.STATE else a.STATE end from POINT_BEAN a,POINT_WORK_BEAN b) rstate from POINT_BEAN a";
+
+
+//        String sql2 = "if not exists (select ";
+
+
+        Cursor cursor = DatabaseLoader.getDaoSession().getDatabase().rawQuery(sql,null);
+        for(int i=0;i<cursor.getColumnCount();i++){
+            System.out.println(i+":"+cursor.getColumnName(i));
+        }
+        while (cursor.moveToNext()) {
+
+
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("workid:"+cursor.getString(cursor.getColumnIndex("WORK_ID")));
+            buffer.append("\t");
+            buffer.append("pointid:"+cursor.getString(cursor.getColumnIndex("POINT_ID")));
+            buffer.append("\t");
+            buffer.append("cname:"+cursor.getString(cursor.getColumnIndex("CNAME")));
+            buffer.append("\t");
+            buffer.append("A state:"+cursor.getString(cursor.getColumnIndex("STATE")));
+            buffer.append("\t");
+            buffer.append("B state:"+cursor.getString(cursor.getColumnIndex("bstate")));
+            buffer.append("\t");
+            buffer.append("Result state:"+cursor.getString(cursor.getColumnIndex("rstate")));
+
+
+            System.out.println(buffer.toString());
         }
 
     }

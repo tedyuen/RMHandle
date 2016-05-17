@@ -36,36 +36,69 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
-                        android:id="@+id/iv_point_photo_1"
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
-                        app:proportion="0.87"
-                        android:src="@mipmap/picture_add_icon"
-                        android:layout_marginRight="6dp"/>
+                        android:layout_marginRight="6dp">
+                        <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                            android:id="@+id/iv_point_photo_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerCrop"
+                            app:proportion="0.87"
+                            android:src="@mipmap/picture_add_icon"/>
+                        <ImageView
+                            android:id="@+id/iv_delete_1"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/delete"
+                            android:visibility="invisible"
+                            android:layout_alignParentRight="true"/>
+                    </RelativeLayout>
 
-                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
-                        android:id="@+id/iv_point_photo_2"
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
-                        app:proportion="0.87"
-                        android:src="@mipmap/picture_add_icon"
                         android:visibility="invisible"
-                        android:layout_marginRight="6dp"/>
+                        android:layout_marginRight="6dp">
+                        <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                            android:id="@+id/iv_point_photo_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerCrop"
+                            app:proportion="0.87"
+                            android:src="@mipmap/picture_add_icon"/>
+                        <ImageView
+                            android:id="@+id/iv_delete_2"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/delete"
+                            android:visibility="invisible"
+                            android:layout_alignParentRight="true"/>
+                    </RelativeLayout>
 
-                    <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
-                        android:id="@+id/iv_point_photo_3"
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
-                        app:proportion="0.87"
-                        android:visibility="invisible"
-                        android:src="@mipmap/picture_add_icon"/>
+                        android:visibility="invisible">
+                        <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                            android:id="@+id/iv_point_photo_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerCrop"
+                            app:proportion="0.87"
+                            android:src="@mipmap/picture_add_icon"/>
+                        <ImageView
+                            android:id="@+id/iv_delete_3"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@mipmap/delete"
+                            android:visibility="invisible"
+                            android:layout_alignParentRight="true"/>
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -163,7 +196,6 @@
                     android:id="@+id/tv_cname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="真爱女子医院"
                     android:textColor="@color/username_color"
                     android:textStyle="bold"
                     android:textSize="14sp"
@@ -172,6 +204,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_cust_photo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -193,6 +226,7 @@
                         android:scaleType="centerCrop"
                         app:proportion="0.87"
                         android:src="@drawable/abc"
+                        android:visibility="invisible"
                         android:layout_marginRight="6dp"/>
 
                     <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
@@ -202,6 +236,7 @@
                         android:layout_height="wrap_content"
                         android:scaleType="centerCrop"
                         app:proportion="0.87"
+                        android:visibility="invisible"
                         android:src="@drawable/abc"/>
 
                 </LinearLayout>
@@ -234,7 +269,7 @@
                     android:layout_height="43dp"
                     android:layout_marginLeft="@dimen/padding_lr"
                     android:gravity="center_vertical"
-                    android:text="到画时间：10月27    上画时间：10月28"/>
+                    android:text="到画时间：    上画时间："/>
 
                 <WebView
                     android:id="@+id/wb_memo"

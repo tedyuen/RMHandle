@@ -32,6 +32,7 @@ import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.db.helper.PointBeanDaoHelper;
 import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
+import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.model.param.PointListParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
@@ -250,6 +251,9 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                 List<PointListModel.NewListBean> newList = data.getNewList();
                 PointBeanDbUtil util = PointBeanDbUtil.getIns();
                 util.insertData(newList,communityId,starttime,endtime);
+
+                PointWorkBeanDbUtil.getIns().insertData(newList);
+
                 resetTitle(util.getItemNumber());
                 for(Integer key:fragmentMap.keySet()){
                     fragmentMap.get(key).onSuccessDisplay(data);

@@ -7,8 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,6 +23,8 @@ import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.ProportionImageView;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 
 /**
  * Author:    tedyuen
@@ -60,6 +66,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
     ProportionImageView ivCustPhoto2;
     @Bind(R.id.iv_cust_photo_3)
     ProportionImageView ivCustPhoto3;
+
+    @Bind(R.id.ll_cust_photo)
+    LinearLayout ll_cust_photo;
+    ProportionImageView[] custPhotos;
     @Bind(R.id.tv_action_time)
     TextView tvActionTime;
     @Bind(R.id.wb_memo)
@@ -74,6 +84,15 @@ public class PointDetailFragment extends BaseToolbarFragment {
     TextView ivLeftText;
     @Bind(R.id.rl_left_text)
     RelativeLayout rlLeftText;
+
+    @Bind(R.id.iv_delete_1)
+    ImageView tv_delete_photo1;
+    @Bind(R.id.iv_delete_2)
+    ImageView tv_delete_photo2;
+    @Bind(R.id.iv_delete_3)
+    ImageView tv_delete_photo3;
+
+    ImageView[] deleteBtns;
 
     public static PointDetailFragment newInstance() {
         PointDetailFragment fragment = new PointDetailFragment();
@@ -106,6 +125,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_point_detail, container, false);
         ButterKnife.bind(this, rootView);
+        custPhotos = new ProportionImageView[]{ivCustPhoto1,ivCustPhoto2,ivCustPhoto3};
+        deleteBtns = new ImageView[]{tv_delete_photo1,tv_delete_photo2,tv_delete_photo3};
         needTitle();
         return rootView;
     }
@@ -125,7 +146,47 @@ public class PointDetailFragment extends BaseToolbarFragment {
             setTitle(bean.getDoor() + (bean.getGround() == 0 ? "地下" : "地上") + "点位");
         }
 
-        String cid = bean.getCid();
+        tvActionTime.setText("到画时间："+bean.getPictime()+"    上画时间："+bean.getWorktime());
+        //客户文字和照片
+        String cid = bean.getCid().trim();
+        for(PointListModel.ComListBean comBean:pointListModel.getComList()){
+            if(comBean.getCid().trim().equals(cid)){
+                tvCname.setText(comBean.getCname());
+                wbMemo.getSettings().setDefaultTextEncodingName("utf-8");
+                wbMemo.loadDataWithBaseURL("",comBean.getMemo(),"text/html", "utf-8","");
+
+                if(comBean.getPicList().size()==0){
+                    ll_cust_photo.setVisibility(View.GONE);
+                }else{
+                    for(int i=0;i<comBean.getPicList().size();i++){
+                        if(i>=3) break;
+                        PointListModel.ComListBean.PicListBean picBean = comBean.getPicList().get(0);
+                        if(!StringUtils.isEmpty(picBean.getPicurlB())){
+                            custPhotos[i].setVisibility(View.VISIBLE);
+                            Picasso.with(getActivity()).load(picBean.getPicurlB()).placeholder(R.drawable.abc).into(custPhotos[i]);
+                        }
+                    }
+                }
+                break;
+            }
+        }
+        //客户文字和照片
+
+
+
+        if(!StringUtils.isEmpty(pointListModel.getCGatePic())){
+            Picasso.with(getActivity()).load(pointListModel.getCGatePic()).placeholder(R.drawable.abc).into(ivCommPhoto1);
+        }
+        if(!StringUtils.isEmpty(pointListModel.getCPestPic())){
+            Picasso.with(getActivity()).load(pointListModel.getCPestPic()).placeholder(R.drawable.abc).into(ivCommPhoto2);
+        }
+        if(!StringUtils.isEmpty(bean.getCDoorPic())){
+            Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.drawable.abc).into(ivCommPhoto3);
+        }
+
+
+
+
 
 
     }

@@ -42,6 +42,7 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         public final static Property File1 = new Property(16, String.class, "file1", false, "FILE1");
         public final static Property File2 = new Property(17, String.class, "file2", false, "FILE2");
         public final static Property File3 = new Property(18, String.class, "file3", false, "FILE3");
+        public final static Property Doorpic = new Property(19, String.class, "doorpic", false, "DOORPIC");
     };
 
 
@@ -75,7 +76,8 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
                 "'FILE_COUNT' INTEGER," + // 15: fileCount
                 "'FILE1' TEXT," + // 16: file1
                 "'FILE2' TEXT," + // 17: file2
-                "'FILE3' TEXT);"); // 18: file3
+                "'FILE3' TEXT," + // 18: file3
+                "'DOORPIC' TEXT);"); // 19: doorpic
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_POINT_WORK_BEAN_ID ON POINT_WORK_BEAN" +
                 " (ID);");
@@ -186,6 +188,11 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         if (file3 != null) {
             stmt.bindString(19, file3);
         }
+ 
+        String doorpic = entity.getDoorpic();
+        if (doorpic != null) {
+            stmt.bindString(20, doorpic);
+        }
     }
 
     /** @inheritdoc */
@@ -216,7 +223,8 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
             cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // fileCount
             cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // file1
             cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // file2
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18) // file3
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // file3
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19) // doorpic
         );
         return entity;
     }
@@ -243,6 +251,7 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         entity.setFile1(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
         entity.setFile2(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
         entity.setFile3(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setDoorpic(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
      }
     
     /** @inheritdoc */

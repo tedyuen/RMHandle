@@ -25,6 +25,7 @@ public class PointWorkBean {
     private String file1;
     private String file2;
     private String file3;
+    private String doorpic;
 
     public PointWorkBean() {
     }
@@ -33,7 +34,7 @@ public class PointWorkBean {
         this.id = id;
     }
 
-    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, String workTime, String onlineTime, String nativeState, Integer fileCount, String file1, String file2, String file3) {
+    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, String workTime, String onlineTime, String nativeState, Integer fileCount, String file1, String file2, String file3, String doorpic) {
         this.id = id;
         this.lastId = lastId;
         this.userId = userId;
@@ -53,6 +54,7 @@ public class PointWorkBean {
         this.file1 = file1;
         this.file2 = file2;
         this.file3 = file3;
+        this.doorpic = doorpic;
     }
 
     public Long getId() {
@@ -205,6 +207,14 @@ public class PointWorkBean {
 
     public void setFile3(String file3) {
         this.file3 = file3;
+    }
+
+    public String getDoorpic() {
+        return doorpic;
+    }
+
+    public void setDoorpic(String doorpic) {
+        this.doorpic = doorpic;
     }
 
 }
