@@ -16,7 +16,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import cn.com.reachmedia.rmhandle.db.DatabaseLoader;
@@ -105,6 +107,22 @@ public class App extends Application {
             this.homeActivity.finish();
         }
     }
+
+
+    //启动相册的activity
+    private List<Activity> albumActivityList = new ArrayList<>();
+    public void addAlbumActivity(Activity activity){
+        albumActivityList.add(activity);
+    }
+    public void finishAlbumActivity(){
+        for(Activity activity:albumActivityList){
+            if(activity!=null){
+                activity.finish();
+            }
+        }
+        albumActivityList.clear();
+    }
+
 
 
     public void exit() {

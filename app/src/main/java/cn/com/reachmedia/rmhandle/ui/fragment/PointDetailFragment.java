@@ -1,6 +1,14 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
+import android.annotation.TargetApi;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,20 +19,35 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.Constant;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.ProportionImageView;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
+import cn.com.reachmedia.rmhandle.utils.CropImageUtils;
+import cn.com.reachmedia.rmhandle.utils.ImageUtils;
+import cn.com.reachmedia.rmhandle.utils.PhotoSavePathUtil;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ViewHelper;
+import cn.com.reachmedia.rmhandle.utils.album.FileTraversal;
+import cn.com.reachmedia.rmhandle.utils.album.ImgsActivity;
+import cn.com.reachmedia.rmhandle.utils.album.Util;
 
 /**
  * Author:    tedyuen
@@ -94,6 +117,14 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     ImageView[] deleteBtns;
 
+    //增加图片按钮数组
+    ProportionImageView[] addPhotos;
+
+    //当前图片数量
+    private int photoCount ;
+    private int photoName;
+    private int photoMaxCount = 4;
+
     public static PointDetailFragment newInstance() {
         PointDetailFragment fragment = new PointDetailFragment();
         Bundle args = new Bundle();
@@ -126,8 +157,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
         View rootView = inflater.inflate(R.layout.fragment_point_detail, container, false);
         ButterKnife.bind(this, rootView);
         custPhotos = new ProportionImageView[]{ivCustPhoto1,ivCustPhoto2,ivCustPhoto3};
-        deleteBtns = new ImageView[]{tv_delete_photo1,tv_delete_photo2,tv_delete_photo3};
         needTitle();
+        initPhoto();
         return rootView;
     }
 
@@ -147,7 +178,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         }
 
         tvActionTime.setText("到画时间："+bean.getPictime()+"    上画时间："+bean.getWorktime());
-        //客户文字和照片
+        //客户文字和照片 start
         String cid = bean.getCid().trim();
         for(PointListModel.ComListBean comBean:pointListModel.getComList()){
             if(comBean.getCid().trim().equals(cid)){
@@ -170,7 +201,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 break;
             }
         }
-        //客户文字和照片
+        //客户文字和照片 end
 
 
 
@@ -191,6 +222,350 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     }
 
+    //    -------------- 相册 -----------
+    /**
+     * 请求相册
+     */
+    public static final int REQUEST_CODE_GETIMAGE_BYSDCARD = 0;
+    /**
+     * 请求相机
+     */
+    public static final int REQUEST_CODE_GETIMAGE_BYCAMERA = 1;
+
+    /**
+     * 请求我们自己的相册
+     */
+    public static final int REQUEST_CODE_GETIMAGE_BYALBUM = 5;
+    private Uri[] origUri;
+    private Uri[] cropUri;
+    private File[] photoFile;
+    // 保存路径为 RMHandle/人员ID/photo
+    private final static String path = Environment
+            .getExternalStorageDirectory().getAbsolutePath()
+            + File.separator
+            + "RMHandle/";
+    private String photo_path;
+    //图片全路径
+    private String[] photo_full_path;
+
+    /**
+     * 初始化图片上传功能
+     */
+    private void initPhoto() {
+        addPhotos = new ProportionImageView[]{ivPointPhoto1,ivPointPhoto2,ivPointPhoto3};
+        deleteBtns = new ImageView[]{tv_delete_photo1,tv_delete_photo2,tv_delete_photo3};
+        photoFile = new File[photoMaxCount];
+        origUri = new Uri[photoMaxCount];
+        cropUri = new Uri[photoMaxCount];
+        photo_full_path = new String[photoMaxCount];
+        ImageUtils.photoBitmap = new ArrayList<>();
+        // 保存路径为 WoJiaWang/人员ID/portrait
+        photo_path = path + "/advice/";
+        addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageChooseItem();
+            }
+        });
+    }
+
+    /**
+     * 操作选择
+     *
+     */
+    public void imageChooseItem() {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_title_add_photo)
+                .items(R.array.dialog_add_photo)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        if (which == 0) {
+                            startActionCamera();
+                        }
+                        // 相册选图
+                        else if (which == 1) {
+//                            startImagePick();
+                            startAlbum();
+                        }
+                    }
+                })
+                .show();
+
+    }
+
+    private void startAlbum(){
+//        Intent intent = new Intent();
+//        intent.setClass(getContext(),ImgFileListActivity.class);
+//        startActivity(intent);
+        Util util=new Util(getContext());
+        List<FileTraversal> locallist=util.LocalImgFileList();
+        Util.localFile= locallist.get(0);
+        Intent intent=new Intent(getContext(),ImgsActivity.class);
+        Bundle bundle=new Bundle();
+        bundle.putInt("count",4-photoCount);
+        intent.putExtras(bundle);
+        startActivityForResult(intent,REQUEST_CODE_GETIMAGE_BYALBUM);
+        try {
+
+//            System.out.println("-=-=-=-=>  =>>  "+locallist.get(0).filecontent.size());
+//            Intent intent=new Intent(getContext(),ImgsActivity.class);
+//            Bundle bundle=new Bundle();
+//            bundle.putParcelable("data", locallist.get(0));
+//            bundle.putInt("count",4-photoCount);
+//            intent.putExtras(bundle);
+//            startActivityForResult(intent,REQUEST_CODE_GETIMAGE_BYALBUM);
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+
+    }
+
+    /**
+     * 相机拍照
+     */
+    private void startActionCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, getCameraTempFile());
+        startActivityForResult(intent, REQUEST_CODE_GETIMAGE_BYCAMERA);
+    }
+
+    // 拍照保存的绝对路径
+    private Uri getCameraTempFile() {
+        if (PhotoSavePathUtil.checkSDCard()) {
+            File savedir = new File(photo_path);
+            if (!savedir.exists()) {
+                savedir.mkdirs();
+            }
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.toast_sdcard_error),
+                    Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        // 照片命名
+        String cropFileName = System.currentTimeMillis() + ".jpg";
+        // 裁剪头像的绝对路径
+        photo_full_path[photoCount] = photo_path + cropFileName;
+        photoFile[photoCount] = new File(photo_full_path[photoCount]);
+        cropUri[photoCount] = Uri.fromFile(photoFile[photoCount]);
+        this.origUri[photoCount] = this.cropUri[photoCount];
+        return this.cropUri[photoCount];
+    }
+
+    /**
+     * 删除图片
+     * */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void initCancelPhoto(int index){
+        for(int i=index;i<photoCount;i++){
+            if(i<photoMaxCount -2){
+                final int tempIndex = i;
+                addPhotos[i].setImageDrawable(addPhotos[i + 1].getDrawable());
+                addPhotos[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewHelper.getImagePagerLocal(getActivity(), tempIndex);
+                    }
+                });
+                photo_full_path[i] = photo_full_path[i+1];
+            }
+        }
+        if(photoCount<photoMaxCount -1){
+            addPhotos[photoCount].setVisibility(View.INVISIBLE);
+        }
+        photo_full_path[photoCount] = null;
+
+        photoCount--;
+        ImageUtils.photoBitmap.remove(index);
+        deleteBtns[photoCount].setVisibility(View.INVISIBLE);
+//        addPhotos[photoCount].setImageDrawable(getActivity().getDrawable(R.drawable.photograph_icon_btn));
+        addPhotos[photoCount].setImageResource(R.mipmap.picture_add_icon);
+        addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageChooseItem();
+            }
+        });
+    }
+
+
+    private void initNextPhoto(){
+        final int tempIndex = photoCount;
+        addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                ToastHelper.showAlert(getActivity(), "咩哈哈");
+                ViewHelper.getImagePagerLocal(getActivity(), tempIndex);
+
+            }
+        });
+        deleteBtns[photoCount].setVisibility(View.VISIBLE);
+        if(photoCount<photoMaxCount-1){
+            photoCount++;
+            addPhotos[photoCount].setVisibility(View.VISIBLE);
+            addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageChooseItem();
+                }
+            });
+
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+        ContentResolver resolver = getActivity().getContentResolver();
+        if (resultCode != getActivity().RESULT_OK)
+            return;
+
+        switch (requestCode) {
+            case REQUEST_CODE_GETIMAGE_BYALBUM:
+                if(resultCode==-1){
+                    for(String str:Util.filelist){
+                        Bitmap myBitmap4 = null;
+                        photo_full_path[photoCount] = str;
+
+                        try {
+                            byte[] mContent3 = ImageUtils.readStream(new FileInputStream(str));
+                            //将字节数组转换为ImageView可调用的Bitmap对象
+                            int b = ImageUtils.getExifOrientation(str);
+                            if(b!=0){
+                                myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()),b);
+                            }else {
+                                myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
+                            }
+                            //把得到的图片绑定在控件上显示
+                            Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
+                            photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp2,path + "advice_" + photoName + ".jpg");
+                            photoName++;
+                            ImageUtils.photoBitmap.add(bitmapTemp2);
+                            addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size() - 1));
+                            myBitmap4.recycle();
+                            initNextPhoto();
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+                break;
+            case REQUEST_CODE_GETIMAGE_BYCAMERA:
+                Bitmap myBitmap = null;
+                try {
+                    super.onActivityResult(requestCode, resultCode, data);
+                    byte[] mContent=ImageUtils.readStream(resolver.openInputStream(origUri[photoCount]));
+                    //图片旋转
+                    int a = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), origUri[photoCount]));
+                    if(a!=0){
+                        myBitmap = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption()),a);
+                    }else{
+                        myBitmap = ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption());
+                    }
+                    //将字节数组转换为ImageView可调用的Bitmap对象
+
+                    //把得到的图片绑定在控件上显示
+                    Bitmap bitmapTemp = ImageUtils.comp(myBitmap);
+                    photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp,path + "advice_" + photoName + ".jpg");
+                    photoName++;
+                    ImageUtils.photoBitmap.add(bitmapTemp);
+                    addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size()-1));
+//                    saveCompressPic(myBitmap);
+                    myBitmap.recycle();
+                    initNextPhoto();
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                break;
+            case REQUEST_CODE_GETIMAGE_BYSDCARD:
+                // 将照片显示在头像上
+                Bundle extras = data.getExtras();
+                Bitmap bmp = null;
+                if (extras != null) {
+                    bmp = data.getParcelableExtra("data");
+                    ivPointPhoto1.setImageBitmap(bmp);
+                }
+                break;
+            case Constant.KITKAT_LESS:
+                Bitmap myBitmap3 = null;
+                Uri uri = data.getData();
+                String thePath = CropImageUtils.getInstance().getPath(getActivity(), uri);
+                photo_full_path[photoCount] = thePath;
+
+//                System.out.println("4.4以下，选择好图片了:  " + uri);
+                try {
+                    byte[] mContent3 = ImageUtils.readStream(resolver.openInputStream(uri));
+                    //将字节数组转换为ImageView可调用的Bitmap对象
+                    int b = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), uri));
+                    if(b!=0){
+                        myBitmap3 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()),b);
+                    }else {
+                        myBitmap3 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
+                    }
+                    //把得到的图片绑定在控件上显示
+                    Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap3);
+                    photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp2,path + "advice_" + photoName + ".jpg");
+                    photoName++;
+                    ImageUtils.photoBitmap.add(bitmapTemp2);
+                    addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size() - 1));
+                    myBitmap3.recycle();
+                    initNextPhoto();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                break;
+            case Constant.KITKAT_ABOVE:
+                Bitmap myBitmap4 = null;
+                Uri uri3 = data.getData();
+                // 先将这个uri转换为path，然后再转换为uri
+//                System.out.println("4.4以上，选择好图片了");
+                String thePath2 = CropImageUtils.getInstance().getPath(getActivity(), uri3);
+                photo_full_path[photoCount] = thePath2;
+                try {
+                    byte[] mContent4 = ImageUtils.readStream(resolver.openInputStream(uri3));
+                    //将字节数组转换为ImageView可调用的Bitmap对象
+                    int c = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), uri3));
+                    if(c!=0){
+                        myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent4, ImageUtils.getBitmapOption()),c);
+                    }else {
+                        myBitmap4 = ImageUtils.getPicFromBytes(mContent4, ImageUtils.getBitmapOption());
+                    }
+                    //把得到的图片绑定在控件上显示
+                    Bitmap bitmapTemp3 = ImageUtils.comp(myBitmap4);
+                    photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp3,path + "advice_" + photoName + ".jpg");
+                    photoName++;
+                    ImageUtils.photoBitmap.add(bitmapTemp3);
+                    addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size() - 1));
+                    myBitmap4.recycle();
+                    initNextPhoto();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+
+    @OnClick(R.id.iv_delete_1)
+    public void deletePhoto1(){
+        initCancelPhoto(0);
+    }
+    @OnClick(R.id.iv_delete_2)
+    public void deletePhoto2(){
+        initCancelPhoto(1);
+
+    }
+    @OnClick(R.id.iv_delete_3)
+    public void deletePhoto3(){
+        initCancelPhoto(2);
+
+    }
+
+    //    -------------- 相册 -----------
 
     @Override
     protected int getLayoutResId() {

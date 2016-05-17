@@ -38,4 +38,10 @@
     <string name="hint_phone">请输入您的手机号码...</string>
     <string name="hint_password">请输入密码...</string>
 
+    <!-- toast -->
+    <string name="toast_sdcard_error">请检查SD卡是否挂载</string>
+
+    <!-- dialog -->
+    <string name="dialog_title_add_photo">添加图片</string>
+
 </resources>

@@ -61,9 +61,9 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:visibility="invisible"
                         android:layout_marginRight="6dp">
                         <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                            android:visibility="invisible"
                             android:id="@+id/iv_point_photo_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -82,9 +82,9 @@
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:visibility="invisible">
+                        android:layout_height="wrap_content">
                         <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                            android:visibility="invisible"
                             android:id="@+id/iv_point_photo_3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

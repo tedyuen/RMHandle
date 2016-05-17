@@ -25,7 +25,7 @@
     <color name="back_grey">#F0F0F0</color>
     <color name="phone_grey">#030303</color>
     <color name="back_black_alpha">#66000000</color>
-
+    <color name="blue_overlay">#660D92DD</color>
 
     <color name="apartment_point_bgcolor_grey">#9B9B9B</color>
     <color name="apartment_point_bgcolor_red">#D0021B</color>
