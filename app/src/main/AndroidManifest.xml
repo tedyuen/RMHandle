@@ -105,7 +105,8 @@
         <activity android:label="选择相片" android:name=".utils.album.ImgsActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.Toolbar">
         </activity>
 
-
+        <service android:name="cn.com.reachmedia.rmhandle.service.PointWorkService">
+        </service>
 
         <service
             android:name="com.baidu.location.f"

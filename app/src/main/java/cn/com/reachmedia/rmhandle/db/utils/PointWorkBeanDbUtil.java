@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
+import cn.com.reachmedia.rmhandle.dao.PointWorkBeanDao;
 import cn.com.reachmedia.rmhandle.db.helper.PointWorkBeanDaoHelper;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
@@ -46,4 +47,17 @@ public class PointWorkBeanDbUtil {
         pointWorkBeanDaoHelper.deleteAll();
         pointWorkBeanDaoHelper.addData(pointWorkBean);
     }
+
+    /**
+     * 获取状态未提交的数据
+     * @param userId
+     */
+    public List<PointWorkBean> getUpload1(String userId){
+        List<PointWorkBean> list = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.UserId.eq(userId),
+                        PointWorkBeanDao.Properties.NativeState.eq(0))
+                .list();
+        return list;
+    }
+
 }

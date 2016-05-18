@@ -36,12 +36,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.app.Constant;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
+import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.ProportionImageView;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
@@ -245,8 +247,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        PointWorkBean pointWorkBean = getPointBean(1,0,"",0,"","","");
+                        PointWorkBean pointWorkBean = getPointBean(1,0,"",0,"",mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
                         PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                        ServiceHelper.getIns().startPointWorkService(getActivity());
                         ToastHelper.showInfo(getActivity(),"提交成功!");
                         new Handler().postDelayed(new Runnable() {
                             @Override

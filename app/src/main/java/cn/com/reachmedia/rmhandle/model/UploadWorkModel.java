@@ -47,6 +47,7 @@ public class UploadWorkModel extends BaseModel implements Parcelable {
      */
 
     private String workId;
+    private String point;
 
     public String getWorkId() {
         return workId;
@@ -54,5 +55,13 @@ public class UploadWorkModel extends BaseModel implements Parcelable {
 
     public void setWorkId(String workId) {
         this.workId = workId;
+    }
+
+    public String getPoint() {
+        return point;
+    }
+
+    public void setPoint(String point) {
+        this.point = point;
     }
 }

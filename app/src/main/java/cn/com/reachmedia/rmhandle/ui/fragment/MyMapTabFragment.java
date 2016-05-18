@@ -154,6 +154,8 @@ public class MyMapTabFragment extends BaseFragment implements BaiduMap.OnMapLoad
             mBaiduMap.setMyLocationData(locData);
             if (isFirstLoc) {
                 isFirstLoc = false;
+                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE,location.getLongitude()+"");
+                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,location.getLatitude()+"");
                 System.out.println("!!==>   "+location.getLatitude()+":"+location.getLongitude());
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
