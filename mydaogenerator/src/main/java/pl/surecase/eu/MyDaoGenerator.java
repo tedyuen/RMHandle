@@ -42,6 +42,9 @@ public class MyDaoGenerator {
         pointBean.addDateProperty("starttime");
         pointBean.addDateProperty("endtime");
         pointBean.addStringProperty("communityid");
+        pointBean.addStringProperty("fileId"); //文件标识 fileid1@#@fileid2
+        pointBean.addStringProperty("fileUrlB");
+        pointBean.addStringProperty("fileUrlS");
     }
 
     private static void initPointWorkBean(Schema schema){
@@ -62,9 +65,10 @@ public class MyDaoGenerator {
         pointWorkBean.addStringProperty("onlineTime");
         pointWorkBean.addStringProperty("nativeState");//0:未同步，1:已同步未同步图片，2:全部同步
         pointWorkBean.addIntProperty("fileCount");
-        pointWorkBean.addStringProperty("file1");//文件路径123
-        pointWorkBean.addStringProperty("file2");
-        pointWorkBean.addStringProperty("file3");
+        pointWorkBean.addStringProperty("filedelete");//文件删除列表  321,372,111
+        pointWorkBean.addStringProperty("fileIdData");//文件标识  fileid1@#@fileid2
+        pointWorkBean.addStringProperty("filePathData");//文件路径  filePath1@#@filePath2
+        pointWorkBean.addStringProperty("doorpicid");//门洞照片标识
         pointWorkBean.addStringProperty("doorpic");//门洞照片
     }
 

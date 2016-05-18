@@ -22,9 +22,10 @@ public class PointWorkBean {
     private String onlineTime;
     private String nativeState;
     private Integer fileCount;
-    private String file1;
-    private String file2;
-    private String file3;
+    private String filedelete;
+    private String fileIdData;
+    private String filePathData;
+    private String doorpicid;
     private String doorpic;
 
     public PointWorkBean() {
@@ -34,7 +35,7 @@ public class PointWorkBean {
         this.id = id;
     }
 
-    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, String workTime, String onlineTime, String nativeState, Integer fileCount, String file1, String file2, String file3, String doorpic) {
+    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, String workTime, String onlineTime, String nativeState, Integer fileCount, String filedelete, String fileIdData, String filePathData, String doorpicid, String doorpic) {
         this.id = id;
         this.lastId = lastId;
         this.userId = userId;
@@ -51,9 +52,10 @@ public class PointWorkBean {
         this.onlineTime = onlineTime;
         this.nativeState = nativeState;
         this.fileCount = fileCount;
-        this.file1 = file1;
-        this.file2 = file2;
-        this.file3 = file3;
+        this.filedelete = filedelete;
+        this.fileIdData = fileIdData;
+        this.filePathData = filePathData;
+        this.doorpicid = doorpicid;
         this.doorpic = doorpic;
     }
 
@@ -185,28 +187,36 @@ public class PointWorkBean {
         this.fileCount = fileCount;
     }
 
-    public String getFile1() {
-        return file1;
+    public String getFiledelete() {
+        return filedelete;
     }
 
-    public void setFile1(String file1) {
-        this.file1 = file1;
+    public void setFiledelete(String filedelete) {
+        this.filedelete = filedelete;
     }
 
-    public String getFile2() {
-        return file2;
+    public String getFileIdData() {
+        return fileIdData;
     }
 
-    public void setFile2(String file2) {
-        this.file2 = file2;
+    public void setFileIdData(String fileIdData) {
+        this.fileIdData = fileIdData;
     }
 
-    public String getFile3() {
-        return file3;
+    public String getFilePathData() {
+        return filePathData;
     }
 
-    public void setFile3(String file3) {
-        this.file3 = file3;
+    public void setFilePathData(String filePathData) {
+        this.filePathData = filePathData;
+    }
+
+    public String getDoorpicid() {
+        return doorpicid;
+    }
+
+    public void setDoorpicid(String doorpicid) {
+        this.doorpicid = doorpicid;
     }
 
     public String getDoorpic() {

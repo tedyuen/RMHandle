@@ -252,7 +252,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                 PointBeanDbUtil util = PointBeanDbUtil.getIns();
                 util.insertData(newList,communityId,starttime,endtime);
 
-                PointWorkBeanDbUtil.getIns().insertData(newList);
+//                PointWorkBeanDbUtil.getIns().insertData(newList);
 
                 resetTitle(util.getItemNumber());
                 for(Integer key:fragmentMap.keySet()){

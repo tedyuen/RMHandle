@@ -39,10 +39,11 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         public final static Property OnlineTime = new Property(13, String.class, "onlineTime", false, "ONLINE_TIME");
         public final static Property NativeState = new Property(14, String.class, "nativeState", false, "NATIVE_STATE");
         public final static Property FileCount = new Property(15, Integer.class, "fileCount", false, "FILE_COUNT");
-        public final static Property File1 = new Property(16, String.class, "file1", false, "FILE1");
-        public final static Property File2 = new Property(17, String.class, "file2", false, "FILE2");
-        public final static Property File3 = new Property(18, String.class, "file3", false, "FILE3");
-        public final static Property Doorpic = new Property(19, String.class, "doorpic", false, "DOORPIC");
+        public final static Property Filedelete = new Property(16, String.class, "filedelete", false, "FILEDELETE");
+        public final static Property FileIdData = new Property(17, String.class, "fileIdData", false, "FILE_ID_DATA");
+        public final static Property FilePathData = new Property(18, String.class, "filePathData", false, "FILE_PATH_DATA");
+        public final static Property Doorpicid = new Property(19, String.class, "doorpicid", false, "DOORPICID");
+        public final static Property Doorpic = new Property(20, String.class, "doorpic", false, "DOORPIC");
     };
 
 
@@ -74,10 +75,11 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
                 "'ONLINE_TIME' TEXT," + // 13: onlineTime
                 "'NATIVE_STATE' TEXT," + // 14: nativeState
                 "'FILE_COUNT' INTEGER," + // 15: fileCount
-                "'FILE1' TEXT," + // 16: file1
-                "'FILE2' TEXT," + // 17: file2
-                "'FILE3' TEXT," + // 18: file3
-                "'DOORPIC' TEXT);"); // 19: doorpic
+                "'FILEDELETE' TEXT," + // 16: filedelete
+                "'FILE_ID_DATA' TEXT," + // 17: fileIdData
+                "'FILE_PATH_DATA' TEXT," + // 18: filePathData
+                "'DOORPICID' TEXT," + // 19: doorpicid
+                "'DOORPIC' TEXT);"); // 20: doorpic
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_POINT_WORK_BEAN_ID ON POINT_WORK_BEAN" +
                 " (ID);");
@@ -174,24 +176,29 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
             stmt.bindLong(16, fileCount);
         }
  
-        String file1 = entity.getFile1();
-        if (file1 != null) {
-            stmt.bindString(17, file1);
+        String filedelete = entity.getFiledelete();
+        if (filedelete != null) {
+            stmt.bindString(17, filedelete);
         }
  
-        String file2 = entity.getFile2();
-        if (file2 != null) {
-            stmt.bindString(18, file2);
+        String fileIdData = entity.getFileIdData();
+        if (fileIdData != null) {
+            stmt.bindString(18, fileIdData);
         }
  
-        String file3 = entity.getFile3();
-        if (file3 != null) {
-            stmt.bindString(19, file3);
+        String filePathData = entity.getFilePathData();
+        if (filePathData != null) {
+            stmt.bindString(19, filePathData);
+        }
+ 
+        String doorpicid = entity.getDoorpicid();
+        if (doorpicid != null) {
+            stmt.bindString(20, doorpicid);
         }
  
         String doorpic = entity.getDoorpic();
         if (doorpic != null) {
-            stmt.bindString(20, doorpic);
+            stmt.bindString(21, doorpic);
         }
     }
 
@@ -221,10 +228,11 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // onlineTime
             cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // nativeState
             cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // fileCount
-            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // file1
-            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // file2
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // file3
-            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19) // doorpic
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // filedelete
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // fileIdData
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // filePathData
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // doorpicid
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20) // doorpic
         );
         return entity;
     }
@@ -248,10 +256,11 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         entity.setOnlineTime(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setNativeState(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
         entity.setFileCount(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
-        entity.setFile1(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
-        entity.setFile2(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
-        entity.setFile3(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
-        entity.setDoorpic(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setFiledelete(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setFileIdData(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setFilePathData(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setDoorpicid(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setDoorpic(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
      }
     
     /** @inheritdoc */

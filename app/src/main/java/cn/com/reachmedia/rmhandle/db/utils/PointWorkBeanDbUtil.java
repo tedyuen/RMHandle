@@ -41,4 +41,9 @@ public class PointWorkBeanDbUtil {
             pointWorkBeanDaoHelper.addData(bean);
         }
     }
+
+    public void insertOneData(PointWorkBean pointWorkBean){
+        pointWorkBeanDaoHelper.deleteAll();
+        pointWorkBeanDaoHelper.addData(pointWorkBean);
+    }
 }

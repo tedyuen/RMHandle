@@ -33,7 +33,7 @@ public class PointListModel extends BaseModel implements Parcelable {
      * telephone : 18017494728_58876837
      * cGatePic : http://aa.ss.s
      * cPestPic : http://aa.ss.s
-     * newList : [{"workId":"22","cid":"121","cname":"肯德基","doorId":"109","door":"1号楼","workUp":1,"workDown":0,"workDownPhone":1,"workCheck":0,"pointId":"1233","ground":1,"cDoorPic":"http://aa.ss.s","errorDesc":"破损","isPhoto":1,"state":0,"stateType":0,"updateTime":"2016-05-09 10:00:00","pictime":"6月05日","worktime":"周四"}]
+     * newList : [{"workId":"22","cid":"121","cname":"肯德基","doorId":"109","door":"1号楼","workUp":1,"workDown":0,"workDownPhone":1,"workCheck":0,"pointId":"1233","ground":1,"cDoorPic":"http://aa.ss.s","errorDesc":"破损","isPhoto":1,"state":0,"stateType":0,"updateTime":"2016-05-09 10:00:00","pictime":"6月05日","worktime":"周四","pFileList":[{"fileId":"12","fileUrlB":"http://aa.ss.s","fileUrlS":"http://aa.ss.s"}]}]
      * comList : [{"cid":"12123","cname":"美莱","memo":"上刊要求富文本","picList":[{"picurlB":"http://aa.ss.s","picurlS":"http://aa.ss.s"}]}]
      */
 
@@ -67,6 +67,7 @@ public class PointListModel extends BaseModel implements Parcelable {
      * updateTime : 2016-05-09 10:00:00
      * pictime : 6月05日
      * worktime : 周四
+     * pFileList : [{"fileId":"12","fileUrlB":"http://aa.ss.s","fileUrlS":"http://aa.ss.s"}]
      */
 
     private List<NewListBean> newList;
@@ -231,9 +232,9 @@ public class PointListModel extends BaseModel implements Parcelable {
         private String doorId;
         private String door;
         private int workUp;
+        private int workUpPhone;
         private int workDown;
         private int workDownPhone;
-        private int workUpPhone;
         private int workCheck;
         private String pointId;
         private int ground;
@@ -245,6 +246,7 @@ public class PointListModel extends BaseModel implements Parcelable {
         private String updateTime;
         private String pictime;
         private String worktime;
+
 
         public PointBean toBean(String userId, String communityid, String starttime, String endtime){
             PointBean bean = new PointBean();
@@ -272,6 +274,31 @@ public class PointListModel extends BaseModel implements Parcelable {
             bean.setCommunityid(communityid);
             bean.setStarttime(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd"));
             bean.setEndtime(TimeUtils.simpleDateParse(endtime,"yyyy-MM-dd"));
+
+            StringBuffer bFileId = new StringBuffer();
+            StringBuffer bFileUrlB = new StringBuffer();
+            StringBuffer bFileUrlS = new StringBuffer();
+
+            bean.setFileId("");
+            bean.setFileUrlB("");
+            bean.setFileUrlS("");
+            if(pFileList!=null){
+                for(PFileListBean pFileListBean:pFileList){
+                    bFileId.append(pFileListBean.fileId);
+                    bFileId.append("@#@");
+
+                    bFileUrlB.append(pFileListBean.fileUrlB);
+                    bFileUrlB.append("@#@");
+
+                    bFileUrlS.append(pFileListBean.fileUrlS);
+                    bFileUrlS.append("@#@");
+                }
+                if(pFileList.size()!=0){
+                    bean.setFileId(bFileId.toString());
+                    bean.setFileUrlB(bFileUrlB.toString());
+                    bean.setFileUrlS(bFileUrlS.toString());
+                }
+            }
             return bean;
         }
 
@@ -285,6 +312,13 @@ public class PointListModel extends BaseModel implements Parcelable {
             bean.setUserId(userId);
             return bean;
         }
+        /**
+         * fileId : 12
+         * fileUrlB : http://aa.ss.s
+         * fileUrlS : http://aa.ss.s
+         */
+
+        private List<PFileListBean> pFileList;
 
         public String getWorkId() {
             return workId;
@@ -406,6 +440,30 @@ public class PointListModel extends BaseModel implements Parcelable {
             this.state = state;
         }
 
+        public int getWorkUpPhone() {
+            return workUpPhone;
+        }
+
+        public void setWorkUpPhone(int workUpPhone) {
+            this.workUpPhone = workUpPhone;
+        }
+
+        public String getcDoorPic() {
+            return cDoorPic;
+        }
+
+        public void setcDoorPic(String cDoorPic) {
+            this.cDoorPic = cDoorPic;
+        }
+
+        public List<PFileListBean> getpFileList() {
+            return pFileList;
+        }
+
+        public void setpFileList(List<PFileListBean> pFileList) {
+            this.pFileList = pFileList;
+        }
+
         public int getStateType() {
             return stateType;
         }
@@ -438,20 +496,42 @@ public class PointListModel extends BaseModel implements Parcelable {
             this.worktime = worktime;
         }
 
-        public int getWorkUpPhone() {
-            return workUpPhone;
+        public List<PFileListBean> getPFileList() {
+            return pFileList;
         }
 
-        public void setWorkUpPhone(int workUpPhone) {
-            this.workUpPhone = workUpPhone;
+        public void setPFileList(List<PFileListBean> pFileList) {
+            this.pFileList = pFileList;
         }
 
-        public String getcDoorPic() {
-            return cDoorPic;
-        }
+        public static class PFileListBean {
+            private String fileId;
+            private String fileUrlB;
+            private String fileUrlS;
 
-        public void setcDoorPic(String cDoorPic) {
-            this.cDoorPic = cDoorPic;
+            public String getFileId() {
+                return fileId;
+            }
+
+            public void setFileId(String fileId) {
+                this.fileId = fileId;
+            }
+
+            public String getFileUrlB() {
+                return fileUrlB;
+            }
+
+            public void setFileUrlB(String fileUrlB) {
+                this.fileUrlB = fileUrlB;
+            }
+
+            public String getFileUrlS() {
+                return fileUrlS;
+            }
+
+            public void setFileUrlS(String fileUrlS) {
+                this.fileUrlS = fileUrlS;
+            }
         }
     }
 

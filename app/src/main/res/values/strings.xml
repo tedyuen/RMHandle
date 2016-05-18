@@ -43,5 +43,7 @@
 
     <!-- dialog -->
     <string name="dialog_title_add_photo">添加图片</string>
+    <string name="dialog_title_del_photo">确定删除图片吗?</string>
+    <string name="dialog_title_submit_point">确定提交吗?</string>
 
 </resources>

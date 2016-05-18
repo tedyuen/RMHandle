@@ -8,7 +8,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 
@@ -35,7 +38,9 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.Constant;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
+import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.ProportionImageView;
@@ -44,6 +49,7 @@ import cn.com.reachmedia.rmhandle.utils.CropImageUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.PhotoSavePathUtil;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 import cn.com.reachmedia.rmhandle.utils.album.FileTraversal;
 import cn.com.reachmedia.rmhandle.utils.album.ImgsActivity;
@@ -215,18 +221,85 @@ public class PointDetailFragment extends BaseToolbarFragment {
             Picasso.with(getActivity()).load(pointListModel.getCGatePic()).placeholder(R.drawable.abc).into(ivCommPhoto1);
         }
         if(!StringUtils.isEmpty(pointListModel.getCPestPic())){
-            Picasso.with(getActivity()).load(pointListModel.getCPestPic()).placeholder(R.drawable.abc).into(ivCommPhoto2);
+            Picasso.with(getActivity()).load(pointListModel.getCPestPic()).placeholder(R.drawable.abc).into(ivCommPhoto3);
         }
         if(!StringUtils.isEmpty(bean.getCDoorPic())){
-            Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.drawable.abc).into(ivCommPhoto3);
+            Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.drawable.abc).into(ivCommPhoto2);
         }
 
+    }
 
+
+    @OnClick(R.id.bt_done)
+    public void goDone(){
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_title_submit_point)
+                .negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .positiveText("确定")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        PointWorkBean pointWorkBean = getPointBean(1,0,"",0,"","","");
+                        PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                        ToastHelper.showInfo(getActivity(),"提交成功!");
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                getActivity().finish();
+                            }
+                        }, 500);
+                    }
+                })
+                .show();
 
 
 
 
     }
+
+    /**
+     *
+     * @param state
+     * @param repairType
+     * @param repairDesc
+     * @param errorType
+     * @param errorDesc
+     * @param lon
+     * @param lat
+     * @return
+     */
+    public PointWorkBean getPointBean(int state,int repairType,String repairDesc,int errorType,String errorDesc,String lon,String lat){
+        PointWorkBean pointWorkBean = new PointWorkBean();
+        pointWorkBean.setLastId(bean.getId());
+        pointWorkBean.setUserId(bean.getUserId());
+        pointWorkBean.setWorkId(bean.getWorkId());
+        pointWorkBean.setPointId(bean.getPointId());
+        pointWorkBean.setState(state);
+        pointWorkBean.setRepairType(repairType);
+        pointWorkBean.setRepairDesc(repairDesc);
+        pointWorkBean.setErrorType(errorType);
+        pointWorkBean.setErrorDesc(errorDesc);
+        pointWorkBean.setLon(lon);
+        pointWorkBean.setLat(lat);
+        pointWorkBean.setWorkTime("2016-05-09 10:00:11");
+        pointWorkBean.setOnlineTime("2016-05-09 10:00:11");
+        pointWorkBean.setNativeState("0");
+        pointWorkBean.setFileCount(0);
+        pointWorkBean.setFiledelete("");
+        pointWorkBean.setFileIdData("");
+        pointWorkBean.setFilePathData("");
+        pointWorkBean.setDoorpicid("");
+        pointWorkBean.setDoorpic("");
+        return pointWorkBean;
+    }
+
+
 
     //    -------------- 相册 -----------
     /**
@@ -369,36 +442,51 @@ public class PointDetailFragment extends BaseToolbarFragment {
      * 删除图片
      * */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void initCancelPhoto(int index){
-        for(int i=index;i<photoCount;i++){
-            if(i<photoMaxCount -2){
-                final int tempIndex = i;
-                addPhotos[i].setImageDrawable(addPhotos[i + 1].getDrawable());
-                addPhotos[i].setOnClickListener(new View.OnClickListener() {
+    private void initCancelPhoto(final int index){
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_title_del_photo)
+                .negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onClick(View v) {
-                        ViewHelper.getImagePagerLocal(getActivity(), tempIndex);
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
                     }
-                });
-                photo_full_path[i] = photo_full_path[i+1];
-            }
-        }
-        if(photoCount<photoMaxCount -1){
-            addPhotos[photoCount].setVisibility(View.INVISIBLE);
-        }
-        photo_full_path[photoCount] = null;
+                })
+                .positiveText("确定")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        for(int i=index;i<photoCount;i++){
+                            if(i<photoMaxCount -2){
+                                final int tempIndex = i;
+                                addPhotos[i].setImageDrawable(addPhotos[i + 1].getDrawable());
+                                addPhotos[i].setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        ViewHelper.getImagePagerLocal(getActivity(), tempIndex);
+                                    }
+                                });
+                                photo_full_path[i] = photo_full_path[i+1];
+                            }
+                        }
+                        if(photoCount<photoMaxCount -1){
+                            addPhotos[photoCount].setVisibility(View.INVISIBLE);
+                        }
+                        photo_full_path[photoCount] = null;
 
-        photoCount--;
-        ImageUtils.photoBitmap.remove(index);
-        deleteBtns[photoCount].setVisibility(View.INVISIBLE);
-//        addPhotos[photoCount].setImageDrawable(getActivity().getDrawable(R.drawable.photograph_icon_btn));
-        addPhotos[photoCount].setImageResource(R.mipmap.picture_add_icon);
-        addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageChooseItem();
-            }
-        });
+                        photoCount--;
+                        ImageUtils.photoBitmap.remove(index);
+                        deleteBtns[photoCount].setVisibility(View.INVISIBLE);
+                        addPhotos[photoCount].setImageResource(R.mipmap.picture_add_icon);
+                        addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                imageChooseItem();
+                            }
+                        });
+                    }
+                })
+                .show();
     }
 
 
@@ -677,7 +765,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         ViewHelper.getImagePager(getActivity(), commImgList, 0);
     }
 
-    @OnClick(R.id.iv_comm_photo_2)
+    @OnClick(R.id.iv_comm_photo_3)
     public void goViewCommunityPhoto2(){
         ViewHelper.getImagePager(getActivity(), commImgList, 1);
     }
