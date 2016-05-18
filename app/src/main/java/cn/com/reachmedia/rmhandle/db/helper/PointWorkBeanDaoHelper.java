@@ -64,6 +64,34 @@ public class PointWorkBeanDaoHelper implements DaoHelperInterface {
         return null;
     }
 
+    public PointWorkBean getDataByWPID(String workId,String pointId,int state,String nativeState) {
+        if(pointBeanDao != null) {
+            return pointBeanDao.queryBuilder()
+                    .where(PointWorkBeanDao.Properties.WorkId.eq(workId),
+                            PointWorkBeanDao.Properties.PointId.eq(pointId),
+                            PointWorkBeanDao.Properties.State.eq(state),
+                            PointWorkBeanDao.Properties.NativeState.eq(nativeState))
+                    .unique();
+        }
+        return null;
+    }
+
+    public PointWorkBean getDataByWPIDError(String workId,String pointId,int state,String nativeState) {
+        if(pointBeanDao != null) {
+            return pointBeanDao.queryBuilder()
+                    .where(PointWorkBeanDao.Properties.WorkId.eq(workId),
+                            PointWorkBeanDao.Properties.PointId.eq(pointId),
+                            PointWorkBeanDao.Properties.State.notEq(state),
+                            PointWorkBeanDao.Properties.NativeState.eq(nativeState))
+                    .unique();
+        }
+        return null;
+    }
+
+
+
+
+
     @Override
     public List getAllData() {
         if(pointBeanDao != null) {

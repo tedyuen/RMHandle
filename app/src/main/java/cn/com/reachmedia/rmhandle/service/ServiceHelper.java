@@ -25,7 +25,7 @@ public class ServiceHelper {
     }
 
     public void startPointWorkService(Context context){
-        context.startService(new Intent(context,PointWorkService.class));
+//        context.startService(new Intent(context,PointWorkService.class));
 
     }
 }

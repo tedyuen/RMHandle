@@ -1,11 +1,14 @@
 package cn.com.reachmedia.rmhandle.db.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.dao.PointBeanDao;
 import cn.com.reachmedia.rmhandle.db.helper.PointBeanDaoHelper;
+import cn.com.reachmedia.rmhandle.db.helper.PointWorkBeanDaoHelper;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
@@ -25,8 +28,10 @@ public class PointBeanDbUtil {
     private static PointBeanDbUtil pointBeanDbUtil;
     private PointBeanDbUtil(){
         pointBeanDaoHelper = PointBeanDaoHelper.getInstance();
+        pointWorkBeanDaoHelper = PointWorkBeanDaoHelper.getInstance();
     }
     private PointBeanDaoHelper pointBeanDaoHelper;
+    private PointWorkBeanDaoHelper pointWorkBeanDaoHelper;
 
     public static PointBeanDbUtil getIns(){
         if(pointBeanDbUtil==null){
@@ -71,33 +76,57 @@ public class PointBeanDbUtil {
     }
 //---------------------------------------------
     public List<PointBean> getNewList(String communityid,String starttime){
-        return pointBeanDaoHelper.getDao().queryBuilder()
+        List<PointBean> list = pointBeanDaoHelper.getDao().queryBuilder()
                 .where(PointBeanDao.Properties.State.eq(0),
                         PointBeanDao.Properties.StateType.eq(0),
                         PointBeanDao.Properties.Communityid.eq(communityid),
                         PointBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
                         PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
                 .list();
+        List<PointBean> result = new ArrayList<>();
+        for(PointBean pointBean:list){
+            PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPID(pointBean.getWorkId(),pointBean.getPointId(),0,"0");
+            if(workBean==null){
+                result.add(pointBean);
+            }
+        }
+        return result;
     }
 
     public List<PointBean> getEndList(String communityid,String starttime){
-        return pointBeanDaoHelper.getDao().queryBuilder()
+        List<PointBean> list = pointBeanDaoHelper.getDao().queryBuilder()
                 .where(PointBeanDao.Properties.State.eq(1),
                         PointBeanDao.Properties.StateType.eq(1),
                         PointBeanDao.Properties.Communityid.eq(communityid),
                         PointBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
                         PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
                 .list();
+        List<PointBean> result = new ArrayList<>();
+        for(PointBean pointBean:list){
+            PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPID(pointBean.getWorkId(),pointBean.getPointId(),1,"0");
+            if(workBean==null){
+                result.add(pointBean);
+            }
+        }
+        return result;
     }
 
     public List<PointBean> getErrorList(String communityid,String starttime){
-        return pointBeanDaoHelper.getDao().queryBuilder()
+        List<PointBean> list = pointBeanDaoHelper.getDao().queryBuilder()
                 .where(PointBeanDao.Properties.State.eq(1),
                         PointBeanDao.Properties.StateType.notEq(1),
                         PointBeanDao.Properties.Communityid.eq(communityid),
                         PointBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
                         PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
                 .list();
+        List<PointBean> result = new ArrayList<>();
+        for(PointBean pointBean:list){
+            PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPIDError(pointBean.getWorkId(),pointBean.getPointId(),1,"0");
+            if(workBean==null){
+                result.add(pointBean);
+            }
+        }
+        return result;
     }
 
     public PointBean getPointBeanByWPID(String workId,String pointId){

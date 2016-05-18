@@ -277,4 +277,10 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                 "完成点位 ("+number[1]+")","报错 ("+number[2]+")"
         );
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onRefresh();
+    }
 }
