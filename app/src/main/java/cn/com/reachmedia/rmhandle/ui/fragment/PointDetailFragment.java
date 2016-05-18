@@ -140,7 +140,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
     private PointBeanDbUtil pointBeanDbUtil;
     private PointBean bean;
     private PointListModel pointListModel;
-
+    List<String> commImgList = new ArrayList<>();
+    List<String> cusImgList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -170,6 +171,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        commImgList.add(pointListModel.getCGatePic());
+        commImgList.add(pointListModel.getCPestPic());
+
         try {
             int tempName = Integer.parseInt(bean.getDoor());
             setTitle(tempName + "号楼" + (bean.getGround() == 0 ? "地下" : "地上") + "点位");
@@ -191,7 +196,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 }else{
                     for(int i=0;i<comBean.getPicList().size();i++){
                         if(i>=3) break;
-                        PointListModel.ComListBean.PicListBean picBean = comBean.getPicList().get(0);
+                        PointListModel.ComListBean.PicListBean picBean = comBean.getPicList().get(i);
+                        cusImgList.add(picBean.getPicurlB());
                         if(!StringUtils.isEmpty(picBean.getPicurlB())){
                             custPhotos[i].setVisibility(View.VISIBLE);
                             Picasso.with(getActivity()).load(picBean.getPicurlB()).placeholder(R.drawable.abc).into(custPhotos[i]);
@@ -231,6 +237,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
      * 请求相机
      */
     public static final int REQUEST_CODE_GETIMAGE_BYCAMERA = 1;
+    /**
+     * 漏洞着请求相机
+     */
+    public static final int REQUEST_CODE_GETIMAGE_BYCAMERA_DOOR = 9;
 
     /**
      * 请求我们自己的相册
@@ -247,6 +257,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
     private String photo_path;
     //图片全路径
     private String[] photo_full_path;
+    //楼栋照路径
+    private String door_photo_full_path;
 
     /**
      * 初始化图片上传功能
@@ -303,7 +315,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         Util.localFile= locallist.get(0);
         Intent intent=new Intent(getContext(),ImgsActivity.class);
         Bundle bundle=new Bundle();
-        bundle.putInt("count",4-photoCount);
+        bundle.putInt("count",photoMaxCount-photoCount-1);
         intent.putExtras(bundle);
         startActivityForResult(intent,REQUEST_CODE_GETIMAGE_BYALBUM);
         try {
@@ -415,6 +427,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
     }
 
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -482,6 +496,35 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 }
 
                 break;
+            case REQUEST_CODE_GETIMAGE_BYCAMERA_DOOR://门洞照
+                Bitmap myBitmapDoor = null;
+                try {
+                    super.onActivityResult(requestCode, resultCode, data);
+                    byte[] mContent=ImageUtils.readStream(resolver.openInputStream(origUri[photoCount]));
+                    //图片旋转
+                    int a = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), origUri[photoCount]));
+                    if(a!=0){
+                        myBitmapDoor = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption()),a);
+                    }else{
+                        myBitmapDoor = ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption());
+                    }
+                    //将字节数组转换为ImageView可调用的Bitmap对象
+
+                    //把得到的图片绑定在控件上显示
+                    Bitmap bitmapTemp = ImageUtils.comp(myBitmapDoor);
+                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp,path + "door_" + ".jpg");
+                    ImageUtils.doorPhotoBitmap = bitmapTemp;
+                    ivCommPhoto2.setImageBitmap(ImageUtils.doorPhotoBitmap);
+//                    saveCompressPic(myBitmap);
+                    myBitmapDoor.recycle();
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                break;
+
+
             case REQUEST_CODE_GETIMAGE_BYSDCARD:
                 // 将照片显示在头像上
                 Bundle extras = data.getExtras();
@@ -509,12 +552,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     }
                     //把得到的图片绑定在控件上显示
                     Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap3);
-                    photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp2,path + "advice_" + photoName + ".jpg");
-                    photoName++;
-                    ImageUtils.photoBitmap.add(bitmapTemp2);
-                    addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size() - 1));
+                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp2,path + "door_" + ".jpg");
+                    ImageUtils.doorPhotoBitmap = bitmapTemp2;
+                    ivCommPhoto2.setImageBitmap(ImageUtils.doorPhotoBitmap);
                     myBitmap3.recycle();
-                    initNextPhoto();
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -537,12 +578,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     }
                     //把得到的图片绑定在控件上显示
                     Bitmap bitmapTemp3 = ImageUtils.comp(myBitmap4);
-                    photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp3,path + "advice_" + photoName + ".jpg");
-                    photoName++;
-                    ImageUtils.photoBitmap.add(bitmapTemp3);
-                    addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size() - 1));
+                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp3,path + "door_" + ".jpg");
+                    ImageUtils.doorPhotoBitmap = bitmapTemp3;
+                    ivCommPhoto2.setImageBitmap(ImageUtils.doorPhotoBitmap);
                     myBitmap4.recycle();
-                    initNextPhoto();
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -566,6 +605,101 @@ public class PointDetailFragment extends BaseToolbarFragment {
     }
 
     //    -------------- 相册 -----------
+
+    //楼栋照 start
+    @OnClick(R.id.iv_comm_photo_2)
+    public void changeDoorPhoto(){
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_title_add_photo)
+                .items(R.array.dialog_add_photo)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        if (which == 0) {
+                            startActionCameraDoor();
+
+                        }
+                        // 相册选图
+                        else if (which == 1) {
+                            startImagePick();
+                        }
+                    }
+                })
+                .show();
+
+
+    }
+
+    /**
+     * 相机拍照
+     */
+    private void startActionCameraDoor() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, getCameraTempFile());
+        startActivityForResult(intent, REQUEST_CODE_GETIMAGE_BYCAMERA_DOOR);
+    }
+
+    //    -------------- 选择本地图片
+    private void startImagePick(){
+
+        if (!ImageUtils.isKitKat) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            //由于startActivityForResult()的第二个参数"requestCode"为常量，
+            //个人喜好把常量用一个类全部装起来，不知道各位大神对这种做法有异议没？
+//            System.out.println("<4.4");
+            startActivityForResult(Intent.createChooser(intent, "选择图片"), Constant.KITKAT_LESS);
+        } else {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            //由于Intent.ACTION_OPEN_DOCUMENT的版本是4.4以上的内容
+            //所以注意这个方法的最上面添加了@SuppressLint("InlinedApi")
+            //如果客户使用的不是4.4以上的版本，因为前面有判断，所以根本不会走else，
+            //也就不会出现任何因为这句代码引发的错误
+            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+//            System.out.println(">=4.4");
+
+            startActivityForResult(Intent.createChooser(intent, "选择图片"), Constant.KITKAT_ABOVE);
+        }
+
+    }
+
+
+
+    //楼栋照 end
+
+    //放大图片
+    @OnClick(R.id.iv_comm_photo_1)
+    public void goViewCommunityPhoto1(){
+        ViewHelper.getImagePager(getActivity(), commImgList, 0);
+    }
+
+    @OnClick(R.id.iv_comm_photo_2)
+    public void goViewCommunityPhoto2(){
+        ViewHelper.getImagePager(getActivity(), commImgList, 1);
+    }
+
+    @OnClick(R.id.iv_cust_photo_1)
+    public void goViewCustomerPhoto1(){
+        ViewHelper.getImagePager(getActivity(), cusImgList, 0);
+    }
+    @OnClick(R.id.iv_cust_photo_2)
+    public void goViewCustomerPhoto2(){
+        ViewHelper.getImagePager(getActivity(), cusImgList, 1);
+    }
+    @OnClick(R.id.iv_cust_photo_3)
+    public void goViewCustomerPhoto3(){
+        ViewHelper.getImagePager(getActivity(), cusImgList, 2);
+    }
+
+
+
+
+
+
 
     @Override
     protected int getLayoutResId() {

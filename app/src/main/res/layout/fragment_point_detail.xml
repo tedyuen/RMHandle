@@ -117,6 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <RelativeLayout
                         android:id="@+id/rl_comm_photo_1"
                         android:layout_width="0dp"
@@ -143,35 +144,13 @@
                             android:text="小区门口照"/>
 
                     </RelativeLayout>
-                    <RelativeLayout
-                        android:id="@+id/rl_comm_photo_2"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="6dp"
-                        >
-                        <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
-                            android:id="@+id/iv_comm_photo_2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:scaleType="centerCrop"
-                            app:proportion="0.87"
-                            android:src="@drawable/abc"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:gravity="center"
-                            android:textColor="@color/white"
-                            android:background="@color/back_black_alpha"
-                            android:layout_alignParentBottom="true"
-                            android:text="楼栋照"/>
-                    </RelativeLayout>
 
                     <RelativeLayout
                         android:id="@+id/rl_comm_photo_3"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="6dp"
                         >
                         <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
                             android:id="@+id/iv_comm_photo_3"
@@ -190,6 +169,30 @@
                             android:text="环境照"/>
                     </RelativeLayout>
 
+                    <RelativeLayout
+                        android:id="@+id/rl_comm_photo_2"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        >
+                        <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+                            android:id="@+id/iv_comm_photo_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleType="centerCrop"
+                            app:proportion="0.87"
+                            android:src="@drawable/abc"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:background="@color/back_black_alpha"
+                            android:layout_alignParentBottom="true"
+                            android:text="楼栋照"/>
+                    </RelativeLayout>
+
+
                 </LinearLayout>
 
                 <TextView
@@ -207,7 +210,8 @@
                     android:id="@+id/ll_cust_photo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
                     <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
                         android:id="@+id/iv_cust_photo_1"
                         android:layout_width="0dp"

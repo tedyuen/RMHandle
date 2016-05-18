@@ -189,7 +189,7 @@ public class ImgsFragment extends BaseToolbarFragment{
                 choise_button.setText("确定("+select_layout.getChildCount()+")");
             }else {
                 if(count<=Util.filelist.size()){
-                    ToastHelper.showAlert(getActivity(), "最多上传4张照片");
+                    ToastHelper.showAlert(getActivity(), "最多上传"+count+"张照片");
                 }else {
                     try {
                         checkBox.setChecked(true);

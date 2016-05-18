@@ -44,6 +44,7 @@ import java.util.List;
  */
 public class ImageUtils {
     public static List<Bitmap> photoBitmap;
+    public static Bitmap doorPhotoBitmap;
 
     private final static String SDCARD_MNT = "/mnt/sdcard";
     private final static String SDCARD = "/sdcard";
