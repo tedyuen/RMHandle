@@ -91,6 +91,8 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     private String starttime;
     private String endtime;
 
+    public PointListModel data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -245,6 +247,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     public void onSuccessDisplay(PointListModel data) {
         if (data != null) {
             if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
+                this.data = data;
                 tv_carddesc.setText("密码："+data.getCarddesc());
                 tv_doordesc.setText("门卡备注："+data.getDoordesc());
                 ApartmentPointUtils.getIns().pointListModel = data;

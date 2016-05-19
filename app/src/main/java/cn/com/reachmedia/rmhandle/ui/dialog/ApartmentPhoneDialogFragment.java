@@ -13,6 +13,7 @@ import android.widget.ListView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.ui.ApartmentPointActivity;
 import cn.com.reachmedia.rmhandle.ui.adapter.DialogApartmentPhoneAdapter;
 import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
 
@@ -34,6 +35,8 @@ public class ApartmentPhoneDialogFragment extends SupportBlurDialogFragment {
 
     private DialogApartmentPhoneAdapter mAdapter;
 
+    private ApartmentPointActivity activity;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -44,6 +47,7 @@ public class ApartmentPhoneDialogFragment extends SupportBlurDialogFragment {
 //        layoutParams.height = getResources().getDimensionPixelOffset(R.dimen.dialog_four_items);
         layoutParams.gravity = Gravity.CENTER;
         getDialog().getWindow().setAttributes(layoutParams);
+
     }
 
     @Override
@@ -57,7 +61,11 @@ public class ApartmentPhoneDialogFragment extends SupportBlurDialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         View view = inflater.inflate(R.layout.dialog_fragment_apartment_phone, container);
         ButterKnife.bind(this, view);
-        mAdapter = new DialogApartmentPhoneAdapter(getActivity());
+        String phoneName = null;
+        activity = (ApartmentPointActivity)getActivity();
+        if(activity.data!=null)
+            phoneName = activity.data.getTelephone();
+        mAdapter = new DialogApartmentPhoneAdapter(getActivity(),phoneName);
         lvList.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
 

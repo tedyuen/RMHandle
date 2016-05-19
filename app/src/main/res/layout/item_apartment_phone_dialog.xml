@@ -8,7 +8,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/phone_grey"
         android:textSize="14sp"
-        android:text="物业(王经理)"
         android:layout_marginLeft="20dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"/>
