@@ -11,13 +11,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,6 +31,7 @@ import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.HomeTabFragment;
 import cn.com.reachmedia.rmhandle.ui.interf.HomeUiDataUpdate;
+import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 
 /**
  * Author:    tedyuen
@@ -56,7 +60,14 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     ImageView mIvBottom2;
     @Bind(R.id.ll_filter_frame)
     LinearLayout mLlFilterFrame;
-
+    @Bind(R.id.tv_start_time)
+    TextView tv_start_time;
+    @Bind(R.id.tv_end_time)
+    TextView tv_end_time;
+    @Bind(R.id.tv_area)
+    TextView tv_area;
+    @Bind(R.id.tv_custom)
+    TextView tv_custom;
 
 
     Map<Integer,HomeTabFragment> fragmentMap;
@@ -66,6 +77,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
         ButterKnife.bind(this);
+        initFilter();
         setSupportActionBar(mToolbar);
         fragmentMap = new HashMap<>();
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
@@ -193,6 +205,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
 
 
     private void triggleFilter(){
+
         int vi = mLlFilterFrame.getVisibility();
         if(vi == View.VISIBLE){
             mLlFilterFrame.setVisibility(View.GONE);
@@ -261,4 +274,37 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
                 "已完成 ("+finish+")"
         );
     }
+
+
+    private HomeFilterUtil homeFilterUtil;
+
+    public void initFilter(){
+        homeFilterUtil = HomeFilterUtil.getIns();
+        tv_start_time.setText(homeFilterUtil.startTime);
+        tv_end_time.setText(homeFilterUtil.endTime);
+    }
+
+    @OnClick(R.id.rl_start_time)
+    public void selectStartTime(){
+
+    }
+
+    @OnClick(R.id.rl_area)
+    public void selectArea(){
+        new MaterialDialog.Builder(this)
+                .items(homeFilterUtil.getResultData())
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        System.out.println(which);
+                    }
+                })
+                .show();
+    }
+
+    @OnClick(R.id.rl_custom)
+    public void selectCustomer(){
+
+    }
+
 }

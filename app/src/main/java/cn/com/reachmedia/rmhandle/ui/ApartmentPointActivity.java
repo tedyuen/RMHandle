@@ -102,7 +102,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         Intent intent = getIntent();
         if(intent!=null){
             communityId = intent.getStringExtra(AppParamContact.PARAM_KEY_ID);
-            communityId = "663";
+//            communityId = "663";
             starttime = "2016-05-05";
             endtime = "2016-05-11";
             setTitle(intent.getStringExtra(AppParamContact.PARAM_KEY_TITLE));

@@ -29,6 +29,8 @@ public class LoginModel extends BaseModel implements Parcelable{
         dest.writeString(name);
         dest.writeString(title);
         dest.writeString(userId);
+        dest.writeString(space);
+        dest.writeString(picUrl);
     }
 
     public LoginModel(){}
@@ -40,6 +42,8 @@ public class LoginModel extends BaseModel implements Parcelable{
         name = in.readString();
         title = in.readString();
         userId = in.readString();
+        space = in.readString();
+        picUrl = in.readString();
     }
 
     public static final Creator<LoginModel> CREATOR = new Creator<LoginModel>() {
@@ -66,6 +70,24 @@ public class LoginModel extends BaseModel implements Parcelable{
     private String name;
     private String title;
     private String userId;
+    private String space;
+    private String picUrl;
+
+    public String getSpace() {
+        return space;
+    }
+
+    public void setSpace(String space) {
+        this.space = space;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
 
     public String getUserId() {
         return userId;

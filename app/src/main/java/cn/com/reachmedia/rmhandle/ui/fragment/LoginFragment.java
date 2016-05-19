@@ -91,6 +91,12 @@ public class LoginFragment extends BaseFragment {
                                         String token = data.getUsertoken();
                                         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_TOKEN,token);
                                         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_USER_ID,data.getUserId());
+                                        mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_CITY_ID,data.getCityId());
+                                        mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_CITY,data.getCity());
+                                        mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_SPACE,data.getSpace());
+                                        mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_USER_NAME,data.getName());
+                                        mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_TITLE,data.getTitle());
+                                        mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_PIC_URL,data.getPicUrl());
 
                                         startActivity(new Intent(getActivity(),HomeActivity.class));
                                         getActivity().finish();
