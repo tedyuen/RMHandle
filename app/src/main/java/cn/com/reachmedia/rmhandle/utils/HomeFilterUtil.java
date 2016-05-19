@@ -41,8 +41,8 @@ public class HomeFilterUtil {
     public String space;
     public String customer;
 
-    public int preWeek = 3;
-    public int nextWeek = 4;
+    public int preWeek = 6;
+    public int nextWeek = 20;
 
     public String getNextWednesday(String startTime){
         Calendar wednesday = getCbyStrPlus6(startTime);
@@ -56,21 +56,31 @@ public class HomeFilterUtil {
         Calendar now = TimeUtils.getNow();
         now.add(Calendar.DATE,5-now.get(Calendar.DAY_OF_WEEK));
         String result = TimeUtils.dateAddByDateForString(now.getTime(),"yyyy-MM-dd",0);
-        this.startTime = result;
-        this.endTime = getNextWednesday(result);
+        setStartTime(result);
+        return result;
+    }
+
+    public String getCurThursday(){
+        Calendar now = TimeUtils.getNow();
+        now.add(Calendar.DATE,5-now.get(Calendar.DAY_OF_WEEK));
+        String result = TimeUtils.dateAddByDateForString(now.getTime(),"yyyy-MM-dd",0);
         return result;
     }
 
     public String[] getStartTimes(){
-        Calendar start = getCbyStr(this.startTime);
+        Calendar start = getCbyStr(getCurThursday());
         String[] result = new String[preWeek+nextWeek+1];
         start.add(Calendar.DATE,-((preWeek+1)*7));
-        for(int i=0;i<preWeek+nextWeek;i++){
+        for(int i=0;i<preWeek+nextWeek+1;i++){
             start.add(Calendar.DATE,7);
             result[i] = TimeUtils.dateAddByDateForString(start.getTime(),"yyyy-MM-dd",0);
-            System.out.println(result[i]);
         }
         return result;
+    }
+
+    public void setStartTime(String str){
+        this.startTime = str;
+        getNextWednesday(str);
     }
 
 

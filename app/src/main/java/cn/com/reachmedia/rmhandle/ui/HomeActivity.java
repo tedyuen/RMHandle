@@ -286,7 +286,17 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
 
     @OnClick(R.id.rl_start_time)
     public void selectStartTime(){
-
+        new MaterialDialog.Builder(this)
+                .items(homeFilterUtil.getStartTimes())
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        homeFilterUtil.setStartTime(text.toString());
+                        tv_start_time.setText(text);
+                        tv_end_time.setText(homeFilterUtil.endTime);
+                    }
+                })
+                .show();
     }
 
     @OnClick(R.id.rl_area)
