@@ -5,7 +5,11 @@ import android.content.Context;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
@@ -27,6 +31,7 @@ public class HomeFilterUtil {
         if(startTime==null)
             getThursday();
         initCityPro(App.getContext());
+        initCustomer();
     }
     public static HomeFilterUtil getIns(){
         if(homeFilterUtil==null){
@@ -38,8 +43,6 @@ public class HomeFilterUtil {
     //    ------------------  日期
     public String startTime;
     public String endTime;
-    public String space;
-    public String customer;
 
     public int preWeek = 6;
     public int nextWeek = 20;
@@ -48,6 +51,12 @@ public class HomeFilterUtil {
         Calendar wednesday = getCbyStrPlus6(startTime);
         String result = TimeUtils.dateAddByDateForString(wednesday.getTime(),"yyyy-MM-dd",0);
         this.endTime = result;
+        return result;
+    }
+
+    public String getNextWednesdayNoSet(String startTime){
+        Calendar wednesday = getCbyStrPlus6(startTime);
+        String result = TimeUtils.dateAddByDateForString(wednesday.getTime(),"yyyy-MM-dd",0);
         return result;
     }
 
@@ -102,6 +111,9 @@ public class HomeFilterUtil {
     public Properties cityProperties;
     public Properties currentProperties;
     public Properties currentProperties2;
+    public String defaultArea="全部";
+
+    public String currentArea = defaultArea;
     public Properties initCityPro(Context context){
         cityProperties = new Properties();
         try {
@@ -160,8 +172,54 @@ public class HomeFilterUtil {
                 e.printStackTrace();
             }
         }
-        return result2;
+        String[] all = new String[result2.length+1];
+        all[0] = defaultArea;
+        System.arraycopy(result2,0,all,1,result2.length);
+        return all;
     }
+
+    public String getAreaId(){
+        return currentArea.equals(defaultArea)?"":getResultData2(currentArea);
+    }
+    //    ------------------  区域
+
+    //    ------------------  客户
+    public Set<String> customers;
+    public Map<String,String> customersMap;
+
+    public String currentCustomer;
+    public String defaultC = "全部";
+
+    public void initCustomer(){
+        customers = new HashSet<>();
+        customersMap = new HashMap<>();
+        customersMap.put(defaultC,"");
+//        customers.add(defaultC);
+        currentCustomer = defaultC;
+    }
+
+    public void clearCustomers(){
+        customers.clear();
+        customersMap.clear();
+        customersMap.put(defaultC,"");
+//        customers.add(defaultC);
+        currentCustomer = defaultC;
+
+    }
+
+    public String[] getCustomers(){
+        String[] all = new String[customers.size()+1];
+        all[0] = defaultC;
+        String[] result = new String[customers.size()];
+        customers.toArray(result);
+        System.arraycopy(result,0,all,1,customers.size());
+        return all;
+    }
+
+    public String getCustomerId(){
+        return customersMap.get(currentCustomer);
+    }
+
 
 
 }

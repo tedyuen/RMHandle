@@ -21,6 +21,8 @@ import cn.com.reachmedia.rmhandle.network.controller.TaskIndexController;
 import cn.com.reachmedia.rmhandle.ui.adapter.HomeTabFragmentAdapter;
 import cn.com.reachmedia.rmhandle.ui.interf.HomeUiDataUpdate;
 import cn.com.reachmedia.rmhandle.ui.view.PageListView;
+import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 
 /**
  * Author:    tedyuen
@@ -46,17 +48,15 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
 
     private HomeUiDataUpdate updateListener;
 
+    HomeFilterUtil homeFilterUtil = HomeFilterUtil.getIns();
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         taskIndexController = new TaskIndexController();
         param = new TaskIndexParam();
-        param.startime = "2016-03-10";
-        param.endtime = "2016-05-20";
-        param.space = "";
-        param.lon = "123";
-        param.lat = "345";
-        param.customer = "";
+
     }
 
     @Bind(R.id.swipe_container)
@@ -110,6 +110,13 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
                 if(updateListener!=null){
                     updateListener.updateTabCount(data.getOngoing(),data.getFinish());
                 }
+                for(TaskIndexModel.PListBean pListBean:data.getPList()){
+                    for(TaskIndexModel.PListBean.CListBean cListBean:pListBean.getCList()){
+                        System.out.println("--> "+cListBean.getCname());
+                        homeFilterUtil.customers.add(cListBean.getCname());
+                        homeFilterUtil.customersMap.put(cListBean.getCname(),cListBean.getCid()+"");
+                    }
+                }
                 mAdapter.updateData(data.getPList());
                 mAdapter.notifyDataSetChanged();
             }
@@ -133,6 +140,12 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
         if(taskIndexController!=null){
             mPageListView.setState(PageListView.PageListViewState.Loading);
             param.state = listType;
+            param.startime = homeFilterUtil.startTime;
+            param.endtime = homeFilterUtil.endTime;
+            param.space = homeFilterUtil.getAreaId();
+            param.lon = "123";
+            param.lat = "345";
+            param.customer = homeFilterUtil.getCustomerId();
             taskIndexController.getTaskIndex(param);
         }
     }

@@ -213,6 +213,10 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         }else if(vi == View.GONE){
             mLlFilterFrame.setVisibility(View.VISIBLE);
             slidingTabLayout.setVisibility(View.GONE);
+            tv_start_time.setText(homeFilterUtil.startTime);
+            tv_end_time.setText(homeFilterUtil.endTime);
+            tv_area.setText(homeFilterUtil.currentArea);
+            tv_custom.setText(homeFilterUtil.currentCustomer);
         }
     }
 
@@ -291,9 +295,11 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        homeFilterUtil.setStartTime(text.toString());
                         tv_start_time.setText(text);
-                        tv_end_time.setText(homeFilterUtil.endTime);
+                        tv_end_time.setText(homeFilterUtil.getNextWednesdayNoSet(text.toString()));
+                        tv_custom.setText(homeFilterUtil.defaultC);
+                        tv_area.setText(homeFilterUtil.defaultArea);
+
                     }
                 })
                 .show();
@@ -306,7 +312,8 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        System.out.println(which);
+                        tv_area.setText(text);
+
                     }
                 })
                 .show();
@@ -314,7 +321,42 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
 
     @OnClick(R.id.rl_custom)
     public void selectCustomer(){
+        new MaterialDialog.Builder(this)
+                .items(homeFilterUtil.getCustomers())
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        homeFilterUtil.currentCustomer = text.toString();
+                        tv_custom.setText(text);
+                    }
+                })
+                .show();
+    }
 
+    @OnClick(R.id.bt_logout)
+    public void sendRefresh(){
+        if(!homeFilterUtil.startTime.equals(tv_start_time.getText().toString())){// 时间改变了
+            if(tv_custom.getText().toString().equals(homeFilterUtil.defaultC)){
+                homeFilterUtil.currentCustomer = homeFilterUtil.defaultC;
+            }else{
+                homeFilterUtil.currentCustomer = tv_custom.getText().toString();
+            }
+            if(tv_area.getText().toString().equals(homeFilterUtil.defaultArea)){
+                homeFilterUtil.currentArea = homeFilterUtil.defaultArea;
+            }else{
+                homeFilterUtil.currentArea = tv_area.getText().toString();
+            }
+        }else{
+            homeFilterUtil.currentCustomer = tv_custom.getText().toString();
+            homeFilterUtil.currentArea = tv_area.getText().toString();
+        }
+        homeFilterUtil.setStartTime(tv_start_time.getText().toString());//设置时间
+
+        for(Integer key:fragmentMap.keySet()){
+            fragmentMap.get(key).onRefresh();
+        }
+
+        triggleFilter();
     }
 
 }
