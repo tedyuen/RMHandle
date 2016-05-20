@@ -76,6 +76,12 @@
             android:screenOrientation="portrait"
             android:label="@string/title_my_map">
         </activity>
+        <activity android:name=".ui.TaskMapActivity"
+            android:theme="@style/AppTheme.Toolbar"
+            android:screenOrientation="portrait"
+            android:label="@string/title_my_map">
+        </activity>
+
         <activity android:name=".ui.OfflineMapActivity"
             android:theme="@style/AppTheme.Toolbar"
             android:screenOrientation="portrait"
@@ -107,6 +113,9 @@
 
         <service android:name="cn.com.reachmedia.rmhandle.service.PointWorkService">
         </service>
+        <service android:name="cn.com.reachmedia.rmhandle.service.LocationService">
+        </service>
+
 
         <service
             android:name="com.baidu.location.f"

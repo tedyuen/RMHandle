@@ -2,9 +2,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+    <LinearLayout
+        android:id="@+id/ll_title"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:orientation="horizontal"
+        android:background="@color/home_tab_back">
+        <TextView
+            android:id="@+id/tv_community"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/normal_log_color"
+            android:textSize="14sp"
+            android:text="小区:32/100"/>
+
+        <TextView
+            android:id="@+id/tv_point"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/normal_log_color"
+            android:textSize="14sp"
+            android:text="点位:232/400"/>
+    </LinearLayout>
+    <View
+        android:layout_below="@id/ll_title"
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:background="#9B9B9B"/>
     <com.baidu.mapapi.map.MapView
         android:id="@+id/bmapView"
+        android:layout_below="@id/v_line"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true" />
+
+    <include layout="@layout/tool_bar_base"/>
+
+
 </RelativeLayout>

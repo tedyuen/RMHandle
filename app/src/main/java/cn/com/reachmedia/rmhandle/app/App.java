@@ -4,6 +4,7 @@ package cn.com.reachmedia.rmhandle.app;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.telephony.TelephonyManager;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import cn.com.reachmedia.rmhandle.db.DatabaseLoader;
 import cn.com.reachmedia.rmhandle.network.cookie.PersistentCookieStore;
 import cn.com.reachmedia.rmhandle.network.http.AppApiService;
+import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import retrofit.RestAdapter;
@@ -66,6 +68,7 @@ public class App extends Application {
 //        initJPush();
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
+        ServiceHelper.getIns().startLocationWorkService(this);
     }
 
     public void setUpApiService() {
@@ -127,7 +130,14 @@ public class App extends Application {
 
     public void exit() {
 //        EventBus.getDefault().unregister(this);
+        ServiceHelper.getIns().stopLocationWorkService(this);
         System.exit(0);
+    }
+
+    @Override
+    public boolean stopService(Intent name) {
+        ServiceHelper.getIns().stopLocationWorkService(this);
+        return super.stopService(name);
     }
 
     public static Context getContext() {

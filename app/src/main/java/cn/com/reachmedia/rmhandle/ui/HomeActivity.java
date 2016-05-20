@@ -179,7 +179,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
 
     @OnClick(R.id.rl_map)
     public void goMyMap(){
-        startActivity(new Intent(this,MyMapActivity.class));
+        startActivity(new Intent(this,TaskMapActivity.class));
 
     }
 

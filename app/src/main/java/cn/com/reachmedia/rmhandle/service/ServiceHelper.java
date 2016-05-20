@@ -24,8 +24,20 @@ public class ServiceHelper {
         return serviceHelper;
     }
 
+    Intent locationIntent;
+
     public void startPointWorkService(Context context){
 //        context.startService(new Intent(context,PointWorkService.class));
 
     }
+
+    public void startLocationWorkService(Context context){
+        if(locationIntent==null)
+            locationIntent = new Intent(context,LocationService.class);
+        context.startService(new Intent(context,LocationService.class));
+    }
+    public void stopLocationWorkService(Context context){
+        context.stopService(locationIntent);
+    }
+
 }

@@ -1,6 +1,7 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.cache.MyMarkerItem;
+import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 
 /**
  * Author:    tedyuen
@@ -43,7 +45,7 @@ import cn.com.reachmedia.rmhandle.cache.MyMarkerItem;
  * 16/4/20          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class MyMapTabFragment extends BaseFragment implements BaiduMap.OnMapLoadedCallback {
+public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.OnMapLoadedCallback {
 
     public static final String ARG_INITIAL_POSITION = "ARG_INITIAL_POSITION";
     public static final String LIST_TYPE = "list_type";
@@ -54,6 +56,16 @@ public class MyMapTabFragment extends BaseFragment implements BaiduMap.OnMapLoad
     BaiduMap mBaiduMap;
     MapStatus ms;
 
+    public static MyMapTabFragment newInstance() {
+        MyMapTabFragment fragment = new MyMapTabFragment();
+        Bundle args = new Bundle();
+//        args.putParcelable(AppParamContact.PARAM_KEY_MODEL, model);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public MyMapTabFragment() {
+    }
 
     boolean isFirstLoc = true; // 是否首次定位
     //Marker相关
@@ -77,9 +89,8 @@ public class MyMapTabFragment extends BaseFragment implements BaiduMap.OnMapLoad
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.bmap_layout, container, false);
         ButterKnife.bind(this, rootView);
-
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-
+        needTitle();
 
         Bundle args = getArguments();
 
@@ -89,7 +100,6 @@ public class MyMapTabFragment extends BaseFragment implements BaiduMap.OnMapLoad
         setUpViewComponent();
         descImg = inflater.inflate(R.layout.map_bit_desc_img, container, false);
         initOverlay();
-
         return rootView;
     }
 
@@ -97,11 +107,16 @@ public class MyMapTabFragment extends BaseFragment implements BaiduMap.OnMapLoad
     private void setUpViewComponent() {
         // 地图初始化
         mBaiduMap = mMapView.getMap();
-        ms = new MapStatus.Builder().target(new LatLng(31.216775, 121.490184)).zoom(8).build();
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
         mBaiduMap.setOnMapLoadedCallback(this);
-        mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(ms));
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(ms));
+//
+//            }
+//        },4000);
         mClusterManager = new ClusterManager<>(getActivity(), mBaiduMap);
         // 定位初始化
         mLocClient = new LocationClient(getActivity());
@@ -199,6 +214,8 @@ public class MyMapTabFragment extends BaseFragment implements BaiduMap.OnMapLoad
 
     @Override
     public void onMapLoaded() {
+//        ms = new MapStatus.Builder().target(new LatLng(31.216775, 121.490184)).zoom(8).build();
+
         ms = new MapStatus.Builder().zoom(9).build();
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(ms));
     }
