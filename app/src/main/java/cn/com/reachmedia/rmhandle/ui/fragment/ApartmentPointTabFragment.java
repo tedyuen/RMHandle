@@ -23,6 +23,7 @@ import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabFragmentAdapter;
 import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabFragmentAdapter2;
 import cn.com.reachmedia.rmhandle.ui.adapter.ApartmentPointTabFragmentAdapter3;
 import cn.com.reachmedia.rmhandle.ui.view.PageListView;
+import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 
 /**
  * Author:    tedyuen
@@ -44,6 +45,7 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
     private String communityid;
     private String starttime;
     private String endtime;
+    HomeFilterUtil homeFilterUtil = HomeFilterUtil.getIns();
 
     private ApartmentPointTabBaseAdapter mAdapter;
 
@@ -138,13 +140,13 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
             List<PointBean> list = null;
             switch (listType){
                 case 1:
-                    list = PointBeanDbUtil.getIns().getNewList(communityid,starttime);
+                    list = PointBeanDbUtil.getIns().getNewList(communityid,homeFilterUtil.startTime);
                     break;
                 case 2:
-                    list = PointBeanDbUtil.getIns().getEndList(communityid,starttime);
+                    list = PointBeanDbUtil.getIns().getEndList(communityid,homeFilterUtil.startTime);
                     break;
                 case 3:
-                    list = PointBeanDbUtil.getIns().getErrorList(communityid,starttime);
+                    list = PointBeanDbUtil.getIns().getErrorList(communityid,homeFilterUtil.startTime);
                     break;
             }
             mAdapter.updateData(list);

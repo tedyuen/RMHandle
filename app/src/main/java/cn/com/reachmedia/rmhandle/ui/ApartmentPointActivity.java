@@ -42,6 +42,7 @@ import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarTabActivity;
 import cn.com.reachmedia.rmhandle.ui.dialog.ApartmentPhoneDialogFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentPointTabFragment;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
+import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 
 /**
  * Author:    tedyuen
@@ -93,6 +94,9 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 
     public PointListModel data;
 
+    HomeFilterUtil homeFilterUtil = HomeFilterUtil.getIns();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,8 +107,8 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         if(intent!=null){
             communityId = intent.getStringExtra(AppParamContact.PARAM_KEY_ID);
 //            communityId = "663";
-            starttime = "2016-05-05";
-            endtime = "2016-05-11";
+//            starttime = "2016-05-05";
+//            endtime = "2016-05-11";
             setTitle(intent.getStringExtra(AppParamContact.PARAM_KEY_TITLE));
         }
         mRlRightImg.setVisibility(View.VISIBLE);
@@ -236,10 +240,10 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     public void onRefresh(){
         PointListParam param = new PointListParam();
         param.communityid = communityId;
-        param.startime = starttime;
-        param.endtime = endtime;
-        param.space = "";
-        param.customer = "";
+        param.startime = homeFilterUtil.startTime;
+        param.endtime = homeFilterUtil.endTime;
+        param.space = homeFilterUtil.getAreaId();
+        param.customer = homeFilterUtil.getCustomerId();
         pointListController.getTaskIndex(param);
     }
 
@@ -253,7 +257,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                 ApartmentPointUtils.getIns().pointListModel = data;
                 List<PointListModel.NewListBean> newList = data.getNewList();
                 PointBeanDbUtil util = PointBeanDbUtil.getIns();
-                util.insertData(newList,communityId,starttime,endtime);
+                util.insertData(newList,communityId,homeFilterUtil.startTime,homeFilterUtil.endTime);
 
 //                PointWorkBeanDbUtil.getIns().insertData(newList);
 
