@@ -199,7 +199,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 wbMemo.getSettings().setDefaultTextEncodingName("utf-8");
                 wbMemo.loadDataWithBaseURL("",comBean.getMemo(),"text/html", "utf-8","");
 
-                if(comBean.getPicList().size()==0){
+                if(comBean.getPicList()==null || comBean.getPicList().size()==0){
                     ll_cust_photo.setVisibility(View.GONE);
                 }else{
                     for(int i=0;i<comBean.getPicList().size();i++){

@@ -1,7 +1,6 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +13,9 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.clusterutil.clustering.ClusterManager;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
@@ -30,9 +26,15 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.cache.MyMarkerItem;
+import cn.com.reachmedia.rmhandle.model.TaskMapModel;
+import cn.com.reachmedia.rmhandle.model.param.TaskMapParam;
+import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
+import cn.com.reachmedia.rmhandle.network.controller.TaskMapController;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
+import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 
 /**
  * Author:    tedyuen
@@ -45,16 +47,23 @@ import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
  * 16/4/20          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.OnMapLoadedCallback {
+public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.OnMapLoadedCallback, UiDisplayListener<TaskMapModel> {
 
     public static final String ARG_INITIAL_POSITION = "ARG_INITIAL_POSITION";
     public static final String LIST_TYPE = "list_type";
+    @Bind(R.id.tv_community)
+    TextView tvCommunity;
+    @Bind(R.id.tv_point)
+    TextView tvPoint;
     private int listType = AppSpContact.SP_KEY_MAP_1;//默认未完成
 
     @Bind(R.id.bmapView)
     MapView mMapView;
     BaiduMap mBaiduMap;
     MapStatus ms;
+
+
+    TaskMapController taskMapController;
 
     public static MyMapTabFragment newInstance() {
         MyMapTabFragment fragment = new MyMapTabFragment();
@@ -94,12 +103,12 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
 
         Bundle args = getArguments();
 
-        if (args != null ) {
+        if (args != null) {
             listType = args.getInt(LIST_TYPE);
         }
         setUpViewComponent();
         descImg = inflater.inflate(R.layout.map_bit_desc_img, container, false);
-        initOverlay();
+//        initOverlay();
         return rootView;
     }
 
@@ -110,13 +119,6 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
         mBaiduMap.setOnMapLoadedCallback(this);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(ms));
-//
-//            }
-//        },4000);
         mClusterManager = new ClusterManager<>(getActivity(), mBaiduMap);
         // 定位初始化
         mLocClient = new LocationClient(getActivity());
@@ -126,27 +128,34 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
         option.setCoorType("bd09ll"); // 设置坐标类型
         option.setScanSpan(1000);
         mLocClient.setLocOption(option);
-        mLocClient.start();
     }
 
 
-    private void initOverlay(){
-        LatLng llA = new LatLng(31.216775+0.001, 121.490184+0.001);
-        LatLng llB = new LatLng(31.216775-0.002, 121.490184-0.002);
-        LatLng llC = new LatLng(31.216775+0.0025, 121.490184-0.0025);
-        LatLng llD = new LatLng(31.216775-0.002, 121.490184+0.003);
-        LatLng llE = new LatLng(31.216775-0.004, 121.490184-0.004);
-
+    private void initOverlay(List<TaskMapModel.CListBean> list) {
         List<MyMarkerItem> items = new ArrayList<>();
-        items.add(new MyMarkerItem(llA,descImg,"1"));
-        items.add(new MyMarkerItem(llB,descImg,"29"));
-        items.add(new MyMarkerItem(llC,descImg,"5"));
-        items.add(new MyMarkerItem(llD,descImg,"32"));
-        items.add(new MyMarkerItem(llE,descImg,"7"));
+        for(TaskMapModel.CListBean bean:list){
+            try {
+                LatLng tempL = new LatLng(Double.parseDouble(bean.getLat()), Double.parseDouble(bean.getLon()));
+
+                MyMarkerItem item = new MyMarkerItem(tempL, descImg, bean.getPoints()+"");
+                items.add(item);
+
+            }catch(Exception e){
+                e.printStackTrace();
+                continue;
+            }
+        }
 
         mClusterManager.addItems(items);
         // 设置地图监听，当地图状态发生改变时，进行点聚合运算
         mBaiduMap.setOnMapStatusChangeListener(mClusterManager);
+        mLocClient.start();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
 
@@ -169,9 +178,9 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
             mBaiduMap.setMyLocationData(locData);
             if (isFirstLoc) {
                 isFirstLoc = false;
-                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE,location.getLongitude()+"");
-                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,location.getLatitude()+"");
-                System.out.println("!!==>   "+location.getLatitude()+":"+location.getLongitude());
+                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE, location.getLongitude() + "");
+                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE, location.getLatitude() + "");
+                System.out.println("!!==>   " + location.getLatitude() + ":" + location.getLongitude());
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
                 MapStatus.Builder builder = new MapStatus.Builder();
@@ -195,6 +204,7 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
     @Override
     public void onResume() {
         mMapView.onResume();
+        getData();
         super.onResume();
     }
 
@@ -204,12 +214,42 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
         mLocClient.stop();
         // 关闭定位图层
         mBaiduMap.setMyLocationEnabled(false);
-        if(mMapView!=null){
+        if (mMapView != null) {
             mMapView.onDestroy();
             mMapView = null;
         }
 
         super.onDestroy();
+    }
+
+
+    private void getData() {
+        HomeFilterUtil homeFilterUtil = HomeFilterUtil.getIns();
+        taskMapController = new TaskMapController(this);
+        TaskMapParam taskMapParam = new TaskMapParam();
+        taskMapParam.startime = homeFilterUtil.startTime;
+        taskMapParam.endtime = homeFilterUtil.endTime;
+        taskMapParam.space = homeFilterUtil.getAreaId();
+        taskMapParam.lon = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);
+        taskMapParam.lat = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);
+        taskMapController.getTaskMap(taskMapParam);
+    }
+
+    @Override
+    public void onSuccessDisplay(TaskMapModel data) {
+        if (data != null) {
+            if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
+                tvCommunity.setText("小区:"+data.getComNumber()+"/"+data.getComCount());
+                tvPoint.setText("点位:"+data.getPointNumber()+"/"+data.getPointCount());
+
+                initOverlay(data.getCList());
+            }
+        }
+    }
+
+    @Override
+    public void onFailDisplay(String errorMsg) {
+
     }
 
     @Override

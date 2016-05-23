@@ -98,6 +98,16 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
             bean.tvDate.setText(data.getWorktime());
             bean.tvAddress.setText(data.getAddress()+"·"+data.getDistance());
 
+            StringBuffer targetBuffer = new StringBuffer();
+            for(int i=0;i<data.getCList().size();i++){
+                TaskIndexModel.PListBean.CListBean cBean = data.getCList().get(i);
+                if(i!=0){
+                    targetBuffer.append("/");
+                }
+                targetBuffer.append(cBean.getCname());
+            }
+            bean.tvTarget.setText(targetBuffer.toString());
+
             if(StringUtils.isEmpty(data.getTips())){
                 bean.llWarning.setVisibility(View.GONE);
                 bean.tvTips.setVisibility(View.GONE);
@@ -110,6 +120,7 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
             }else{
                 bean.llWarning.setVisibility(View.VISIBLE);
                 bean.tvTips.setVisibility(View.VISIBLE);
+                bean.tvTips.setText(data.getTips());
                 bean.llWarning.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

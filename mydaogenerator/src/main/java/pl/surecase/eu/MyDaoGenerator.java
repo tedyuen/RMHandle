@@ -66,6 +66,8 @@ public class MyDaoGenerator {
         pointWorkBean.addStringProperty("nativeState");//0:未同步，1:已同步未同步图片，2:全部同步
         pointWorkBean.addIntProperty("fileCount");
         pointWorkBean.addStringProperty("filedelete");//文件删除列表  321,372,111
+        pointWorkBean.addStringProperty("fileXY");//文件xy  fileid1@#@fileid2
+        pointWorkBean.addStringProperty("fileTime");//文件time  fileid1@#@fileid2
         pointWorkBean.addStringProperty("fileIdData");//文件标识  fileid1@#@fileid2
         pointWorkBean.addStringProperty("filePathData");//文件路径  filePath1@#@filePath2
         pointWorkBean.addStringProperty("doorpicid");//门洞照片标识

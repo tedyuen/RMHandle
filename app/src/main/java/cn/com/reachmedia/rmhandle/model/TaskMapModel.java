@@ -18,6 +18,30 @@ import java.util.List;
  */
 public class TaskMapModel extends BaseModel implements Parcelable{
 
+    /**
+     * comNumber : 32
+     * comCount : 100
+     * pointNumber : 223
+     * pointCount : 345
+     * cList : [{"cid":"121","community":"黄埔新苑","lon":"21.33212","lat":"34.33212","status":1,"points":18,"pointe":5}]
+     */
+
+    private int comNumber;
+    private int comCount;
+    private int pointNumber;
+    private int pointCount;
+    /**
+     * cid : 121
+     * community : 黄埔新苑
+     * lon : 21.33212
+     * lat : 34.33212
+     * status : 1
+     * points : 18
+     * pointe : 5
+     */
+
+    private List<CListBean> cList;
+
     @Override
     public int describeContents() {
         return 0;
@@ -27,8 +51,8 @@ public class TaskMapModel extends BaseModel implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(comNumber);
         dest.writeInt(comCount);
-        dest.writeInt(piontNumber);
-        dest.writeInt(piontCount);
+        dest.writeInt(pointNumber);
+        dest.writeInt(pointCount);
         dest.writeList(cList);
     }
 
@@ -37,8 +61,8 @@ public class TaskMapModel extends BaseModel implements Parcelable{
     private TaskMapModel(Parcel in){
         comNumber = in.readInt();
         comCount = in.readInt();
-        piontNumber = in.readInt();
-        piontCount = in.readInt();
+        pointNumber = in.readInt();
+        pointCount = in.readInt();
         cList = in.readArrayList(CListBean.class.getClassLoader());
     }
 
@@ -51,30 +75,6 @@ public class TaskMapModel extends BaseModel implements Parcelable{
             return new TaskMapModel[size];
         }
     };
-
-    /**
-     * comNumber : 32
-     * comCount : 100
-     * piontNumber : 223
-     * piontCount : 345
-     * cList : [{"cid":"121","community":"黄埔新苑","lon":"21.33212","lat":"34.33212","status":1,"pionts":18,"pionte":5}]
-     */
-
-    private int comNumber;
-    private int comCount;
-    private int piontNumber;
-    private int piontCount;
-    /**
-     * cid : 121
-     * community : 黄埔新苑
-     * lon : 21.33212
-     * lat : 34.33212
-     * status : 1
-     * pionts : 18
-     * pionte : 5
-     */
-
-    private List<CListBean> cList;
 
     public int getComNumber() {
         return comNumber;
@@ -92,20 +92,20 @@ public class TaskMapModel extends BaseModel implements Parcelable{
         this.comCount = comCount;
     }
 
-    public int getPiontNumber() {
-        return piontNumber;
+    public int getPointNumber() {
+        return pointNumber;
     }
 
-    public void setPiontNumber(int piontNumber) {
-        this.piontNumber = piontNumber;
+    public void setPointNumber(int pointNumber) {
+        this.pointNumber = pointNumber;
     }
 
-    public int getPiontCount() {
-        return piontCount;
+    public int getPointCount() {
+        return pointCount;
     }
 
-    public void setPiontCount(int piontCount) {
-        this.piontCount = piontCount;
+    public void setPointCount(int pointCount) {
+        this.pointCount = pointCount;
     }
 
     public List<CListBean> getCList() {
@@ -116,14 +116,15 @@ public class TaskMapModel extends BaseModel implements Parcelable{
         this.cList = cList;
     }
 
+
     public static class CListBean {
         private String cid;
         private String community;
         private String lon;
         private String lat;
         private int status;
-        private int pionts;
-        private int pionte;
+        private int points;
+        private int pointe;
 
         public String getCid() {
             return cid;
@@ -165,20 +166,20 @@ public class TaskMapModel extends BaseModel implements Parcelable{
             this.status = status;
         }
 
-        public int getPionts() {
-            return pionts;
+        public int getPoints() {
+            return points;
         }
 
-        public void setPionts(int pionts) {
-            this.pionts = pionts;
+        public void setPoints(int points) {
+            this.points = points;
         }
 
-        public int getPionte() {
-            return pionte;
+        public int getPointe() {
+            return pointe;
         }
 
-        public void setPionte(int pionte) {
-            this.pionte = pionte;
+        public void setPointe(int pointe) {
+            this.pointe = pointe;
         }
     }
 }

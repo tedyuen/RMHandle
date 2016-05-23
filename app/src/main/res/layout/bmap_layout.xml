@@ -17,7 +17,7 @@
             android:gravity="center"
             android:textColor="@color/normal_log_color"
             android:textSize="14sp"
-            android:text="小区:32/100"/>
+            android:text="小区"/>
 
         <TextView
             android:id="@+id/tv_point"
@@ -27,7 +27,7 @@
             android:gravity="center"
             android:textColor="@color/normal_log_color"
             android:textSize="14sp"
-            android:text="点位:232/400"/>
+            android:text="点位"/>
     </LinearLayout>
     <View
         android:layout_below="@id/ll_title"

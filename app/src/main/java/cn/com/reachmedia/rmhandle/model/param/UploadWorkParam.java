@@ -2,6 +2,9 @@ package cn.com.reachmedia.rmhandle.model.param;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 
@@ -29,7 +32,14 @@ public class UploadWorkParam extends TokenParam{
     public String lat;
     public String workTime;
     public String onlineTime;
+    public String deletFileId;
+    public List<FileList> fileList;
 
+    public static class FileList{
+        public String fileId;
+        public String fileXY;
+        public String fileTime;
+    }
 
     public UploadWorkParam(){
         method = AppApiContact.InterfaceMethod.UPLOAD_WORK_METHOD;
@@ -48,7 +58,18 @@ public class UploadWorkParam extends TokenParam{
         this.lat = bean.getLat();
         this.workTime = bean.getWorkTime();
         this.onlineTime = bean.getOnlineTime();
-
+        this.deletFileId = bean.getFiledelete();
+        this.fileList = new ArrayList<>();
+        String[] fileIds = bean.getFileIdData().split("@#@");
+        String[] fileTimes = bean.getFileTime().split("@#@");
+        String[] fileXY = bean.getFileXY().split("@#@");
+        for(int i=0;i<fileIds.length;i++){
+            FileList temp = new FileList();
+            temp.fileId = fileIds[i];
+            temp.fileXY = fileXY[i];
+            temp.fileTime = fileTimes[i];
+            fileList.add(temp);
+        }
     }
 
     public String toJson(){

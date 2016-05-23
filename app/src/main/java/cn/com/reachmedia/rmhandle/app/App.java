@@ -69,6 +69,14 @@ public class App extends Application {
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
         ServiceHelper.getIns().startLocationWorkService(this);
+        SharedPreferencesHelper mSharedPreferencesHelper = SharedPreferencesHelper.getInstance();
+        if(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE)==null){
+            mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE,"123");
+        }
+        if(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE)==null){
+            mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,"456");
+        }
+
     }
 
     public void setUpApiService() {

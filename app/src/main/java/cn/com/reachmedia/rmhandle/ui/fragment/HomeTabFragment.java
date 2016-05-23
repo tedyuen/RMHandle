@@ -143,8 +143,8 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
             param.startime = homeFilterUtil.startTime;
             param.endtime = homeFilterUtil.endTime;
             param.space = homeFilterUtil.getAreaId();
-            param.lon = "123";
-            param.lat = "345";
+            param.lon = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);
+            param.lat = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);
             param.customer = homeFilterUtil.getCustomerId();
             taskIndexController.getTaskIndex(param);
         }

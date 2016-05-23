@@ -23,6 +23,8 @@ public class PointWorkBean {
     private String nativeState;
     private Integer fileCount;
     private String filedelete;
+    private String fileXY;
+    private String fileTime;
     private String fileIdData;
     private String filePathData;
     private String doorpicid;
@@ -35,7 +37,7 @@ public class PointWorkBean {
         this.id = id;
     }
 
-    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, String workTime, String onlineTime, String nativeState, Integer fileCount, String filedelete, String fileIdData, String filePathData, String doorpicid, String doorpic) {
+    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, String workTime, String onlineTime, String nativeState, Integer fileCount, String filedelete, String fileXY, String fileTime, String fileIdData, String filePathData, String doorpicid, String doorpic) {
         this.id = id;
         this.lastId = lastId;
         this.userId = userId;
@@ -53,6 +55,8 @@ public class PointWorkBean {
         this.nativeState = nativeState;
         this.fileCount = fileCount;
         this.filedelete = filedelete;
+        this.fileXY = fileXY;
+        this.fileTime = fileTime;
         this.fileIdData = fileIdData;
         this.filePathData = filePathData;
         this.doorpicid = doorpicid;
@@ -193,6 +197,22 @@ public class PointWorkBean {
 
     public void setFiledelete(String filedelete) {
         this.filedelete = filedelete;
+    }
+
+    public String getFileXY() {
+        return fileXY;
+    }
+
+    public void setFileXY(String fileXY) {
+        this.fileXY = fileXY;
+    }
+
+    public String getFileTime() {
+        return fileTime;
+    }
+
+    public void setFileTime(String fileTime) {
+        this.fileTime = fileTime;
     }
 
     public String getFileIdData() {
