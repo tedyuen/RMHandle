@@ -26,6 +26,8 @@ public class AppSpContact {
     public static final String SP_KEY_LATITUDE = "latitude";
     public static final String SP_KEY_LONGITUDE = "longitude";
 
+    public static final String SP_KEY_ON_LINE_TIME = "onlinetime";
+
     //首页tab
     public static final int SP_KEY_UNDONE = 0;//未完成
     public static final int SP_KEY_DONE = 1;//已完成

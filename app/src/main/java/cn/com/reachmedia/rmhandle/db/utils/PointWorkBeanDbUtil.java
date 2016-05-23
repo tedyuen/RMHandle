@@ -44,9 +44,16 @@ public class PointWorkBeanDbUtil {
     }
 
     public void insertOneData(PointWorkBean pointWorkBean){
-        pointWorkBeanDaoHelper.deleteAll();
+//        pointWorkBeanDaoHelper.deleteAll();
         pointWorkBeanDaoHelper.addData(pointWorkBean);
     }
+
+    public void updateOneData(PointWorkBean pointWorkBean){
+//        pointWorkBeanDaoHelper.deleteAll();
+        pointWorkBeanDaoHelper.updateData(pointWorkBean);
+    }
+
+
 
     /**
      * 获取状态未提交的数据
@@ -60,4 +67,12 @@ public class PointWorkBeanDbUtil {
         return list;
     }
 
+    public PointWorkBean getPointWorkBeanByWPID(String workId,String pointId){
+        return pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.WorkId.eq(workId),
+                        PointWorkBeanDao.Properties.PointId.eq(pointId),
+                        PointWorkBeanDao.Properties.NativeState.notEq("2"),
+                        PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                .unique();
+    }
 }

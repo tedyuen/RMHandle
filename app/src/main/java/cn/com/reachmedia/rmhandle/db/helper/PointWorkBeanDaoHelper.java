@@ -56,6 +56,12 @@ public class PointWorkBeanDaoHelper implements DaoHelperInterface {
         }
     }
 
+    public <T> void updateData(T t){
+        if(pointBeanDao != null && t != null) {
+            pointBeanDao.update((PointWorkBean) t);
+        }
+    }
+
     @Override
     public PointWorkBean getDataById(long id) {
         if(pointBeanDao != null) {
@@ -76,6 +82,12 @@ public class PointWorkBeanDaoHelper implements DaoHelperInterface {
         return null;
     }
 
+
+
+
+
+
+
     public PointWorkBean getDataByWPIDError(String workId,String pointId,int state,String nativeState) {
         if(pointBeanDao != null) {
             return pointBeanDao.queryBuilder()
@@ -90,7 +102,12 @@ public class PointWorkBeanDaoHelper implements DaoHelperInterface {
 
 
 
-
+    public List<PointWorkBean> getDataListByWPID(String state){
+        List<PointWorkBean> list = pointBeanDao.queryBuilder()
+                .where(PointWorkBeanDao.Properties.State.eq(state))
+                .list();
+        return list;
+    }
 
     @Override
     public List getAllData() {

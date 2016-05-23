@@ -33,6 +33,15 @@ public class TimeUtils {
         return date;
     }
 
+    /**
+     * 获取当前时间，格式：2016-05-09 10:00:11
+     * @return
+     */
+    public static String getNowStr(){
+        Calendar date = Calendar.getInstance();
+        return dateAddByDateForString(date.getTime(),"yyyy-MM-dd HH:mm:ss",0);
+    }
+
     public static String getYear(){
         Calendar now = Calendar.getInstance();
         StringBuffer buffer = new StringBuffer();

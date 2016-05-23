@@ -28,6 +28,7 @@ import cn.com.reachmedia.rmhandle.network.http.AppApiService;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
@@ -76,6 +77,7 @@ public class App extends Application {
         if(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE)==null){
             mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,"456");
         }
+        mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_ON_LINE_TIME, TimeUtils.getNowStr());
 
     }
 

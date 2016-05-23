@@ -51,6 +51,7 @@ import cn.com.reachmedia.rmhandle.utils.CropImageUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.PhotoSavePathUtil;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 import cn.com.reachmedia.rmhandle.utils.album.FileTraversal;
@@ -127,7 +128,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     //增加图片按钮数组
     ProportionImageView[] addPhotos;
-
+    boolean insertOrUpdate;
     //当前图片数量
     private int photoCount ;
     private int photoName;
@@ -146,6 +147,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     private ApartmentPointUtils apartmentPointUtils;
     private PointBeanDbUtil pointBeanDbUtil;
+    private PointWorkBeanDbUtil pointWorkBeanDbUtil;
     private PointBean bean;
     private PointListModel pointListModel;
     List<String> commImgList = new ArrayList<>();
@@ -156,6 +158,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         super.onCreate(savedInstanceState);
         apartmentPointUtils = ApartmentPointUtils.getIns();
         pointBeanDbUtil = PointBeanDbUtil.getIns();
+        pointWorkBeanDbUtil = PointWorkBeanDbUtil.getIns();
         bean = pointBeanDbUtil.getPointBeanByWPID(apartmentPointUtils.workId, apartmentPointUtils.pointId);
         pointListModel = apartmentPointUtils.pointListModel;
     }
@@ -248,7 +251,11 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         PointWorkBean pointWorkBean = getPointBean(1,0,"",0,"",mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
-                        PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                        if(insertOrUpdate){
+                            PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                        }else{
+                            PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
+                        }
                         ServiceHelper.getIns().startPointWorkService(getActivity());
                         ToastHelper.showInfo(getActivity(),"提交成功!");
                         new Handler().postDelayed(new Runnable() {
@@ -256,7 +263,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                             public void run() {
                                 getActivity().finish();
                             }
-                        }, 500);
+                        }, 1000);
                     }
                 })
                 .show();
@@ -278,7 +285,11 @@ public class PointDetailFragment extends BaseToolbarFragment {
      * @return
      */
     public PointWorkBean getPointBean(int state,int repairType,String repairDesc,int errorType,String errorDesc,String lon,String lat){
-        PointWorkBean pointWorkBean = new PointWorkBean();
+        PointWorkBean pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPID(bean.getWorkId(),bean.getPointId());
+        insertOrUpdate = pointWorkBean==null;
+        if(insertOrUpdate){
+            pointWorkBean = new PointWorkBean();
+        }
         pointWorkBean.setLastId(bean.getId());
         pointWorkBean.setUserId(bean.getUserId());
         pointWorkBean.setWorkId(bean.getWorkId());
@@ -290,13 +301,15 @@ public class PointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setErrorDesc(errorDesc);
         pointWorkBean.setLon(lon);
         pointWorkBean.setLat(lat);
-        pointWorkBean.setWorkTime("2016-05-09 10:00:11");
-        pointWorkBean.setOnlineTime("2016-05-09 10:00:11");
+        pointWorkBean.setWorkTime(TimeUtils.getNowStr());
+        pointWorkBean.setOnlineTime(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_ON_LINE_TIME));
         pointWorkBean.setNativeState("0");
         pointWorkBean.setFileCount(0);
         pointWorkBean.setFiledelete("");
         pointWorkBean.setFileIdData("");
         pointWorkBean.setFilePathData("");
+        pointWorkBean.setFileXY("");
+        pointWorkBean.setFileTime("");
         pointWorkBean.setDoorpicid("");
         pointWorkBean.setDoorpic("");
         return pointWorkBean;
