@@ -7,11 +7,15 @@ import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
 import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
 import cn.com.reachmedia.rmhandle.model.TaskMapModel;
+import cn.com.reachmedia.rmhandle.model.UploadPicModel;
 import cn.com.reachmedia.rmhandle.model.UploadWorkModel;
 import retrofit.Callback;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
+import retrofit.http.Multipart;
 import retrofit.http.POST;
+import retrofit.http.Part;
+import retrofit.mime.TypedFile;
 
 /**
  * Author:    tedyuen
@@ -87,6 +91,17 @@ public interface AppApiService {
     @POST(AppApiContact.API_ACTION)
     void uploadWork(@Field("json") String json,
                        Callback<UploadWorkModel> cb);
+
+
+    @Multipart
+    @POST(AppApiContact.API_ACTION)
+    void uploadPic(@Field("json") String json,
+                   @Part("file1") TypedFile file1,
+                   @Part("file2") TypedFile file2,
+                   @Part("file3") TypedFile file3,
+                   @Part("communityDoor") TypedFile communityDoor,
+                       Callback<UploadPicModel> cb);
+
 
 
 

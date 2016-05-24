@@ -59,17 +59,22 @@ public class UploadWorkParam extends TokenParam{
         this.workTime = bean.getWorkTime();
         this.onlineTime = bean.getOnlineTime();
         this.deletFileId = bean.getFiledelete();
-        this.fileList = new ArrayList<>();
         String[] fileIds = bean.getFileIdData().split("@#@");
         String[] fileTimes = bean.getFileTime().split("@#@");
         String[] fileXY = bean.getFileXY().split("@#@");
-        for(int i=0;i<fileIds.length;i++){
-            FileList temp = new FileList();
-            temp.fileId = fileIds[i];
-            temp.fileXY = fileXY[i];
-            temp.fileTime = fileTimes[i];
-            fileList.add(temp);
+        if(fileIds.length>1){
+            this.fileList = new ArrayList<>();
+            for(int i=0;i<fileIds.length;i++){
+                FileList temp = new FileList();
+                temp.fileId = fileIds[i];
+                temp.fileXY = fileXY[i];
+                temp.fileTime = fileTimes[i];
+                fileList.add(temp);
+            }
+        }else{
+            this.fileList = null;
         }
+
     }
 
     public String toJson(){

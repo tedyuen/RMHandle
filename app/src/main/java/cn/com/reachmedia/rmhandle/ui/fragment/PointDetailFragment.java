@@ -267,11 +267,18 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     }
                 })
                 .show();
+    }
 
-
-
+    @OnClick(R.id.bt_cant_enter)
+    public void goCannotEnter(){
 
     }
+
+    @OnClick(R.id.bt_report_question)
+    public void goReportQuestion(){
+
+    }
+
 
     /**
      *

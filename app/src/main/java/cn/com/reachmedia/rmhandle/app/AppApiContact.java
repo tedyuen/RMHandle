@@ -58,6 +58,13 @@ public class AppApiContact {
          */
         public static final String UPLOAD_WORK_METHOD = "RM_GCBAPP_uploadWork";
 
+        /**
+         * 3.8 提交工作工作项(图片)接口
+         */
+        public static final String UPLOAD_PIC_METHOD = "RM_GCBAPP_uploadPicFile";
+
+
+
 
 
 
