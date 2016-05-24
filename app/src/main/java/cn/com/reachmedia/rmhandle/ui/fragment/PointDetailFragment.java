@@ -50,6 +50,7 @@ import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 import cn.com.reachmedia.rmhandle.utils.CropImageUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.PhotoSavePathUtil;
+import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
@@ -313,14 +314,31 @@ public class PointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setNativeState("0");
         pointWorkBean.setFileCount(0);
         pointWorkBean.setFiledelete("");
-        pointWorkBean.setFileIdData("");
-        pointWorkBean.setFilePathData("");
-        pointWorkBean.setFileXY("");
-        pointWorkBean.setFileTime("");
-        pointWorkBean.setDoorpicid("");
-        pointWorkBean.setDoorpic("");
-        pointWorkBean.setDoorpicXY("");
-        pointWorkBean.setDoorpicTime("");
+
+        if(photoCount>0){
+            pointWorkBean.setFileIdData(PointWorkBeanDbUtil.getSplitStr(photo_full_id,photoCount));
+            pointWorkBean.setFilePathData(PointWorkBeanDbUtil.getSplitStr(photo_full_path,photoCount));
+            pointWorkBean.setFileXY(PointWorkBeanDbUtil.tempGetXY(photoCount));
+            pointWorkBean.setFileTime(PointWorkBeanDbUtil.tempGetTime(photoCount));
+        }else{
+            pointWorkBean.setFileIdData("");
+            pointWorkBean.setFilePathData("");
+            pointWorkBean.setFileXY("");
+            pointWorkBean.setFileTime("");
+        }
+
+        if(door_photo_full_id!=null){
+            pointWorkBean.setDoorpicid(door_photo_full_id);
+            pointWorkBean.setDoorpic(door_photo_full_path);
+            pointWorkBean.setDoorpicXY(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE)+","+SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE));
+            pointWorkBean.setDoorpicTime(TimeUtils.getNowStr());
+        }else{
+            pointWorkBean.setDoorpicid("");
+            pointWorkBean.setDoorpic("");
+            pointWorkBean.setDoorpicXY("");
+            pointWorkBean.setDoorpicTime("");
+        }
+
         return pointWorkBean;
     }
 
@@ -355,8 +373,14 @@ public class PointDetailFragment extends BaseToolbarFragment {
     private String photo_path;
     //图片全路径
     private String[] photo_full_path;
+    private String[] photo_full_id;
     //楼栋照路径
     private String door_photo_full_path;
+    private String door_photo_full_id;
+    private File doorPhotoFile;
+    private Uri doorOrigUri;
+    private Uri doorCropUri;
+    private boolean doorFlag = false;
 
     /**
      * 初始化图片上传功能
@@ -368,9 +392,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
         origUri = new Uri[photoMaxCount];
         cropUri = new Uri[photoMaxCount];
         photo_full_path = new String[photoMaxCount];
+        photo_full_id = new String[photoMaxCount];
         ImageUtils.photoBitmap = new ArrayList<>();
         // 保存路径为 WoJiaWang/人员ID/portrait
-        photo_path = path + "/advice/";
+        photo_path = path + "/point/";
         addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -454,13 +479,34 @@ public class PointDetailFragment extends BaseToolbarFragment {
             return null;
         }
         // 照片命名
-        String cropFileName = System.currentTimeMillis() + ".jpg";
         // 裁剪头像的绝对路径
-        photo_full_path[photoCount] = photo_path + cropFileName;
+        photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,String.valueOf(photoName),bean.getUserId());
+        photo_full_path[photoCount] = ImageUtils.getPointPicPath(photo_full_id[photoCount],photo_path);
         photoFile[photoCount] = new File(photo_full_path[photoCount]);
         cropUri[photoCount] = Uri.fromFile(photoFile[photoCount]);
         this.origUri[photoCount] = this.cropUri[photoCount];
         return this.cropUri[photoCount];
+    }
+    private Uri getCameraTempFileDoor() {
+        if (PhotoSavePathUtil.checkSDCard()) {
+            File savedir = new File(photo_path);
+            if (!savedir.exists()) {
+                savedir.mkdirs();
+            }
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.toast_sdcard_error),
+                    Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        // 照片命名
+        // 裁剪头像的绝对路径
+        door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,"door",bean.getUserId());
+        door_photo_full_path = ImageUtils.getPointPicPath(door_photo_full_id,photo_path);
+
+        doorPhotoFile = new File(door_photo_full_path);
+        doorCropUri = Uri.fromFile(doorPhotoFile);
+        this.doorOrigUri = this.doorCropUri;
+        return this.doorCropUri;
     }
 
     /**
@@ -567,7 +613,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
                             }
                             //把得到的图片绑定在控件上显示
                             Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
-                            photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp2,path + "advice_" + photoName + ".jpg");
+                            photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,String.valueOf(photoName),bean.getUserId());
+                            photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp2,ImageUtils.getPointPicPath(photo_full_id[photoCount],photo_path));
                             photoName++;
                             ImageUtils.photoBitmap.add(bitmapTemp2);
                             addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size() - 1));
@@ -596,7 +643,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
                     //把得到的图片绑定在控件上显示
                     Bitmap bitmapTemp = ImageUtils.comp(myBitmap);
-                    photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp,path + "advice_" + photoName + ".jpg");
+                    photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,String.valueOf(photoName),bean.getUserId());
+                    photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp,ImageUtils.getPointPicPath(photo_full_id[photoCount],photo_path));
                     photoName++;
                     ImageUtils.photoBitmap.add(bitmapTemp);
                     addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size()-1));
@@ -613,9 +661,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 Bitmap myBitmapDoor = null;
                 try {
                     super.onActivityResult(requestCode, resultCode, data);
-                    byte[] mContent=ImageUtils.readStream(resolver.openInputStream(origUri[photoCount]));
+                    byte[] mContent=ImageUtils.readStream(resolver.openInputStream(doorOrigUri));
                     //图片旋转
-                    int a = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), origUri[photoCount]));
+                    int a = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), doorOrigUri));
                     if(a!=0){
                         myBitmapDoor = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption()),a);
                     }else{
@@ -625,7 +673,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
                     //把得到的图片绑定在控件上显示
                     Bitmap bitmapTemp = ImageUtils.comp(myBitmapDoor);
-                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp,path + "door_" + ".jpg");
+                    door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,"door",bean.getUserId());
+                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp,ImageUtils.getPointPicPath(door_photo_full_id,photo_path));
+                    doorFlag = true;
                     ImageUtils.doorPhotoBitmap = bitmapTemp;
                     ivCommPhoto2.setImageBitmap(ImageUtils.doorPhotoBitmap);
 //                    saveCompressPic(myBitmap);
@@ -647,11 +697,11 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     ivPointPhoto1.setImageBitmap(bmp);
                 }
                 break;
-            case Constant.KITKAT_LESS:
+            case Constant.KITKAT_LESS://门洞照
                 Bitmap myBitmap3 = null;
                 Uri uri = data.getData();
                 String thePath = CropImageUtils.getInstance().getPath(getActivity(), uri);
-                photo_full_path[photoCount] = thePath;
+//                photo_full_path[photoCount] = thePath;
 
 //                System.out.println("4.4以下，选择好图片了:  " + uri);
                 try {
@@ -665,7 +715,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     }
                     //把得到的图片绑定在控件上显示
                     Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap3);
-                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp2,path + "door_" + ".jpg");
+                    door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,"door",bean.getUserId());
+                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp2,ImageUtils.getPointPicPath(door_photo_full_id,photo_path));
+                    doorFlag = true;
                     ImageUtils.doorPhotoBitmap = bitmapTemp2;
                     ivCommPhoto2.setImageBitmap(ImageUtils.doorPhotoBitmap);
                     myBitmap3.recycle();
@@ -673,13 +725,13 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     e.printStackTrace();
                 }
                 break;
-            case Constant.KITKAT_ABOVE:
+            case Constant.KITKAT_ABOVE://门洞照
                 Bitmap myBitmap4 = null;
                 Uri uri3 = data.getData();
                 // 先将这个uri转换为path，然后再转换为uri
 //                System.out.println("4.4以上，选择好图片了");
                 String thePath2 = CropImageUtils.getInstance().getPath(getActivity(), uri3);
-                photo_full_path[photoCount] = thePath2;
+//                photo_full_path[photoCount] = thePath2;
                 try {
                     byte[] mContent4 = ImageUtils.readStream(resolver.openInputStream(uri3));
                     //将字节数组转换为ImageView可调用的Bitmap对象
@@ -691,7 +743,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     }
                     //把得到的图片绑定在控件上显示
                     Bitmap bitmapTemp3 = ImageUtils.comp(myBitmap4);
-                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp3,path + "door_" + ".jpg");
+                    door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,"door",bean.getUserId());
+                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp3,ImageUtils.getPointPicPath(door_photo_full_id,photo_path));
+                    doorFlag = true;
                     ImageUtils.doorPhotoBitmap = bitmapTemp3;
                     ivCommPhoto2.setImageBitmap(ImageUtils.doorPhotoBitmap);
                     myBitmap4.recycle();
@@ -748,7 +802,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
      */
     private void startActionCameraDoor() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, getCameraTempFile());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, getCameraTempFileDoor());
         startActivityForResult(intent, REQUEST_CODE_GETIMAGE_BYCAMERA_DOOR);
     }
 

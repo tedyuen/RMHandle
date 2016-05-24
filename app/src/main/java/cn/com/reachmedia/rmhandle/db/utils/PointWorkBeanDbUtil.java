@@ -8,6 +8,7 @@ import cn.com.reachmedia.rmhandle.dao.PointWorkBeanDao;
 import cn.com.reachmedia.rmhandle.db.helper.PointWorkBeanDaoHelper;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 
 /**
  * Author:    tedyuen
@@ -88,4 +89,45 @@ public class PointWorkBeanDbUtil {
                         PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
                 .unique();
     }
+
+
+    public static String getSplitStr(String[] strs,int count){
+        StringBuffer buffer = new StringBuffer();
+        for(int i=0;i<count;i++){
+            if(i!=0){
+                buffer.append(FILE_SPLIT);
+            }
+            buffer.append(strs[i]);
+        }
+        return buffer.toString();
+    }
+
+    public static String tempGetXY(int count){
+        String xy = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE)+","+SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE);
+        StringBuffer buffer = new StringBuffer();
+
+        for(int i=0;i<count;i++){
+            if(i!=0){
+                buffer.append(FILE_SPLIT);
+            }
+            buffer.append(xy);
+        }
+        return buffer.toString();
+    }
+
+    public static String tempGetTime(int count){
+        String time = TimeUtils.getNowStr();
+        StringBuffer buffer = new StringBuffer();
+
+        for(int i=0;i<count;i++){
+            if(i!=0){
+                buffer.append(FILE_SPLIT);
+            }
+            buffer.append(time);
+        }
+        return buffer.toString();
+    }
+
+
+
 }

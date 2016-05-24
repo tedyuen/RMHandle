@@ -16,6 +16,7 @@ import cn.com.reachmedia.rmhandle.model.param.UploadPicParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.UploadPicController;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 
 /**
  * Author:    tedyuen
@@ -58,6 +59,9 @@ public class PointPicService extends Service {
                     }
                 });
                 String[] filePaths = bean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+                for(int i=0;i<filePaths.length;i++){
+                    System.out.println("filepath==> "+filePaths[i]);
+                }
                 File file1 = new File(filePaths[0]);
                 File file2 = null;
                 File file3 = null;
@@ -80,7 +84,29 @@ public class PointPicService extends Service {
                         file3 = null;
                     }
                 }
-                uploadPicController.uploadPic(uploadPicParam,file1,file2,file3,doorFile);
+
+
+                String file1Id,file2Id,file3Id,communityDoorId,communityDoorXY,communityDoorTime;
+                String[] fileIds = bean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+
+                file1Id = fileIds[0];
+                if(fileIds.length>1 && !StringUtils.isEmpty(fileIds[1])){
+                    file2Id = fileIds[1];
+                }else{
+                    file2Id = "";
+                }
+                if(fileIds.length>2 && !StringUtils.isEmpty(fileIds[2])){
+                    file3Id = fileIds[2];
+                }else{
+                    file3Id = "";
+                }
+
+                communityDoorId = bean.getDoorpicid();
+                communityDoorXY = bean.getDoorpicXY();
+                communityDoorTime = bean.getDoorpicTime();
+
+
+                uploadPicController.uploadPic(uploadPicParam,file1,file2,file3,doorFile,file1Id,file2Id,file3Id,communityDoorId,communityDoorXY,communityDoorTime);
             }
         }
 

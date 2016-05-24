@@ -578,4 +578,17 @@ public class ImageUtils {
 
         return "";
     }
+
+
+    public static String getPointPicId(String workId,String pointId,String index,String userId){
+        return workId + "_" + pointId + "_" + userId + "_" + index + "_" + pointId+"_"+getRandomFour() + ".jpg";
+    }
+
+    public static double getRandomFour(){
+        return Math.random()*9000+1000;
+    }
+
+    public static String getPointPicPath(String picId,String path){
+        return path+picId+".jpg";
+    }
 }

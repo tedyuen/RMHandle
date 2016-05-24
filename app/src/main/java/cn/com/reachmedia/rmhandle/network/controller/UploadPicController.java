@@ -31,18 +31,33 @@ public class UploadPicController extends BaseHttpController<UploadPicModel> {
     private File file3;
     private File communityDoorFile;
 
+    public String file1Id;
+    public String file2Id;
+    public String file3Id;
+    public String communityDoorId;
+    public String communityDoorXY;
+    public String communityDoorTime;
+
     public UploadPicController(){}
 
     public UploadPicController(UiDisplayListener<UploadPicModel> uiDisplayListener){
         super(uiDisplayListener);
     }
 
-    public void uploadPic(UploadPicParam uploadPicParam,File file1,File file2,File file3,File communityDoorFile){
+    public void uploadPic(UploadPicParam uploadPicParam,File file1,File file2,File file3,File communityDoorFile,
+                          String file1Id,String file2Id,String file3Id,
+                          String communityDoorId,String communityDoorXY,String communityDoorTime){
         this.uploadPicParam = uploadPicParam;
         this.file1 = file1;
         this.file2 = file2;
         this.file3 = file3;
         this.communityDoorFile = communityDoorFile;
+        this.file1Id = file1Id;
+        this.file2Id = file2Id;
+        this.file3Id = file3Id;
+        this.communityDoorId = communityDoorId;
+        this.communityDoorXY = communityDoorXY;
+        this.communityDoorTime = communityDoorTime;
         getNetData();
     }
 
@@ -70,8 +85,18 @@ public class UploadPicController extends BaseHttpController<UploadPicModel> {
             tcommunityDoorFile = null;
         }
         TypedString jsons = new TypedString(uploadPicParam.toJson());
+        TypedString tfile1Id = new TypedString(file1Id);
+        TypedString tfile2Id = new TypedString(file2Id);
+        TypedString tfile3Id = new TypedString(file3Id);
+        TypedString tcommunityDoorId = new TypedString(communityDoorId);
+        TypedString tcommunityDoorXY = new TypedString(communityDoorXY);
+        TypedString tcommunityDoorTime = new TypedString(communityDoorTime);
+
         LogUtils.d(TAG, uploadPicParam.toJson());
-        App.getAppApiService().uploadPic(jsons,tfile1,tfile2,tfile3,tcommunityDoorFile,callBack);
+        App.getAppApiService().uploadPic(jsons,tfile1,tfile2,tfile3,tcommunityDoorFile,
+                tfile1Id,tfile2Id,tfile3Id,
+                tcommunityDoorId,tcommunityDoorXY,tcommunityDoorTime,
+                callBack);
     }
 
     public HttpBaseCallBack<UploadPicModel> callBack = new HttpBaseCallBack<UploadPicModel>() {

@@ -95,12 +95,18 @@ public interface AppApiService {
 
 
     @Multipart
-    @POST(AppApiContact.API_ACTION)
+    @POST(AppApiContact.API_ACTION_FILE)
     void uploadPic(@Part("json") TypedString json,
                    @Part("file1") TypedFile file1,
                    @Part("file2") TypedFile file2,
                    @Part("file3") TypedFile file3,
                    @Part("communityDoor") TypedFile communityDoor,
+                   @Part("file1Id") TypedString file1Id,
+                   @Part("file2Id") TypedString file2Id,
+                   @Part("file3Id") TypedString file3Id,
+                   @Part("communityDoorId") TypedString communityDoorId,
+                   @Part("communityDoorXY") TypedString communityDoorXY,
+                   @Part("communityDoorTime") TypedString communityDoorTime,
                        Callback<UploadPicModel> cb);
 
 

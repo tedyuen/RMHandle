@@ -14,6 +14,7 @@ package cn.com.reachmedia.rmhandle.app;
 public class AppApiContact {
     public static final String API_HOST_ST = "http://120.26.65.65:8281/app";//API Host 测试
     public static final String API_ACTION = "/data.api";//api action
+    public static final String API_ACTION_FILE = "/file.api";//api action
 
     public static String getApiHost(){
 
