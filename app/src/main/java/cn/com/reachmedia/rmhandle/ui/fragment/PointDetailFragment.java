@@ -319,6 +319,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setFileTime("");
         pointWorkBean.setDoorpicid("");
         pointWorkBean.setDoorpic("");
+        pointWorkBean.setDoorpicXY("");
+        pointWorkBean.setDoorpicTime("");
         return pointWorkBean;
     }
 

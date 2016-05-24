@@ -46,6 +46,8 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         public final static Property FilePathData = new Property(20, String.class, "filePathData", false, "FILE_PATH_DATA");
         public final static Property Doorpicid = new Property(21, String.class, "doorpicid", false, "DOORPICID");
         public final static Property Doorpic = new Property(22, String.class, "doorpic", false, "DOORPIC");
+        public final static Property DoorpicXY = new Property(23, String.class, "doorpicXY", false, "DOORPIC_XY");
+        public final static Property DoorpicTime = new Property(24, String.class, "doorpicTime", false, "DOORPIC_TIME");
     };
 
 
@@ -83,7 +85,9 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
                 "'FILE_ID_DATA' TEXT," + // 19: fileIdData
                 "'FILE_PATH_DATA' TEXT," + // 20: filePathData
                 "'DOORPICID' TEXT," + // 21: doorpicid
-                "'DOORPIC' TEXT);"); // 22: doorpic
+                "'DOORPIC' TEXT," + // 22: doorpic
+                "'DOORPIC_XY' TEXT," + // 23: doorpicXY
+                "'DOORPIC_TIME' TEXT);"); // 24: doorpicTime
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_POINT_WORK_BEAN_ID ON POINT_WORK_BEAN" +
                 " (ID);");
@@ -214,6 +218,16 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         if (doorpic != null) {
             stmt.bindString(23, doorpic);
         }
+ 
+        String doorpicXY = entity.getDoorpicXY();
+        if (doorpicXY != null) {
+            stmt.bindString(24, doorpicXY);
+        }
+ 
+        String doorpicTime = entity.getDoorpicTime();
+        if (doorpicTime != null) {
+            stmt.bindString(25, doorpicTime);
+        }
     }
 
     /** @inheritdoc */
@@ -248,7 +262,9 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
             cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // fileIdData
             cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // filePathData
             cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // doorpicid
-            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22) // doorpic
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // doorpic
+            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // doorpicXY
+            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24) // doorpicTime
         );
         return entity;
     }
@@ -279,6 +295,8 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         entity.setFilePathData(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
         entity.setDoorpicid(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
         entity.setDoorpic(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
+        entity.setDoorpicXY(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
+        entity.setDoorpicTime(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
      }
     
     /** @inheritdoc */

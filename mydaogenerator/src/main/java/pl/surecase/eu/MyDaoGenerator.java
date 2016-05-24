@@ -72,6 +72,8 @@ public class MyDaoGenerator {
         pointWorkBean.addStringProperty("filePathData");//文件路径  filePath1@#@filePath2
         pointWorkBean.addStringProperty("doorpicid");//门洞照片标识
         pointWorkBean.addStringProperty("doorpic");//门洞照片
+        pointWorkBean.addStringProperty("doorpicXY");//门洞坐标
+        pointWorkBean.addStringProperty("doorpicTime");//门洞时间
     }
 
 

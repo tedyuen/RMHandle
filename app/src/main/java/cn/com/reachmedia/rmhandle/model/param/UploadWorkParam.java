@@ -7,6 +7,7 @@ import java.util.List;
 
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
+import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 
 /**
  * Author:    tedyuen
@@ -59,9 +60,9 @@ public class UploadWorkParam extends TokenParam{
         this.workTime = bean.getWorkTime();
         this.onlineTime = bean.getOnlineTime();
         this.deletFileId = bean.getFiledelete();
-        String[] fileIds = bean.getFileIdData().split("@#@");
-        String[] fileTimes = bean.getFileTime().split("@#@");
-        String[] fileXY = bean.getFileXY().split("@#@");
+        String[] fileIds = bean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+        String[] fileTimes = bean.getFileTime().split(PointWorkBeanDbUtil.FILE_SPLIT);
+        String[] fileXY = bean.getFileXY().split(PointWorkBeanDbUtil.FILE_SPLIT);
         if(fileIds.length>1){
             this.fileList = new ArrayList<>();
             for(int i=0;i<fileIds.length;i++){

@@ -16,6 +16,7 @@ import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.mime.TypedFile;
+import retrofit.mime.TypedString;
 
 /**
  * Author:    tedyuen
@@ -95,7 +96,7 @@ public interface AppApiService {
 
     @Multipart
     @POST(AppApiContact.API_ACTION)
-    void uploadPic(@Field("json") String json,
+    void uploadPic(@Part("json") TypedString json,
                    @Part("file1") TypedFile file1,
                    @Part("file2") TypedFile file2,
                    @Part("file3") TypedFile file3,

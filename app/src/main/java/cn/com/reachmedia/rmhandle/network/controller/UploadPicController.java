@@ -1,14 +1,17 @@
 package cn.com.reachmedia.rmhandle.network.controller;
 
 import java.io.File;
-import java.util.List;
 
+import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.model.UploadPicModel;
 import cn.com.reachmedia.rmhandle.model.param.UploadPicParam;
 import cn.com.reachmedia.rmhandle.network.callback.HttpBaseCallBack;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
+import cn.com.reachmedia.rmhandle.utils.LogUtils;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedFile;
+import retrofit.mime.TypedString;
 
 /**
  * Author:    tedyuen
@@ -43,14 +46,33 @@ public class UploadPicController extends BaseHttpController<UploadPicModel> {
         getNetData();
     }
 
-
     @Override
     protected void getNetData() {
-
+        TypedFile tfile1,tfile2,tfile3,tcommunityDoorFile;
+        if(file1!=null){
+            tfile1 = new TypedFile("image/jpeg",file1);
+        }else{
+            tfile1 = null;
+        }
+        if(file2!=null){
+            tfile2 = new TypedFile("image/jpeg",file2);
+        }else{
+            tfile2 = null;
+        }
+        if(file3!=null){
+            tfile3 = new TypedFile("image/jpeg",file3);
+        }else{
+            tfile3 = null;
+        }
+        if(communityDoorFile!=null){
+            tcommunityDoorFile = new TypedFile("image/jpeg",communityDoorFile);
+        }else{
+            tcommunityDoorFile = null;
+        }
+        TypedString jsons = new TypedString(uploadPicParam.toJson());
+        LogUtils.d(TAG, uploadPicParam.toJson());
+        App.getAppApiService().uploadPic(jsons,tfile1,tfile2,tfile3,tcommunityDoorFile,callBack);
     }
-
-
-
 
     public HttpBaseCallBack<UploadPicModel> callBack = new HttpBaseCallBack<UploadPicModel>() {
         @Override

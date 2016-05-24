@@ -7,6 +7,7 @@ import java.util.List;
 
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
+import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 
 /**
@@ -285,13 +286,13 @@ public class PointListModel extends BaseModel implements Parcelable {
             if(pFileList!=null){
                 for(PFileListBean pFileListBean:pFileList){
                     bFileId.append(pFileListBean.fileId);
-                    bFileId.append("@#@");
+                    bFileId.append(PointWorkBeanDbUtil.FILE_SPLIT);
 
                     bFileUrlB.append(pFileListBean.fileUrlB);
-                    bFileUrlB.append("@#@");
+                    bFileUrlB.append(PointWorkBeanDbUtil.FILE_SPLIT);
 
                     bFileUrlS.append(pFileListBean.fileUrlS);
-                    bFileUrlS.append("@#@");
+                    bFileUrlS.append(PointWorkBeanDbUtil.FILE_SPLIT);
                 }
                 if(pFileList.size()!=0){
                     bean.setFileId(bFileId.toString());

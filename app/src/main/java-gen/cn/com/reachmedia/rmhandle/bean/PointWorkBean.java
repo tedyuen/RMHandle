@@ -29,6 +29,8 @@ public class PointWorkBean {
     private String filePathData;
     private String doorpicid;
     private String doorpic;
+    private String doorpicXY;
+    private String doorpicTime;
 
     public PointWorkBean() {
     }
@@ -37,7 +39,7 @@ public class PointWorkBean {
         this.id = id;
     }
 
-    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, String workTime, String onlineTime, String nativeState, Integer fileCount, String filedelete, String fileXY, String fileTime, String fileIdData, String filePathData, String doorpicid, String doorpic) {
+    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, String workTime, String onlineTime, String nativeState, Integer fileCount, String filedelete, String fileXY, String fileTime, String fileIdData, String filePathData, String doorpicid, String doorpic, String doorpicXY, String doorpicTime) {
         this.id = id;
         this.lastId = lastId;
         this.userId = userId;
@@ -61,6 +63,8 @@ public class PointWorkBean {
         this.filePathData = filePathData;
         this.doorpicid = doorpicid;
         this.doorpic = doorpic;
+        this.doorpicXY = doorpicXY;
+        this.doorpicTime = doorpicTime;
     }
 
     public Long getId() {
@@ -245,6 +249,22 @@ public class PointWorkBean {
 
     public void setDoorpic(String doorpic) {
         this.doorpic = doorpic;
+    }
+
+    public String getDoorpicXY() {
+        return doorpicXY;
+    }
+
+    public void setDoorpicXY(String doorpicXY) {
+        this.doorpicXY = doorpicXY;
+    }
+
+    public String getDoorpicTime() {
+        return doorpicTime;
+    }
+
+    public void setDoorpicTime(String doorpicTime) {
+        this.doorpicTime = doorpicTime;
     }
 
 }

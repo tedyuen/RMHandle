@@ -2,6 +2,7 @@ package cn.com.reachmedia.rmhandle.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
@@ -40,10 +41,10 @@ public class PointWorkService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("start service!");
+        System.out.println("start PointWorkService!");
         String userId = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID);
         if(userId!=null){
-            List<PointWorkBean> listBean = pointWorkBeanDbUtil.getUpload1(userId);
+            List<PointWorkBean> listBean = pointWorkBeanDbUtil.getUpload(userId,"0");//获取文字未提交信息
             for(PointWorkBean bean:listBean){
                 UploadWorkParam param = new UploadWorkParam(bean);
                 UploadWorkController controller = new UploadWorkController(new UiDisplayListener<UploadWorkModel>() {
@@ -52,6 +53,7 @@ public class PointWorkService extends Service {
                         if (data != null) {
                             if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
                                 System.out.println("workId: "+data.getWorkId()+"\tpointId: "+data.getPoint());
+                                pointWorkBeanDbUtil.changeNativeState(data.getWorkId(),data.getPoint(),"0","1");
                             }
                         }
                     }
@@ -62,16 +64,14 @@ public class PointWorkService extends Service {
                     }
                 });
                 controller.getTaskIndex(param);
-
-
             }
-
-
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ServiceHelper.getIns().startPointPicService(getApplicationContext());
+                }
+            },2000);
         }
-
-
-
-
 
         return super.onStartCommand(intent, flags, startId);
     }

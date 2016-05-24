@@ -21,6 +21,9 @@ import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
  * Why & What is modified:
  */
 public class PointWorkBeanDbUtil {
+
+    public final static String FILE_SPLIT = "@#@";
+
     private static PointWorkBeanDbUtil pointWorkBeanDbUtil;
     private PointWorkBeanDbUtil(){
         pointWorkBeanDaoHelper = PointWorkBeanDaoHelper.getInstance();
@@ -59,12 +62,22 @@ public class PointWorkBeanDbUtil {
      * 获取状态未提交的数据
      * @param userId
      */
-    public List<PointWorkBean> getUpload1(String userId){
+    public List<PointWorkBean> getUpload(String userId,String nativeState){
         List<PointWorkBean> list = pointWorkBeanDaoHelper.getDao().queryBuilder()
                 .where(PointWorkBeanDao.Properties.UserId.eq(userId),
-                        PointWorkBeanDao.Properties.NativeState.eq(0))
+                        PointWorkBeanDao.Properties.NativeState.eq(nativeState))
                 .list();
         return list;
+    }
+
+    public void changeNativeState(String workId,String pointId,String preState,String nativeState){
+        PointWorkBean bean = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.WorkId.eq(workId),
+                        PointWorkBeanDao.Properties.PointId.eq(pointId),
+                        PointWorkBeanDao.Properties.NativeState.eq(preState))
+                .unique();
+        bean.setNativeState(nativeState);
+        pointWorkBeanDaoHelper.getDao().update(bean);
     }
 
     public PointWorkBean getPointWorkBeanByWPID(String workId,String pointId){
