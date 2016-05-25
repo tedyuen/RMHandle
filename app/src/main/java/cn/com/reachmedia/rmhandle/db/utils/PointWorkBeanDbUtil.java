@@ -91,16 +91,27 @@ public class PointWorkBeanDbUtil {
     }
 
 
-    public static String getSplitStr(String[] strs,int count){
+    public static String getSplitStr(String[] strs,int startIndex,int count){
         StringBuffer buffer = new StringBuffer();
-        for(int i=0;i<count;i++){
-            if(i!=0){
+        for(int i=startIndex;i<count;i++){
+            if(i!=startIndex){
                 buffer.append(FILE_SPLIT);
             }
             buffer.append(strs[i]);
         }
         return buffer.toString();
     }
+    public static String getSplitStr(List<String> strs,int count){
+        StringBuffer buffer = new StringBuffer();
+        for(int i=0;i<count;i++){
+            if(i!=0){
+                buffer.append(FILE_SPLIT);
+            }
+            buffer.append(strs.get(i));
+        }
+        return buffer.toString();
+    }
+
 
     public static String tempGetXY(int count){
         String xy = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE)+","+SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE);
