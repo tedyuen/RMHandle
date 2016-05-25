@@ -48,7 +48,7 @@ public class ViewHelper {
      * @param urlList
      * @param index
      */
-    public static void getImagePager(Context context, List<String> urlList, final int index){
+    public static void getImagePager(Context context, List<String> urlList, final int index,boolean merge){
         Intent intent = new Intent();
         intent.setClass(context.getApplicationContext(),ImagePagerActivity.class);
         String[] temp = new String[urlList.size()];
@@ -57,6 +57,7 @@ public class ViewHelper {
         }
         intent.putExtra("images", temp);
         intent.putExtra("image_index", index);
+        intent.putExtra("merge", merge);
         context.startActivity(intent);
     }
 

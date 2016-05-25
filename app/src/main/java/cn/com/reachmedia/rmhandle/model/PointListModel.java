@@ -284,15 +284,17 @@ public class PointListModel extends BaseModel implements Parcelable {
             bean.setFileUrlB("");
             bean.setFileUrlS("");
             if(pFileList!=null){
+                int i=0;
                 for(PFileListBean pFileListBean:pFileList){
+                    if(i!=0){
+                        bFileId.append(PointWorkBeanDbUtil.FILE_SPLIT);
+                        bFileUrlB.append(PointWorkBeanDbUtil.FILE_SPLIT);
+                        bFileUrlS.append(PointWorkBeanDbUtil.FILE_SPLIT);
+                    }
                     bFileId.append(pFileListBean.fileId);
-                    bFileId.append(PointWorkBeanDbUtil.FILE_SPLIT);
-
                     bFileUrlB.append(pFileListBean.fileUrlB);
-                    bFileUrlB.append(PointWorkBeanDbUtil.FILE_SPLIT);
-
                     bFileUrlS.append(pFileListBean.fileUrlS);
-                    bFileUrlS.append(PointWorkBeanDbUtil.FILE_SPLIT);
+                    i++;
                 }
                 if(pFileList.size()!=0){
                     bean.setFileId(bFileId.toString());

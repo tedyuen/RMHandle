@@ -61,6 +61,7 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
     private static final String STATE_POSITION = "STATE_POSITION";
 
     private static final String IMAGES = "images";
+    private static final String IMAGES_MERGE = "merge";
     private static final String IMAGES_LOCAL = "imagesLocal";
 
     private static final String IMAGE_POSITION = "image_index";
@@ -91,7 +92,7 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
 
         Bundle bundle = getIntent().getExtras();
         String[] imageUrls = bundle.getStringArray(IMAGES);
-
+        boolean merge = bundle.getBoolean(IMAGES_MERGE);
 
         int pagerPosition = bundle.getInt(IMAGE_POSITION, 0);
 
@@ -112,8 +113,13 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
             pager.setAdapter(new ImagePagerAdapterLocal(this));
             pager.setOffscreenPageLimit(3);
         }else{
-            mBitmap = new Bitmap[imageUrls.length];
-            pager.setAdapter(new ImagePagerAdapter(imageUrls, this));
+            if(merge){
+                mBitmap = new Bitmap[imageUrls.length];
+                pager.setAdapter(new ImagePagerAdapterLocalMerge(this,imageUrls));
+            }else{
+                mBitmap = new Bitmap[imageUrls.length];
+                pager.setAdapter(new ImagePagerAdapter(imageUrls, this));
+            }
         }
         pager.setCurrentItem(pagerPosition);
         SelectImage = pagerPosition;
@@ -149,6 +155,185 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
         outState.putInt(STATE_POSITION, pager.getCurrentItem());
     }
 
+    /**
+     * 本地图片
+     */
+    private class ImagePagerAdapterLocal extends PagerAdapter {
+
+        private LayoutInflater inflater;
+        private Context mContext;
+        ContentResolver resolver;
+
+        ImagePagerAdapterLocal(Context context) {
+            this.mContext = context;
+
+            inflater = getLayoutInflater();
+            resolver = context.getContentResolver();
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            ((ViewPager) container).removeView((View) object);
+        }
+
+        @Override
+        public void finishUpdate(View container) {
+        }
+
+        @Override
+        public int getCount() {
+            return ImageUtils.photoBitmap.size();
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup view, int position) {
+            View imageLayout = inflater.inflate(R.layout.item_pager_image,
+                    view, false);
+
+            PhotoView imageView = (PhotoView) imageLayout
+                    .findViewById(R.id.image);
+            final ProgressBar spinner = (ProgressBar) imageLayout
+                    .findViewById(R.id.loading);
+            imageView.setImageBitmap(ImageUtils.photoBitmap.get(position));
+            ((ViewPager) view).addView(imageLayout, 0);
+            /**
+             * 单击退出
+             * */
+            imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                @Override
+                public void onPhotoTap(View view, float x, float y) {
+                    finish();
+                }
+            });
+            return imageLayout;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view.equals(object);
+        }
+
+        @Override
+        public void restoreState(Parcelable state, ClassLoader loader) {
+        }
+
+        @Override
+        public Parcelable saveState() {
+            return null;
+        }
+
+        @Override
+        public void startUpdate(View container) {
+        }
+
+    }
+    /**
+     * 合并图片
+     */
+    private class ImagePagerAdapterLocalMerge extends PagerAdapter {
+
+        private LayoutInflater inflater;
+        private Context mContext;
+        ContentResolver resolver;
+        private String[] images;
+
+        ImagePagerAdapterLocalMerge(Context context,String[] images) {
+            this.mContext = context;
+            this.images = images;
+            inflater = getLayoutInflater();
+            resolver = context.getContentResolver();
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup view,final int position) {
+            View imageLayout = inflater.inflate(R.layout.item_pager_image,
+                    view, false);
+
+            PhotoView imageView = (PhotoView) imageLayout
+                    .findViewById(R.id.image);
+            final ProgressBar spinner = (ProgressBar) imageLayout
+                    .findViewById(R.id.loading);
+
+            /**
+             * 单击退出
+             * */
+            imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                @Override
+                public void onPhotoTap(View view, float x, float y) {
+                    finish();
+                }
+            });
+
+            if(position<images.length){
+                imageLoader.displayImage(images[position], imageView, options,
+                        new SimpleImageLoadingListener() {
+                            @Override
+                            public void onLoadingStarted(String imageUri, View view) {
+                                spinner.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onLoadingFailed(String imageUri, View view,
+                                                        FailReason failReason) {
+                                String message = null;
+                                switch (failReason.getType()) {
+                                    case IO_ERROR:
+                                        message = "Input/Output error";
+                                        break;
+                                    case DECODING_ERROR:
+                                        message = "Image can't be decoded";
+                                        break;
+                                    case NETWORK_DENIED:
+                                        message = "Downloads are denied";
+                                        break;
+                                    case OUT_OF_MEMORY:
+                                        message = "Out Of Memory error";
+                                        break;
+                                    case UNKNOWN:
+                                        message = "Unknown error";
+                                        break;
+                                }
+                                Toast.makeText(ImagePagerActivity.this, message,
+                                        Toast.LENGTH_SHORT).show();
+
+                                spinner.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onLoadingComplete(String imageUri,
+                                                          View view, Bitmap loadedImage) {
+                                spinner.setVisibility(View.GONE);
+                                mBitmap[position] = loadedImage;
+                            }
+                        });
+
+            }else{
+                imageView.setImageBitmap(ImageUtils.photoBitmap.get(position-images.length));
+            }
+            ((ViewPager) view).addView(imageLayout, 0);
+
+            return imageLayout;
+        }
+
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            ((ViewPager) container).removeView((View) object);
+        }
+
+        @Override
+        public int getCount() {
+            return images.length+ImageUtils.photoBitmap.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view.equals(object);
+        }
+    }
+    /**
+     * 网络图片
+     */
     private class ImagePagerAdapter extends PagerAdapter {
 
         private String[] images;
@@ -289,75 +474,8 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
     }
 
 
-    private class ImagePagerAdapterLocal extends PagerAdapter {
 
-        private LayoutInflater inflater;
-        private Context mContext;
-        ContentResolver resolver;
 
-        ImagePagerAdapterLocal(Context context) {
-            this.mContext = context;
-
-            inflater = getLayoutInflater();
-            resolver = context.getContentResolver();
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            ((ViewPager) container).removeView((View) object);
-        }
-
-        @Override
-        public void finishUpdate(View container) {
-        }
-
-        @Override
-        public int getCount() {
-            return ImageUtils.photoBitmap.size();
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup view, int position) {
-            View imageLayout = inflater.inflate(R.layout.item_pager_image,
-                    view, false);
-
-            PhotoView imageView = (PhotoView) imageLayout
-                    .findViewById(R.id.image);
-            final ProgressBar spinner = (ProgressBar) imageLayout
-                    .findViewById(R.id.loading);
-            imageView.setImageBitmap(ImageUtils.photoBitmap.get(position));
-            ((ViewPager) view).addView(imageLayout, 0);
-            /**
-             * 单击退出
-             * */
-            imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-                @Override
-                public void onPhotoTap(View view, float x, float y) {
-                    finish();
-                }
-            });
-            return imageLayout;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view.equals(object);
-        }
-
-        @Override
-        public void restoreState(Parcelable state, ClassLoader loader) {
-        }
-
-        @Override
-        public Parcelable saveState() {
-            return null;
-        }
-
-        @Override
-        public void startUpdate(View container) {
-        }
-
-    }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

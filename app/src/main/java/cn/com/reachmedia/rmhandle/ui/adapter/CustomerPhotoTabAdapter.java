@@ -117,7 +117,7 @@ public class CustomerPhotoTabAdapter extends BaseAdapter {
                             tempBean.ivPhoto1.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ViewHelper.getImagePager(mContext, imgList, tempIndex);
+                                    ViewHelper.getImagePager(mContext, imgList, tempIndex,false);
                                 }
                             });
                         }
@@ -129,7 +129,7 @@ public class CustomerPhotoTabAdapter extends BaseAdapter {
                             tempBean.ivPhoto2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ViewHelper.getImagePager(mContext, imgList, tempIndex);
+                                    ViewHelper.getImagePager(mContext, imgList, tempIndex,false);
                                 }
                             });
                         }
@@ -141,7 +141,7 @@ public class CustomerPhotoTabAdapter extends BaseAdapter {
                             tempBean.ivPhoto3.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ViewHelper.getImagePager(mContext, imgList, tempIndex);
+                                    ViewHelper.getImagePager(mContext, imgList, tempIndex,false);
                                 }
                             });
                         }

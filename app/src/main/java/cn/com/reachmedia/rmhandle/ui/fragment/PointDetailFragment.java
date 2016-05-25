@@ -153,6 +153,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
     private PointListModel pointListModel;
     List<String> commImgList = new ArrayList<>();
     List<String> cusImgList = new ArrayList<>();
+    String[] prePhotoIds,prePhotoUrlS,prePhotoUrlB;
+    int prePhotoSize;//已有图片数量
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -171,7 +173,6 @@ public class PointDetailFragment extends BaseToolbarFragment {
         ButterKnife.bind(this, rootView);
         custPhotos = new ProportionImageView[]{ivCustPhoto1,ivCustPhoto2,ivCustPhoto3};
         needTitle();
-        initPhoto();
         return rootView;
     }
 
@@ -221,8 +222,6 @@ public class PointDetailFragment extends BaseToolbarFragment {
         }
         //客户文字和照片 end
 
-
-
         if(!StringUtils.isEmpty(pointListModel.getCGatePic())){
             Picasso.with(getActivity()).load(pointListModel.getCGatePic()).placeholder(R.drawable.abc).into(ivCommPhoto1);
         }
@@ -232,6 +231,29 @@ public class PointDetailFragment extends BaseToolbarFragment {
         if(!StringUtils.isEmpty(bean.getCDoorPic())){
             Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.drawable.abc).into(ivCommPhoto2);
         }
+
+        if(!StringUtils.isEmpty(bean.getFileId())){
+            prePhotoIds = bean.getFileId().split(PointWorkBeanDbUtil.FILE_SPLIT);
+        }else{
+            prePhotoIds = new String[0];
+        }
+
+        if(!StringUtils.isEmpty(bean.getFileUrlB())){
+            prePhotoUrlB = bean.getFileUrlB().split(PointWorkBeanDbUtil.FILE_SPLIT);
+        }else{
+            prePhotoUrlB = new String[0];
+        }
+
+        if(!StringUtils.isEmpty(bean.getFileUrlS())){
+            prePhotoUrlS = bean.getFileUrlS().split(PointWorkBeanDbUtil.FILE_SPLIT);
+        }else{
+            prePhotoUrlS = new String[0];
+        }
+        prePhotoSize = prePhotoIds.length;
+        photoCount = prePhotoSize;
+
+
+        initPhoto();
 
     }
 
@@ -396,12 +418,14 @@ public class PointDetailFragment extends BaseToolbarFragment {
         ImageUtils.photoBitmap = new ArrayList<>();
         // 保存路径为 WoJiaWang/人员ID/portrait
         photo_path = path + "/point/";
-        addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageChooseItem();
-            }
-        });
+        if(photoCount<(photoMaxCount-1)) {
+            addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    imageChooseItem();
+                }
+            });
+        }
     }
 
     /**
@@ -567,7 +591,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
             @Override
             public void onClick(View v) {
 //                ToastHelper.showAlert(getActivity(), "咩哈哈");
-                ViewHelper.getImagePagerLocal(getActivity(), tempIndex);
+//                ViewHelper.getImagePagerLocal(getActivity(), tempIndex);
+                ViewHelper.getImagePager(getActivity(), new ArrayList<String>(), tempIndex,true);
 
             }
         });
@@ -841,25 +866,25 @@ public class PointDetailFragment extends BaseToolbarFragment {
     //放大图片
     @OnClick(R.id.iv_comm_photo_1)
     public void goViewCommunityPhoto1(){
-        ViewHelper.getImagePager(getActivity(), commImgList, 0);
+        ViewHelper.getImagePager(getActivity(), commImgList, 0,false);
     }
 
     @OnClick(R.id.iv_comm_photo_3)
     public void goViewCommunityPhoto2(){
-        ViewHelper.getImagePager(getActivity(), commImgList, 1);
+        ViewHelper.getImagePager(getActivity(), commImgList, 1,false);
     }
 
     @OnClick(R.id.iv_cust_photo_1)
     public void goViewCustomerPhoto1(){
-        ViewHelper.getImagePager(getActivity(), cusImgList, 0);
+        ViewHelper.getImagePager(getActivity(), cusImgList, 0,false);
     }
     @OnClick(R.id.iv_cust_photo_2)
     public void goViewCustomerPhoto2(){
-        ViewHelper.getImagePager(getActivity(), cusImgList, 1);
+        ViewHelper.getImagePager(getActivity(), cusImgList, 1,false);
     }
     @OnClick(R.id.iv_cust_photo_3)
     public void goViewCustomerPhoto3(){
-        ViewHelper.getImagePager(getActivity(), cusImgList, 2);
+        ViewHelper.getImagePager(getActivity(), cusImgList, 2,false);
     }
 
 
