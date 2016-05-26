@@ -24,6 +24,8 @@ import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 public class PointWorkBeanDbUtil {
 
     public final static String FILE_SPLIT = "@#@";
+    public final static String FILE_SPLIT2 = ",";
+    public final static String FILE_SPLIT3 = "&";
 
     private static PointWorkBeanDbUtil pointWorkBeanDbUtil;
     private PointWorkBeanDbUtil(){
@@ -111,11 +113,11 @@ public class PointWorkBeanDbUtil {
         }
         return buffer.toString();
     }
-    public static String getSplitStr(List<String> strs,int count){
+    public static String getSplitStrWeb(List<String> strs,int count){
         StringBuffer buffer = new StringBuffer();
         for(int i=0;i<count;i++){
             if(i!=0){
-                buffer.append(FILE_SPLIT);
+                buffer.append(FILE_SPLIT2);
             }
             buffer.append(strs.get(i));
         }
@@ -129,7 +131,7 @@ public class PointWorkBeanDbUtil {
 
         for(int i=0;i<count;i++){
             if(i!=0){
-                buffer.append(FILE_SPLIT);
+                buffer.append(FILE_SPLIT3);
             }
             buffer.append(xy);
         }

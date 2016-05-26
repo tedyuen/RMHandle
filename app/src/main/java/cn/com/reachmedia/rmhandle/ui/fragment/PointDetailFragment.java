@@ -333,7 +333,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
      * @return
      */
     public PointWorkBean getPointBean(int state,int repairType,String repairDesc,int errorType,String errorDesc,String lon,String lat){
-        PointWorkBean pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPID(bean.getWorkId(),bean.getPointId());
+//        PointWorkBean pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPID(bean.getWorkId(),bean.getPointId());
         insertOrUpdate = pointWorkBean==null;
         if(insertOrUpdate){
             pointWorkBean = new PointWorkBean();
@@ -354,7 +354,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setNativeState("0");
         int tempCount = photoCount - prePhotoSize +deletePrePhoto.size();//具体需要上传的文件
         pointWorkBean.setFileCount(tempCount);
-        pointWorkBean.setFiledelete(PointWorkBeanDbUtil.getSplitStr(deletePrePhoto,deletePrePhoto.size()));
+        pointWorkBean.setFiledelete(PointWorkBeanDbUtil.getSplitStrWeb(deletePrePhoto,deletePrePhoto.size()));
 
 
         if(tempCount>0){
@@ -447,7 +447,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         });
 
         for(int i=0;i<prePhotoSize;i++){
-
+            if(i>2) break;
             if(prePhotoUrlS.length>i){
                 if(!StringUtils.isEmpty(prePhotoUrlS[i])){
                     Picasso.with(getActivity()).load(prePhotoUrlS[i]).placeholder(R.drawable.abc).into(addPhotos[i]);
@@ -478,10 +478,6 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     }
                 }
             }
-
-
-
-
             initNextPhotoLocal();
         }
     }
