@@ -65,6 +65,18 @@ public class AppApiContact {
         public static final String UPLOAD_PIC_METHOD = "RM_GCBAPP_uploadPicFile";
 
 
+        /**
+         * 3.9 提交卡密码接口
+         */
+        public static final String CARD_SUBMIT = "RM_GCBAPP_cardSubmit";
+
+        /**
+         * 3.10 小区图片提交
+         */
+        public static final String CPIC_SUBMIT = "RM_GCBAPP_CPicSubmit";
+
+
+
 
 
 

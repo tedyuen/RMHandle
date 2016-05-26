@@ -2,6 +2,7 @@ package cn.com.reachmedia.rmhandle.network.http;
 
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
+import cn.com.reachmedia.rmhandle.model.CardSubmitModel;
 import cn.com.reachmedia.rmhandle.model.LoginModel;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
@@ -93,7 +94,33 @@ public interface AppApiService {
     void uploadWork(@Field("json") String json,
                        Callback<UploadWorkModel> cb);
 
+    /**
+     * 3.9 提交卡密码
+     * @param json
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST(AppApiContact.API_ACTION)
+    void cardSubmit(@Field("json") String json,
+                       Callback<CardSubmitModel> cb);
 
+
+
+    /**
+     * 3.8 提交工作图片
+     * @param json
+     * @param file1
+     * @param file2
+     * @param file3
+     * @param communityDoor
+     * @param file1Id
+     * @param file2Id
+     * @param file3Id
+     * @param communityDoorId
+     * @param communityDoorXY
+     * @param communityDoorTime
+     * @param cb
+     */
     @Multipart
     @POST(AppApiContact.API_ACTION_FILE)
     void uploadPic(@Part("json") TypedString json,
