@@ -159,6 +159,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
     List<String> deletePrePhoto;
     List<String> prePhotoUrlBs = new ArrayList<>();
     int prePhotoSize;//已有图片数量
+    PointWorkBean pointWorkBean;
+    String[] cacheFileId,cacheFilePath;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -240,7 +242,6 @@ public class PointDetailFragment extends BaseToolbarFragment {
         initPhoto();
 
     }
-
     /**
      * 整合网络和本地图片
      */
@@ -266,8 +267,11 @@ public class PointDetailFragment extends BaseToolbarFragment {
             prePhotoUrlS = new String[0];
         }
         prePhotoSize = prePhotoIds.length;
-
-
+        pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(bean.getWorkId(),bean.getPointId());
+        if(pointWorkBean!=null){
+            cacheFileId = pointWorkBean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+            cacheFilePath = pointWorkBean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+        }
 
     }
 
@@ -432,6 +436,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         photo_full_path = new String[photoMaxCount];
         photo_full_id = new String[photoMaxCount];
         ImageUtils.photoBitmap = new ArrayList<>();
+        ImageUtils.cacheBitmap = new ArrayList<>();
         // 保存路径为 WoJiaWang/人员ID/portrait
         photo_path = path + "/point/";
         addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
@@ -440,11 +445,43 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 imageChooseItem();
             }
         });
+
         for(int i=0;i<prePhotoSize;i++){
 
-            if(!StringUtils.isEmpty(prePhotoUrlS[i])){
-                Picasso.with(getActivity()).load(prePhotoUrlS[i]).placeholder(R.drawable.abc).into(addPhotos[i]);
+            if(prePhotoUrlS.length>i){
+                if(!StringUtils.isEmpty(prePhotoUrlS[i])){
+                    Picasso.with(getActivity()).load(prePhotoUrlS[i]).placeholder(R.drawable.abc).into(addPhotos[i]);
+                }
+            }else{
+                if(pointWorkBean!=null){
+                    for(int j=0;j<cacheFileId.length;j++){
+                        if(prePhotoIds[i].equals(cacheFileId[j])){
+                            Bitmap myBitmap4 = null;
+                            String str = cacheFilePath[j];
+                            try {
+                                byte[] mContent3 = ImageUtils.readStream(new FileInputStream(str));
+                                int b = ImageUtils.getExifOrientation(str);
+                                if (b != 0) {
+                                    myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
+                                } else {
+                                    myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
+                                }
+                                Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
+                                ImageUtils.cacheBitmap.add(bitmapTemp2);
+                                addPhotos[i].setImageBitmap(bitmapTemp2);
+                                myBitmap4.recycle();
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
+                            break;
+                        }
+                    }
+                }
             }
+
+
+
+
             initNextPhotoLocal();
         }
     }

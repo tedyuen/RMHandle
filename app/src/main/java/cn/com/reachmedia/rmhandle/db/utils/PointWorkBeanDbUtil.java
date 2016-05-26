@@ -90,6 +90,16 @@ public class PointWorkBeanDbUtil {
                 .unique();
     }
 
+    public PointWorkBean getPointWorkBeanByWPIDAll(String workId,String pointId){
+        return pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.WorkId.eq(workId),
+                        PointWorkBeanDao.Properties.PointId.eq(pointId),
+                        PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                .unique();
+    }
+
+
+
 
     public static String getSplitStr(String[] strs,int startIndex,int count){
         StringBuffer buffer = new StringBuffer();
