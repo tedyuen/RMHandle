@@ -131,10 +131,12 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
         activity.onRefresh();
     }
 
-    public void onSuccessDisplay(PointListModel data){
+    public void onSuccessDisplay(PointListModel data,boolean swipeflag){
         if(mSwipeContainer==null) return;
-        mSwipeContainer.setRefreshing(false);
-        mPageListView.setState(PageListView.PageListViewState.Idle);
+        if(swipeflag){
+            mSwipeContainer.setRefreshing(false);
+            mPageListView.setState(PageListView.PageListViewState.Idle);
+        }
         if(data!=null) {
             PointBeanDaoHelper pointBeanDaoHelper = PointBeanDaoHelper.getInstance();
             List<PointBean> list = null;

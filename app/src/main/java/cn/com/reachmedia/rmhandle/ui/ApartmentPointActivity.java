@@ -2,6 +2,7 @@ package cn.com.reachmedia.rmhandle.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
+import com.google.gson.Gson;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 
 import java.util.HashMap;
@@ -43,6 +45,8 @@ import cn.com.reachmedia.rmhandle.ui.dialog.ApartmentPhoneDialogFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentPointTabFragment;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
+import cn.com.reachmedia.rmhandle.utils.LogUtils;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 
 /**
  * Author:    tedyuen
@@ -140,6 +144,13 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         });
         mPager.setCurrentItem(0);
         onRefresh();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateData(false);
+            }
+        },100);
     }
 
     private static class NavigationAdapter extends CacheFragmentStatePagerAdapter {
@@ -251,25 +262,51 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     public void onSuccessDisplay(PointListModel data) {
         if (data != null) {
             if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
-                this.data = data;
-                tv_carddesc.setText("密码："+data.getCarddesc());
-                tv_doordesc.setText("门卡备注："+data.getDoordesc());
-                ApartmentPointUtils.getIns().pointListModel = data;
-                List<PointListModel.NewListBean> newList = data.getNewList();
-                PointBeanDbUtil util = PointBeanDbUtil.getIns();
-                util.insertData(newList,communityId,homeFilterUtil.startTime,homeFilterUtil.endTime);
-
-//                PointWorkBeanDbUtil.getIns().insertData(newList);
-
-                resetTitle(util.getItemNumber());
-                for(Integer key:fragmentMap.keySet()){
-                    fragmentMap.get(key).onSuccessDisplay(data);
-                }
-
-
+                mSharedPreferencesHelper.putString(communityId+"_"+homeFilterUtil.startTime,data.toJson());
+                updateData(true);
             }
         }
     }
+
+
+    public void updateData(boolean swipeflag){
+        String dataJson = mSharedPreferencesHelper.getString(communityId+"_"+homeFilterUtil.startTime);
+        System.out.println("=======>   1");
+        if(!StringUtils.isEmpty(dataJson)){
+            System.out.println("=======>   2");
+
+            Gson gson = new Gson();
+            try{
+                System.out.println("=======>   3");
+
+                PointListModel data = gson.fromJson(dataJson,PointListModel.class);
+                if(data!=null){
+                    System.out.println("=======>   4");
+
+                    this.data = data;
+                    tv_carddesc.setText("密码："+data.getCarddesc());
+                    tv_doordesc.setText("门卡备注："+data.getDoordesc());
+                    ApartmentPointUtils.getIns().pointListModel = data;
+                    List<PointListModel.NewListBean> newList = data.getNewList();
+                    PointBeanDbUtil util = PointBeanDbUtil.getIns();
+                    util.insertData(newList,communityId,homeFilterUtil.startTime,homeFilterUtil.endTime);
+                    resetTitle(util.getItemNumber());
+                    System.out.println("=======>   7   "+fragmentMap.keySet().size());
+
+                    for(Integer key:fragmentMap.keySet()){
+                        System.out.println("=======>   5");
+
+                        fragmentMap.get(key).onSuccessDisplay(data,swipeflag);
+                    }
+                }
+            }catch (Exception e){
+                System.out.println("=======>   6");
+
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     @Override
     public void onFailDisplay(String errorMsg) {
