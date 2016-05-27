@@ -20,6 +20,8 @@ public class PointWorkBean {
     private String lat;
     private String workTime;
     private String onlineTime;
+    private java.util.Date starttime;
+    private String communityid;
     private String nativeState;
     private Integer fileCount;
     private String filedelete;
@@ -39,7 +41,7 @@ public class PointWorkBean {
         this.id = id;
     }
 
-    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, String workTime, String onlineTime, String nativeState, Integer fileCount, String filedelete, String fileXY, String fileTime, String fileIdData, String filePathData, String doorpicid, String doorpic, String doorpicXY, String doorpicTime) {
+    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, String workTime, String onlineTime, java.util.Date starttime, String communityid, String nativeState, Integer fileCount, String filedelete, String fileXY, String fileTime, String fileIdData, String filePathData, String doorpicid, String doorpic, String doorpicXY, String doorpicTime) {
         this.id = id;
         this.lastId = lastId;
         this.userId = userId;
@@ -54,6 +56,8 @@ public class PointWorkBean {
         this.lat = lat;
         this.workTime = workTime;
         this.onlineTime = onlineTime;
+        this.starttime = starttime;
+        this.communityid = communityid;
         this.nativeState = nativeState;
         this.fileCount = fileCount;
         this.filedelete = filedelete;
@@ -177,6 +181,22 @@ public class PointWorkBean {
 
     public void setOnlineTime(String onlineTime) {
         this.onlineTime = onlineTime;
+    }
+
+    public java.util.Date getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(java.util.Date starttime) {
+        this.starttime = starttime;
+    }
+
+    public String getCommunityid() {
+        return communityid;
+    }
+
+    public void setCommunityid(String communityid) {
+        this.communityid = communityid;
     }
 
     public String getNativeState() {

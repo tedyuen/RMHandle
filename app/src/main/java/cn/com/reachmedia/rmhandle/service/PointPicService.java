@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 
+import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
@@ -50,7 +51,12 @@ public class PointPicService extends Service {
                 UploadPicController uploadPicController = new UploadPicController(new UiDisplayListener<UploadPicModel>() {
                     @Override
                     public void onSuccessDisplay(UploadPicModel data) {
-
+                        if (data != null) {
+                            if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
+                                System.out.println("workId: "+data.getWorkId()+"\tpointId: "+data.getPoint());
+                                pointWorkBeanDbUtil.changeNativeState(data.getWorkId(),data.getPoint(),"1","2");
+                            }
+                        }
                     }
 
                     @Override

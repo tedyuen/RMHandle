@@ -37,17 +37,19 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         public final static Property Lat = new Property(11, String.class, "lat", false, "LAT");
         public final static Property WorkTime = new Property(12, String.class, "workTime", false, "WORK_TIME");
         public final static Property OnlineTime = new Property(13, String.class, "onlineTime", false, "ONLINE_TIME");
-        public final static Property NativeState = new Property(14, String.class, "nativeState", false, "NATIVE_STATE");
-        public final static Property FileCount = new Property(15, Integer.class, "fileCount", false, "FILE_COUNT");
-        public final static Property Filedelete = new Property(16, String.class, "filedelete", false, "FILEDELETE");
-        public final static Property FileXY = new Property(17, String.class, "fileXY", false, "FILE_XY");
-        public final static Property FileTime = new Property(18, String.class, "fileTime", false, "FILE_TIME");
-        public final static Property FileIdData = new Property(19, String.class, "fileIdData", false, "FILE_ID_DATA");
-        public final static Property FilePathData = new Property(20, String.class, "filePathData", false, "FILE_PATH_DATA");
-        public final static Property Doorpicid = new Property(21, String.class, "doorpicid", false, "DOORPICID");
-        public final static Property Doorpic = new Property(22, String.class, "doorpic", false, "DOORPIC");
-        public final static Property DoorpicXY = new Property(23, String.class, "doorpicXY", false, "DOORPIC_XY");
-        public final static Property DoorpicTime = new Property(24, String.class, "doorpicTime", false, "DOORPIC_TIME");
+        public final static Property Starttime = new Property(14, java.util.Date.class, "starttime", false, "STARTTIME");
+        public final static Property Communityid = new Property(15, String.class, "communityid", false, "COMMUNITYID");
+        public final static Property NativeState = new Property(16, String.class, "nativeState", false, "NATIVE_STATE");
+        public final static Property FileCount = new Property(17, Integer.class, "fileCount", false, "FILE_COUNT");
+        public final static Property Filedelete = new Property(18, String.class, "filedelete", false, "FILEDELETE");
+        public final static Property FileXY = new Property(19, String.class, "fileXY", false, "FILE_XY");
+        public final static Property FileTime = new Property(20, String.class, "fileTime", false, "FILE_TIME");
+        public final static Property FileIdData = new Property(21, String.class, "fileIdData", false, "FILE_ID_DATA");
+        public final static Property FilePathData = new Property(22, String.class, "filePathData", false, "FILE_PATH_DATA");
+        public final static Property Doorpicid = new Property(23, String.class, "doorpicid", false, "DOORPICID");
+        public final static Property Doorpic = new Property(24, String.class, "doorpic", false, "DOORPIC");
+        public final static Property DoorpicXY = new Property(25, String.class, "doorpicXY", false, "DOORPIC_XY");
+        public final static Property DoorpicTime = new Property(26, String.class, "doorpicTime", false, "DOORPIC_TIME");
     };
 
 
@@ -77,17 +79,19 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
                 "'LAT' TEXT," + // 11: lat
                 "'WORK_TIME' TEXT," + // 12: workTime
                 "'ONLINE_TIME' TEXT," + // 13: onlineTime
-                "'NATIVE_STATE' TEXT," + // 14: nativeState
-                "'FILE_COUNT' INTEGER," + // 15: fileCount
-                "'FILEDELETE' TEXT," + // 16: filedelete
-                "'FILE_XY' TEXT," + // 17: fileXY
-                "'FILE_TIME' TEXT," + // 18: fileTime
-                "'FILE_ID_DATA' TEXT," + // 19: fileIdData
-                "'FILE_PATH_DATA' TEXT," + // 20: filePathData
-                "'DOORPICID' TEXT," + // 21: doorpicid
-                "'DOORPIC' TEXT," + // 22: doorpic
-                "'DOORPIC_XY' TEXT," + // 23: doorpicXY
-                "'DOORPIC_TIME' TEXT);"); // 24: doorpicTime
+                "'STARTTIME' INTEGER," + // 14: starttime
+                "'COMMUNITYID' TEXT," + // 15: communityid
+                "'NATIVE_STATE' TEXT," + // 16: nativeState
+                "'FILE_COUNT' INTEGER," + // 17: fileCount
+                "'FILEDELETE' TEXT," + // 18: filedelete
+                "'FILE_XY' TEXT," + // 19: fileXY
+                "'FILE_TIME' TEXT," + // 20: fileTime
+                "'FILE_ID_DATA' TEXT," + // 21: fileIdData
+                "'FILE_PATH_DATA' TEXT," + // 22: filePathData
+                "'DOORPICID' TEXT," + // 23: doorpicid
+                "'DOORPIC' TEXT," + // 24: doorpic
+                "'DOORPIC_XY' TEXT," + // 25: doorpicXY
+                "'DOORPIC_TIME' TEXT);"); // 26: doorpicTime
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_POINT_WORK_BEAN_ID ON POINT_WORK_BEAN" +
                 " (ID);");
@@ -174,59 +178,69 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
             stmt.bindString(14, onlineTime);
         }
  
+        java.util.Date starttime = entity.getStarttime();
+        if (starttime != null) {
+            stmt.bindLong(15, starttime.getTime());
+        }
+ 
+        String communityid = entity.getCommunityid();
+        if (communityid != null) {
+            stmt.bindString(16, communityid);
+        }
+ 
         String nativeState = entity.getNativeState();
         if (nativeState != null) {
-            stmt.bindString(15, nativeState);
+            stmt.bindString(17, nativeState);
         }
  
         Integer fileCount = entity.getFileCount();
         if (fileCount != null) {
-            stmt.bindLong(16, fileCount);
+            stmt.bindLong(18, fileCount);
         }
  
         String filedelete = entity.getFiledelete();
         if (filedelete != null) {
-            stmt.bindString(17, filedelete);
+            stmt.bindString(19, filedelete);
         }
  
         String fileXY = entity.getFileXY();
         if (fileXY != null) {
-            stmt.bindString(18, fileXY);
+            stmt.bindString(20, fileXY);
         }
  
         String fileTime = entity.getFileTime();
         if (fileTime != null) {
-            stmt.bindString(19, fileTime);
+            stmt.bindString(21, fileTime);
         }
  
         String fileIdData = entity.getFileIdData();
         if (fileIdData != null) {
-            stmt.bindString(20, fileIdData);
+            stmt.bindString(22, fileIdData);
         }
  
         String filePathData = entity.getFilePathData();
         if (filePathData != null) {
-            stmt.bindString(21, filePathData);
+            stmt.bindString(23, filePathData);
         }
  
         String doorpicid = entity.getDoorpicid();
         if (doorpicid != null) {
-            stmt.bindString(22, doorpicid);
+            stmt.bindString(24, doorpicid);
         }
  
         String doorpic = entity.getDoorpic();
         if (doorpic != null) {
-            stmt.bindString(23, doorpic);
+            stmt.bindString(25, doorpic);
         }
  
         String doorpicXY = entity.getDoorpicXY();
         if (doorpicXY != null) {
-            stmt.bindString(24, doorpicXY);
+            stmt.bindString(26, doorpicXY);
         }
  
         String doorpicTime = entity.getDoorpicTime();
         if (doorpicTime != null) {
-            stmt.bindString(25, doorpicTime);
+            stmt.bindString(27, doorpicTime);
         }
     }
 
@@ -254,17 +268,19 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
             cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // lat
             cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // workTime
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // onlineTime
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // nativeState
-            cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15), // fileCount
-            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // filedelete
-            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // fileXY
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // fileTime
-            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // fileIdData
-            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // filePathData
-            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // doorpicid
-            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // doorpic
-            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // doorpicXY
-            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24) // doorpicTime
+            cursor.isNull(offset + 14) ? null : new java.util.Date(cursor.getLong(offset + 14)), // starttime
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // communityid
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // nativeState
+            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // fileCount
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // filedelete
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // fileXY
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // fileTime
+            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // fileIdData
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // filePathData
+            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // doorpicid
+            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24), // doorpic
+            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // doorpicXY
+            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26) // doorpicTime
         );
         return entity;
     }
@@ -286,17 +302,19 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         entity.setLat(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
         entity.setWorkTime(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
         entity.setOnlineTime(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setNativeState(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setFileCount(cursor.isNull(offset + 15) ? null : cursor.getInt(offset + 15));
-        entity.setFiledelete(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
-        entity.setFileXY(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
-        entity.setFileTime(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
-        entity.setFileIdData(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
-        entity.setFilePathData(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
-        entity.setDoorpicid(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
-        entity.setDoorpic(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
-        entity.setDoorpicXY(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
-        entity.setDoorpicTime(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
+        entity.setStarttime(cursor.isNull(offset + 14) ? null : new java.util.Date(cursor.getLong(offset + 14)));
+        entity.setCommunityid(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setNativeState(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setFileCount(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
+        entity.setFiledelete(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setFileXY(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setFileTime(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setFileIdData(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
+        entity.setFilePathData(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
+        entity.setDoorpicid(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
+        entity.setDoorpic(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
+        entity.setDoorpicXY(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
+        entity.setDoorpicTime(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
      }
     
     /** @inheritdoc */

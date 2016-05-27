@@ -138,7 +138,6 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
             mPageListView.setState(PageListView.PageListViewState.Idle);
         }
         if(data!=null) {
-            PointBeanDaoHelper pointBeanDaoHelper = PointBeanDaoHelper.getInstance();
             List<PointBean> list = null;
             switch (listType){
                 case 1:

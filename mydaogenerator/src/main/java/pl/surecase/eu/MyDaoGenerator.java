@@ -63,6 +63,8 @@ public class MyDaoGenerator {
         pointWorkBean.addStringProperty("lat");
         pointWorkBean.addStringProperty("workTime");
         pointWorkBean.addStringProperty("onlineTime");
+        pointWorkBean.addDateProperty("starttime");
+        pointWorkBean.addStringProperty("communityid");
         pointWorkBean.addStringProperty("nativeState");//0:未同步，1:已同步未同步图片，2:全部同步
         pointWorkBean.addIntProperty("fileCount");
         pointWorkBean.addStringProperty("filedelete");//文件删除列表  321,372,111

@@ -271,18 +271,11 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 
     public void updateData(boolean swipeflag){
         String dataJson = mSharedPreferencesHelper.getString(communityId+"_"+homeFilterUtil.startTime);
-        System.out.println("=======>   1");
         if(!StringUtils.isEmpty(dataJson)){
-            System.out.println("=======>   2");
-
             Gson gson = new Gson();
             try{
-                System.out.println("=======>   3");
-
                 PointListModel data = gson.fromJson(dataJson,PointListModel.class);
                 if(data!=null){
-                    System.out.println("=======>   4");
-
                     this.data = data;
                     tv_carddesc.setText("密码："+data.getCarddesc());
                     tv_doordesc.setText("门卡备注："+data.getDoordesc());
@@ -290,18 +283,12 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                     List<PointListModel.NewListBean> newList = data.getNewList();
                     PointBeanDbUtil util = PointBeanDbUtil.getIns();
                     util.insertData(newList,communityId,homeFilterUtil.startTime,homeFilterUtil.endTime);
-                    resetTitle(util.getItemNumber());
-                    System.out.println("=======>   7   "+fragmentMap.keySet().size());
-
+                    resetTitle(util.getItemNumber(communityId,homeFilterUtil.startTime));
                     for(Integer key:fragmentMap.keySet()){
-                        System.out.println("=======>   5");
-
                         fragmentMap.get(key).onSuccessDisplay(data,swipeflag);
                     }
                 }
             }catch (Exception e){
-                System.out.println("=======>   6");
-
                 e.printStackTrace();
             }
         }

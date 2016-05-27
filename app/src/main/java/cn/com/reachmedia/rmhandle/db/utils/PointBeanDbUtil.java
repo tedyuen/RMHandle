@@ -7,6 +7,7 @@ import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.dao.PointBeanDao;
+import cn.com.reachmedia.rmhandle.dao.PointWorkBeanDao;
 import cn.com.reachmedia.rmhandle.db.helper.PointBeanDaoHelper;
 import cn.com.reachmedia.rmhandle.db.helper.PointWorkBeanDaoHelper;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
@@ -50,29 +51,72 @@ public class PointBeanDbUtil {
         }
     }
 
-    public long[] getItemNumber(){
-        return new long[]{getNewNumber(),getEndNumber(),getErrorNumber()};
+    public long[] getItemNumber(String communityid,String starttime){
+        return new long[]{getNewNumber(communityid,starttime),getEndNumber(communityid,starttime),getErrorNumber(communityid,starttime)};
     }
 
-    private long getNewNumber(){
-        return pointBeanDaoHelper.getDao().queryBuilder()
+    /**
+     * 0 |未完成 |1 正常完成 |2 报修 | 3 报错
+     * @param communityid
+     * @param starttime
+     * @return
+     */
+    private long getNewNumber(String communityid,String starttime){
+        long count = pointBeanDaoHelper.getDao().queryBuilder()
                 .where(PointBeanDao.Properties.State.eq(0),
-                        PointBeanDao.Properties.StateType.eq(0))
+                        PointBeanDao.Properties.StateType.eq(0),
+                        PointBeanDao.Properties.Communityid.eq(communityid),
+                        PointBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
+                        PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
                 .count();
+        long count2 = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.State.ge(1),//1,2,3
+                        PointWorkBeanDao.Properties.NativeState.eq("0"),//未上传
+                        PointWorkBeanDao.Properties.Communityid.eq(communityid),
+                        PointWorkBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
+                        PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                .count();
+
+        System.out.println("getNewNumber:"+count+":"+count2);
+        return count-count2;
     }
 
-    private long getEndNumber(){
-        return pointBeanDaoHelper.getDao().queryBuilder()
+    private long getEndNumber(String communityid,String starttime){
+        long count = pointBeanDaoHelper.getDao().queryBuilder()
                 .where(PointBeanDao.Properties.State.eq(1),
-                        PointBeanDao.Properties.StateType.eq(1))
+                        PointBeanDao.Properties.StateType.eq(1),
+                        PointBeanDao.Properties.Communityid.eq(communityid),
+                        PointBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
+                        PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
                 .count();
+        long count2 = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.State.eq(1),
+                        PointWorkBeanDao.Properties.NativeState.eq("0"),//未上传
+                        PointWorkBeanDao.Properties.Communityid.eq(communityid),
+                        PointWorkBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
+                        PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                .count();
+        System.out.println("getEndNumber:"+count+":"+count2);
+        return count+count2;
     }
 
-    private long getErrorNumber(){
-        return pointBeanDaoHelper.getDao().queryBuilder()
+    private long getErrorNumber(String communityid,String starttime){
+        long count = pointBeanDaoHelper.getDao().queryBuilder()
                 .where(PointBeanDao.Properties.State.eq(1),
-                        PointBeanDao.Properties.StateType.notEq(1))
+                        PointBeanDao.Properties.StateType.notEq(1),
+                        PointBeanDao.Properties.Communityid.eq(communityid),
+                        PointBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
+                        PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
                 .count();
+        long count2 = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.State.ge(2),
+                        PointWorkBeanDao.Properties.NativeState.eq("0"),//未上传
+                        PointWorkBeanDao.Properties.Communityid.eq(communityid),
+                        PointWorkBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
+                        PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                .count();
+        System.out.println("getEndNumber:"+count+":"+count2);
+        return count+count2;
     }
 //---------------------------------------------
     public List<PointBean> getNewList(String communityid,String starttime){
