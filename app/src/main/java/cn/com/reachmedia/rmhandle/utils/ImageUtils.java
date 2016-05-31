@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,6 +31,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import cn.com.reachmedia.rmhandle.R;
 
 /**
  * Author:    tedyuen
@@ -44,7 +47,8 @@ import java.util.List;
  */
 public class ImageUtils {
     public static List<Bitmap> photoBitmap;
-    public static List<Bitmap> cacheBitmap;
+    public static List<Bitmap> cacheBitmap;//提交了id，没有提交图片
+    public static List<Bitmap> cacheLoaclBitmap;//id和图片都没提交
     public static Bitmap doorPhotoBitmap;
 
     private final static String SDCARD_MNT = "/mnt/sdcard";
@@ -152,7 +156,13 @@ public class ImageUtils {
      *
      * @param bitmap
      */
-    public static String saveCompressPicPath(Bitmap bitmap,String path) {
+    public static String saveCompressPicPath(Bitmap bitmap,String path,String basePath) {
+        if (PhotoSavePathUtil.checkSDCard()) {
+            File savedir = new File(basePath);
+            if (!savedir.exists()) {
+                savedir.mkdirs();
+            }
+        }
         if (bitmap != null) {
             File file = new File(path);
             if (!file.exists()) {
@@ -582,7 +592,7 @@ public class ImageUtils {
 
 
     public static String getPointPicId(String workId,String pointId,String index,String userId){
-        return workId + "_" + pointId + "_" + userId + "_" + index + "_" + pointId+"_"+getRandomFour() + ".jpg";
+        return workId + "_" + pointId + "_" + userId + "_" + index + "_" + pointId+"_"+Math.round(getRandomFour());
     }
 
     public static double getRandomFour(){

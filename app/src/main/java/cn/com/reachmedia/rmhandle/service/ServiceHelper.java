@@ -32,7 +32,7 @@ public class ServiceHelper {
     }
 
     public void startPointPicService(Context context){
-        context.startService(new Intent(context,PointPicService.class));
+//        context.startService(new Intent(context,PointPicService.class));
 
     }
 

@@ -28,6 +28,7 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.HomeTabFragment;
 import cn.com.reachmedia.rmhandle.ui.interf.HomeUiDataUpdate;
@@ -359,4 +360,9 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         triggleFilter();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ServiceHelper.getIns().startPointWorkService(this);
+    }
 }

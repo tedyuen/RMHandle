@@ -62,7 +62,7 @@ public class UploadWorkParam extends TokenParam{
         this.deletFileId = bean.getFiledelete();
         String[] fileIds = bean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
         String[] fileTimes = bean.getFileTime().split(PointWorkBeanDbUtil.FILE_SPLIT);
-        String[] fileXY = bean.getFileXY().split(PointWorkBeanDbUtil.FILE_SPLIT);
+        String[] fileXY = bean.getFileXY().split(PointWorkBeanDbUtil.FILE_SPLIT3);
         if(fileIds.length>1){
             this.fileList = new ArrayList<>();
             for(int i=0;i<fileIds.length;i++){

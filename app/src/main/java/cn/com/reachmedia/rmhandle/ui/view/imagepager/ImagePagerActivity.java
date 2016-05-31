@@ -39,6 +39,7 @@ import java.io.IOException;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.LogUtils;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -62,6 +63,7 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
 
     private static final String IMAGES = "images";
     private static final String IMAGES_MERGE = "merge";
+    private static final String IMAGES_LOCAL_SIZE = "local_size";
     private static final String IMAGES_LOCAL = "imagesLocal";
 
     private static final String IMAGE_POSITION = "image_index";
@@ -93,7 +95,7 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
         Bundle bundle = getIntent().getExtras();
         String[] imageUrls = bundle.getStringArray(IMAGES);
         boolean merge = bundle.getBoolean(IMAGES_MERGE);
-
+        int localSize = bundle.getInt(IMAGES_LOCAL_SIZE);
         int pagerPosition = bundle.getInt(IMAGE_POSITION, 0);
 
         if (savedInstanceState != null) {
@@ -115,7 +117,7 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
         }else{
             if(merge){
                 mBitmap = new Bitmap[imageUrls.length];
-                pager.setAdapter(new ImagePagerAdapterLocalMerge(this,imageUrls));
+                pager.setAdapter(new ImagePagerAdapterLocalMerge(this,imageUrls,localSize));
             }else{
                 mBitmap = new Bitmap[imageUrls.length];
                 pager.setAdapter(new ImagePagerAdapter(imageUrls, this));
@@ -236,10 +238,11 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
         private Context mContext;
         ContentResolver resolver;
         private String[] images;
-
-        ImagePagerAdapterLocalMerge(Context context,String[] images) {
+        private int localSize;
+        ImagePagerAdapterLocalMerge(Context context,String[] images,int localSize) {
             this.mContext = context;
             this.images = images;
+            this.localSize = localSize;
             inflater = getLayoutInflater();
             resolver = context.getContentResolver();
         }
@@ -264,51 +267,57 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
                 }
             });
 
-            if(position<images.length){
-                imageLoader.displayImage(images[position], imageView, options,
-                        new SimpleImageLoadingListener() {
-                            @Override
-                            public void onLoadingStarted(String imageUri, View view) {
-                                spinner.setVisibility(View.VISIBLE);
-                            }
+            if(position<images.length){//显示网络图片
+                if(StringUtils.isEmpty(images[position])){//显示有id没提交图片
+                    imageView.setImageBitmap(ImageUtils.cacheBitmap.get(position));
 
-                            @Override
-                            public void onLoadingFailed(String imageUri, View view,
-                                                        FailReason failReason) {
-                                String message = null;
-                                switch (failReason.getType()) {
-                                    case IO_ERROR:
-                                        message = "Input/Output error";
-                                        break;
-                                    case DECODING_ERROR:
-                                        message = "Image can't be decoded";
-                                        break;
-                                    case NETWORK_DENIED:
-                                        message = "Downloads are denied";
-                                        break;
-                                    case OUT_OF_MEMORY:
-                                        message = "Out Of Memory error";
-                                        break;
-                                    case UNKNOWN:
-                                        message = "Unknown error";
-                                        break;
+                }else{//显示有id有图片的图片
+                    imageLoader.displayImage(images[position], imageView, options,
+                            new SimpleImageLoadingListener() {
+                                @Override
+                                public void onLoadingStarted(String imageUri, View view) {
+                                    spinner.setVisibility(View.VISIBLE);
                                 }
-                                Toast.makeText(ImagePagerActivity.this, message,
-                                        Toast.LENGTH_SHORT).show();
 
-                                spinner.setVisibility(View.GONE);
-                            }
+                                @Override
+                                public void onLoadingFailed(String imageUri, View view,
+                                                            FailReason failReason) {
+                                    String message = null;
+                                    switch (failReason.getType()) {
+                                        case IO_ERROR:
+                                            message = "Input/Output error";
+                                            break;
+                                        case DECODING_ERROR:
+                                            message = "Image can't be decoded";
+                                            break;
+                                        case NETWORK_DENIED:
+                                            message = "Downloads are denied";
+                                            break;
+                                        case OUT_OF_MEMORY:
+                                            message = "Out Of Memory error";
+                                            break;
+                                        case UNKNOWN:
+                                            message = "Unknown error";
+                                            break;
+                                    }
+                                    Toast.makeText(ImagePagerActivity.this, message,
+                                            Toast.LENGTH_SHORT).show();
 
-                            @Override
-                            public void onLoadingComplete(String imageUri,
-                                                          View view, Bitmap loadedImage) {
-                                spinner.setVisibility(View.GONE);
-                                mBitmap[position] = loadedImage;
-                            }
-                        });
+                                    spinner.setVisibility(View.GONE);
+                                }
 
+                                @Override
+                                public void onLoadingComplete(String imageUri,
+                                                              View view, Bitmap loadedImage) {
+                                    spinner.setVisibility(View.GONE);
+                                    mBitmap[position] = loadedImage;
+                                }
+                            });
+                }
+            }else if(position>=images.length && position<(localSize+images.length)){
+                imageView.setImageBitmap(ImageUtils.cacheLoaclBitmap.get(position-images.length));
             }else{
-                imageView.setImageBitmap(ImageUtils.photoBitmap.get(position-images.length));
+                imageView.setImageBitmap(ImageUtils.photoBitmap.get(position-images.length-localSize));
             }
             ((ViewPager) view).addView(imageLayout, 0);
 
