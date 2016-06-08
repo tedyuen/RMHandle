@@ -399,9 +399,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
             localFilePathDataR = localFilePathDataRL.toArray(new String[localFilePathDataRL.size()]);
         }
 
-
+        System.out.println("==>size:  "+localFileIdDataR.length+":"+photo_full_id.length+":"+(prePhotoSize-deletePrePhoto.size())+":"+photoCount);
         String[] resultFileIdData = concat(localFileIdDataR,photo_full_id,prePhotoSize-deletePrePhoto.size(),photoCount);
         String[] resultFilePathData = concat(localFilePathDataR,photo_full_path,prePhotoSize-deletePrePhoto.size(),photoCount);
+        System.out.println("====>photo delete size: "+localFileIdDataR.length+":"+resultFileIdData.length);
         System.out.println("====>photo size:"+photoCount+":"+prePhotoSize+":"+deletePrePhoto.size()+":"+remainLocalIdSize+":"+deleteLocalPrePhoto.size());
 
         pointWorkBean.setFileCount(resultFileIdData.length);
@@ -412,7 +413,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
             pointWorkBean.setFileXY(PointWorkBeanDbUtil.tempGetXY(resultFileIdData.length));
             pointWorkBean.setFileTime(PointWorkBeanDbUtil.tempGetTime(resultFileIdData.length));
         }else{
-            if(insertOrUpdate) {
+            if(!insertOrUpdate) {
                 pointWorkBean.setFileIdData("");
                 pointWorkBean.setFilePathData("");
                 pointWorkBean.setFileXY("");
@@ -426,7 +427,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
             pointWorkBean.setDoorpicXY(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE)+","+SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE));
             pointWorkBean.setDoorpicTime(TimeUtils.getNowStr());
         }else{
-            if(insertOrUpdate){
+            if(!insertOrUpdate){
                 pointWorkBean.setDoorpicid("");
                 pointWorkBean.setDoorpic("");
                 pointWorkBean.setDoorpicXY("");
@@ -511,9 +512,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
         List<String> tempRemailFilePath = new ArrayList<>();
         if(pointWorkBean!=null && pointWorkBean.getNativeState()!=null && pointWorkBean.getNativeState().equals("0")){//未提交
             //处理无id无url,全部添加到需要提交的数组
-            remainLocalIdSize = remainFileId.length;
             remainFileId = cacheFileId.clone();
             remainFilePath = cacheFilePath.clone();
+            remainLocalIdSize = remainFileId.length;
         }else if(pointWorkBean!=null && pointWorkBean.getNativeState()!=null && pointWorkBean.getNativeState().equals("1")){//提交了id未提交图片,就要考虑是否服务器删除了图片
             for(int i=0;i<cacheFileId.length;i++){//处理无id无url
                 boolean tempFlag = true;//是否有ID；true 没有
@@ -745,12 +746,17 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
                         photoCount--;
                         System.out.println("initCancelPhoto: "+prePhotoSize+":"+deletePrePhoto.size()+":"+remainLocalIdSize+":"+deleteLocalPrePhoto.size());
+
                         if(index>=prePhotoSize-deletePrePhoto.size()+remainLocalIdSize-deleteLocalPrePhoto.size()){//如果删除的本地图片,提交了id没有提交图片
                             ImageUtils.photoBitmap.remove(index-prePhotoSize+deletePrePhoto.size()-remainLocalIdSize+deleteLocalPrePhoto.size());
 
                         }else if(index<(prePhotoSize-deletePrePhoto.size()+remainLocalIdSize-deleteLocalPrePhoto.size()) && index >=(prePhotoSize-deletePrePhoto.size())){//id和图片都没提交
                             ImageUtils.cacheLoaclBitmap.remove(index-prePhotoSize+deletePrePhoto.size());
-
+                            int tempRemoteIndex = index;
+                            while(validateRemainIndex(tempRemoteIndex)){
+                                tempRemoteIndex++;
+                            }
+                            deleteLocalPrePhoto.add(remainFileId[tempRemoteIndex]);
                         }else{//如果删除的是网络图片
                             int tempRemoteIndex = index;
                             while(validateRemoteIndex(tempRemoteIndex)){
@@ -770,6 +776,16 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     }
                 })
                 .show();
+    }
+
+    private boolean validateRemainIndex(int index){
+        for(String deleteId:deleteLocalPrePhoto){
+            if(remainFileId[index].equals(deleteId)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean validateRemoteIndex(int index){

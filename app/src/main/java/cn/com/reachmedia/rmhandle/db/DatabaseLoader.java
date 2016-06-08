@@ -23,7 +23,7 @@ public class DatabaseLoader {
     private static RMOpenHelper helper;
 
     public static void init(Context context){
-        helper = new RMOpenHelper(context, "rm-db", null);
+        helper = new RMOpenHelper(context, "rm-db.db", null);
 
 
     }
