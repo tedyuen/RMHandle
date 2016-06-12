@@ -196,9 +196,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        commImgList.add(pointListModel.getCGatePic());
-        commImgList.add(pointListModel.getCPestPic());
+        commImgList.add(StringUtils.isEmpty(pointListModel.getCGatePic())?"":pointListModel.getCGatePic().split("@&")[0]);
+        commImgList.add(StringUtils.isEmpty(pointListModel.getCPestPic())?"":pointListModel.getCPestPic().split("@&")[0]);
 
         try {
             int tempName = Integer.parseInt(bean.getDoor());

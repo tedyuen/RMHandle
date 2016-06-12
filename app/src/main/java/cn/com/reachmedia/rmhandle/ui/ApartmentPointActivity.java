@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 import com.google.gson.Gson;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +83,16 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     TextView tv_carddesc;
     @Bind(R.id.tv_doordesc)
     TextView tv_doordesc;
+    @Bind(R.id.iv_apart_photo_1)
+    ImageView iv_apart_photo_1;
+    @Bind(R.id.iv_apart_photo_2)
+    ImageView iv_apart_photo_2;
+    @Bind(R.id.iv_apart_photo_3)
+    ImageView iv_apart_photo_3;
+    @Bind(R.id.iv_apart_photo_4)
+    ImageView iv_apart_photo_4;
+    ImageView[] gatePhotos;
+    ImageView[] pestPhotos;
 
 
     private NavigationAdapter mPagerAdapter;
@@ -115,6 +126,8 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 //            endtime = "2016-05-11";
             setTitle(intent.getStringExtra(AppParamContact.PARAM_KEY_TITLE));
         }
+        gatePhotos = new ImageView[]{iv_apart_photo_1,iv_apart_photo_2};
+        pestPhotos = new ImageView[]{iv_apart_photo_3,iv_apart_photo_4};
         mRlRightImg.setVisibility(View.VISIBLE);
         fragmentMap = new HashMap<>();
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
@@ -273,6 +286,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                     this.data = data;
                     tv_carddesc.setText("密码："+data.getCarddesc());
                     tv_doordesc.setText("门卡备注："+data.getDoordesc());
+                    setCardPhoto(data.getCGatePic(),data.getCPestPic());
                     ApartmentPointUtils.getIns().pointListModel = data;
                     List<PointListModel.NewListBean> newList = data.getNewList();
                     PointBeanDbUtil util = PointBeanDbUtil.getIns();
@@ -286,6 +300,27 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                 e.printStackTrace();
             }
         }
+    }
+
+    private void setCardPhoto(String cGatePic,String cPestPic){
+        String[] gate = cGatePic.split("@&");
+        String[] pest = cPestPic.split("@&");
+
+        for(int i=0;i<gate.length;i++){
+            if(i<gatePhotos.length){
+                if(!StringUtils.isEmpty(gate[i])){
+                    Picasso.with(this).load(gate[i]).placeholder(R.drawable.abc).into(gatePhotos[i]);
+                }
+            }
+        }
+        for(int i=0;i<pest.length;i++){
+            if(i<pestPhotos.length){
+                if(!StringUtils.isEmpty(pest[i])){
+                    Picasso.with(this).load(pest[i]).placeholder(R.drawable.abc).into(pestPhotos[i]);
+                }
+            }
+        }
+
     }
 
 
@@ -314,5 +349,10 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
             }
         },100);
 
+    }
+
+    @OnClick(R.id.bt_edit_save)
+    public void editSave(){
+        startActivity(new Intent(this,CardEditActivity.class));
     }
 }
