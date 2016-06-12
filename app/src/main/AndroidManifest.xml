@@ -110,6 +110,13 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".ui.CardListActivity"
+            android:theme="@style/AppTheme.Toolbar"
+            android:screenOrientation="portrait">
+        </activity>
+
+
+
 
         <activity android:launchMode="singleTask" android:name=".ui.LoginActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.Toolbar">
         </activity>

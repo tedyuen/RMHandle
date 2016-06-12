@@ -19,6 +19,7 @@ public class CardSubmitParam extends TokenParam {
 
     public String doordesc;
     public String carddesc;
+    public String communityId;
 
 
     public CardSubmitParam(){

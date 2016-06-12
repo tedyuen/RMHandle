@@ -595,6 +595,12 @@ public class ImageUtils {
         return workId + "_" + pointId + "_" + userId + "_" + index + "_" + pointId+"_"+Math.round(getRandomFour());
     }
 
+    public static String getGatePicId(String community,String userId,int index){
+        return community + "_" +  userId + "_" +index+ "_" +Math.round(getRandomFour());
+    }
+
+
+
     public static double getRandomFour(){
         return Math.random()*9000+1000;
     }

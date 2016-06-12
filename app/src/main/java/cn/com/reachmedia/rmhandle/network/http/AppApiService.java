@@ -4,6 +4,7 @@ import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
 import cn.com.reachmedia.rmhandle.model.CardSubmitModel;
 import cn.com.reachmedia.rmhandle.model.LoginModel;
+import cn.com.reachmedia.rmhandle.model.PicSubmitModel;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
 import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
@@ -135,6 +136,22 @@ public interface AppApiService {
                    @Part("communityDoorXY") TypedString communityDoorXY,
                    @Part("communityDoorTime") TypedString communityDoorTime,
                        Callback<UploadPicModel> cb);
+
+
+
+    @Multipart
+    @POST(AppApiContact.API_ACTION_FILE)
+    void picSubmit(@Part("json") TypedString json,
+                   @Part("communityFile1") TypedFile file1,
+                   @Part("communitySpace1") TypedFile file2,
+                   @Part("communityFile2") TypedFile file3,
+                   @Part("communitySpace2") TypedFile file4,
+                   @Part("communityFileId1") TypedString file1Id,
+                   @Part("communitySpaceId1") TypedString file2Id,
+                   @Part("communityFileId2") TypedString file3Id,
+                   @Part("communitySpaceId2") TypedString communityDoorId,
+                       Callback<PicSubmitModel> cb);
+
 
 
 

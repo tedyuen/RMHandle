@@ -963,9 +963,6 @@ public class PointDetailFragment extends BaseToolbarFragment {
             case Constant.KITKAT_LESS://门洞照
                 Bitmap myBitmap3 = null;
                 Uri uri = data.getData();
-                String thePath = CropImageUtils.getInstance().getPath(getActivity(), uri);
-//                photo_full_path[photoCount] = thePath;
-
 //                System.out.println("4.4以下，选择好图片了:  " + uri);
                 try {
                     byte[] mContent3 = ImageUtils.readStream(resolver.openInputStream(uri));
@@ -993,8 +990,6 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 Uri uri3 = data.getData();
                 // 先将这个uri转换为path，然后再转换为uri
 //                System.out.println("4.4以上，选择好图片了");
-                String thePath2 = CropImageUtils.getInstance().getPath(getActivity(), uri3);
-//                photo_full_path[photoCount] = thePath2;
                 try {
                     byte[] mContent4 = ImageUtils.readStream(resolver.openInputStream(uri3));
                     //将字节数组转换为ImageView可调用的Bitmap对象
