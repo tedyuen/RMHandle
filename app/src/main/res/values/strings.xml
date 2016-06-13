@@ -8,6 +8,7 @@
     <string name="title_my_offline_map">离线地图</string>
     <string name="title_apartment_point">小区点位</string>
     <string name="title_apartment_info">小区总览</string>
+    <string name="title_synchronize">上传同步</string>
     <string name="loading_message">正在加载…</string>
     <string name="no_network">网络不给力！~请稍后再试</string>
 

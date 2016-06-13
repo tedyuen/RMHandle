@@ -19,10 +19,8 @@ public class MyDaoGenerator {
 
         initPointBean(schema);
         initPointWorkBean(schema);
-//        new DaoGenerator().generateAll(schema, args[0]);
-
-
-        testSpilt();
+        new DaoGenerator().generateAll(schema, args[0]);
+//        testSpilt();
     }
 
     private static void initPointBean(Schema schema){
@@ -52,6 +50,7 @@ public class MyDaoGenerator {
         pointBean.addDateProperty("starttime");
         pointBean.addDateProperty("endtime");
         pointBean.addStringProperty("communityid");
+        pointBean.addStringProperty("communityname");
         pointBean.addStringProperty("fileId"); //文件标识 fileid1@#@fileid2
         pointBean.addStringProperty("fileUrlB");
         pointBean.addStringProperty("fileUrlS");
@@ -71,7 +70,7 @@ public class MyDaoGenerator {
         pointWorkBean.addStringProperty("errorDesc");
         pointWorkBean.addStringProperty("lon");
         pointWorkBean.addStringProperty("lat");
-        pointWorkBean.addStringProperty("workTime");
+        pointWorkBean.addDateProperty("workTime");
         pointWorkBean.addStringProperty("onlineTime");
         pointWorkBean.addDateProperty("starttime");
         pointWorkBean.addStringProperty("communityid");
@@ -86,6 +85,10 @@ public class MyDaoGenerator {
         pointWorkBean.addStringProperty("doorpic");//门洞照片
         pointWorkBean.addStringProperty("doorpicXY");//门洞坐标
         pointWorkBean.addStringProperty("doorpicTime");//门洞时间
+        pointWorkBean.addStringProperty("communityname");
+        pointWorkBean.addStringProperty("cname");
+
+
     }
 
 

@@ -31,6 +31,7 @@ public class PointBean {
     private java.util.Date starttime;
     private java.util.Date endtime;
     private String communityid;
+    private String communityname;
     private String fileId;
     private String fileUrlB;
     private String fileUrlS;
@@ -42,7 +43,7 @@ public class PointBean {
         this.id = id;
     }
 
-    public PointBean(Long id, String userId, String workId, String cid, String cname, String doorId, String door, Integer workUp, Integer workUpPhone, Integer workDown, Integer workDownPhone, Integer workCheck, String pointId, Integer ground, String cDoorPic, String errorDesc, Integer isPhoto, Integer state, Integer stateType, String updateTime, String pictime, String worktime, java.util.Date starttime, java.util.Date endtime, String communityid, String fileId, String fileUrlB, String fileUrlS) {
+    public PointBean(Long id, String userId, String workId, String cid, String cname, String doorId, String door, Integer workUp, Integer workUpPhone, Integer workDown, Integer workDownPhone, Integer workCheck, String pointId, Integer ground, String cDoorPic, String errorDesc, Integer isPhoto, Integer state, Integer stateType, String updateTime, String pictime, String worktime, java.util.Date starttime, java.util.Date endtime, String communityid, String communityname, String fileId, String fileUrlB, String fileUrlS) {
         this.id = id;
         this.userId = userId;
         this.workId = workId;
@@ -68,6 +69,7 @@ public class PointBean {
         this.starttime = starttime;
         this.endtime = endtime;
         this.communityid = communityid;
+        this.communityname = communityname;
         this.fileId = fileId;
         this.fileUrlB = fileUrlB;
         this.fileUrlS = fileUrlS;
@@ -271,6 +273,14 @@ public class PointBean {
 
     public void setCommunityid(String communityid) {
         this.communityid = communityid;
+    }
+
+    public String getCommunityname() {
+        return communityname;
+    }
+
+    public void setCommunityname(String communityname) {
+        this.communityname = communityname;
     }
 
     public String getFileId() {

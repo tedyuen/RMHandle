@@ -80,6 +80,7 @@ public class PointWorkBeanDbUtil {
                         PointWorkBeanDao.Properties.NativeState.eq(preState))
                 .unique();
         bean.setNativeState(nativeState);
+        bean.setWorkTime(TimeUtils.getNowDate());
         pointWorkBeanDaoHelper.getDao().update(bean);
     }
 
@@ -101,6 +102,35 @@ public class PointWorkBeanDbUtil {
     }
 
 
+    public long getUnSynchronize(){
+        return pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.NativeState.notEq(2),
+                        PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                .count();
+    }
+
+    public List<PointWorkBean> getSynchronize(int type){
+        List<PointWorkBean> list = null;
+        switch (type){
+            case 0:
+                list = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                        .where(PointWorkBeanDao.Properties.NativeState.notEq(2),
+                                PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                        .orderDesc(PointWorkBeanDao.Properties.Communityname,PointWorkBeanDao.Properties.Cname,PointWorkBeanDao.Properties.WorkTime)
+                        .list();
+                break;
+
+            case 1:
+                list = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                        .where(PointWorkBeanDao.Properties.NativeState.eq(2),
+                                PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                        .orderDesc(PointWorkBeanDao.Properties.Communityname,PointWorkBeanDao.Properties.Cname,PointWorkBeanDao.Properties.WorkTime)
+                        .list();
+                break;
+        }
+
+        return list;
+    }
 
 
     public static String getSplitStr(String[] strs,int startIndex,int count){

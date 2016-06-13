@@ -18,7 +18,7 @@ public class PointWorkBean {
     private String errorDesc;
     private String lon;
     private String lat;
-    private String workTime;
+    private java.util.Date workTime;
     private String onlineTime;
     private java.util.Date starttime;
     private String communityid;
@@ -33,6 +33,8 @@ public class PointWorkBean {
     private String doorpic;
     private String doorpicXY;
     private String doorpicTime;
+    private String communityname;
+    private String cname;
 
     public PointWorkBean() {
     }
@@ -41,7 +43,7 @@ public class PointWorkBean {
         this.id = id;
     }
 
-    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, String workTime, String onlineTime, java.util.Date starttime, String communityid, String nativeState, Integer fileCount, String filedelete, String fileXY, String fileTime, String fileIdData, String filePathData, String doorpicid, String doorpic, String doorpicXY, String doorpicTime) {
+    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, java.util.Date workTime, String onlineTime, java.util.Date starttime, String communityid, String nativeState, Integer fileCount, String filedelete, String fileXY, String fileTime, String fileIdData, String filePathData, String doorpicid, String doorpic, String doorpicXY, String doorpicTime, String communityname, String cname) {
         this.id = id;
         this.lastId = lastId;
         this.userId = userId;
@@ -69,6 +71,8 @@ public class PointWorkBean {
         this.doorpic = doorpic;
         this.doorpicXY = doorpicXY;
         this.doorpicTime = doorpicTime;
+        this.communityname = communityname;
+        this.cname = cname;
     }
 
     public Long getId() {
@@ -167,11 +171,11 @@ public class PointWorkBean {
         this.lat = lat;
     }
 
-    public String getWorkTime() {
+    public java.util.Date getWorkTime() {
         return workTime;
     }
 
-    public void setWorkTime(String workTime) {
+    public void setWorkTime(java.util.Date workTime) {
         this.workTime = workTime;
     }
 
@@ -285,6 +289,22 @@ public class PointWorkBean {
 
     public void setDoorpicTime(String doorpicTime) {
         this.doorpicTime = doorpicTime;
+    }
+
+    public String getCommunityname() {
+        return communityname;
+    }
+
+    public void setCommunityname(String communityname) {
+        this.communityname = communityname;
+    }
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
     }
 
 }

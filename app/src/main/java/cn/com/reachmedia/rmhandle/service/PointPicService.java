@@ -71,7 +71,7 @@ public class PointPicService extends Service {
                 File file1 = new File(filePaths[0]);
                 File file2 = null;
                 File file3 = null;
-                File doorFile= new File(bean.getDoorpic());
+                File doorFile= new File(bean.getDoorpic()==null?"":bean.getDoorpic());
                 if(!file1.exists()){
                     file1 = null;
                 }
@@ -107,9 +107,9 @@ public class PointPicService extends Service {
                     file3Id = "";
                 }
 
-                communityDoorId = bean.getDoorpicid();
-                communityDoorXY = bean.getDoorpicXY();
-                communityDoorTime = bean.getDoorpicTime();
+                communityDoorId = bean.getDoorpicid()==null?"":bean.getDoorpicid();
+                communityDoorXY = bean.getDoorpicXY()==null?"":bean.getDoorpicXY();
+                communityDoorTime = bean.getDoorpicTime()==null?"":bean.getDoorpicTime();
 
 
                 uploadPicController.uploadPic(uploadPicParam,file1,file2,file3,doorFile,file1Id,file2Id,file3Id,communityDoorId,communityDoorXY,communityDoorTime);

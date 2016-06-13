@@ -8,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,10 +20,15 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
 import cn.com.reachmedia.rmhandle.ui.LoginActivity;
 import cn.com.reachmedia.rmhandle.ui.OfflineMapActivity;
+import cn.com.reachmedia.rmhandle.ui.SynchronizeActivity;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
+import cn.com.reachmedia.rmhandle.utils.AppVersionHelper;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Author:    tedyuen
@@ -38,6 +45,21 @@ public class UserInfoFragment extends BaseToolbarFragment {
 
     @Bind(R.id.iv_bottom_1)
     ImageView mIvBottom1;
+    @Bind(R.id.iv_head_portrait)
+    CircleImageView ivHeadPortrait;
+    @Bind(R.id.tv_username)
+    TextView tvUsername;
+    @Bind(R.id.tv_userinfo)
+    TextView tvUserinfo;
+    @Bind(R.id.tv_shangchuan)
+    TextView tvShangchuan;
+    @Bind(R.id.tv_offline_map)
+    TextView tvOfflineMap;
+    @Bind(R.id.tv_gengxin)
+    TextView tvGengxin;
+
+    private PointWorkBeanDbUtil pointWorkBeanDbUtil;
+
 
     public static UserInfoFragment newInstance() {
         UserInfoFragment fragment = new UserInfoFragment();
@@ -57,6 +79,8 @@ public class UserInfoFragment extends BaseToolbarFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        pointWorkBeanDbUtil = PointWorkBeanDbUtil.getIns();
+
     }
 
     @Override
@@ -82,19 +106,41 @@ public class UserInfoFragment extends BaseToolbarFragment {
     }
 
 
+    private void updateInfo(){
+        String avatarUrl = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_PIC_URL);
+        System.out.println(avatarUrl);
+        avatarUrl = "http://120.26.65.65:8085/img/res/images/advsales/admin/scheduling/282/s_20160601133823133.jpg";
+        if(!StringUtils.isEmpty(avatarUrl)){
+            Picasso.with(getContext()).load(avatarUrl).placeholder(R.drawable.abc).into(ivHeadPortrait);
+        }
+        tvUsername.setText(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_USER_NAME));
+        tvUserinfo.setText("分部:"+mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_SPACE));
+
+        tvShangchuan.setText(pointWorkBeanDbUtil.getUnSynchronize()+"个未同步");
+
+        try {
+            tvGengxin.setText("v"+ AppVersionHelper.getVersionName(getContext())+" ");
+        } catch (Exception e) {
+            tvGengxin.setText("");
+            e.printStackTrace();
+        }
+
+    }
+
+
     @OnClick(R.id.ll_bottom_1)
-    public void goUserInfoActivity(){
-        startActivity(new Intent(getActivity(),HomeActivity.class));
+    public void goUserInfoActivity() {
+        startActivity(new Intent(getActivity(), HomeActivity.class));
         getActivity().overridePendingTransition(0, 0);
     }
 
     @OnClick(R.id.rl_offline_map)
-    public void goOfflineMapActivity(){
-        startActivity(new Intent(getActivity(),OfflineMapActivity.class));
+    public void goOfflineMapActivity() {
+        startActivity(new Intent(getActivity(), OfflineMapActivity.class));
     }
 
     @OnClick(R.id.bt_logout)
-    public void logout(){
+    public void logout() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
                 .title("确定要退出吗?")
                 .positiveText("确定")
@@ -121,4 +167,30 @@ public class UserInfoFragment extends BaseToolbarFragment {
     }
 
 
+    //上传同步列表
+    @OnClick(R.id.rl_shangchuan)
+    public void synchronizeList(){
+        startActivity(new Intent(getActivity(), SynchronizeActivity.class));
+
+    }
+
+
+    //检查更新
+    @OnClick(R.id.rl_gengxin)
+    public void checkUpdate(){
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateInfo();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 }

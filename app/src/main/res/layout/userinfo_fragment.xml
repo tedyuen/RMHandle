@@ -109,7 +109,6 @@
                             android:id="@+id/tv_username"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="张三"
                             android:textColor="@color/black"
                             android:textSize="18sp"/>
                         <TextView
@@ -117,7 +116,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="工号:007     分部:黄浦区"
+                            android:text="分部:黄浦区"
                             android:textColor="@color/username_color"
                             android:textSize="14sp"/>
                     </LinearLayout>
@@ -125,6 +124,7 @@
                 <!-- 个人信息 -->
                 <!-- 上刊信息 -->
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -224,6 +224,7 @@
                 <RelativeLayout
                     android:id="@+id/rl_baocuo"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="@dimen/panel_height"
                     android:paddingLeft="@dimen/padding_lr"
                     android:paddingRight="@dimen/padding_lr">
@@ -275,7 +276,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="183个未同步"
                         android:textColor="@color/username_color"
                         android:layout_marginRight="28dp"
                         android:textSize="15sp"/>
@@ -309,7 +309,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="已离线1个城市"
+                        android:text=""
                         android:textColor="@color/username_color"
                         android:layout_marginRight="28dp"
                         android:textSize="15sp"/>
@@ -343,7 +343,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="v1.0.0"
                         android:textColor="@color/bottom_grey"
                         android:layout_marginRight="28dp"
                         android:textSize="15sp"/>

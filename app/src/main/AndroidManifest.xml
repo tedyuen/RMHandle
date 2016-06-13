@@ -100,6 +100,14 @@
             android:label="@string/title_apartment_info">
         </activity>
 
+        <activity android:name=".ui.SynchronizeActivity"
+            android:theme="@style/AppTheme.Toolbar"
+            android:screenOrientation="portrait"
+            android:label="@string/title_synchronize">
+        </activity>
+
+
+
         <activity android:name=".ui.PointDetailActivity"
             android:theme="@style/AppTheme.Toolbar"
             android:screenOrientation="portrait">

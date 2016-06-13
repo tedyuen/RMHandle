@@ -35,7 +35,7 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         public final static Property ErrorDesc = new Property(9, String.class, "errorDesc", false, "ERROR_DESC");
         public final static Property Lon = new Property(10, String.class, "lon", false, "LON");
         public final static Property Lat = new Property(11, String.class, "lat", false, "LAT");
-        public final static Property WorkTime = new Property(12, String.class, "workTime", false, "WORK_TIME");
+        public final static Property WorkTime = new Property(12, java.util.Date.class, "workTime", false, "WORK_TIME");
         public final static Property OnlineTime = new Property(13, String.class, "onlineTime", false, "ONLINE_TIME");
         public final static Property Starttime = new Property(14, java.util.Date.class, "starttime", false, "STARTTIME");
         public final static Property Communityid = new Property(15, String.class, "communityid", false, "COMMUNITYID");
@@ -50,6 +50,8 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         public final static Property Doorpic = new Property(24, String.class, "doorpic", false, "DOORPIC");
         public final static Property DoorpicXY = new Property(25, String.class, "doorpicXY", false, "DOORPIC_XY");
         public final static Property DoorpicTime = new Property(26, String.class, "doorpicTime", false, "DOORPIC_TIME");
+        public final static Property Communityname = new Property(27, String.class, "communityname", false, "COMMUNITYNAME");
+        public final static Property Cname = new Property(28, String.class, "cname", false, "CNAME");
     };
 
 
@@ -77,7 +79,7 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
                 "'ERROR_DESC' TEXT," + // 9: errorDesc
                 "'LON' TEXT," + // 10: lon
                 "'LAT' TEXT," + // 11: lat
-                "'WORK_TIME' TEXT," + // 12: workTime
+                "'WORK_TIME' INTEGER," + // 12: workTime
                 "'ONLINE_TIME' TEXT," + // 13: onlineTime
                 "'STARTTIME' INTEGER," + // 14: starttime
                 "'COMMUNITYID' TEXT," + // 15: communityid
@@ -91,7 +93,9 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
                 "'DOORPICID' TEXT," + // 23: doorpicid
                 "'DOORPIC' TEXT," + // 24: doorpic
                 "'DOORPIC_XY' TEXT," + // 25: doorpicXY
-                "'DOORPIC_TIME' TEXT);"); // 26: doorpicTime
+                "'DOORPIC_TIME' TEXT," + // 26: doorpicTime
+                "'COMMUNITYNAME' TEXT," + // 27: communityname
+                "'CNAME' TEXT);"); // 28: cname
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_POINT_WORK_BEAN_ID ON POINT_WORK_BEAN" +
                 " (ID);");
@@ -168,9 +172,9 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
             stmt.bindString(12, lat);
         }
  
-        String workTime = entity.getWorkTime();
+        java.util.Date workTime = entity.getWorkTime();
         if (workTime != null) {
-            stmt.bindString(13, workTime);
+            stmt.bindLong(13, workTime.getTime());
         }
  
         String onlineTime = entity.getOnlineTime();
@@ -242,6 +246,16 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         if (doorpicTime != null) {
             stmt.bindString(27, doorpicTime);
         }
+ 
+        String communityname = entity.getCommunityname();
+        if (communityname != null) {
+            stmt.bindString(28, communityname);
+        }
+ 
+        String cname = entity.getCname();
+        if (cname != null) {
+            stmt.bindString(29, cname);
+        }
     }
 
     /** @inheritdoc */
@@ -266,7 +280,7 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // errorDesc
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // lon
             cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // lat
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // workTime
+            cursor.isNull(offset + 12) ? null : new java.util.Date(cursor.getLong(offset + 12)), // workTime
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // onlineTime
             cursor.isNull(offset + 14) ? null : new java.util.Date(cursor.getLong(offset + 14)), // starttime
             cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // communityid
@@ -280,7 +294,9 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
             cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // doorpicid
             cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24), // doorpic
             cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // doorpicXY
-            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26) // doorpicTime
+            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // doorpicTime
+            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27), // communityname
+            cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28) // cname
         );
         return entity;
     }
@@ -300,7 +316,7 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         entity.setErrorDesc(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
         entity.setLon(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
         entity.setLat(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setWorkTime(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setWorkTime(cursor.isNull(offset + 12) ? null : new java.util.Date(cursor.getLong(offset + 12)));
         entity.setOnlineTime(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setStarttime(cursor.isNull(offset + 14) ? null : new java.util.Date(cursor.getLong(offset + 14)));
         entity.setCommunityid(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
@@ -315,6 +331,8 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         entity.setDoorpic(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
         entity.setDoorpicXY(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
         entity.setDoorpicTime(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
+        entity.setCommunityname(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
+        entity.setCname(cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28));
      }
     
     /** @inheritdoc */

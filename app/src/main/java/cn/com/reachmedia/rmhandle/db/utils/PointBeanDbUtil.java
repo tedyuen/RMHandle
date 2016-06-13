@@ -43,10 +43,10 @@ public class PointBeanDbUtil {
     }
 
 
-    public void insertData(List<PointListModel.NewListBean> newList,String communityid,String starttime,String endtime){
+    public void insertData(List<PointListModel.NewListBean> newList,String communityid,String starttime,String endtime,String communityName){
         pointBeanDaoHelper.deleteAll();
         for(PointListModel.NewListBean tempBean:newList){
-            PointBean bean = tempBean.toBean(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID),communityid,starttime,endtime);
+            PointBean bean = tempBean.toBean(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID),communityid,starttime,endtime,communityName);
             pointBeanDaoHelper.addData(bean);
         }
     }

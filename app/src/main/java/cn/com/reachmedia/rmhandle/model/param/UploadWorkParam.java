@@ -8,6 +8,7 @@ import java.util.List;
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 
 /**
  * Author:    tedyuen
@@ -57,7 +58,7 @@ public class UploadWorkParam extends TokenParam{
         this.errorDesc = bean.getErrorDesc();
         this.lon = bean.getLon();
         this.lat = bean.getLat();
-        this.workTime = bean.getWorkTime();
+        this.workTime = TimeUtils.dateAddByDateForString(bean.getWorkTime(),"yyyy-MM-dd HH:mm:ss",0);
         this.onlineTime = bean.getOnlineTime();
         this.deletFileId = bean.getFiledelete();
         String[] fileIds = bean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);

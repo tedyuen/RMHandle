@@ -290,7 +290,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                     ApartmentPointUtils.getIns().pointListModel = data;
                     List<PointListModel.NewListBean> newList = data.getNewList();
                     PointBeanDbUtil util = PointBeanDbUtil.getIns();
-                    util.insertData(newList,communityId,homeFilterUtil.startTime,homeFilterUtil.endTime);
+                    util.insertData(newList,communityId,homeFilterUtil.startTime,homeFilterUtil.endTime,data.getCommunity());
                     resetTitle(util.getItemNumber(communityId,homeFilterUtil.startTime));
                     for(Integer key:fragmentMap.keySet()){
                         fragmentMap.get(key).onSuccessDisplay(data,swipeflag);

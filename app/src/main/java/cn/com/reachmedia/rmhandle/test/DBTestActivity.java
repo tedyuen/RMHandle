@@ -53,7 +53,7 @@ public class DBTestActivity extends AppCompatActivity {
                         PointBeanDaoHelper pointBeanDaoHelper = PointBeanDaoHelper.getInstance();
                         pointBeanDaoHelper.deleteAll();
                         for(PointListModel.NewListBean tempBean:newList){
-                            PointBean bean = tempBean.toBean("abc","","","");
+                            PointBean bean = tempBean.toBean("abc","","","","");
                             pointBeanDaoHelper.addData(bean);
                         }
 

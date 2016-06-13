@@ -48,9 +48,10 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
         public final static Property Starttime = new Property(22, java.util.Date.class, "starttime", false, "STARTTIME");
         public final static Property Endtime = new Property(23, java.util.Date.class, "endtime", false, "ENDTIME");
         public final static Property Communityid = new Property(24, String.class, "communityid", false, "COMMUNITYID");
-        public final static Property FileId = new Property(25, String.class, "fileId", false, "FILE_ID");
-        public final static Property FileUrlB = new Property(26, String.class, "fileUrlB", false, "FILE_URL_B");
-        public final static Property FileUrlS = new Property(27, String.class, "fileUrlS", false, "FILE_URL_S");
+        public final static Property Communityname = new Property(25, String.class, "communityname", false, "COMMUNITYNAME");
+        public final static Property FileId = new Property(26, String.class, "fileId", false, "FILE_ID");
+        public final static Property FileUrlB = new Property(27, String.class, "fileUrlB", false, "FILE_URL_B");
+        public final static Property FileUrlS = new Property(28, String.class, "fileUrlS", false, "FILE_URL_S");
     };
 
 
@@ -91,9 +92,10 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
                 "'STARTTIME' INTEGER," + // 22: starttime
                 "'ENDTIME' INTEGER," + // 23: endtime
                 "'COMMUNITYID' TEXT," + // 24: communityid
-                "'FILE_ID' TEXT," + // 25: fileId
-                "'FILE_URL_B' TEXT," + // 26: fileUrlB
-                "'FILE_URL_S' TEXT);"); // 27: fileUrlS
+                "'COMMUNITYNAME' TEXT," + // 25: communityname
+                "'FILE_ID' TEXT," + // 26: fileId
+                "'FILE_URL_B' TEXT," + // 27: fileUrlB
+                "'FILE_URL_S' TEXT);"); // 28: fileUrlS
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_POINT_BEAN_ID ON POINT_BEAN" +
                 " (ID);");
@@ -235,19 +237,24 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
             stmt.bindString(25, communityid);
         }
  
+        String communityname = entity.getCommunityname();
+        if (communityname != null) {
+            stmt.bindString(26, communityname);
+        }
+ 
         String fileId = entity.getFileId();
         if (fileId != null) {
-            stmt.bindString(26, fileId);
+            stmt.bindString(27, fileId);
         }
  
         String fileUrlB = entity.getFileUrlB();
         if (fileUrlB != null) {
-            stmt.bindString(27, fileUrlB);
+            stmt.bindString(28, fileUrlB);
         }
  
         String fileUrlS = entity.getFileUrlS();
         if (fileUrlS != null) {
-            stmt.bindString(28, fileUrlS);
+            stmt.bindString(29, fileUrlS);
         }
     }
 
@@ -286,9 +293,10 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
             cursor.isNull(offset + 22) ? null : new java.util.Date(cursor.getLong(offset + 22)), // starttime
             cursor.isNull(offset + 23) ? null : new java.util.Date(cursor.getLong(offset + 23)), // endtime
             cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24), // communityid
-            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // fileId
-            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // fileUrlB
-            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27) // fileUrlS
+            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // communityname
+            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // fileId
+            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27), // fileUrlB
+            cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28) // fileUrlS
         );
         return entity;
     }
@@ -321,9 +329,10 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
         entity.setStarttime(cursor.isNull(offset + 22) ? null : new java.util.Date(cursor.getLong(offset + 22)));
         entity.setEndtime(cursor.isNull(offset + 23) ? null : new java.util.Date(cursor.getLong(offset + 23)));
         entity.setCommunityid(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
-        entity.setFileId(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
-        entity.setFileUrlB(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
-        entity.setFileUrlS(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
+        entity.setCommunityname(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
+        entity.setFileId(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
+        entity.setFileUrlB(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
+        entity.setFileUrlS(cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28));
      }
     
     /** @inheritdoc */

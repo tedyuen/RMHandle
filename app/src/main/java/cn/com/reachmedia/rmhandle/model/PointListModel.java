@@ -249,7 +249,7 @@ public class PointListModel extends BaseModel implements Parcelable {
         private String worktime;
 
 
-        public PointBean toBean(String userId, String communityid, String starttime, String endtime){
+        public PointBean toBean(String userId, String communityid, String starttime, String endtime,String communityName){
             PointBean bean = new PointBean();
             bean.setWorkId(this.workId);
             bean.setCid(this.cid);
@@ -271,6 +271,7 @@ public class PointListModel extends BaseModel implements Parcelable {
             bean.setUpdateTime(this.updateTime);
             bean.setPictime(this.pictime);
             bean.setWorktime(this.worktime);
+            bean.setCommunityname(communityName);
             bean.setUserId(userId);
             bean.setCommunityid(communityid);
             bean.setStarttime(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd"));

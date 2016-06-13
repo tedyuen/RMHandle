@@ -359,13 +359,15 @@ public class PointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setErrorDesc(errorDesc);
         pointWorkBean.setLon(lon);
         pointWorkBean.setLat(lat);
-        pointWorkBean.setWorkTime(TimeUtils.getNowStr());
+        pointWorkBean.setWorkTime(TimeUtils.getNowDate());
         pointWorkBean.setOnlineTime(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_ON_LINE_TIME));
         pointWorkBean.setNativeState("0");
 
         pointWorkBean.setFiledelete(PointWorkBeanDbUtil.getSplitStrWeb(deletePrePhoto,deletePrePhoto.size()));
         pointWorkBean.setStarttime(bean.getStarttime());
         pointWorkBean.setCommunityid(bean.getCommunityid());
+        pointWorkBean.setCommunityname(bean.getCommunityname());
+        pointWorkBean.setCname(bean.getCname());
 
         //整合iddata和pathdata
         //
