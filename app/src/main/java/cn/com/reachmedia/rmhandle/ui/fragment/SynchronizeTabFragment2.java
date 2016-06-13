@@ -78,6 +78,8 @@ public class SynchronizeTabFragment2 extends BaseFragment implements SwipeRefres
 
 
     private void initData(){
+        if(mSwipeContainer==null) return;
+        mSwipeContainer.setRefreshing(true);
         mLists = new ArrayList<>();
         pointWorkBeanDbUtil = PointWorkBeanDbUtil.getIns();
         List<PointWorkBean> list = pointWorkBeanDbUtil.getSynchronize(type);
@@ -119,7 +121,9 @@ public class SynchronizeTabFragment2 extends BaseFragment implements SwipeRefres
             dataList.add(tempBean);
         }
 
-
+        if(mSwipeContainer==null) return;
+        mSwipeContainer.setRefreshing(false);
+        mPageListView.setState(PageListView.PageListViewState.Idle);
 
     }
 
@@ -132,7 +136,9 @@ public class SynchronizeTabFragment2 extends BaseFragment implements SwipeRefres
 
     @Override
     public void onRefresh() {
-
+        initData();
+        mAdapter.updateData(dataList);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

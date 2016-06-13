@@ -89,8 +89,8 @@ public class PicSubmitController extends BaseHttpController<PicSubmitModel> {
         TypedString tfile4Id = new TypedString(file4Id);
 
         LogUtils.d(TAG, picSubmitParam.toJson());
-        App.getAppApiService().picSubmit(jsons,tfile1,tfile2,tfile3,tfile4,
-                tfile1Id,tfile2Id,tfile3Id,
+        App.getAppApiService().picSubmit(jsons,tfile1,tfile3,tfile2,tfile4,
+                tfile1Id,tfile3Id,tfile2Id,
                 tfile4Id,
                 callBack);
     }

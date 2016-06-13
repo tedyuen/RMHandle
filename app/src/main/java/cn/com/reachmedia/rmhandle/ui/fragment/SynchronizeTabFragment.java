@@ -68,9 +68,7 @@ public class SynchronizeTabFragment extends BaseFragment implements SwipeRefresh
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         //设置下拉刷新小球的颜色
-
         initData();
-
         setUpViewComponent();
 
         return rootView;
@@ -78,6 +76,8 @@ public class SynchronizeTabFragment extends BaseFragment implements SwipeRefresh
 
 
     private void initData(){
+        if(mSwipeContainer==null) return;
+        mSwipeContainer.setRefreshing(true);
         mLists = new ArrayList<>();
         pointWorkBeanDbUtil = PointWorkBeanDbUtil.getIns();
         List<PointWorkBean> list = pointWorkBeanDbUtil.getSynchronize(type);
@@ -119,7 +119,9 @@ public class SynchronizeTabFragment extends BaseFragment implements SwipeRefresh
             dataList.add(tempBean);
         }
 
-
+        if(mSwipeContainer==null) return;
+        mSwipeContainer.setRefreshing(false);
+        mPageListView.setState(PageListView.PageListViewState.Idle);
 
     }
 
@@ -132,7 +134,9 @@ public class SynchronizeTabFragment extends BaseFragment implements SwipeRefresh
 
     @Override
     public void onRefresh() {
-
+        initData();
+        mAdapter.updateData(dataList);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -1,24 +1,33 @@
 package cn.com.reachmedia.rmhandle.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.RelativeLayout;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarTabActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.BaseFragment;
-import cn.com.reachmedia.rmhandle.ui.fragment.CustomerPhotoTabFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.SynchronizeTabFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.SynchronizeTabFragment2;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 
 /**
  * Author:    tedyuen
@@ -34,10 +43,13 @@ import cn.com.reachmedia.rmhandle.ui.fragment.SynchronizeTabFragment2;
 public class SynchronizeActivity extends BaseActionBarTabActivity {
 
 
+    @Bind(R.id.rl_right_text)
+    RelativeLayout rlLeftText;
     private NavigationAdapter mPagerAdapter;
 
-    Map<Integer,BaseFragment> fragmentMap;
+    Map<Integer, BaseFragment> fragmentMap;
 
+    SynchronizeActivity activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +57,11 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         needTitle();
+        activity = this;
         fragmentMap = new HashMap<>();
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
         mToolbarView.set(mToolbar);
-        mPagerAdapter = new NavigationAdapter(getSupportFragmentManager(),this);
+        mPagerAdapter = new NavigationAdapter(getSupportFragmentManager(), this);
         mPager.setOffscreenPageLimit(2);
         mPager.setAdapter(mPagerAdapter);
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
@@ -71,7 +84,34 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
             }
         });
         mPager.setCurrentItem(0);
+
+        rlLeftText.setVisibility(View.VISIBLE);
+
 //        showProgressDialog();
+    }
+
+    @OnClick(R.id.rl_right_text)
+    public void goSynchronize(){
+        new MaterialDialog.Builder(this)
+                .title(R.string.dialog_title_synchronize)
+                .negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .positiveText("确定")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        ServiceHelper.getIns().startPointWorkService(getApplicationContext());
+                        ToastHelper.showInfo(activity,"开始上传,请稍后刷新状态!");
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
     }
 
 
@@ -93,10 +133,10 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
 
         @Override
         protected Fragment createItem(int position) {
-            BaseFragment f=null;
+            BaseFragment f = null;
             Bundle args = new Bundle();
 
-            switch (position){
+            switch (position) {
                 case 0:
                     f = new SynchronizeTabFragment();
                     if (0 < mScrollY) {
@@ -104,7 +144,7 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
                         args.putInt(SynchronizeTabFragment.LIST_TYPE, 0);
                     }
                     f.setArguments(args);
-                    activity.fragmentMap.put(position,f);
+                    activity.fragmentMap.put(position, f);
                     break;
                 case 1:
                     f = new SynchronizeTabFragment2();
@@ -113,7 +153,7 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
                         args.putInt(SynchronizeTabFragment.LIST_TYPE, 1);
                     }
                     f.setArguments(args);
-                    activity.fragmentMap.put(position,f);
+                    activity.fragmentMap.put(position, f);
                     break;
             }
             return f;
@@ -126,7 +166,7 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return "待上传";
                 case 1:
