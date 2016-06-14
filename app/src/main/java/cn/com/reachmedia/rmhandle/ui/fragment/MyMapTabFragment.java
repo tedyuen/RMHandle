@@ -231,7 +231,7 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
         taskMapParam.endtime = homeFilterUtil.endTime;
         taskMapParam.space = homeFilterUtil.getAreaId();
         taskMapParam.lon = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);
-        taskMapParam.lat = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);
+        taskMapParam.lat = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE);
         taskMapController.getTaskMap(taskMapParam);
     }
 

@@ -20,7 +20,6 @@ import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,6 +48,8 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
 
     private final ThreadLocal<View> mToolbarView = new ThreadLocal<>();
     SlidingTabLayout slidingTabLayout;
+    @Bind(R.id.toolbar_title)
+    TextView toolbarTitle;
     private NavigationAdapter mPagerAdapter;
 
     @Bind(R.id.toolbar)
@@ -71,7 +72,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     TextView tv_custom;
 
 
-    Map<Integer,HomeTabFragment> fragmentMap;
+    Map<Integer, HomeTabFragment> fragmentMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +84,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         fragmentMap = new HashMap<>();
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
         mToolbarView.set(mToolbar);
-        mPagerAdapter = new NavigationAdapter(getSupportFragmentManager(),this);
+        mPagerAdapter = new NavigationAdapter(getSupportFragmentManager(), this);
         mPager.setOffscreenPageLimit(2);
         mPager.setAdapter(mPagerAdapter);
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
@@ -131,12 +132,12 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         protected Fragment createItem(int position) {
             HomeTabFragment f = new HomeTabFragment();
             f.setUiUpdateListener(activity);
-            activity.fragmentMap.put(position,f);
+            activity.fragmentMap.put(position, f);
             Bundle args = new Bundle();
             if (0 < mScrollY) {
                 args.putInt(HomeTabFragment.ARG_INITIAL_POSITION, 1);
             }
-            switch (position){
+            switch (position) {
                 case 0:
                     args.putInt(HomeTabFragment.LIST_TYPE, AppSpContact.SP_KEY_UNDONE);
                     break;
@@ -156,7 +157,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return "未完成";
                 case 1:
@@ -173,45 +174,47 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     }
 
     @OnClick(R.id.ll_bottom_2)
-    public void goUserInfoActivity(){
-        startActivity(new Intent(this,UserInfoActivity.class));
+    public void goUserInfoActivity() {
+        startActivity(new Intent(this, UserInfoActivity.class));
         overridePendingTransition(0, 0);
     }
 
     @OnClick(R.id.rl_map)
-    public void goMyMap(){
-        startActivity(new Intent(this,TaskMapActivity.class));
+    public void goMyMap() {
+        startActivity(new Intent(this, TaskMapActivity.class));
 
     }
 
     @OnClick(R.id.rl_info)
-    public void goTaskInfo(){
-        startActivity(new Intent(this,TaskInforActivity.class));
+    public void goTaskInfo() {
+        startActivity(new Intent(this, TaskInforActivity.class));
     }
 
     @OnClick(R.id.rl_filter)
-    public void alertFilter(){
+    public void alertFilter() {
         triggleFilter();
 //        HomeFilterDialogFragment dialog = new HomeFilterDialogFragment();
 //        dialog.show(getSupportFragmentManager(), "Write Comments");
     }
+
     @OnClick(R.id.v_close_filter)
-    public void closeFilter(){
+    public void closeFilter() {
         triggleFilter();
     }
+
     @OnClick(R.id.ll_filter_child_frame)
-    public void blankFilterFrame(){
+    public void blankFilterFrame() {
 
     }
 
 
-    private void triggleFilter(){
+    private void triggleFilter() {
 
         int vi = mLlFilterFrame.getVisibility();
-        if(vi == View.VISIBLE){
+        if (vi == View.VISIBLE) {
             mLlFilterFrame.setVisibility(View.GONE);
             slidingTabLayout.setVisibility(View.VISIBLE);
-        }else if(vi == View.GONE){
+        } else if (vi == View.GONE) {
             mLlFilterFrame.setVisibility(View.VISIBLE);
             slidingTabLayout.setVisibility(View.GONE);
             tv_start_time.setText(homeFilterUtil.startTime);
@@ -221,27 +224,26 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         }
     }
 
-    private boolean isFilterShowing(){
+    private boolean isFilterShowing() {
         int vi = mLlFilterFrame.getVisibility();
-        if(vi==View.VISIBLE){
+        if (vi == View.VISIBLE) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
 
-
-
     //home key
     private int mExitFlag = 0;
     private long mExitLong = System.currentTimeMillis();
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             if (event.getAction() == KeyEvent.ACTION_DOWN
                     && event.getRepeatCount() == 0) {
-                if(isFilterShowing()) {
+                if (isFilterShowing()) {
                     triggleFilter();
                     return true;
                 }
@@ -270,27 +272,29 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
 
 
     @Override
-    public void updateTabCount(int ongoing,int finish) {
-        resetTitle(ongoing,finish);
+    public void updateTabCount(int ongoing, int finish) {
+        resetTitle(ongoing, finish);
     }
 
-    public void resetTitle(int ongoing,int finish){
-        slidingTabLayout.resetTitle("未完成 ("+ongoing+")",
-                "已完成 ("+finish+")"
+    public void resetTitle(int ongoing, int finish) {
+        int total = ongoing+finish;
+        toolbarTitle.setText("总进度:"+finish+"/"+total);
+        slidingTabLayout.resetTitle("未完成 (" + ongoing + ")",
+                "已完成 (" + finish + ")"
         );
     }
 
 
     private HomeFilterUtil homeFilterUtil;
 
-    public void initFilter(){
+    public void initFilter() {
         homeFilterUtil = HomeFilterUtil.getIns();
         tv_start_time.setText(homeFilterUtil.startTime);
         tv_end_time.setText(homeFilterUtil.endTime);
     }
 
     @OnClick(R.id.rl_start_time)
-    public void selectStartTime(){
+    public void selectStartTime() {
         new MaterialDialog.Builder(this)
                 .items(homeFilterUtil.getStartTimes())
                 .itemsCallback(new MaterialDialog.ListCallback() {
@@ -307,7 +311,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     }
 
     @OnClick(R.id.rl_area)
-    public void selectArea(){
+    public void selectArea() {
         new MaterialDialog.Builder(this)
                 .items(homeFilterUtil.getResultData())
                 .itemsCallback(new MaterialDialog.ListCallback() {
@@ -321,7 +325,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     }
 
     @OnClick(R.id.rl_custom)
-    public void selectCustomer(){
+    public void selectCustomer() {
         new MaterialDialog.Builder(this)
                 .items(homeFilterUtil.getCustomers())
                 .itemsCallback(new MaterialDialog.ListCallback() {
@@ -335,25 +339,25 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     }
 
     @OnClick(R.id.bt_logout)
-    public void sendRefresh(){
-        if(!homeFilterUtil.startTime.equals(tv_start_time.getText().toString())){// 时间改变了
-            if(tv_custom.getText().toString().equals(homeFilterUtil.defaultC)){
+    public void sendRefresh() {
+        if (!homeFilterUtil.startTime.equals(tv_start_time.getText().toString())) {// 时间改变了
+            if (tv_custom.getText().toString().equals(homeFilterUtil.defaultC)) {
                 homeFilterUtil.currentCustomer = homeFilterUtil.defaultC;
-            }else{
+            } else {
                 homeFilterUtil.currentCustomer = tv_custom.getText().toString();
             }
-            if(tv_area.getText().toString().equals(homeFilterUtil.defaultArea)){
+            if (tv_area.getText().toString().equals(homeFilterUtil.defaultArea)) {
                 homeFilterUtil.currentArea = homeFilterUtil.defaultArea;
-            }else{
+            } else {
                 homeFilterUtil.currentArea = tv_area.getText().toString();
             }
-        }else{
+        } else {
             homeFilterUtil.currentCustomer = tv_custom.getText().toString();
             homeFilterUtil.currentArea = tv_area.getText().toString();
         }
         homeFilterUtil.setStartTime(tv_start_time.getText().toString());//设置时间
 
-        for(Integer key:fragmentMap.keySet()){
+        for (Integer key : fragmentMap.keySet()) {
             fragmentMap.get(key).onRefresh();
         }
 

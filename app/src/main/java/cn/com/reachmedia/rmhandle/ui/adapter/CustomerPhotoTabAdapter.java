@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -87,9 +88,10 @@ public class CustomerPhotoTabAdapter extends BaseAdapter {
             bean.tvShowtime.setText(data.getShowtime());
             bean.tvDaohuaTime.setText("到画时间：" + data.getPictime());
             bean.tvShanghuaTime.setText("上画时间：" + data.getWorktime());
-            bean.tvYaoqiu.setText(data.getDescs());
-
+            bean.wbMemo.getSettings().setDefaultTextEncodingName("utf-8");
+            bean.wbMemo.loadDataWithBaseURL("",data.getDescs(),"text/html", "utf-8","");
             bean.llPhotoFrame.removeAllViews();
+            bean.llPhotoFrame.setVisibility(View.GONE);
             LinearLayout tempLine = null;
             ViewHolder2 tempBean = null;
             final List<String> imgList = new ArrayList<String>();
@@ -162,13 +164,12 @@ public class CustomerPhotoTabAdapter extends BaseAdapter {
         TextView tvDaohuaTime;
         @Bind(R.id.tv_shanghua_time)
         TextView tvShanghuaTime;
-        @Bind(R.id.tv_yaoqiu)
-        TextView tvYaoqiu;
         @Bind(R.id.ll_photo_frame)
         LinearLayout llPhotoFrame;
         @Bind(R.id.tv_showtime)
         TextView tvShowtime;
-
+        @Bind(R.id.wb_memo)
+        WebView wbMemo;
         ViewHolder1(View view) {
             ButterKnife.bind(this, view);
         }

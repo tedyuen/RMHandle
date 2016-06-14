@@ -108,6 +108,7 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
         if(data!=null){
             if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
                 if(updateListener!=null){
+                    System.out.println("==>updateListener:  "+data.getFinish()+":"+data.getOngoing());
                     updateListener.updateTabCount(data.getOngoing(),data.getFinish());
                 }
                 for(TaskIndexModel.PListBean pListBean:data.getPList()){
@@ -143,7 +144,7 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
             param.endtime = homeFilterUtil.endTime;
             param.space = homeFilterUtil.getAreaId();
             param.lon = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);
-            param.lat = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);
+            param.lat = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE);
             param.customer = homeFilterUtil.getCustomerId();
             taskIndexController.getTaskIndex(param);
         }

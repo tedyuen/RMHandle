@@ -147,10 +147,17 @@
                     android:src="@mipmap/home_remind_icon"
                     android:layout_marginRight="2dp"/>
                 <ImageView
-                    android:id="@+id/iv_arrow_icon"
+                    android:id="@+id/iv_arrow_icon_up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/arrow_up_icon"/>
+                    android:src="@mipmap/arrow_up_icon"
+                    android:visibility="gone"/>
+                <ImageView
+                    android:id="@+id/iv_arrow_icon_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/arrow_down_icon"
+                    />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

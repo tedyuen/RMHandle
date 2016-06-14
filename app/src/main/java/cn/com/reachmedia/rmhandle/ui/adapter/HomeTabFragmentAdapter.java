@@ -108,9 +108,11 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
             }
             bean.tvTarget.setText(targetBuffer.toString());
 
+
+            bean.tvTips.setVisibility(View.GONE);
+
             if(StringUtils.isEmpty(data.getTips())){
                 bean.llWarning.setVisibility(View.GONE);
-                bean.tvTips.setVisibility(View.GONE);
                 bean.llWarning.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -119,15 +121,18 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
                 });
             }else{
                 bean.llWarning.setVisibility(View.VISIBLE);
-                bean.tvTips.setVisibility(View.VISIBLE);
                 bean.tvTips.setText(data.getTips());
                 bean.llWarning.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(bean.tvTips.getVisibility()==View.GONE){
+                            bean.ivArrowIconUp.setVisibility(View.VISIBLE);
+                            bean.ivArrowIconDown.setVisibility(View.GONE);
                             bean.tvTips.setVisibility(View.VISIBLE);
                         }else if(bean.tvTips.getVisibility()==View.VISIBLE){
                             bean.tvTips.setVisibility(View.GONE);
+                            bean.ivArrowIconUp.setVisibility(View.GONE);
+                            bean.ivArrowIconDown.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -185,8 +190,11 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
         ImageView ivXia;
         @Bind(R.id.iv_pai)
         ImageView ivPai;
-        @Bind(R.id.iv_arrow_icon)
-        ImageView ivArrowIcon;
+        @Bind(R.id.iv_arrow_icon_up)
+        ImageView ivArrowIconUp;
+        @Bind(R.id.iv_arrow_icon_down)
+        ImageView ivArrowIconDown;
+
         @Bind(R.id.ll_warning)
         LinearLayout llWarning;
         @Bind(R.id.tv_tips)

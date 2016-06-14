@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -111,6 +112,8 @@ public class HomeFilterUtil {
     public Properties cityProperties;
     public Properties currentProperties;
     public Properties currentProperties2;
+    Map<String,String> currentMap2 = new HashMap<>();
+
     public String defaultArea="全部";
 
     public String currentArea = defaultArea;
@@ -134,7 +137,10 @@ public class HomeFilterUtil {
         System.out.println(cityName+".properties"+"\ttedyuen\t"+cityName+"2.properties");
         currentProperties.load(context.getAssets().open(cityName+".properties"));
         currentProperties2.load(context.getAssets().open(cityName+"2.properties"));
-        System.out.println(currentProperties2.keySet().size());
+        currentMap2.clear();
+        for(Object temp:currentProperties2.keySet()){
+            currentMap2.put(new String(((String)temp).getBytes("ISO-8859-1"),"utf-8"),currentProperties2.getProperty((String)temp));
+        }
         return currentProperties;
     }
 
@@ -152,12 +158,7 @@ public class HomeFilterUtil {
         }
     }
     public String getResultData2(String key){
-        try {
-            return new String(currentProperties2.getProperty(key).getBytes("ISO-8859-1"),"utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return currentMap2.get(key);
     }
 
 

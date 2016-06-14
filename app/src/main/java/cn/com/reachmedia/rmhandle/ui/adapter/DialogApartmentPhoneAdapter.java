@@ -45,7 +45,7 @@ public class DialogApartmentPhoneAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return data.length;
+        return data.length==0?1:data.length;
     }
 
     @Override
@@ -69,35 +69,41 @@ public class DialogApartmentPhoneAdapter extends BaseAdapter {
             bean = (ViewHolder) convertView.getTag(R.id.tag);
         }
 
-        String phoneName = data[position];
-        if(!StringUtils.isEmpty(phoneName)){
-            final String[] result = phoneName.split("@");
-            if(result.length>0){
-                bean.tvName.setText(result[0]);
-                if(!StringUtils.isEmpty(result[1])) {
-                    bean.btCall.setVisibility(View.VISIBLE);
-                    bean.btCall.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (!StringUtils.isEmpty(result[1])) {
-                                Intent phoneIntent = new Intent(
-                                        "android.intent.action.CALL",
-                                        Uri.parse("tel:"
-                                                + result[1]));
-                                mContext.startActivity(phoneIntent);
-                            }
+        if(data.length==0){
+            bean.tvName.setText("没有联系人");
+            bean.btCall.setVisibility(View.INVISIBLE);
+        }else{
+            String phoneName = data[position];
+            if(!StringUtils.isEmpty(phoneName)){
+                final String[] result = phoneName.split("@");
+                if(result.length>0){
+                    bean.tvName.setText(result[0]);
+                    if(!StringUtils.isEmpty(result[1])) {
+                        bean.btCall.setVisibility(View.VISIBLE);
+                        bean.btCall.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (!StringUtils.isEmpty(result[1])) {
+                                    Intent phoneIntent = new Intent(
+                                            "android.intent.action.CALL",
+                                            Uri.parse("tel:"
+                                                    + result[1]));
+                                    mContext.startActivity(phoneIntent);
+                                }
 
-                        }
-                    });
+                            }
+                        });
+                    }else{
+                        bean.btCall.setVisibility(View.INVISIBLE);
+                    }
                 }else{
                     bean.btCall.setVisibility(View.INVISIBLE);
                 }
-            }else{
-                bean.btCall.setVisibility(View.INVISIBLE);
+
+
             }
-
-
         }
+
         return convertView;
     }
 

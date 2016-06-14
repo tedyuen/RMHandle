@@ -286,58 +286,67 @@
 
             </LinearLayout>
 
-            <View android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_color_grey"
-                android:layout_marginTop="14dp"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@color/white"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="30dp" />
-                <Button
-                    android:id="@+id/bt_done"
-                    android:layout_width="155dp"
-                    android:layout_height="35dp"
-                    style="@style/LogoutButtonStyle"
-                    android:layout_gravity="center"
-                    android:text="@string/btn_text_shangkan_done"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="30dp" />
-                <Button
-                    android:id="@+id/bt_cant_enter"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
-                    style="@style/GreenButtonStyle"
-                    android:layout_gravity="center"
-                    android:text="@string/btn_text_cant_enter"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="30dp" />
-                <Button
-                    android:id="@+id/bt_report_question"
-                    android:layout_width="90dp"
-                    android:layout_height="35dp"
-                    style="@style/RedButtonStyle"
-                    android:layout_gravity="center"
-                    android:text="@string/btn_text_report_question"/>
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="30dp" />
-            </LinearLayout>
+
             
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color_grey"
+            android:layout_marginTop="14dp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp" />
+            <Button
+                android:id="@+id/bt_done"
+                android:layout_width="155dp"
+                android:layout_height="35dp"
+                style="@style/LogoutButtonStyle"
+                android:layout_gravity="center"
+                android:text="@string/btn_text_shangkan_done"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp" />
+            <Button
+                android:id="@+id/bt_cant_enter"
+                android:layout_width="90dp"
+                android:layout_height="35dp"
+                style="@style/GreenButtonStyle"
+                android:layout_gravity="center"
+                android:text="@string/btn_text_cant_enter"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp" />
+            <Button
+                android:id="@+id/bt_report_question"
+                android:layout_width="90dp"
+                android:layout_height="35dp"
+                style="@style/RedButtonStyle"
+                android:layout_gravity="center"
+                android:text="@string/btn_text_report_question"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="30dp" />
+        </LinearLayout>
+
+    </LinearLayout>
     <include layout="@layout/tool_bar_base"/>
 </RelativeLayout>

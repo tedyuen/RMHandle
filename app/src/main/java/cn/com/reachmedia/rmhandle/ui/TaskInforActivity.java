@@ -18,6 +18,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
 import cn.com.reachmedia.rmhandle.model.param.TaskDetailParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
@@ -28,6 +29,7 @@ import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentInfoTabFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.BaseFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.CustomerPhotoTabFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.TaskInfoBaseFragment;
+import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 
 /**
  * Author:    tedyuen
@@ -48,6 +50,7 @@ public class TaskInforActivity extends BaseActionBarTabActivity implements UiDis
     Map<Integer,TaskInfoBaseFragment> fragmentMap;
 
     TaskDetailController taskDetailController;
+    HomeFilterUtil homeFilterUtil = HomeFilterUtil.getIns();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,11 +92,11 @@ public class TaskInforActivity extends BaseActionBarTabActivity implements UiDis
 
     public void onRefresh(){
         TaskDetailParam taskDetailParam = new TaskDetailParam();
-        taskDetailParam.startime = "2016-03-10";
-        taskDetailParam.endtime = "2016-05-20";
-        taskDetailParam.space = "";
-        taskDetailParam.lon = "1";
-        taskDetailParam.lat = "1";
+        taskDetailParam.startime = homeFilterUtil.startTime;
+        taskDetailParam.endtime = homeFilterUtil.endTime;
+        taskDetailParam.space = homeFilterUtil.getAreaId();
+        taskDetailParam.lon = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);;
+        taskDetailParam.lat = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE);
         taskDetailController.getTaskDetail(taskDetailParam);
     }
 
