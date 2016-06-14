@@ -8,6 +8,7 @@ import java.util.List;
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 
 /**
@@ -61,22 +62,26 @@ public class UploadWorkParam extends TokenParam{
         this.workTime = TimeUtils.dateAddByDateForString(bean.getWorkTime(),"yyyy-MM-dd HH:mm:ss",0);
         this.onlineTime = bean.getOnlineTime();
         this.deletFileId = bean.getFiledelete();
-        String[] fileIds = bean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
-        String[] fileTimes = bean.getFileTime().split(PointWorkBeanDbUtil.FILE_SPLIT);
-        String[] fileXY = bean.getFileXY().split(PointWorkBeanDbUtil.FILE_SPLIT3);
-        if(fileIds.length>1){
-            this.fileList = new ArrayList<>();
-            for(int i=0;i<fileIds.length;i++){
-                FileList temp = new FileList();
-                temp.fileId = fileIds[i];
-                temp.fileXY = fileXY[i];
-                temp.fileTime = fileTimes[i];
-                fileList.add(temp);
+        System.out.println("==>1234:    "+bean.getFileIdData());
+        if(bean.getFileIdData()!=null){
+            String[] fileIds = bean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+            String[] fileTimes = bean.getFileTime().split(PointWorkBeanDbUtil.FILE_SPLIT);
+            String[] fileXY = bean.getFileXY().split(PointWorkBeanDbUtil.FILE_SPLIT2);
+            if(fileIds.length>0 && !StringUtils.isEmpty(fileIds[0])){
+                this.fileList = new ArrayList<>();
+                for(int i=0;i<fileIds.length;i++){
+                    FileList temp = new FileList();
+                    temp.fileId = fileIds[i];
+                    temp.fileXY = fileXY[i];
+                    temp.fileTime = fileTimes[i];
+                    fileList.add(temp);
+                }
+            }else{
+                this.fileList = null;
             }
         }else{
             this.fileList = null;
         }
-
     }
 
     public String toJson(){

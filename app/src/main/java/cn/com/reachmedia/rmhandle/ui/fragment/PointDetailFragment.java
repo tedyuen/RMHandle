@@ -278,8 +278,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
         prePhotoSize = prePhotoIds.length;
         pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(bean.getWorkId(),bean.getPointId());
         if(pointWorkBean!=null){
-            cacheFileId = pointWorkBean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
-            cacheFilePath = pointWorkBean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+            cacheFileId = pointWorkBean.getFileIdData()==null?new String[0]:pointWorkBean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+            cacheFilePath = pointWorkBean.getFilePathData()==null?new String[0]:pointWorkBean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
         }
 
 
@@ -361,6 +361,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setLat(lat);
         pointWorkBean.setWorkTime(TimeUtils.getNowDate());
         pointWorkBean.setOnlineTime(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_ON_LINE_TIME));
+        System.out.println("==>getNativeState:  "+pointWorkBean.getNativeState());
+
         pointWorkBean.setNativeState("0");
 
         pointWorkBean.setFiledelete(PointWorkBeanDbUtil.getSplitStrWeb(deletePrePhoto,deletePrePhoto.size()));
@@ -377,31 +379,39 @@ public class PointDetailFragment extends BaseToolbarFragment {
         if(!insertOrUpdate && !pointWorkBean.getNativeState().equals("2")){
             List<String> localFileIdDataRL = new ArrayList<>();
             List<String> localFilePathDataRL = new ArrayList<>();
-            for(int i=0;i<remainFileId.length;i++){
-                boolean addFlag = true;
-                for(String tempId:deleteLocalPrePhoto){
-                    if(tempId.equals(remainFileId[i])){
-                        addFlag = false;
-                        break;
+            if(remainFileId!=null){
+                for(int i=0;i<remainFileId.length;i++){
+                    boolean addFlag = true;
+                    for(String tempId:deleteLocalPrePhoto){
+                        if(tempId.equals(remainFileId[i])){
+                            addFlag = false;
+                            break;
+                        }
                     }
-                }
-                for(String tempId:deletePrePhoto){
-                    if(tempId.equals(remainFileId[i])){
-                        addFlag = false;
-                        break;
+                    for(String tempId:deletePrePhoto){
+                        if(tempId.equals(remainFileId[i])){
+                            addFlag = false;
+                            break;
+                        }
                     }
-                }
-                if(addFlag){
-                    localFileIdDataRL.add(remainFileId[i]);
-                    localFilePathDataRL.add(remainFilePath[i]);
+                    if(addFlag){
+                        localFileIdDataRL.add(remainFileId[i]);
+                        localFilePathDataRL.add(remainFilePath[i]);
+                    }
                 }
             }
             localFileIdDataR = localFileIdDataRL.toArray(new String[localFileIdDataRL.size()]);
             localFilePathDataR = localFilePathDataRL.toArray(new String[localFilePathDataRL.size()]);
         }
 
+        //---------- 数量打印
+        StringBuffer idbuffer = new StringBuffer();
+        for(int i=0;i<photo_full_id.length;i++){
+            idbuffer.append(photo_full_id[i]+"\t");
+        }
+        System.out.println("==>photo_full_id content:  "+idbuffer.toString());
         System.out.println("==>size:  "+localFileIdDataR.length+":"+photo_full_id.length+":"+(prePhotoSize-deletePrePhoto.size())+":"+photoCount);
-        String[] resultFileIdData = concat(localFileIdDataR,photo_full_id,prePhotoSize-deletePrePhoto.size(),photoCount);
+        String[] resultFileIdData = concat(localFileIdDataR,photo_full_id,prePhotoSize-deletePrePhoto.size(),photoCount-prePhotoSize+deletePrePhoto.size());
         String[] resultFilePathData = concat(localFilePathDataR,photo_full_path,prePhotoSize-deletePrePhoto.size(),photoCount);
         System.out.println("====>photo delete size: "+localFileIdDataR.length+":"+resultFileIdData.length);
         System.out.println("====>photo size:"+photoCount+":"+prePhotoSize+":"+deletePrePhoto.size()+":"+remainLocalIdSize+":"+deleteLocalPrePhoto.size());
@@ -410,7 +420,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
         if(resultFileIdData.length>0){
             pointWorkBean.setFileIdData(PointWorkBeanDbUtil.getSplitStr(resultFileIdData,0,resultFileIdData.length));
-            pointWorkBean.setFilePathData(PointWorkBeanDbUtil.getSplitStr(resultFilePathData,0,photoCount));
+            pointWorkBean.setFilePathData(PointWorkBeanDbUtil.getSplitStr(resultFilePathData,0,resultFileIdData.length));
             pointWorkBean.setFileXY(PointWorkBeanDbUtil.tempGetXY(resultFileIdData.length));
             pointWorkBean.setFileTime(PointWorkBeanDbUtil.tempGetTime(resultFileIdData.length));
         }else{
@@ -737,6 +747,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                                         ViewHelper.getImagePagerLocal(getActivity(), tempIndex);
                                     }
                                 });
+                                photo_full_id[i] = photo_full_id[i+1];
                                 photo_full_path[i] = photo_full_path[i+1];
                             }
                         }
@@ -744,7 +755,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                             addPhotos[photoCount].setVisibility(View.INVISIBLE);
                         }
                         photo_full_path[photoCount] = null;
-
+                        photo_full_id[photoCount] = null;
                         photoCount--;
                         System.out.println("initCancelPhoto: "+prePhotoSize+":"+deletePrePhoto.size()+":"+remainLocalIdSize+":"+deleteLocalPrePhoto.size());
 

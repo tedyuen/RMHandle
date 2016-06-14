@@ -64,15 +64,23 @@ public class PointPicService extends Service {
 
                     }
                 });
-                String[] filePaths = bean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+
+                String[] filePaths = new String[0];
+                if(bean.getFilePathData()!=null){
+                    filePaths = bean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+                }
+
                 for(int i=0;i<filePaths.length;i++){
                     System.out.println("filepath==> "+filePaths[i]);
                 }
-                File file1 = new File(filePaths[0]);
+                File file1 = null;
+                if(filePaths.length>0){
+                    file1 = new File(filePaths[0]);
+                }
                 File file2 = null;
                 File file3 = null;
                 File doorFile= new File(bean.getDoorpic()==null?"":bean.getDoorpic());
-                if(!file1.exists()){
+                if(file1!=null && !file1.exists()){
                     file1 = null;
                 }
                 if(!doorFile.exists()){
@@ -93,9 +101,15 @@ public class PointPicService extends Service {
 
 
                 String file1Id,file2Id,file3Id,communityDoorId,communityDoorXY,communityDoorTime;
-                String[] fileIds = bean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
-
-                file1Id = fileIds[0];
+                String[] fileIds = new String[0];
+                if(bean.getFileIdData()!=null){
+                    fileIds = bean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+                }
+                if(fileIds.length>0 && !StringUtils.isEmpty(fileIds[0])){
+                    file1Id = fileIds[0];
+                }else{
+                    file1Id = "";
+                }
                 if(fileIds.length>1 && !StringUtils.isEmpty(fileIds[1])){
                     file2Id = fileIds[1];
                 }else{

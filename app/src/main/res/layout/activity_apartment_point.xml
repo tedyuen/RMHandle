@@ -44,7 +44,7 @@
             android:paddingLeft="@dimen/padding_lr"
             android:paddingRight="@dimen/padding_lr"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
