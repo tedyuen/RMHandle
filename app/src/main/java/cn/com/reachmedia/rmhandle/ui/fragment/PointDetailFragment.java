@@ -411,7 +411,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
         }
         System.out.println("==>photo_full_id content:  "+idbuffer.toString());
         System.out.println("==>size:  "+localFileIdDataR.length+":"+photo_full_id.length+":"+(prePhotoSize-deletePrePhoto.size())+":"+photoCount);
-        String[] resultFileIdData = concat(localFileIdDataR,photo_full_id,prePhotoSize-deletePrePhoto.size(),photoCount-prePhotoSize+deletePrePhoto.size());
+        System.out.println("==>size:2  "+remainLocalIdSize+":"+deleteLocalPrePhoto.size());
+        String[] resultFileIdData = concat(localFileIdDataR,photo_full_id,prePhotoSize-deletePrePhoto.size()+remainLocalIdSize-deleteLocalPrePhoto.size(),photoCount-prePhotoSize+deletePrePhoto.size()-remainLocalIdSize+deleteLocalPrePhoto.size());
         String[] resultFilePathData = concat(localFilePathDataR,photo_full_path,prePhotoSize-deletePrePhoto.size(),photoCount);
         System.out.println("====>photo delete size: "+localFileIdDataR.length+":"+resultFileIdData.length);
         System.out.println("====>photo size:"+photoCount+":"+prePhotoSize+":"+deletePrePhoto.size()+":"+remainLocalIdSize+":"+deleteLocalPrePhoto.size());
