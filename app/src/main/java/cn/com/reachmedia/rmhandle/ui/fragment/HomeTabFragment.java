@@ -115,6 +115,7 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
                     for(TaskIndexModel.PListBean.CListBean cListBean:pListBean.getCList()){
                         homeFilterUtil.customers.add(cListBean.getCname());
                         homeFilterUtil.customersMap.put(cListBean.getCname(),cListBean.getCid()+"");
+                        homeFilterUtil.initCacheCustomer();
                     }
                 }
                 mAdapter.updateData(data.getPList());

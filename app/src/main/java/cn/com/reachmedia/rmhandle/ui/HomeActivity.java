@@ -222,6 +222,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
             tv_area.setText(homeFilterUtil.currentArea);
             tv_custom.setText(homeFilterUtil.currentCustomer);
         }
+        homeFilterUtil.resetCacheCustomer();
     }
 
     private boolean isFilterShowing() {
@@ -304,7 +305,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
                         tv_end_time.setText(homeFilterUtil.getNextWednesdayNoSet(text.toString()));
                         tv_custom.setText(homeFilterUtil.defaultC);
                         tv_area.setText(homeFilterUtil.defaultArea);
-
+                        homeFilterUtil.cacheCustomer(text.toString());
                     }
                 })
                 .show();

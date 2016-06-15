@@ -188,6 +188,8 @@ public class HomeFilterUtil {
     public Set<String> customers;
     public Map<String,String> customersMap;
 
+    public Map<String,Set<String>> cacheCustomers;
+
     public String currentCustomer;
     public String defaultC = "全部";
 
@@ -197,6 +199,7 @@ public class HomeFilterUtil {
         customersMap.put(defaultC,"");
 //        customers.add(defaultC);
         currentCustomer = defaultC;
+        cacheCustomers = new HashMap<>();
     }
 
     public void clearCustomers(){
@@ -207,6 +210,7 @@ public class HomeFilterUtil {
         currentCustomer = defaultC;
 
     }
+
 
     public String[] getCustomers(){
         String[] all = new String[customers.size()+1];
@@ -222,5 +226,29 @@ public class HomeFilterUtil {
     }
 
 
+    public void initCacheCustomer(){
+        cacheCustomers.put(startTime,customers);
+        System.out.println("==>init size2:  "+customers.size());
+
+    }
+
+    public void resetCacheCustomer(){
+        if(cacheCustomers.containsKey(startTime)){
+            customers = cacheCustomers.get(startTime);
+        }
+    }
+
+    public void cacheCustomer(String startTime){
+        System.out.println("==>cacheCustomer:startTime  "+startTime);
+        if(cacheCustomers.containsKey(startTime)){
+            customers = cacheCustomers.get(startTime);
+            System.out.println("==>replace size123:  "+customers.size());
+
+        }else{
+            System.out.println("==>replace size145:  "+customers.size());
+
+            customers = new HashSet<>();
+        }
+    }
 
 }
