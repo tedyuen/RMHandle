@@ -90,6 +90,13 @@
             android:label="@string/title_apartment_point">
         </activity>
 
+        <activity android:name=".ui.TaskInfoAllActivity"
+            android:theme="@style/AppTheme.Toolbar"
+            android:screenOrientation="portrait">
+        </activity>
+
+
+
         <activity android:name=".ui.TaskInforActivity"
             android:theme="@style/AppTheme.Toolbar"
             android:screenOrientation="portrait"

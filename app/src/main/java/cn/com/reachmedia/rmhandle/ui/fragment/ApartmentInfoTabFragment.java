@@ -87,7 +87,7 @@ public class ApartmentInfoTabFragment extends TaskInfoBaseFragment implements Sw
         mPageListView.setState(PageListView.PageListViewState.Idle);
         if(model!=null){
             if (AppApiContact.ErrorCode.SUCCESS.equals(model.rescode)) {
-                mAdapter.updateData(model.getCrList());
+                mAdapter.updateData(model.getCrList(),false);
                 mAdapter.notifyDataSetChanged();
             }
         }

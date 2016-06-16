@@ -1,6 +1,7 @@
 package cn.com.reachmedia.rmhandle.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.model.TaskDetailModel;
+import cn.com.reachmedia.rmhandle.ui.TaskInfoAllActivity;
+import cn.com.reachmedia.rmhandle.ui.fragment.TaskInfoAllFragment;
 
 /**
  * Author:    tedyuen
@@ -33,6 +36,7 @@ public class ApartmentInfoTabAdapter extends BaseAdapter {
 
     private Context mContext;
 
+    private boolean mFlag;
 
     public ApartmentInfoTabAdapter(Context context, List<TaskDetailModel.CrListBean> mLists) {
         this.mLists = mLists;
@@ -44,8 +48,14 @@ public class ApartmentInfoTabAdapter extends BaseAdapter {
         this.mLists = new ArrayList<>();
     }
 
-    public void updateData(List<TaskDetailModel.CrListBean> list) {
+    /**
+     *
+     * @param list
+     * @param mFlag 是否隐藏 全部
+     */
+    public void updateData(List<TaskDetailModel.CrListBean> list,boolean mFlag) {
         this.mLists = list;
+        this.mFlag = mFlag;
     }
 
 
@@ -76,10 +86,24 @@ public class ApartmentInfoTabAdapter extends BaseAdapter {
             bean = (ViewHolder1) convertView.getTag(R.id.tag);
         }
 
-        TaskDetailModel.CrListBean data = mLists.get(position);
+        final TaskDetailModel.CrListBean data = mLists.get(position);
         if (data != null) {
             bean.tvName.setText(data.getCname());
             bean.tvInfo.setText(data.getComcount() + "个楼盘，" + data.getPointcount() + "个点位");
+
+            if(!mFlag){
+                bean.rl_all_info.setVisibility(View.VISIBLE);
+                bean.rl_all_info.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TaskInfoAllFragment.data = data;
+                        mContext.startActivity(new Intent(mContext, TaskInfoAllActivity.class));
+
+                    }
+                });
+            }else{
+                bean.rl_all_info.setVisibility(View.GONE);
+            }
 
 
             bean.llInfoFrame.removeAllViews();
@@ -101,7 +125,11 @@ public class ApartmentInfoTabAdapter extends BaseAdapter {
                 bean3.tvApName.setText(comList.getCommunityname());
                 bean3.tvApInfo.setText("点位数："+comList.getPointing()+"/"+comList.getPointcount());
                 tempBean.tvDistrict.setText(comList.getDistrict());
-                tempBean.llInnerFrame.addView(rlTemp);
+                if(!mFlag && tempBean.llInnerFrame.getChildCount()<5){
+                    tempBean.llInnerFrame.addView(rlTemp);
+                }else if(mFlag){
+                    tempBean.llInnerFrame.addView(rlTemp);
+                }
 
                 if (!flag) {
                     bean.llInfoFrame.addView(tempLine);
@@ -124,6 +152,8 @@ public class ApartmentInfoTabAdapter extends BaseAdapter {
         RelativeLayout rlName;
         @Bind(R.id.ll_info_frame)
         LinearLayout llInfoFrame;
+        @Bind(R.id.rl_all_info)
+        RelativeLayout rl_all_info;
 
         ViewHolder1(View view) {
             ButterKnife.bind(this, view);
