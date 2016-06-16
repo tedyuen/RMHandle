@@ -64,7 +64,12 @@ public class HomeFilterUtil {
 
     public String getThursday(){
         Calendar now = TimeUtils.getNow();
-        now.add(Calendar.DATE,5-now.get(Calendar.DAY_OF_WEEK));
+        int nowDay = now.get(Calendar.DAY_OF_WEEK);
+        if(nowDay>=5){
+            now.add(Calendar.DATE,5-nowDay);
+        }else{
+            now.add(Calendar.DATE,-2-nowDay);
+        }
         String result = TimeUtils.dateAddByDateForString(now.getTime(),"yyyy-MM-dd",0);
         setStartTime(result);
         return result;
@@ -228,8 +233,6 @@ public class HomeFilterUtil {
 
     public void initCacheCustomer(){
         cacheCustomers.put(startTime,customers);
-        System.out.println("==>init size2:  "+customers.size());
-
     }
 
     public void resetCacheCustomer(){
@@ -239,14 +242,9 @@ public class HomeFilterUtil {
     }
 
     public void cacheCustomer(String startTime){
-        System.out.println("==>cacheCustomer:startTime  "+startTime);
         if(cacheCustomers.containsKey(startTime)){
             customers = cacheCustomers.get(startTime);
-            System.out.println("==>replace size123:  "+customers.size());
-
         }else{
-            System.out.println("==>replace size145:  "+customers.size());
-
             customers = new HashSet<>();
         }
     }
