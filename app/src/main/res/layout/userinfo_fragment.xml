@@ -95,7 +95,7 @@
                         android:id="@+id/iv_head_portrait"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/abc"
+                        android:src="@mipmap/default_avatar"
                         android:layout_centerInParent="true"
                         android:scaleType="centerCrop"
                         />

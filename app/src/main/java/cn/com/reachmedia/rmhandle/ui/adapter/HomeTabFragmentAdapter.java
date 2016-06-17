@@ -110,6 +110,8 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
 
 
             bean.tvTips.setVisibility(View.GONE);
+            bean.ivArrowIconUp.setVisibility(View.GONE);
+            bean.ivArrowIconDown.setVisibility(View.VISIBLE);
 
             if(StringUtils.isEmpty(data.getTips())){
                 bean.llWarning.setVisibility(View.GONE);

@@ -109,9 +109,9 @@ public class UserInfoFragment extends BaseToolbarFragment {
     private void updateInfo(){
         String avatarUrl = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_PIC_URL);
         System.out.println(avatarUrl);
-        avatarUrl = "http://120.26.65.65:8085/img/res/images/advsales/admin/scheduling/282/s_20160601133823133.jpg";
+//        avatarUrl = "http://120.26.65.65:8085/img/res/images/advsales/admin/scheduling/282/s_20160601133823133.jpg";
         if(!StringUtils.isEmpty(avatarUrl)){
-            Picasso.with(getContext()).load(avatarUrl).placeholder(R.drawable.abc).into(ivHeadPortrait);
+            Picasso.with(getContext()).load(avatarUrl).placeholder(R.mipmap.default_avatar).into(ivHeadPortrait);
         }
         tvUsername.setText(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_USER_NAME));
         tvUserinfo.setText("分部:"+mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_SPACE));

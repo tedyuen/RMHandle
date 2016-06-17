@@ -19,6 +19,7 @@ import cn.com.reachmedia.rmhandle.model.param.LoginParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.LoginController;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
+import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
@@ -97,7 +98,8 @@ public class LoginFragment extends BaseFragment {
                                         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_USER_NAME,data.getName());
                                         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_TITLE,data.getTitle());
                                         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_PIC_URL,data.getPicUrl());
-
+                                        HomeFilterUtil homeFilterUtil = HomeFilterUtil.getIns();
+                                        homeFilterUtil.getThursday();
                                         startActivity(new Intent(getActivity(),HomeActivity.class));
                                         getActivity().finish();
                                         return;
