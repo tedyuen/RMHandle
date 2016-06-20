@@ -47,6 +47,7 @@
     <string name="dialog_title_add_photo">添加图片</string>
     <string name="dialog_title_del_photo">确定删除图片吗?</string>
     <string name="dialog_title_submit_point">确定提交吗?</string>
+    <string name="dialog_title_change_edit_mode">确定修改吗?</string>
     <string name="dialog_title_submit_card">确定修改门卡密码吗?</string>
     <string name="dialog_title_synchronize">上传消耗流量,确定继续吗?</string>
     <string name="dialog_title_synchronize_start">开始上传,请稍后刷新状态!</string>

@@ -126,6 +126,15 @@ public class PointDetailFragment extends BaseToolbarFragment {
     ImageView tv_delete_photo2;
     @Bind(R.id.iv_delete_3)
     ImageView tv_delete_photo3;
+    @Bind(R.id.rl_right_text)
+    RelativeLayout rl_right_text;
+    @Bind(R.id.ll_done_mode)
+    LinearLayout ll_done_mode;
+    @Bind(R.id.ll_undone_mode)
+    LinearLayout ll_undone_mode;
+    @Bind(R.id.bt_has_done)
+    Button bt_has_done;
+
 
     ImageView[] deleteBtns;
 
@@ -189,25 +198,110 @@ public class PointDetailFragment extends BaseToolbarFragment {
             if(bean.getWorkUp()==1){
                 stateType = 0;
                 btDone.setText("上刊完成");
+                bt_has_done.setText("上刊完成");
                 btCantEnter.setText("无法进入");
 
             }else if(bean.getWorkDown()==1){
                 stateType = 1;
                 btDone.setText("下刊完成");
+                bt_has_done.setText("下刊完成");
                 btCantEnter.setText("无法进入");
 
             }else{
                 stateType = 2;
                 btDone.setText("巡检完成");
+                bt_has_done.setText("巡检完成");
                 btCantEnter.setText("报告问题");
             }
 
+        }
+
+        if(pointWorkBean!=null){
+            stateFinish = pointWorkBean.getState();
+        }else{
+            if(bean!=null){
+                stateFinish = bean.getState();
+            }
+        }
+        System.out.println("==> photo size: "+photoCount);
+        switch (stateFinish){
+            case 0:
+                changeEditMode(true);
+
+                break;
+            case 1:
+                changeEditMode(false);
+
+                break;
+            case 2:
+                changeEditMode(false);
 
 
+                break;
+            case 3:
+                changeEditMode(false);
+
+                break;
+        }
+    }
+
+    /**
+     * 改变编辑模式
+     * @param flag true:可编辑，false:不可编辑
+     */
+    private void changeEditMode(boolean flag){
+        if(flag){
+            ll_done_mode.setVisibility(View.GONE);
+            ll_undone_mode.setVisibility(View.VISIBLE);
+            for(int i=0;i<photoCount;i++){
+                if(i<deleteBtns.length)
+                    deleteBtns[i].setVisibility(View.VISIBLE);
+            }
+            if(photoCount<addPhotos.length){
+                addPhotos[photoCount].setVisibility(View.VISIBLE);
+            }
+            rl_right_text.setVisibility(View.GONE);
+
+
+        }else{
+            ll_done_mode.setVisibility(View.VISIBLE);
+            ll_undone_mode.setVisibility(View.GONE);
+            for(int i=0;i<photoCount;i++){
+                if(i<deleteBtns.length)
+                    deleteBtns[i].setVisibility(View.GONE);
+            }
+            if(photoCount<addPhotos.length){
+                addPhotos[photoCount].setVisibility(View.GONE);
+            }
+            rl_right_text.setVisibility(View.VISIBLE);
 
         }
 
 
+    }
+
+    /**
+     * 进入修改模式
+     */
+    @OnClick(R.id.rl_right_text)
+    public void editMode(){
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_title_change_edit_mode)
+                .negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .positiveText("确定")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        changeEditMode(true);
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -273,9 +367,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
         if(!StringUtils.isEmpty(bean.getCDoorPic())){
             Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.drawable.abc).into(ivCommPhoto2);
         }
-        initStateType();
         mergeLocalPhoto();
         initPhoto();
+        initStateType();
 
     }
     /**
