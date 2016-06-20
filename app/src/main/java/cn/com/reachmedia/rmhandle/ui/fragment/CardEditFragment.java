@@ -194,6 +194,7 @@ public class CardEditFragment extends BaseToolbarFragment {
     public void goCardList(){
         Intent intent = new Intent(getActivity(),CardListActivity.class);
         intent.putExtra("communityId",model.getCommunityid());
+        intent.putExtra("communityName",model.getCommunity());
         startActivity(intent);
     }
 

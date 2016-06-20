@@ -16,6 +16,7 @@
     <string name="btn_text_logout">退出登录</string>
     <string name="btn_text_call">拨打</string>
     <string name="btn_text_confirm">确定</string>
+    <string name="btn_text_submit">提交</string>
     <string name="btn_text_clear">清空</string>
     <string name="btn_text_edit">修改</string>
     <string name="btn_text_save">保存</string>
@@ -26,7 +27,7 @@
 
     <string name="btn_text_shangkan_done">上刊完成</string>
     <string name="btn_text_cant_enter">无法进入</string>
-    <string name="btn_text_report_question">报告问题</string>
+    <string name="btn_text_report_question">报修</string>
 
     <string name="quit_redo">再按一次退出程序</string>
 

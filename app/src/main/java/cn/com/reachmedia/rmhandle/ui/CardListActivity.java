@@ -47,7 +47,8 @@ public class CardListActivity extends BaseActionBarTabActivity implements UiDisp
 
     CardListController cardListController;
 
-    private String commmunityId;
+    private String communityId;
+    private String communityname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,17 +86,23 @@ public class CardListActivity extends BaseActionBarTabActivity implements UiDisp
         cardListController = new CardListController(this);
         Intent intent = getIntent();
         if(intent!=null){
-            commmunityId = intent.getStringExtra("communityId");
+            communityId = intent.getStringExtra("communityId");
+            communityname = intent.getStringExtra("communityName");
         }
-        if(!StringUtils.isEmpty(commmunityId)){
+        needTitle();
+        if (!StringUtils.isEmpty(communityname)) {
+            setTitle(communityname);
+        }
+        if(!StringUtils.isEmpty(communityId)){
             onRefresh();
             showProgressDialog();
         }
+
     }
 
     public void onRefresh(){
         CardListParam cardListParam = new CardListParam();
-        cardListParam.communityId = this.commmunityId;
+        cardListParam.communityId = this.communityId;
         cardListController.getCardList(cardListParam);
     }
 

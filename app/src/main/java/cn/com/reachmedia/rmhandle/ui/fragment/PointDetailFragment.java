@@ -168,6 +168,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
     int remainLocalIdSize = 0;
     List<String> deleteLocalPrePhoto;//id 未提交的图片删除
 
+    int stateType;//0:上刊 1:下刊  2:巡查
+    int stateFinish;//0:未完成 1:无法进入 2:报错
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +181,34 @@ public class PointDetailFragment extends BaseToolbarFragment {
         pointListModel = apartmentPointUtils.pointListModel;
     }
 
+    /**
+     * 初始化上下刊状态
+     */
+    private void initStateType(){
+        if(bean!=null){
+            if(bean.getWorkUp()==1){
+                stateType = 0;
+                btDone.setText("上刊完成");
+                btCantEnter.setText("无法进入");
+
+            }else if(bean.getWorkDown()==1){
+                stateType = 1;
+                btDone.setText("下刊完成");
+                btCantEnter.setText("无法进入");
+
+            }else{
+                stateType = 2;
+                btDone.setText("巡检完成");
+                btCantEnter.setText("报告问题");
+            }
+
+
+
+
+        }
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -242,7 +273,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         if(!StringUtils.isEmpty(bean.getCDoorPic())){
             Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.drawable.abc).into(ivCommPhoto2);
         }
-
+        initStateType();
         mergeLocalPhoto();
         initPhoto();
 
@@ -322,12 +353,86 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     @OnClick(R.id.bt_cant_enter)
     public void goCannotEnter(){
+        CanNotEnterDialogFragment dialogFragment = new CanNotEnterDialogFragment(new CanNotEnterDialogFragment.OnDialogEnterListener() {
+            @Override
+            public void doSubmit(final int type,final String content) {
+                new MaterialDialog.Builder(getActivity())
+                        .title(R.string.dialog_title_submit_point)
+                        .negativeText("取消")
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .positiveText("确定")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                System.out.println("==>CanNotEnterDialogFragment "+type+":"+content);
+                                PointWorkBean pointWorkBean = getPointBean(3,0,"",type,content,mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
+                                if(insertOrUpdate){
+                                    PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                                }else{
+                                    PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
+                                }
+                                ServiceHelper.getIns().startPointWorkService(getActivity());
+                                ToastHelper.showInfo(getActivity(),"提交成功!");
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getActivity().finish();
+                                    }
+                                }, 1000);
+                            }
+                        })
+                        .show();
 
+
+            }
+        });
+        dialogFragment.show(getFragmentManager(),null);
     }
 
     @OnClick(R.id.bt_report_question)
     public void goReportQuestion(){
-
+        RepairDialogFragment repairDialogFragment = new RepairDialogFragment(new RepairDialogFragment.OnDialogEnterListener() {
+            @Override
+            public void doSubmit(final int type,final String content) {
+                new MaterialDialog.Builder(getActivity())
+                        .title(R.string.dialog_title_submit_point)
+                        .negativeText("取消")
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .positiveText("确定")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                System.out.println("==>CanNotEnterDialogFragment "+type+":"+content);
+                                PointWorkBean pointWorkBean = getPointBean(2,type,content,0,"",mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
+                                if(insertOrUpdate){
+                                    PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                                }else{
+                                    PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
+                                }
+                                ServiceHelper.getIns().startPointWorkService(getActivity());
+                                ToastHelper.showInfo(getActivity(),"提交成功!");
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getActivity().finish();
+                                    }
+                                }, 1000);
+                            }
+                        })
+                        .show();
+            }
+        });
+        repairDialogFragment.show(getFragmentManager(),null);
     }
 
 

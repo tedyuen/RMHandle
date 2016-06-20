@@ -108,6 +108,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:paddingLeft="@dimen/padding_lr"
                 android:paddingRight="@dimen/padding_lr"
                 android:background="@color/white">

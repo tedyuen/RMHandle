@@ -129,7 +129,7 @@
 
 
 
-        <activity android:launchMode="singleTask" android:name=".ui.LoginActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.Toolbar">
+        <activity android:name=".ui.LoginActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.Toolbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

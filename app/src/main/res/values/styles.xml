@@ -46,7 +46,7 @@
     <!-- 首页单选 -->
     <style name="IndexRadioButtonStyle">
         <item name="android:textColor">@drawable/color_index_radio_btn</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/index_radio_btn_selector</item>
     </style>
@@ -73,6 +73,14 @@
     <style name="EditTextStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:background">@color/transparent</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:textColorHint">@color/bottom_grey</item>
+    </style>
+
+    <style name="EditTextStyle2">
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/shape_index_radio_btn_uncheck</item>
         <item name="android:padding">0dp</item>
         <item name="android:gravity">center_vertical|left</item>
         <item name="android:textColorHint">@color/bottom_grey</item>
