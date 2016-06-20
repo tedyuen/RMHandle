@@ -192,7 +192,9 @@ public class CardEditFragment extends BaseToolbarFragment {
 
     @OnClick({R.id.bt_edit_history_text_1,R.id.bt_edit_history_text_2})
     public void goCardList(){
-        startActivity(new Intent(getActivity(), CardListActivity.class));
+        Intent intent = new Intent(getActivity(),CardListActivity.class);
+        intent.putExtra("communityId",model.getCommunityid());
+        startActivity(intent);
     }
 
     //-----以下是图片逻辑

@@ -1,7 +1,6 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,29 +10,25 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.model.CardListModel;
-import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.CardListActivity;
-import cn.com.reachmedia.rmhandle.ui.TaskInforActivity;
 import cn.com.reachmedia.rmhandle.ui.adapter.CardListAdapter;
-import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
+import cn.com.reachmedia.rmhandle.ui.adapter.PswdListAdapter;
 import cn.com.reachmedia.rmhandle.ui.view.PageListView;
-import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 
 /**
  * Author:    tedyuen
  * Version    V1.0
- * Date:      16/6/12 下午6:27
+ * Date:      16/6/20 上午10:59
  * Description:
  * Modification  History:
  * Date         	Author        		Version        	Description
  * -----------------------------------------------------------------------------------
- * 16/6/12          tedyuen             1.0             1.0
+ * 16/6/20          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class CardListFragment extends CardListAbFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class PswdListFragment extends CardListAbFragment implements SwipeRefreshLayout.OnRefreshListener{
 
     public static final String ARG_INITIAL_POSITION = "ARG_INITIAL_POSITION";
-
 
     CardListActivity activity;
 
@@ -42,7 +37,7 @@ public class CardListFragment extends CardListAbFragment implements SwipeRefresh
     @Bind(R.id.page_list_view)
     protected PageListView mPageListView;
 
-    CardListAdapter mAdapter;
+    PswdListAdapter mAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +62,7 @@ public class CardListFragment extends CardListAbFragment implements SwipeRefresh
     }
 
     private void setUpViewComponent() {
-        mAdapter = new CardListAdapter(getActivity());
+        mAdapter = new PswdListAdapter(getActivity());
         mPageListView.setAdapter(mAdapter);
 //        mPageListView.setLoadMoreEnable(true);
 //        mPageListView.setLoadNextListener(this);
@@ -80,7 +75,7 @@ public class CardListFragment extends CardListAbFragment implements SwipeRefresh
     public void onDataRefresh(CardListModel data) {
         if(mSwipeContainer==null) return;
         mSwipeContainer.setRefreshing(false);
-        mAdapter.updateData(data.getCardList());
+        mAdapter.updateData(data.getPswdList());
         mAdapter.notifyDataSetChanged();
     }
 
@@ -88,7 +83,6 @@ public class CardListFragment extends CardListAbFragment implements SwipeRefresh
     public void onRefresh() {
         activity.onRefresh();
     }
-
     @Override
     protected int getLayoutResId() {
         return 0;

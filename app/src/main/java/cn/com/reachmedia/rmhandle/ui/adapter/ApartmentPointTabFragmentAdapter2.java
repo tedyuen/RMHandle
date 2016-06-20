@@ -17,6 +17,7 @@ import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.ui.PointDetailActivity;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 
 /**
  * Author:    tedyuen
@@ -119,7 +120,7 @@ public class ApartmentPointTabFragmentAdapter2 extends ApartmentPointTabBaseAdap
                 bean.ivPai.setVisibility(View.GONE);
             }
 
-            if(data.getIsPhoto()==0){
+            if(StringUtils.isEmpty(data.getFileId())){
                 bean.btLogout.setBackgroundColor(mContext.getResources().getColor(R.color.apartment_point_bgcolor_grey));
                 bean.btLogout.setText("未拍照");
             }else{

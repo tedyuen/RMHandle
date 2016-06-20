@@ -76,6 +76,12 @@ public class AppApiContact {
         public static final String CPIC_SUBMIT = "RM_GCBAPP_CPicSubmit";
 
 
+        /**
+         * 3.12 查询卡密码历史记录
+         */
+        public static final String CARD_LIST = "RM_GCBAPP_cardList";
+
+
 
 
 

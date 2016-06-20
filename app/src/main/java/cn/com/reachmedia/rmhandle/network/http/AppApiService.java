@@ -2,6 +2,7 @@ package cn.com.reachmedia.rmhandle.network.http;
 
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
+import cn.com.reachmedia.rmhandle.model.CardListModel;
 import cn.com.reachmedia.rmhandle.model.CardSubmitModel;
 import cn.com.reachmedia.rmhandle.model.LoginModel;
 import cn.com.reachmedia.rmhandle.model.PicSubmitModel;
@@ -104,6 +105,18 @@ public interface AppApiService {
     @POST(AppApiContact.API_ACTION)
     void cardSubmit(@Field("json") String json,
                        Callback<CardSubmitModel> cb);
+
+    /**
+     * 3.12 查询卡密码历史记录接口
+     * @param json
+     * @param cb
+     */
+    @FormUrlEncoded
+    @POST(AppApiContact.API_ACTION)
+    void getCardList(@Field("json") String json,
+                       Callback<CardListModel> cb);
+
+
 
 
 

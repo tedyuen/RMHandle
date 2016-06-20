@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:paddingLeft="@dimen/padding_lr"
+    android:paddingRight="@dimen/padding_lr"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        android:text="房多多"
+        android:textColor="@color/username_color"
+        android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="房多多"
+        android:textColor="@color/color_text_radio_uncheck"
+        android:textSize="15sp"
+        android:layout_centerVertical="true"/>
+
+</LinearLayout>
