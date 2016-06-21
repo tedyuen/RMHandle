@@ -3,6 +3,7 @@ package cn.com.reachmedia.rmhandle.ui.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import cn.com.reachmedia.rmhandle.app.AppParamContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
 import cn.com.reachmedia.rmhandle.ui.ApartmentPointActivity;
+import cn.com.reachmedia.rmhandle.ui.HomeActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.GoMapAppDialogFragment;
 import cn.com.reachmedia.rmhandle.utils.IntentUtils;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
@@ -42,15 +44,15 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
 
     private List<TaskIndexModel.PListBean> mLists;
 
-    private Activity mContext;
+    private HomeActivity mContext;
 
 
-    public HomeTabFragmentAdapter(Activity context, List<TaskIndexModel.PListBean> mLists) {
+    public HomeTabFragmentAdapter(HomeActivity context, List<TaskIndexModel.PListBean> mLists) {
         this.mLists = mLists;
         this.mContext = context;
     }
 
-    public HomeTabFragmentAdapter(Activity context) {
+    public HomeTabFragmentAdapter(HomeActivity context) {
         this.mContext = context;
         this.mLists = new ArrayList<>();
     }
@@ -103,22 +105,24 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
             bean.llAddress.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                                            ToastHelper.showInfo(mContext, "安装百度地图");
 
-//                    if(IntentUtils.isAvilible(mContext, "com.baidu.BaiduMap")) {
-//                        SharedPreferencesHelper mSharedPreferencesHelper = SharedPreferencesHelper.getInstance();
-//                        GoMapAppDialogFragment dialog = new GoMapAppDialogFragment(mContext,
-//                                mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),
-//                                mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE),
-//                                "", "",
-//                                data.getLon(), data.getLat(),
-//                                "", "", data.getAddress());
-//                        dialog.dismiss();
-//                        ToastHelper.showInfo(mContext, "安装百度地图");
-//
-//                    }else {
-//                        ToastHelper.showAlert(mContext, "手机没有安装百度地图");
-//                    }
+                    if(IntentUtils.isAvilible(mContext, "com.baidu.BaiduMap")) {
+                        SharedPreferencesHelper mSharedPreferencesHelper = SharedPreferencesHelper.getInstance();
+                        GoMapAppDialogFragment dialog1 = new GoMapAppDialogFragment(mContext,
+                                mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),
+                                mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE),
+                                "", "",
+                                data.getLon(), data.getLat(),
+                                "", "", data.getAddress());
+                        dialog1.show(mContext.getSupportFragmentManager(),null);
+
+
+
+                        ToastHelper.showInfo(mContext, "安装百度地图");
+
+                    }else {
+                        ToastHelper.showAlert(mContext, "手机没有安装百度地图");
+                    }
                 }
             });
 

@@ -18,6 +18,7 @@ import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
 import cn.com.reachmedia.rmhandle.model.param.TaskIndexParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.TaskIndexController;
+import cn.com.reachmedia.rmhandle.ui.HomeActivity;
 import cn.com.reachmedia.rmhandle.ui.adapter.HomeTabFragmentAdapter;
 import cn.com.reachmedia.rmhandle.ui.interf.HomeUiDataUpdate;
 import cn.com.reachmedia.rmhandle.ui.view.PageListView;
@@ -89,7 +90,7 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
 
 
     private void setUpViewComponent() {
-        mAdapter = new HomeTabFragmentAdapter(getActivity());
+        mAdapter = new HomeTabFragmentAdapter((HomeActivity) getActivity());
         mPageListView.setAdapter(mAdapter);
         mPageListView.setLoadMoreEnable(false);
 //        mPageListView.setLoadNextListener(this);
