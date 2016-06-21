@@ -1,6 +1,7 @@
 package cn.com.reachmedia.rmhandle.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -81,6 +85,9 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 
     @Bind(R.id.tv_carddesc)
     TextView tv_carddesc;
+    @Bind(R.id.tv_mima_door)
+    TextView tv_mima_door;
+
     @Bind(R.id.tv_doordesc)
     TextView tv_doordesc;
     @Bind(R.id.iv_apart_photo_1)
@@ -292,6 +299,71 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                 PointListModel data = gson.fromJson(dataJson,PointListModel.class);
                 if(data!=null){
                     this.data = data;
+                    boolean colorFlag1,colorFlag2,colorFlag3,colorFlag4;
+                    StringBuffer buffer = new StringBuffer();
+                    buffer.append("门口照:");
+                    if(StringUtils.isEmpty(data.getCGatePic())){
+                        buffer.append("未拍;");
+                        colorFlag1 = true;
+                    }else {
+                        buffer.append("已拍;");
+                        colorFlag1 = false;
+                    }
+                    buffer.append("环境照:");
+                    if(StringUtils.isEmpty(data.getCPestPic())){
+                        buffer.append("未拍;");
+                        colorFlag2 = true;
+                    }else {
+                        buffer.append("已拍;");
+                        colorFlag2 = false;
+                    }
+
+                    buffer.append("门卡:");
+                    if(StringUtils.isEmpty(data.getCarddesc())){
+                        buffer.append("未填;");
+                        colorFlag3 = true;
+                    }else {
+                        buffer.append("已填;");
+                        colorFlag3 = false;
+                    }
+
+                    buffer.append("密码:");
+                    if(StringUtils.isEmpty(data.getDoordesc())){
+                        buffer.append("未填;");
+                        colorFlag4 = true;
+                    }else {
+                        buffer.append("已填;");
+                        colorFlag4 = false;
+                    }
+
+                    SpannableStringBuilder builder = new SpannableStringBuilder(buffer.toString());
+                    builder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.username_color)),0,4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    if(colorFlag1){
+                        builder.setSpan(new ForegroundColorSpan(Color.RED),4,7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }else{
+                        builder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.username_color)),4,7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                    builder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.username_color)),7,11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    if(colorFlag2){
+                        builder.setSpan(new ForegroundColorSpan(Color.RED),11,14, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }else{
+                        builder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.username_color)),11,14, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                    builder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.username_color)),14,17, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    if(colorFlag3){
+                        builder.setSpan(new ForegroundColorSpan(Color.RED),17,20, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }else{
+                        builder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.username_color)),17,20, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                    builder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.username_color)),20,23, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    if(colorFlag4){
+                        builder.setSpan(new ForegroundColorSpan(Color.RED),23,26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }else{
+                        builder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.username_color)),23,26, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+
+                    tv_mima_door.setText(builder);
+
                     tv_carddesc.setText("密码："+data.getCarddesc());
                     tv_doordesc.setText("门卡备注："+data.getDoordesc());
                     setCardPhoto(data.getCGatePic(),data.getCPestPic());
