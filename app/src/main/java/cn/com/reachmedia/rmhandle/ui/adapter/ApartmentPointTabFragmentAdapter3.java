@@ -118,6 +118,7 @@ public class ApartmentPointTabFragmentAdapter3 extends ApartmentPointTabBaseAdap
                 bean.ivPai.setVisibility(View.GONE);
             }
 
+//            switch (data.)
             bean.btLogout.setText(data.getErrorDesc());
 
 

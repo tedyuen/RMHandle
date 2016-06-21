@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -17,9 +18,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppParamContact;
+import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
 import cn.com.reachmedia.rmhandle.ui.ApartmentPointActivity;
+import cn.com.reachmedia.rmhandle.ui.fragment.GoMapAppDialogFragment;
+import cn.com.reachmedia.rmhandle.utils.IntentUtils;
+import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 
 /**
  * Author:    tedyuen
@@ -36,15 +42,15 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
 
     private List<TaskIndexModel.PListBean> mLists;
 
-    private Context mContext;
+    private Activity mContext;
 
 
-    public HomeTabFragmentAdapter(Context context, List<TaskIndexModel.PListBean> mLists) {
+    public HomeTabFragmentAdapter(Activity context, List<TaskIndexModel.PListBean> mLists) {
         this.mLists = mLists;
         this.mContext = context;
     }
 
-    public HomeTabFragmentAdapter(Context context) {
+    public HomeTabFragmentAdapter(Activity context) {
         this.mContext = context;
         this.mLists = new ArrayList<>();
     }
@@ -93,6 +99,29 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
                     mContext.startActivity(intent);
                 }
             });
+
+            bean.llAddress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                                            ToastHelper.showInfo(mContext, "安装百度地图");
+
+//                    if(IntentUtils.isAvilible(mContext, "com.baidu.BaiduMap")) {
+//                        SharedPreferencesHelper mSharedPreferencesHelper = SharedPreferencesHelper.getInstance();
+//                        GoMapAppDialogFragment dialog = new GoMapAppDialogFragment(mContext,
+//                                mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),
+//                                mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE),
+//                                "", "",
+//                                data.getLon(), data.getLat(),
+//                                "", "", data.getAddress());
+//                        dialog.dismiss();
+//                        ToastHelper.showInfo(mContext, "安装百度地图");
+//
+//                    }else {
+//                        ToastHelper.showAlert(mContext, "手机没有安装百度地图");
+//                    }
+                }
+            });
+
             bean.tvApartmentName.setText(data.getCommunity());
             bean.tvKanCount.setText(data.getLocA()+"/"+data.getLocS());
             bean.tvDate.setText(data.getWorktime());

@@ -194,27 +194,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
      * 初始化上下刊状态
      */
     private void initStateType(){
-        if(bean!=null){
-            if(bean.getWorkUp()==1){
-                stateType = 0;
-                btDone.setText("上刊完成");
-                bt_has_done.setText("上刊完成");
-                btCantEnter.setText("无法进入");
 
-            }else if(bean.getWorkDown()==1){
-                stateType = 1;
-                btDone.setText("下刊完成");
-                bt_has_done.setText("下刊完成");
-                btCantEnter.setText("无法进入");
-
-            }else{
-                stateType = 2;
-                btDone.setText("巡检完成");
-                bt_has_done.setText("巡检完成");
-                btCantEnter.setText("报告问题");
-            }
-
-        }
 
         if(pointWorkBean!=null){
             stateFinish = pointWorkBean.getState();
@@ -223,11 +203,11 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 stateFinish = bean.getState();
             }
         }
-        System.out.println("==> photo size: "+photoCount);
+        String backText = "完成";
+
         switch (stateFinish){
             case 0:
                 changeEditMode(true);
-
                 break;
             case 1:
                 changeEditMode(false);
@@ -235,13 +215,33 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 break;
             case 2:
                 changeEditMode(false);
-
-
                 break;
             case 3:
                 changeEditMode(false);
-
+                backText = "报错";
                 break;
+        }
+
+        if(bean!=null){
+            if(bean.getWorkUp()==1){
+                stateType = 0;
+                btDone.setText("上刊"+backText);
+                bt_has_done.setText("上刊"+backText);
+                btCantEnter.setText("无法进入");
+
+            }else if(bean.getWorkDown()==1){
+                stateType = 1;
+                btDone.setText("下刊"+backText);
+                bt_has_done.setText("下刊"+backText);
+                btCantEnter.setText("无法进入");
+
+            }else{
+                stateType = 2;
+                btDone.setText("巡检"+backText);
+                bt_has_done.setText("巡检"+backText);
+                btCantEnter.setText("报告问题");
+            }
+
         }
     }
 
