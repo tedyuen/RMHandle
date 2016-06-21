@@ -2,11 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_container"
         style="@style/MatchActivityStyle"
-        android:background="@color/white">
+        android:background="@color/background">
 
         <cn.com.reachmedia.rmhandle.ui.view.PageListView
             android:id="@+id/page_list_view"
@@ -14,9 +15,9 @@
             android:layout_height="match_parent"
             android:cacheColorHint="@color/transparent"
             android:listSelector="@color/transparent"
-            android:dividerHeight="1dp"
-            android:divider="@drawable/shape_divider_line"
             />
+        <!--android:dividerHeight="1dp"-->
+        <!--android:divider="@drawable/shape_divider_line"-->
         <!--custom:emptyView="@layout/include_empty_view"-->
         <!--custom:loadingView="@layout/include_loading_view"-->
         <!--custom:errorView="@layout/include_error_view"-->

@@ -463,7 +463,6 @@ public class PointDetailFragment extends BaseToolbarFragment {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                System.out.println("==>CanNotEnterDialogFragment "+type+":"+content);
                                 PointWorkBean pointWorkBean = getPointBean(3,0,"",type,content,mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
                                 if(insertOrUpdate){
                                     PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
@@ -506,7 +505,6 @@ public class PointDetailFragment extends BaseToolbarFragment {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                System.out.println("==>CanNotEnterDialogFragment "+type+":"+content);
                                 PointWorkBean pointWorkBean = getPointBean(2,type,content,0,"",mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
                                 if(insertOrUpdate){
                                     PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);

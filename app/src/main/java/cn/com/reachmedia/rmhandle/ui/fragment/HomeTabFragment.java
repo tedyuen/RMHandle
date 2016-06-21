@@ -159,4 +159,10 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
     public void setUiUpdateListener(HomeUiDataUpdate updateListener){
         this.updateListener = updateListener;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        onRefresh();
+    }
 }

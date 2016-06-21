@@ -156,8 +156,13 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
             }
         });
         mPager.setCurrentItem(0);
-        onRefresh();
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onRefresh();
+            }
+        },100);
     }
 
     private static class NavigationAdapter extends CacheFragmentStatePagerAdapter {
@@ -184,7 +189,6 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
             if (0 < mScrollY) {
                 args.putInt(ApartmentPointTabFragment.ARG_INITIAL_POSITION, 1);
             }
-            System.out.println("position:===>  "+position);
             switch (position) {
                 case 0:
                     args.putInt(ApartmentPointTabFragment.LIST_TYPE, AppSpContact.SP_KEY_APAET_POINT_UNDONE);
@@ -263,6 +267,10 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         param.space = homeFilterUtil.getAreaId();
         param.customer = homeFilterUtil.getCustomerId();
         pointListController.getTaskIndex(param);
+        if(fragmentMap!=null && fragmentMap.get(0)!=null){
+
+            fragmentMap.get(0).showLoadingCircle();
+        }
     }
 
     @Override

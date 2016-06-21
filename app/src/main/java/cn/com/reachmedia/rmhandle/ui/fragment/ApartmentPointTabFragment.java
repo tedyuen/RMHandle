@@ -99,10 +99,13 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
         return rootView;
     }
 
-
+    public void showLoadingCircle(){
+        if(mSwipeContainer!=null && !mSwipeContainer.isRefreshing()){
+            mSwipeContainer.setRefreshing(true);
+        }
+    }
 
     private void setUpViewComponent() {
-        System.out.println("listType:  "+listType);
         switch (listType){
             case 1:
                 mAdapter = new ApartmentPointTabFragmentAdapter(getActivity());
