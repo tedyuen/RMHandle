@@ -119,7 +119,7 @@ public class ApartmentPointTabFragmentAdapter3 extends ApartmentPointTabBaseAdap
             }
 
 //            switch (data.)
-            bean.btLogout.setText(data.getErrorDesc());
+            bean.btLogout.setText(data.getStateTypeDesc());
 
 
         }

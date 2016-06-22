@@ -39,19 +39,20 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
         public final static Property Ground = new Property(13, Integer.class, "ground", false, "GROUND");
         public final static Property CDoorPic = new Property(14, String.class, "cDoorPic", false, "C_DOOR_PIC");
         public final static Property ErrorDesc = new Property(15, String.class, "errorDesc", false, "ERROR_DESC");
-        public final static Property IsPhoto = new Property(16, Integer.class, "isPhoto", false, "IS_PHOTO");
-        public final static Property State = new Property(17, Integer.class, "state", false, "STATE");
-        public final static Property StateType = new Property(18, Integer.class, "stateType", false, "STATE_TYPE");
-        public final static Property UpdateTime = new Property(19, String.class, "updateTime", false, "UPDATE_TIME");
-        public final static Property Pictime = new Property(20, String.class, "pictime", false, "PICTIME");
-        public final static Property Worktime = new Property(21, String.class, "worktime", false, "WORKTIME");
-        public final static Property Starttime = new Property(22, java.util.Date.class, "starttime", false, "STARTTIME");
-        public final static Property Endtime = new Property(23, java.util.Date.class, "endtime", false, "ENDTIME");
-        public final static Property Communityid = new Property(24, String.class, "communityid", false, "COMMUNITYID");
-        public final static Property Communityname = new Property(25, String.class, "communityname", false, "COMMUNITYNAME");
-        public final static Property FileId = new Property(26, String.class, "fileId", false, "FILE_ID");
-        public final static Property FileUrlB = new Property(27, String.class, "fileUrlB", false, "FILE_URL_B");
-        public final static Property FileUrlS = new Property(28, String.class, "fileUrlS", false, "FILE_URL_S");
+        public final static Property StateTypeDesc = new Property(16, String.class, "stateTypeDesc", false, "STATE_TYPE_DESC");
+        public final static Property IsPhoto = new Property(17, Integer.class, "isPhoto", false, "IS_PHOTO");
+        public final static Property State = new Property(18, Integer.class, "state", false, "STATE");
+        public final static Property StateType = new Property(19, Integer.class, "stateType", false, "STATE_TYPE");
+        public final static Property UpdateTime = new Property(20, String.class, "updateTime", false, "UPDATE_TIME");
+        public final static Property Pictime = new Property(21, String.class, "pictime", false, "PICTIME");
+        public final static Property Worktime = new Property(22, String.class, "worktime", false, "WORKTIME");
+        public final static Property Starttime = new Property(23, java.util.Date.class, "starttime", false, "STARTTIME");
+        public final static Property Endtime = new Property(24, java.util.Date.class, "endtime", false, "ENDTIME");
+        public final static Property Communityid = new Property(25, String.class, "communityid", false, "COMMUNITYID");
+        public final static Property Communityname = new Property(26, String.class, "communityname", false, "COMMUNITYNAME");
+        public final static Property FileId = new Property(27, String.class, "fileId", false, "FILE_ID");
+        public final static Property FileUrlB = new Property(28, String.class, "fileUrlB", false, "FILE_URL_B");
+        public final static Property FileUrlS = new Property(29, String.class, "fileUrlS", false, "FILE_URL_S");
     };
 
 
@@ -83,19 +84,20 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
                 "'GROUND' INTEGER," + // 13: ground
                 "'C_DOOR_PIC' TEXT," + // 14: cDoorPic
                 "'ERROR_DESC' TEXT," + // 15: errorDesc
-                "'IS_PHOTO' INTEGER," + // 16: isPhoto
-                "'STATE' INTEGER," + // 17: state
-                "'STATE_TYPE' INTEGER," + // 18: stateType
-                "'UPDATE_TIME' TEXT," + // 19: updateTime
-                "'PICTIME' TEXT," + // 20: pictime
-                "'WORKTIME' TEXT," + // 21: worktime
-                "'STARTTIME' INTEGER," + // 22: starttime
-                "'ENDTIME' INTEGER," + // 23: endtime
-                "'COMMUNITYID' TEXT," + // 24: communityid
-                "'COMMUNITYNAME' TEXT," + // 25: communityname
-                "'FILE_ID' TEXT," + // 26: fileId
-                "'FILE_URL_B' TEXT," + // 27: fileUrlB
-                "'FILE_URL_S' TEXT);"); // 28: fileUrlS
+                "'STATE_TYPE_DESC' TEXT," + // 16: stateTypeDesc
+                "'IS_PHOTO' INTEGER," + // 17: isPhoto
+                "'STATE' INTEGER," + // 18: state
+                "'STATE_TYPE' INTEGER," + // 19: stateType
+                "'UPDATE_TIME' TEXT," + // 20: updateTime
+                "'PICTIME' TEXT," + // 21: pictime
+                "'WORKTIME' TEXT," + // 22: worktime
+                "'STARTTIME' INTEGER," + // 23: starttime
+                "'ENDTIME' INTEGER," + // 24: endtime
+                "'COMMUNITYID' TEXT," + // 25: communityid
+                "'COMMUNITYNAME' TEXT," + // 26: communityname
+                "'FILE_ID' TEXT," + // 27: fileId
+                "'FILE_URL_B' TEXT," + // 28: fileUrlB
+                "'FILE_URL_S' TEXT);"); // 29: fileUrlS
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_POINT_BEAN_ID ON POINT_BEAN" +
                 " (ID);");
@@ -192,69 +194,74 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
             stmt.bindString(16, errorDesc);
         }
  
+        String stateTypeDesc = entity.getStateTypeDesc();
+        if (stateTypeDesc != null) {
+            stmt.bindString(17, stateTypeDesc);
+        }
+ 
         Integer isPhoto = entity.getIsPhoto();
         if (isPhoto != null) {
-            stmt.bindLong(17, isPhoto);
+            stmt.bindLong(18, isPhoto);
         }
  
         Integer state = entity.getState();
         if (state != null) {
-            stmt.bindLong(18, state);
+            stmt.bindLong(19, state);
         }
  
         Integer stateType = entity.getStateType();
         if (stateType != null) {
-            stmt.bindLong(19, stateType);
+            stmt.bindLong(20, stateType);
         }
  
         String updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindString(20, updateTime);
+            stmt.bindString(21, updateTime);
         }
  
         String pictime = entity.getPictime();
         if (pictime != null) {
-            stmt.bindString(21, pictime);
+            stmt.bindString(22, pictime);
         }
  
         String worktime = entity.getWorktime();
         if (worktime != null) {
-            stmt.bindString(22, worktime);
+            stmt.bindString(23, worktime);
         }
  
         java.util.Date starttime = entity.getStarttime();
         if (starttime != null) {
-            stmt.bindLong(23, starttime.getTime());
+            stmt.bindLong(24, starttime.getTime());
         }
  
         java.util.Date endtime = entity.getEndtime();
         if (endtime != null) {
-            stmt.bindLong(24, endtime.getTime());
+            stmt.bindLong(25, endtime.getTime());
         }
  
         String communityid = entity.getCommunityid();
         if (communityid != null) {
-            stmt.bindString(25, communityid);
+            stmt.bindString(26, communityid);
         }
  
         String communityname = entity.getCommunityname();
         if (communityname != null) {
-            stmt.bindString(26, communityname);
+            stmt.bindString(27, communityname);
         }
  
         String fileId = entity.getFileId();
         if (fileId != null) {
-            stmt.bindString(27, fileId);
+            stmt.bindString(28, fileId);
         }
  
         String fileUrlB = entity.getFileUrlB();
         if (fileUrlB != null) {
-            stmt.bindString(28, fileUrlB);
+            stmt.bindString(29, fileUrlB);
         }
  
         String fileUrlS = entity.getFileUrlS();
         if (fileUrlS != null) {
-            stmt.bindString(29, fileUrlS);
+            stmt.bindString(30, fileUrlS);
         }
     }
 
@@ -284,19 +291,20 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
             cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13), // ground
             cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // cDoorPic
             cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // errorDesc
-            cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16), // isPhoto
-            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // state
-            cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18), // stateType
-            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // updateTime
-            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // pictime
-            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // worktime
-            cursor.isNull(offset + 22) ? null : new java.util.Date(cursor.getLong(offset + 22)), // starttime
-            cursor.isNull(offset + 23) ? null : new java.util.Date(cursor.getLong(offset + 23)), // endtime
-            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24), // communityid
-            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // communityname
-            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // fileId
-            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27), // fileUrlB
-            cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28) // fileUrlS
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // stateTypeDesc
+            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // isPhoto
+            cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18), // state
+            cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19), // stateType
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // updateTime
+            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // pictime
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // worktime
+            cursor.isNull(offset + 23) ? null : new java.util.Date(cursor.getLong(offset + 23)), // starttime
+            cursor.isNull(offset + 24) ? null : new java.util.Date(cursor.getLong(offset + 24)), // endtime
+            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // communityid
+            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // communityname
+            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27), // fileId
+            cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28), // fileUrlB
+            cursor.isNull(offset + 29) ? null : cursor.getString(offset + 29) // fileUrlS
         );
         return entity;
     }
@@ -320,19 +328,20 @@ public class PointBeanDao extends AbstractDao<PointBean, Long> {
         entity.setGround(cursor.isNull(offset + 13) ? null : cursor.getInt(offset + 13));
         entity.setCDoorPic(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
         entity.setErrorDesc(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
-        entity.setIsPhoto(cursor.isNull(offset + 16) ? null : cursor.getInt(offset + 16));
-        entity.setState(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
-        entity.setStateType(cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18));
-        entity.setUpdateTime(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
-        entity.setPictime(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
-        entity.setWorktime(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
-        entity.setStarttime(cursor.isNull(offset + 22) ? null : new java.util.Date(cursor.getLong(offset + 22)));
-        entity.setEndtime(cursor.isNull(offset + 23) ? null : new java.util.Date(cursor.getLong(offset + 23)));
-        entity.setCommunityid(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
-        entity.setCommunityname(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
-        entity.setFileId(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
-        entity.setFileUrlB(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
-        entity.setFileUrlS(cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28));
+        entity.setStateTypeDesc(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setIsPhoto(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
+        entity.setState(cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18));
+        entity.setStateType(cursor.isNull(offset + 19) ? null : cursor.getInt(offset + 19));
+        entity.setUpdateTime(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setPictime(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
+        entity.setWorktime(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
+        entity.setStarttime(cursor.isNull(offset + 23) ? null : new java.util.Date(cursor.getLong(offset + 23)));
+        entity.setEndtime(cursor.isNull(offset + 24) ? null : new java.util.Date(cursor.getLong(offset + 24)));
+        entity.setCommunityid(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
+        entity.setCommunityname(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
+        entity.setFileId(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
+        entity.setFileUrlB(cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28));
+        entity.setFileUrlS(cursor.isNull(offset + 29) ? null : cursor.getString(offset + 29));
      }
     
     /** @inheritdoc */

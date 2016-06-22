@@ -41,6 +41,7 @@ public class MyDaoGenerator {
         pointBean.addIntProperty("ground");
         pointBean.addStringProperty("cDoorPic");
         pointBean.addStringProperty("errorDesc");
+        pointBean.addStringProperty("stateTypeDesc");
         pointBean.addIntProperty("isPhoto");
         pointBean.addIntProperty("state");
         pointBean.addIntProperty("stateType");

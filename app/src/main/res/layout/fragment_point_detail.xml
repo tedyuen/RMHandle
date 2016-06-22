@@ -372,6 +372,37 @@
             </LinearLayout>
 
 
+            <LinearLayout
+                android:id="@+id/ll_error_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_error_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="拍照要求"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"/>
+                <View android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/line_color_grey"/>
+
+                <TextView
+                    android:id="@+id/tv_error_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:gravity="center_vertical"/>
+
+            </LinearLayout>
             
         </LinearLayout>
     </ScrollView>

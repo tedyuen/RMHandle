@@ -244,6 +244,7 @@ public class PointListModel extends BaseModel implements Parcelable {
         private int isPhoto;
         private int state;
         private int stateType;
+        private String stateTypeDesc;
         private String updateTime;
         private String pictime;
         private String worktime;
@@ -265,6 +266,7 @@ public class PointListModel extends BaseModel implements Parcelable {
             bean.setGround(this.ground);
             bean.setCDoorPic(this.cDoorPic);
             bean.setErrorDesc(this.errorDesc);
+            bean.setStateTypeDesc(this.stateTypeDesc);
             bean.setIsPhoto(this.isPhoto);
             bean.setState(this.state);
             bean.setStateType(this.stateType);
@@ -498,6 +500,14 @@ public class PointListModel extends BaseModel implements Parcelable {
 
         public void setWorktime(String worktime) {
             this.worktime = worktime;
+        }
+
+        public String getStateTypeDesc() {
+            return stateTypeDesc;
+        }
+
+        public void setStateTypeDesc(String stateTypeDesc) {
+            this.stateTypeDesc = stateTypeDesc;
         }
 
         public List<PFileListBean> getPFileList() {

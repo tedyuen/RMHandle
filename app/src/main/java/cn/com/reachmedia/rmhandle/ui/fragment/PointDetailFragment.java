@@ -1,11 +1,9 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
-import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -30,7 +28,6 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,7 +46,6 @@ import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.ProportionImageView;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
-import cn.com.reachmedia.rmhandle.utils.CropImageUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.PhotoSavePathUtil;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
@@ -141,8 +137,14 @@ public class PointDetailFragment extends BaseToolbarFragment {
     //增加图片按钮数组
     ProportionImageView[] addPhotos;
     boolean insertOrUpdate;
+    @Bind(R.id.tv_error_text)
+    TextView tvErrorText;
+    @Bind(R.id.tv_error_desc)
+    TextView tvErrorDesc;
+    @Bind(R.id.ll_error_frame)
+    LinearLayout llErrorFrame;
     //当前图片数量
-    private int photoCount ;
+    private int photoCount;
     private int photoName;
     private int photoMaxCount = 4;
 
@@ -164,12 +166,12 @@ public class PointDetailFragment extends BaseToolbarFragment {
     private PointListModel pointListModel;
     List<String> commImgList = new ArrayList<>();
     List<String> cusImgList = new ArrayList<>();
-    String[] prePhotoIds,prePhotoUrlS,prePhotoUrlB;
+    String[] prePhotoIds, prePhotoUrlS, prePhotoUrlB;
     List<String> deletePrePhoto;
     List<String> prePhotoUrlBs = new ArrayList<>();
     int prePhotoSize;//已有图片数量
     PointWorkBean pointWorkBean;
-    String[] cacheFileId,cacheFilePath;
+    String[] cacheFileId, cacheFilePath;
 
     //没有提交图片的信息处理
     String[] remainFileId = null;
@@ -193,52 +195,60 @@ public class PointDetailFragment extends BaseToolbarFragment {
     /**
      * 初始化上下刊状态
      */
-    private void initStateType(){
+    private void initStateType() {
 
-
-        if(pointWorkBean!=null){
+        if (pointWorkBean != null) {
             stateFinish = pointWorkBean.getState();
-        }else{
-            if(bean!=null){
-                stateFinish = bean.getState();
+        } else {
+            if (bean != null) {
+                stateFinish = bean.getStateType();
             }
         }
         String backText = "完成";
 
-        switch (stateFinish){
+        switch (stateFinish) {
             case 0:
                 changeEditMode(true);
+                llErrorFrame.setVisibility(View.GONE);
+
                 break;
             case 1:
                 changeEditMode(false);
+                llErrorFrame.setVisibility(View.GONE);
 
                 break;
             case 2:
                 changeEditMode(false);
+                llErrorFrame.setVisibility(View.VISIBLE);
+                tvErrorText.setText(bean.getStateTypeDesc());
+                tvErrorDesc.setText(bean.getErrorDesc()==null?"无备注":bean.getErrorDesc());
                 break;
             case 3:
                 changeEditMode(false);
+                llErrorFrame.setVisibility(View.VISIBLE);
+                tvErrorText.setText(bean.getStateTypeDesc());
+                tvErrorDesc.setText(bean.getErrorDesc()==null?"无备注":bean.getErrorDesc());
                 backText = "报错";
                 break;
         }
 
-        if(bean!=null){
-            if(bean.getWorkUp()==1){
+        if (bean != null) {
+            if (bean.getWorkUp() == 1) {
                 stateType = 0;
-                btDone.setText("上刊"+backText);
-                bt_has_done.setText("上刊"+backText);
+                btDone.setText("上刊" + backText);
+                bt_has_done.setText("上刊" + backText);
                 btCantEnter.setText("无法进入");
 
-            }else if(bean.getWorkDown()==1){
+            } else if (bean.getWorkDown() == 1) {
                 stateType = 1;
-                btDone.setText("下刊"+backText);
-                bt_has_done.setText("下刊"+backText);
+                btDone.setText("下刊" + backText);
+                bt_has_done.setText("下刊" + backText);
                 btCantEnter.setText("无法进入");
 
-            }else{
+            } else {
                 stateType = 2;
-                btDone.setText("巡检"+backText);
-                bt_has_done.setText("巡检"+backText);
+                btDone.setText("巡检" + backText);
+                bt_has_done.setText("巡检" + backText);
                 btCantEnter.setText("报告问题");
             }
 
@@ -247,30 +257,31 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     /**
      * 改变编辑模式
+     *
      * @param flag true:可编辑，false:不可编辑
      */
-    private void changeEditMode(boolean flag){
-        if(flag){
+    private void changeEditMode(boolean flag) {
+        if (flag) {
             ll_done_mode.setVisibility(View.GONE);
             ll_undone_mode.setVisibility(View.VISIBLE);
-            for(int i=0;i<photoCount;i++){
-                if(i<deleteBtns.length)
+            for (int i = 0; i < photoCount; i++) {
+                if (i < deleteBtns.length)
                     deleteBtns[i].setVisibility(View.VISIBLE);
             }
-            if(photoCount<addPhotos.length){
+            if (photoCount < addPhotos.length) {
                 addPhotos[photoCount].setVisibility(View.VISIBLE);
             }
             rl_right_text.setVisibility(View.GONE);
 
 
-        }else{
+        } else {
             ll_done_mode.setVisibility(View.VISIBLE);
             ll_undone_mode.setVisibility(View.GONE);
-            for(int i=0;i<photoCount;i++){
-                if(i<deleteBtns.length)
+            for (int i = 0; i < photoCount; i++) {
+                if (i < deleteBtns.length)
                     deleteBtns[i].setVisibility(View.GONE);
             }
-            if(photoCount<addPhotos.length){
+            if (photoCount < addPhotos.length) {
                 addPhotos[photoCount].setVisibility(View.GONE);
             }
             rl_right_text.setVisibility(View.VISIBLE);
@@ -284,7 +295,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
      * 进入修改模式
      */
     @OnClick(R.id.rl_right_text)
-    public void editMode(){
+    public void editMode() {
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.dialog_title_change_edit_mode)
                 .negativeText("取消")
@@ -308,7 +319,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_point_detail, container, false);
         ButterKnife.bind(this, rootView);
-        custPhotos = new ProportionImageView[]{ivCustPhoto1,ivCustPhoto2,ivCustPhoto3};
+        custPhotos = new ProportionImageView[]{ivCustPhoto1, ivCustPhoto2, ivCustPhoto3};
         needTitle();
         return rootView;
     }
@@ -321,8 +332,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        commImgList.add(StringUtils.isEmpty(pointListModel.getCGatePic())?"":pointListModel.getCGatePic().split("@&")[0]);
-        commImgList.add(StringUtils.isEmpty(pointListModel.getCPestPic())?"":pointListModel.getCPestPic().split("@&")[0]);
+        commImgList.add(StringUtils.isEmpty(pointListModel.getCGatePic()) ? "" : pointListModel.getCGatePic().split("@&")[0]);
+        commImgList.add(StringUtils.isEmpty(pointListModel.getCPestPic()) ? "" : pointListModel.getCPestPic().split("@&")[0]);
 
         try {
             int tempName = Integer.parseInt(bean.getDoor());
@@ -331,23 +342,23 @@ public class PointDetailFragment extends BaseToolbarFragment {
             setTitle(bean.getDoor() + (bean.getGround() == 0 ? "地下" : "地上") + "点位");
         }
 
-        tvActionTime.setText("到画时间："+bean.getPictime()+"    上画时间："+bean.getWorktime());
+        tvActionTime.setText("到画时间：" + bean.getPictime() + "    上画时间：" + bean.getWorktime());
         //客户文字和照片 start
         String cid = bean.getCid().trim();
-        for(PointListModel.ComListBean comBean:pointListModel.getComList()){
-            if(comBean.getCid().trim().equals(cid)){
+        for (PointListModel.ComListBean comBean : pointListModel.getComList()) {
+            if (comBean.getCid().trim().equals(cid)) {
                 tvCname.setText(comBean.getCname());
                 wbMemo.getSettings().setDefaultTextEncodingName("utf-8");
-                wbMemo.loadDataWithBaseURL("",comBean.getMemo(),"text/html", "utf-8","");
+                wbMemo.loadDataWithBaseURL("", comBean.getMemo(), "text/html", "utf-8", "");
 
-                if(comBean.getPicList()==null || comBean.getPicList().size()==0){
+                if (comBean.getPicList() == null || comBean.getPicList().size() == 0) {
                     ll_cust_photo.setVisibility(View.GONE);
-                }else{
-                    for(int i=0;i<comBean.getPicList().size();i++){
-                        if(i>=3) break;
+                } else {
+                    for (int i = 0; i < comBean.getPicList().size(); i++) {
+                        if (i >= 3) break;
                         PointListModel.ComListBean.PicListBean picBean = comBean.getPicList().get(i);
                         cusImgList.add(picBean.getPicurlB());
-                        if(!StringUtils.isEmpty(picBean.getPicurlB())){
+                        if (!StringUtils.isEmpty(picBean.getPicurlB())) {
                             custPhotos[i].setVisibility(View.VISIBLE);
                             Picasso.with(getActivity()).load(picBean.getPicurlB()).placeholder(R.drawable.abc).into(custPhotos[i]);
                         }
@@ -358,13 +369,13 @@ public class PointDetailFragment extends BaseToolbarFragment {
         }
         //客户文字和照片 end
 
-        if(!StringUtils.isEmpty(pointListModel.getCGatePic())){
+        if (!StringUtils.isEmpty(pointListModel.getCGatePic())) {
             Picasso.with(getActivity()).load(pointListModel.getCGatePic()).placeholder(R.drawable.abc).into(ivCommPhoto1);
         }
-        if(!StringUtils.isEmpty(pointListModel.getCPestPic())){
+        if (!StringUtils.isEmpty(pointListModel.getCPestPic())) {
             Picasso.with(getActivity()).load(pointListModel.getCPestPic()).placeholder(R.drawable.abc).into(ivCommPhoto3);
         }
-        if(!StringUtils.isEmpty(bean.getCDoorPic())){
+        if (!StringUtils.isEmpty(bean.getCDoorPic())) {
             Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.drawable.abc).into(ivCommPhoto2);
         }
         mergeLocalPhoto();
@@ -372,39 +383,40 @@ public class PointDetailFragment extends BaseToolbarFragment {
         initStateType();
 
     }
+
     /**
      * 整合网络和本地图片
      */
-    private void mergeLocalPhoto(){
-        if(!StringUtils.isEmpty(bean.getFileId())){
+    private void mergeLocalPhoto() {
+        if (!StringUtils.isEmpty(bean.getFileId())) {
             prePhotoIds = bean.getFileId().split(PointWorkBeanDbUtil.FILE_SPLIT);
-        }else{
+        } else {
             prePhotoIds = new String[0];
         }
         deletePrePhoto = new ArrayList<>();
         deleteLocalPrePhoto = new ArrayList<>();
 
-        if(!StringUtils.isEmpty(bean.getFileUrlB())){
+        if (!StringUtils.isEmpty(bean.getFileUrlB())) {
             prePhotoUrlB = bean.getFileUrlB().split(PointWorkBeanDbUtil.FILE_SPLIT);
-            if(prePhotoUrlB.length<prePhotoIds.length){
+            if (prePhotoUrlB.length < prePhotoIds.length) {
                 prePhotoUrlB = new String[prePhotoIds.length];
             }
-        }else{
+        } else {
             prePhotoUrlB = new String[prePhotoIds.length];
         }
 
-        Collections.addAll(prePhotoUrlBs,prePhotoUrlB);
+        Collections.addAll(prePhotoUrlBs, prePhotoUrlB);
 
-        if(!StringUtils.isEmpty(bean.getFileUrlS())){
+        if (!StringUtils.isEmpty(bean.getFileUrlS())) {
             prePhotoUrlS = bean.getFileUrlS().split(PointWorkBeanDbUtil.FILE_SPLIT);
-        }else{
+        } else {
             prePhotoUrlS = new String[0];
         }
         prePhotoSize = prePhotoIds.length;
-        pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(bean.getWorkId(),bean.getPointId());
-        if(pointWorkBean!=null){
-            cacheFileId = pointWorkBean.getFileIdData()==null?new String[0]:pointWorkBean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
-            cacheFilePath = pointWorkBean.getFilePathData()==null?new String[0]:pointWorkBean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+        pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(bean.getWorkId(), bean.getPointId());
+        if (pointWorkBean != null) {
+            cacheFileId = pointWorkBean.getFileIdData() == null ? new String[0] : pointWorkBean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+            cacheFilePath = pointWorkBean.getFilePathData() == null ? new String[0] : pointWorkBean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
         }
 
 
@@ -412,7 +424,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
 
     @OnClick(R.id.bt_done)
-    public void goDone(){
+    public void goDone() {
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.dialog_title_submit_point)
                 .negativeText("取消")
@@ -426,30 +438,36 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        PointWorkBean pointWorkBean = getPointBean(1,0,"",0,"",mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
-                        if(insertOrUpdate){
-                            PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
-                        }else{
-                            PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
-                        }
-                        ServiceHelper.getIns().startPointWorkService(getActivity());
-                        ToastHelper.showInfo(getActivity(),"提交成功!");
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                getActivity().finish();
+                        PointWorkBean pointWorkBean = getPointBean(true, 1, 0, "", 0, "", mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE), mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
+                        if (pointWorkBean == null) {
+                            dialog.dismiss();
+                            ToastHelper.showInfo(getActivity(), "请添加图片!");
+                        } else {
+                            if (insertOrUpdate) {
+                                PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                            } else {
+                                PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
                             }
-                        }, 1000);
+                            ServiceHelper.getIns().startPointWorkService(getActivity());
+                            ToastHelper.showInfo(getActivity(), "提交成功!");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getActivity().finish();
+                                }
+                            }, 1000);
+                        }
+
                     }
                 })
                 .show();
     }
 
     @OnClick(R.id.bt_cant_enter)
-    public void goCannotEnter(){
+    public void goCannotEnter() {
         CanNotEnterDialogFragment dialogFragment = new CanNotEnterDialogFragment(new CanNotEnterDialogFragment.OnDialogEnterListener() {
             @Override
-            public void doSubmit(final int type,final String content) {
+            public void doSubmit(final int type, final String content) {
                 new MaterialDialog.Builder(getActivity())
                         .title(R.string.dialog_title_submit_point)
                         .negativeText("取消")
@@ -463,14 +481,14 @@ public class PointDetailFragment extends BaseToolbarFragment {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                PointWorkBean pointWorkBean = getPointBean(3,0,"",type,content,mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
-                                if(insertOrUpdate){
+                                PointWorkBean pointWorkBean = getPointBean(false, 3, 0, "", type, content, mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE), mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
+                                if (insertOrUpdate) {
                                     PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
-                                }else{
+                                } else {
                                     PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
                                 }
                                 ServiceHelper.getIns().startPointWorkService(getActivity());
-                                ToastHelper.showInfo(getActivity(),"提交成功!");
+                                ToastHelper.showInfo(getActivity(), "提交成功!");
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -484,14 +502,14 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
             }
         });
-        dialogFragment.show(getFragmentManager(),null);
+        dialogFragment.show(getFragmentManager(), null);
     }
 
     @OnClick(R.id.bt_report_question)
-    public void goReportQuestion(){
+    public void goReportQuestion() {
         RepairDialogFragment repairDialogFragment = new RepairDialogFragment(new RepairDialogFragment.OnDialogEnterListener() {
             @Override
-            public void doSubmit(final int type,final String content) {
+            public void doSubmit(final int type, final String content) {
                 new MaterialDialog.Builder(getActivity())
                         .title(R.string.dialog_title_submit_point)
                         .negativeText("取消")
@@ -505,31 +523,36 @@ public class PointDetailFragment extends BaseToolbarFragment {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                PointWorkBean pointWorkBean = getPointBean(2,type,content,0,"",mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
-                                if(insertOrUpdate){
-                                    PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
-                                }else{
-                                    PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
-                                }
-                                ServiceHelper.getIns().startPointWorkService(getActivity());
-                                ToastHelper.showInfo(getActivity(),"提交成功!");
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        getActivity().finish();
+                                PointWorkBean pointWorkBean = getPointBean(true, 2, type, content, 0, "", mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE), mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
+                                if (pointWorkBean == null) {
+                                    dialog.dismiss();
+                                    ToastHelper.showInfo(getActivity(), "请添加图片!");
+                                } else {
+                                    if (insertOrUpdate) {
+                                        PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                                    } else {
+                                        PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
                                     }
-                                }, 1000);
+                                    ServiceHelper.getIns().startPointWorkService(getActivity());
+                                    ToastHelper.showInfo(getActivity(), "提交成功!");
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            getActivity().finish();
+                                        }
+                                    }, 1000);
+                                }
+
                             }
                         })
                         .show();
             }
         });
-        repairDialogFragment.show(getFragmentManager(),null);
+        repairDialogFragment.show(getFragmentManager(), null);
     }
 
 
     /**
-     *
      * @param state
      * @param repairType
      * @param repairDesc
@@ -539,10 +562,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
      * @param lat
      * @return
      */
-    public PointWorkBean getPointBean(int state,int repairType,String repairDesc,int errorType,String errorDesc,String lon,String lat){
+    public PointWorkBean getPointBean(boolean emptyFlag, int state, int repairType, String repairDesc, int errorType, String errorDesc, String lon, String lat) {
 //        PointWorkBean pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPID(bean.getWorkId(),bean.getPointId());
-        insertOrUpdate = pointWorkBean==null;
-        if(insertOrUpdate){
+        insertOrUpdate = pointWorkBean == null;
+        if (insertOrUpdate) {
             pointWorkBean = new PointWorkBean();
         }
         pointWorkBean.setLastId(bean.getId());
@@ -558,11 +581,11 @@ public class PointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setLat(lat);
         pointWorkBean.setWorkTime(TimeUtils.getNowDate());
         pointWorkBean.setOnlineTime(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_ON_LINE_TIME));
-        System.out.println("==>getNativeState:  "+pointWorkBean.getNativeState());
+        System.out.println("==>getNativeState:  " + pointWorkBean.getNativeState());
 
         pointWorkBean.setNativeState("0");
 
-        pointWorkBean.setFiledelete(PointWorkBeanDbUtil.getSplitStrWeb(deletePrePhoto,deletePrePhoto.size()));
+        pointWorkBean.setFiledelete(PointWorkBeanDbUtil.getSplitStrWeb(deletePrePhoto, deletePrePhoto.size()));
         pointWorkBean.setStarttime(bean.getStarttime());
         pointWorkBean.setCommunityid(bean.getCommunityid());
         pointWorkBean.setCommunityname(bean.getCommunityname());
@@ -573,25 +596,25 @@ public class PointDetailFragment extends BaseToolbarFragment {
         //未提交id与图片的path处理
         String[] localFileIdDataR = new String[0];
         String[] localFilePathDataR = new String[0];
-        if(!insertOrUpdate && !pointWorkBean.getNativeState().equals("2")){
+        if (!insertOrUpdate && !pointWorkBean.getNativeState().equals("2")) {
             List<String> localFileIdDataRL = new ArrayList<>();
             List<String> localFilePathDataRL = new ArrayList<>();
-            if(remainFileId!=null){
-                for(int i=0;i<remainFileId.length;i++){
+            if (remainFileId != null) {
+                for (int i = 0; i < remainFileId.length; i++) {
                     boolean addFlag = true;
-                    for(String tempId:deleteLocalPrePhoto){
-                        if(tempId.equals(remainFileId[i])){
+                    for (String tempId : deleteLocalPrePhoto) {
+                        if (tempId.equals(remainFileId[i])) {
                             addFlag = false;
                             break;
                         }
                     }
-                    for(String tempId:deletePrePhoto){
-                        if(tempId.equals(remainFileId[i])){
+                    for (String tempId : deletePrePhoto) {
+                        if (tempId.equals(remainFileId[i])) {
                             addFlag = false;
                             break;
                         }
                     }
-                    if(addFlag){
+                    if (addFlag) {
                         localFileIdDataRL.add(remainFileId[i]);
                         localFilePathDataRL.add(remainFilePath[i]);
                     }
@@ -603,26 +626,27 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
         //---------- 数量打印
         StringBuffer idbuffer = new StringBuffer();
-        for(int i=0;i<photo_full_id.length;i++){
-            idbuffer.append(photo_full_id[i]+"\t");
+        for (int i = 0; i < photo_full_id.length; i++) {
+            idbuffer.append(photo_full_id[i] + "\t");
         }
-        System.out.println("==>photo_full_id content:  "+idbuffer.toString());
-        System.out.println("==>size:  "+localFileIdDataR.length+":"+photo_full_id.length+":"+(prePhotoSize-deletePrePhoto.size())+":"+photoCount);
-        System.out.println("==>size:2  "+remainLocalIdSize+":"+deleteLocalPrePhoto.size());
-        String[] resultFileIdData = concat(localFileIdDataR,photo_full_id,prePhotoSize-deletePrePhoto.size()+remainLocalIdSize-deleteLocalPrePhoto.size(),photoCount-prePhotoSize+deletePrePhoto.size()-remainLocalIdSize+deleteLocalPrePhoto.size());
-        String[] resultFilePathData = concat(localFilePathDataR,photo_full_path,prePhotoSize-deletePrePhoto.size(),photoCount);
-        System.out.println("====>photo delete size: "+localFileIdDataR.length+":"+resultFileIdData.length);
-        System.out.println("====>photo size:"+photoCount+":"+prePhotoSize+":"+deletePrePhoto.size()+":"+remainLocalIdSize+":"+deleteLocalPrePhoto.size());
+        System.out.println("==>photo_full_id content:  " + idbuffer.toString());
+        System.out.println("==>size:  " + localFileIdDataR.length + ":" + photo_full_id.length + ":" + (prePhotoSize - deletePrePhoto.size()) + ":" + photoCount);
+        System.out.println("==>size:2  " + remainLocalIdSize + ":" + deleteLocalPrePhoto.size());
+        String[] resultFileIdData = concat(localFileIdDataR, photo_full_id, prePhotoSize - deletePrePhoto.size() + remainLocalIdSize - deleteLocalPrePhoto.size(), photoCount - prePhotoSize + deletePrePhoto.size() - remainLocalIdSize + deleteLocalPrePhoto.size());
+        String[] resultFilePathData = concat(localFilePathDataR, photo_full_path, prePhotoSize - deletePrePhoto.size(), photoCount);
+        System.out.println("====>photo delete size: " + localFileIdDataR.length + ":" + resultFileIdData.length);
+        System.out.println("====>photo size:" + photoCount + ":" + prePhotoSize + ":" + deletePrePhoto.size() + ":" + remainLocalIdSize + ":" + deleteLocalPrePhoto.size());
 
         pointWorkBean.setFileCount(resultFileIdData.length);
 
-        if(resultFileIdData.length>0){
-            pointWorkBean.setFileIdData(PointWorkBeanDbUtil.getSplitStr(resultFileIdData,0,resultFileIdData.length));
-            pointWorkBean.setFilePathData(PointWorkBeanDbUtil.getSplitStr(resultFilePathData,0,resultFileIdData.length));
+
+        if (resultFileIdData.length > 0) {
+            pointWorkBean.setFileIdData(PointWorkBeanDbUtil.getSplitStr(resultFileIdData, 0, resultFileIdData.length));
+            pointWorkBean.setFilePathData(PointWorkBeanDbUtil.getSplitStr(resultFilePathData, 0, resultFileIdData.length));
             pointWorkBean.setFileXY(PointWorkBeanDbUtil.tempGetXY(resultFileIdData.length));
             pointWorkBean.setFileTime(PointWorkBeanDbUtil.tempGetTime(resultFileIdData.length));
-        }else{
-            if(!insertOrUpdate) {
+        } else {
+            if (!insertOrUpdate) {
                 pointWorkBean.setFileIdData("");
                 pointWorkBean.setFilePathData("");
                 pointWorkBean.setFileXY("");
@@ -630,13 +654,13 @@ public class PointDetailFragment extends BaseToolbarFragment {
             }
         }
 
-        if(door_photo_full_id!=null){
+        if (door_photo_full_id != null) {
             pointWorkBean.setDoorpicid(door_photo_full_id);
             pointWorkBean.setDoorpic(door_photo_full_path);
-            pointWorkBean.setDoorpicXY(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE)+","+SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE));
+            pointWorkBean.setDoorpicXY(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE) + "," + SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE));
             pointWorkBean.setDoorpicTime(TimeUtils.getNowStr());
-        }else{
-            if(!insertOrUpdate){
+        } else {
+            if (!insertOrUpdate) {
                 pointWorkBean.setDoorpicid("");
                 pointWorkBean.setDoorpic("");
                 pointWorkBean.setDoorpicXY("");
@@ -645,11 +669,17 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
         }
 
+        if (emptyFlag && resultFileIdData.length <= 0) {
+            pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(bean.getWorkId(), bean.getPointId());
+            return null;
+        }
+
         return pointWorkBean;
     }
 
-    public String[] concat(String[] a, String[] b,int bStart,int bCount) {
-        String[] c= new String[a.length+bCount];
+
+    public String[] concat(String[] a, String[] b, int bStart, int bCount) {
+        String[] c = new String[a.length + bCount];
         System.arraycopy(a, 0, c, 0, a.length);
         System.arraycopy(b, bStart, c, a.length, bCount);
         return c;
@@ -697,8 +727,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
      * 初始化图片上传功能
      */
     private void initPhoto() {
-        addPhotos = new ProportionImageView[]{ivPointPhoto1,ivPointPhoto2,ivPointPhoto3};
-        deleteBtns = new ImageView[]{tv_delete_photo1,tv_delete_photo2,tv_delete_photo3};
+        addPhotos = new ProportionImageView[]{ivPointPhoto1, ivPointPhoto2, ivPointPhoto3};
+        deleteBtns = new ImageView[]{tv_delete_photo1, tv_delete_photo2, tv_delete_photo3};
         photoFile = new File[photoMaxCount];
         origUri = new Uri[photoMaxCount];
         cropUri = new Uri[photoMaxCount];
@@ -719,44 +749,44 @@ public class PointDetailFragment extends BaseToolbarFragment {
 //        本地未提交id的图片统计
         List<String> tempRemailFileId = new ArrayList<>();
         List<String> tempRemailFilePath = new ArrayList<>();
-        if(pointWorkBean!=null && pointWorkBean.getNativeState()!=null && pointWorkBean.getNativeState().equals("0")){//未提交
+        if (pointWorkBean != null && pointWorkBean.getNativeState() != null && pointWorkBean.getNativeState().equals("0")) {//未提交
             //处理无id无url,全部添加到需要提交的数组
             remainFileId = cacheFileId.clone();
             remainFilePath = cacheFilePath.clone();
             remainLocalIdSize = remainFileId.length;
-        }else if(pointWorkBean!=null && pointWorkBean.getNativeState()!=null && pointWorkBean.getNativeState().equals("1")){//提交了id未提交图片,就要考虑是否服务器删除了图片
-            for(int i=0;i<cacheFileId.length;i++){//处理无id无url
+        } else if (pointWorkBean != null && pointWorkBean.getNativeState() != null && pointWorkBean.getNativeState().equals("1")) {//提交了id未提交图片,就要考虑是否服务器删除了图片
+            for (int i = 0; i < cacheFileId.length; i++) {//处理无id无url
                 boolean tempFlag = true;//是否有ID；true 没有
-                for(int j=0;j<prePhotoIds.length;j++){
-                    if(cacheFileId[i].equals(prePhotoIds[j])){//有一样的
+                for (int j = 0; j < prePhotoIds.length; j++) {
+                    if (cacheFileId[i].equals(prePhotoIds[j])) {//有一样的
                         tempFlag = false;
                         break;
                     }
                 }
-                if(!tempFlag){//添加到需要提交的list
+                if (!tempFlag) {//添加到需要提交的list
                     tempRemailFileId.add(cacheFileId[i]);
                     tempRemailFilePath.add(cacheFilePath[i]);
                 }
             }
             remainFileId = tempRemailFileId.toArray(new String[tempRemailFileId.size()]);
             remainFilePath = tempRemailFilePath.toArray(new String[tempRemailFilePath.size()]);
-        }else{
+        } else {
             // 2，图片都提交了,啥都不管
         }
         //        本地未提交id的图片统计
 
 
         int preAddPhotoSize = 0;
-        for(int i=0;i<prePhotoSize;i++){
-            if(i>2) break;
-            if(prePhotoUrlS.length>i){//有id有url
-                if(!StringUtils.isEmpty(prePhotoUrlS[i])){
+        for (int i = 0; i < prePhotoSize; i++) {
+            if (i > 2) break;
+            if (prePhotoUrlS.length > i) {//有id有url
+                if (!StringUtils.isEmpty(prePhotoUrlS[i])) {
                     Picasso.with(getActivity()).load(prePhotoUrlS[i]).placeholder(R.drawable.abc).into(addPhotos[i]);
                 }
-            }else{//有id无url
-                if(pointWorkBean!=null){
-                    for(int j=0;j<cacheFileId.length;j++){
-                        if(prePhotoIds[i].equals(cacheFileId[j])){
+            } else {//有id无url
+                if (pointWorkBean != null) {
+                    for (int j = 0; j < cacheFileId.length; j++) {
+                        if (prePhotoIds[i].equals(cacheFileId[j])) {
                             Bitmap myBitmap4 = null;
                             String str = cacheFilePath[j];
                             try {
@@ -772,7 +802,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                                 addPhotos[i].setImageBitmap(bitmapTemp2);
                                 preAddPhotoSize++;
                                 myBitmap4.recycle();
-                            }catch(Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             break;
@@ -784,8 +814,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         }
 
 
-
-        if(preAddPhotoSize<photoMaxCount-1) {//判断图片是否超过最大值
+        if (preAddPhotoSize < photoMaxCount - 1) {//判断图片是否超过最大值
             if (pointWorkBean != null && pointWorkBean.getNativeState().equals("0")) {//处理未提交id的图片的显示
                 for (int j = 0; j < remainFileId.length; j++) {
                     Bitmap myBitmap4 = null;
@@ -814,7 +843,6 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     /**
      * 操作选择
-     *
      */
     public void imageChooseItem() {
         new MaterialDialog.Builder(getActivity())
@@ -837,18 +865,18 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     }
 
-    private void startAlbum(){
+    private void startAlbum() {
 //        Intent intent = new Intent();
 //        intent.setClass(getContext(),ImgFileListActivity.class);
 //        startActivity(intent);
-        Util util=new Util(getContext());
-        List<FileTraversal> locallist=util.LocalImgFileList();
-        Util.localFile= locallist.get(0);
-        Intent intent=new Intent(getContext(),ImgsActivity.class);
-        Bundle bundle=new Bundle();
-        bundle.putInt("count",photoMaxCount-photoCount-1);
+        Util util = new Util(getContext());
+        List<FileTraversal> locallist = util.LocalImgFileList();
+        Util.localFile = locallist.get(0);
+        Intent intent = new Intent(getContext(), ImgsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("count", photoMaxCount - photoCount - 1);
         intent.putExtras(bundle);
-        startActivityForResult(intent,REQUEST_CODE_GETIMAGE_BYALBUM);
+        startActivityForResult(intent, REQUEST_CODE_GETIMAGE_BYALBUM);
         try {
 
 //            System.out.println("-=-=-=-=>  =>>  "+locallist.get(0).filecontent.size());
@@ -858,7 +886,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
 //            bundle.putInt("count",4-photoCount);
 //            intent.putExtras(bundle);
 //            startActivityForResult(intent,REQUEST_CODE_GETIMAGE_BYALBUM);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
@@ -888,13 +916,14 @@ public class PointDetailFragment extends BaseToolbarFragment {
         }
         // 照片命名
         // 裁剪头像的绝对路径
-        photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,String.valueOf(photoName),bean.getUserId());
-        photo_full_path[photoCount] = ImageUtils.getPointPicPath(photo_full_id[photoCount],photo_path);
+        photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, String.valueOf(photoName), bean.getUserId());
+        photo_full_path[photoCount] = ImageUtils.getPointPicPath(photo_full_id[photoCount], photo_path);
         photoFile[photoCount] = new File(photo_full_path[photoCount]);
         cropUri[photoCount] = Uri.fromFile(photoFile[photoCount]);
         this.origUri[photoCount] = this.cropUri[photoCount];
         return this.cropUri[photoCount];
     }
+
     private Uri getCameraTempFileDoor() {
         if (PhotoSavePathUtil.checkSDCard()) {
             File savedir = new File(photo_path);
@@ -908,8 +937,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
         }
         // 照片命名
         // 裁剪头像的绝对路径
-        door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,"door",bean.getUserId());
-        door_photo_full_path = ImageUtils.getPointPicPath(door_photo_full_id,photo_path);
+        door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, "door", bean.getUserId());
+        door_photo_full_path = ImageUtils.getPointPicPath(door_photo_full_id, photo_path);
 
         doorPhotoFile = new File(door_photo_full_path);
         doorCropUri = Uri.fromFile(doorPhotoFile);
@@ -919,9 +948,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     /**
      * 删除图片
-     * */
+     */
 //    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void initCancelPhoto(final int index){
+    private void initCancelPhoto(final int index) {
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.dialog_title_del_photo)
                 .negativeText("取消")
@@ -935,8 +964,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        for(int i=index;i<photoCount;i++){
-                            if(i<photoMaxCount -2){
+                        for (int i = index; i < photoCount; i++) {
+                            if (i < photoMaxCount - 2) {
                                 final int tempIndex = i;
                                 addPhotos[i].setImageDrawable(addPhotos[i + 1].getDrawable());
                                 addPhotos[i].setOnClickListener(new View.OnClickListener() {
@@ -945,31 +974,31 @@ public class PointDetailFragment extends BaseToolbarFragment {
                                         ViewHelper.getImagePagerLocal(getActivity(), tempIndex);
                                     }
                                 });
-                                photo_full_id[i] = photo_full_id[i+1];
-                                photo_full_path[i] = photo_full_path[i+1];
+                                photo_full_id[i] = photo_full_id[i + 1];
+                                photo_full_path[i] = photo_full_path[i + 1];
                             }
                         }
-                        if(photoCount<photoMaxCount -1){
+                        if (photoCount < photoMaxCount - 1) {
                             addPhotos[photoCount].setVisibility(View.INVISIBLE);
                         }
                         photo_full_path[photoCount] = null;
                         photo_full_id[photoCount] = null;
                         photoCount--;
-                        System.out.println("initCancelPhoto: "+prePhotoSize+":"+deletePrePhoto.size()+":"+remainLocalIdSize+":"+deleteLocalPrePhoto.size());
+                        System.out.println("initCancelPhoto: " + prePhotoSize + ":" + deletePrePhoto.size() + ":" + remainLocalIdSize + ":" + deleteLocalPrePhoto.size());
 
-                        if(index>=prePhotoSize-deletePrePhoto.size()+remainLocalIdSize-deleteLocalPrePhoto.size()){//如果删除的本地图片,提交了id没有提交图片
-                            ImageUtils.photoBitmap.remove(index-prePhotoSize+deletePrePhoto.size()-remainLocalIdSize+deleteLocalPrePhoto.size());
+                        if (index >= prePhotoSize - deletePrePhoto.size() + remainLocalIdSize - deleteLocalPrePhoto.size()) {//如果删除的本地图片,提交了id没有提交图片
+                            ImageUtils.photoBitmap.remove(index - prePhotoSize + deletePrePhoto.size() - remainLocalIdSize + deleteLocalPrePhoto.size());
 
-                        }else if(index<(prePhotoSize-deletePrePhoto.size()+remainLocalIdSize-deleteLocalPrePhoto.size()) && index >=(prePhotoSize-deletePrePhoto.size())){//id和图片都没提交
-                            ImageUtils.cacheLoaclBitmap.remove(index-prePhotoSize+deletePrePhoto.size());
+                        } else if (index < (prePhotoSize - deletePrePhoto.size() + remainLocalIdSize - deleteLocalPrePhoto.size()) && index >= (prePhotoSize - deletePrePhoto.size())) {//id和图片都没提交
+                            ImageUtils.cacheLoaclBitmap.remove(index - prePhotoSize + deletePrePhoto.size());
                             int tempRemoteIndex = index;
-                            while(validateRemainIndex(tempRemoteIndex)){
+                            while (validateRemainIndex(tempRemoteIndex)) {
                                 tempRemoteIndex++;
                             }
                             deleteLocalPrePhoto.add(remainFileId[tempRemoteIndex]);
-                        }else{//如果删除的是网络图片
+                        } else {//如果删除的是网络图片
                             int tempRemoteIndex = index;
-                            while(validateRemoteIndex(tempRemoteIndex)){
+                            while (validateRemoteIndex(tempRemoteIndex)) {
                                 tempRemoteIndex++;
                             }
                             deletePrePhoto.add(prePhotoIds[tempRemoteIndex]);
@@ -988,9 +1017,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 .show();
     }
 
-    private boolean validateRemainIndex(int index){
-        for(String deleteId:deleteLocalPrePhoto){
-            if(remainFileId[index].equals(deleteId)){
+    private boolean validateRemainIndex(int index) {
+        for (String deleteId : deleteLocalPrePhoto) {
+            if (remainFileId[index].equals(deleteId)) {
                 return true;
             }
         }
@@ -998,31 +1027,31 @@ public class PointDetailFragment extends BaseToolbarFragment {
         return false;
     }
 
-    private boolean validateRemoteIndex(int index){
-        for(String deleteId:deletePrePhoto){
-            if(prePhotoIds[index].equals(deleteId)){
+    private boolean validateRemoteIndex(int index) {
+        for (String deleteId : deletePrePhoto) {
+            if (prePhotoIds[index].equals(deleteId)) {
                 return true;
             }
         }
         return false;
     }
 
-    private void initNextPhotoLocal(){
+    private void initNextPhotoLocal() {
         final int tempIndex = photoCount;
         addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                ToastHelper.showAlert(getActivity(), "咩哈哈");
 //                ViewHelper.getImagePagerLocal(getActivity(), tempIndex);
-                ViewHelper.getImagePager(getActivity(), prePhotoUrlBs, tempIndex,true,remainLocalIdSize);
+                ViewHelper.getImagePager(getActivity(), prePhotoUrlBs, tempIndex, true, remainLocalIdSize);
 
             }
         });
         deleteBtns[photoCount].setVisibility(View.VISIBLE);
-        System.out.println("====>photoCount: "+photoCount);
-        if(photoCount<photoMaxCount-1){
+        System.out.println("====>photoCount: " + photoCount);
+        if (photoCount < photoMaxCount - 1) {
             photoCount++;
-            if(photoCount<addPhotos.length){
+            if (photoCount < addPhotos.length) {
                 addPhotos[photoCount].setVisibility(View.VISIBLE);
                 addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -1034,19 +1063,19 @@ public class PointDetailFragment extends BaseToolbarFragment {
         }
     }
 
-    private void initNextPhoto(){
+    private void initNextPhoto() {
         final int tempIndex = photoCount;
         addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                ToastHelper.showAlert(getActivity(), "咩哈哈");
 //                ViewHelper.getImagePagerLocal(getActivity(), tempIndex);
-                ViewHelper.getImagePager(getActivity(), prePhotoUrlBs, tempIndex,true,remainLocalIdSize);
+                ViewHelper.getImagePager(getActivity(), prePhotoUrlBs, tempIndex, true, remainLocalIdSize);
 
             }
         });
         deleteBtns[photoCount].setVisibility(View.VISIBLE);
-        if(photoCount<photoMaxCount-1){
+        if (photoCount < photoMaxCount - 1) {
             photoCount++;
             addPhotos[photoCount].setVisibility(View.VISIBLE);
             addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
@@ -1060,8 +1089,6 @@ public class PointDetailFragment extends BaseToolbarFragment {
     }
 
 
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -1071,8 +1098,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
         switch (requestCode) {
             case REQUEST_CODE_GETIMAGE_BYALBUM:
-                if(resultCode==-1){
-                    for(String str:Util.filelist){
+                if (resultCode == -1) {
+                    for (String str : Util.filelist) {
                         Bitmap myBitmap4 = null;
                         photo_full_path[photoCount] = str;
 
@@ -1080,21 +1107,21 @@ public class PointDetailFragment extends BaseToolbarFragment {
                             byte[] mContent3 = ImageUtils.readStream(new FileInputStream(str));
                             //将字节数组转换为ImageView可调用的Bitmap对象
                             int b = ImageUtils.getExifOrientation(str);
-                            if(b!=0){
-                                myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()),b);
-                            }else {
+                            if (b != 0) {
+                                myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
+                            } else {
                                 myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
                             }
                             //把得到的图片绑定在控件上显示
                             Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
-                            photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,String.valueOf(photoName),bean.getUserId());
-                            photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp2,ImageUtils.getPointPicPath(photo_full_id[photoCount],photo_path),photo_path);
+                            photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, String.valueOf(photoName), bean.getUserId());
+                            photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp2, ImageUtils.getPointPicPath(photo_full_id[photoCount], photo_path), photo_path);
                             photoName++;
                             ImageUtils.photoBitmap.add(bitmapTemp2);
                             addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size() - 1));
                             myBitmap4.recycle();
                             initNextPhoto();
-                        }catch(Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -1105,23 +1132,23 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 Bitmap myBitmap = null;
                 try {
                     super.onActivityResult(requestCode, resultCode, data);
-                    byte[] mContent=ImageUtils.readStream(resolver.openInputStream(origUri[photoCount]));
+                    byte[] mContent = ImageUtils.readStream(resolver.openInputStream(origUri[photoCount]));
                     //图片旋转
                     int a = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), origUri[photoCount]));
-                    if(a!=0){
-                        myBitmap = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption()),a);
-                    }else{
+                    if (a != 0) {
+                        myBitmap = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption()), a);
+                    } else {
                         myBitmap = ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption());
                     }
                     //将字节数组转换为ImageView可调用的Bitmap对象
 
                     //把得到的图片绑定在控件上显示
                     Bitmap bitmapTemp = ImageUtils.comp(myBitmap);
-                    photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,String.valueOf(photoName),bean.getUserId());
-                    photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp,ImageUtils.getPointPicPath(photo_full_id[photoCount],photo_path),photo_path);
+                    photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, String.valueOf(photoName), bean.getUserId());
+                    photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp, ImageUtils.getPointPicPath(photo_full_id[photoCount], photo_path), photo_path);
                     photoName++;
                     ImageUtils.photoBitmap.add(bitmapTemp);
-                    addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size()-1));
+                    addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size() - 1));
 //                    saveCompressPic(myBitmap);
                     myBitmap.recycle();
                     initNextPhoto();
@@ -1135,20 +1162,20 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 Bitmap myBitmapDoor = null;
                 try {
                     super.onActivityResult(requestCode, resultCode, data);
-                    byte[] mContent=ImageUtils.readStream(resolver.openInputStream(doorOrigUri));
+                    byte[] mContent = ImageUtils.readStream(resolver.openInputStream(doorOrigUri));
                     //图片旋转
                     int a = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), doorOrigUri));
-                    if(a!=0){
-                        myBitmapDoor = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption()),a);
-                    }else{
+                    if (a != 0) {
+                        myBitmapDoor = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption()), a);
+                    } else {
                         myBitmapDoor = ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption());
                     }
                     //将字节数组转换为ImageView可调用的Bitmap对象
 
                     //把得到的图片绑定在控件上显示
                     Bitmap bitmapTemp = ImageUtils.comp(myBitmapDoor);
-                    door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,"door",bean.getUserId());
-                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp,ImageUtils.getPointPicPath(door_photo_full_id,photo_path),photo_path);
+                    door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, "door", bean.getUserId());
+                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp, ImageUtils.getPointPicPath(door_photo_full_id, photo_path), photo_path);
                     doorFlag = true;
                     ImageUtils.doorPhotoBitmap = bitmapTemp;
                     ivCommPhoto2.setImageBitmap(ImageUtils.doorPhotoBitmap);
@@ -1179,20 +1206,20 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     byte[] mContent3 = ImageUtils.readStream(resolver.openInputStream(uri));
                     //将字节数组转换为ImageView可调用的Bitmap对象
                     int b = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), uri));
-                    if(b!=0){
-                        myBitmap3 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()),b);
-                    }else {
+                    if (b != 0) {
+                        myBitmap3 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
+                    } else {
                         myBitmap3 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
                     }
                     //把得到的图片绑定在控件上显示
                     Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap3);
-                    door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,"door",bean.getUserId());
-                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp2,ImageUtils.getPointPicPath(door_photo_full_id,photo_path),photo_path);
+                    door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, "door", bean.getUserId());
+                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp2, ImageUtils.getPointPicPath(door_photo_full_id, photo_path), photo_path);
                     doorFlag = true;
                     ImageUtils.doorPhotoBitmap = bitmapTemp2;
                     ivCommPhoto2.setImageBitmap(ImageUtils.doorPhotoBitmap);
                     myBitmap3.recycle();
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
@@ -1205,20 +1232,20 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     byte[] mContent4 = ImageUtils.readStream(resolver.openInputStream(uri3));
                     //将字节数组转换为ImageView可调用的Bitmap对象
                     int c = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), uri3));
-                    if(c!=0){
-                        myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent4, ImageUtils.getBitmapOption()),c);
-                    }else {
+                    if (c != 0) {
+                        myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent4, ImageUtils.getBitmapOption()), c);
+                    } else {
                         myBitmap4 = ImageUtils.getPicFromBytes(mContent4, ImageUtils.getBitmapOption());
                     }
                     //把得到的图片绑定在控件上显示
                     Bitmap bitmapTemp3 = ImageUtils.comp(myBitmap4);
-                    door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId,"door",bean.getUserId());
-                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp3,ImageUtils.getPointPicPath(door_photo_full_id,photo_path),photo_path);
+                    door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, "door", bean.getUserId());
+                    door_photo_full_path = ImageUtils.saveCompressPicPath(bitmapTemp3, ImageUtils.getPointPicPath(door_photo_full_id, photo_path), photo_path);
                     doorFlag = true;
                     ImageUtils.doorPhotoBitmap = bitmapTemp3;
                     ivCommPhoto2.setImageBitmap(ImageUtils.doorPhotoBitmap);
                     myBitmap4.recycle();
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
@@ -1226,15 +1253,17 @@ public class PointDetailFragment extends BaseToolbarFragment {
     }
 
     @OnClick(R.id.iv_delete_1)
-    public void deletePhoto1(){
+    public void deletePhoto1() {
         initCancelPhoto(0);
     }
+
     @OnClick(R.id.iv_delete_2)
-    public void deletePhoto2(){
+    public void deletePhoto2() {
         initCancelPhoto(1);
     }
+
     @OnClick(R.id.iv_delete_3)
-    public void deletePhoto3(){
+    public void deletePhoto3() {
         initCancelPhoto(2);
     }
 
@@ -1242,7 +1271,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     //楼栋照 start
     @OnClick(R.id.iv_comm_photo_2)
-    public void changeDoorPhoto(){
+    public void changeDoorPhoto() {
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.dialog_title_add_photo)
                 .items(R.array.dialog_add_photo)
@@ -1274,7 +1303,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
     }
 
     //    -------------- 选择本地图片
-    private void startImagePick(){
+    private void startImagePick() {
 
         if (!ImageUtils.isKitKat) {
             Intent intent = new Intent();
@@ -1302,37 +1331,54 @@ public class PointDetailFragment extends BaseToolbarFragment {
     }
 
 
-
     //楼栋照 end
 
     //放大图片
     @OnClick(R.id.iv_comm_photo_1)
-    public void goViewCommunityPhoto1(){
-        ViewHelper.getImagePager(getActivity(), commImgList, 0,false,remainLocalIdSize);
+    public void goViewCommunityPhoto1() {
+        if (StringUtils.isEmpty(commImgList.get(0))) {
+            ToastHelper.showInfo(getActivity(), "暂无图片，如须上传图片请前往卡密备注页进行操作。");
+        } else {
+            if (StringUtils.isEmpty(commImgList.get(1))) {
+                List<String> tempList = new ArrayList<>();
+                tempList.add(commImgList.get(0));
+                ViewHelper.getImagePager(getActivity(), tempList, 0, false, remainLocalIdSize);
+            } else {
+                ViewHelper.getImagePager(getActivity(), commImgList, 0, false, remainLocalIdSize);
+            }
+        }
     }
 
     @OnClick(R.id.iv_comm_photo_3)
-    public void goViewCommunityPhoto2(){
-        ViewHelper.getImagePager(getActivity(), commImgList, 1,false,remainLocalIdSize);
+    public void goViewCommunityPhoto2() {
+        if (StringUtils.isEmpty(commImgList.get(1))) {
+            ToastHelper.showInfo(getActivity(), "暂无图片，如须上传图片请前往卡密备注页进行操作。");
+        } else {
+            if (StringUtils.isEmpty(commImgList.get(0))) {
+                List<String> tempList = new ArrayList<>();
+                tempList.add(commImgList.get(1));
+                ViewHelper.getImagePager(getActivity(), tempList, 0, false, remainLocalIdSize);
+
+            } else {
+                ViewHelper.getImagePager(getActivity(), commImgList, 1, false, remainLocalIdSize);
+            }
+        }
     }
 
     @OnClick(R.id.iv_cust_photo_1)
-    public void goViewCustomerPhoto1(){
-        ViewHelper.getImagePager(getActivity(), cusImgList, 0,false,remainLocalIdSize);
+    public void goViewCustomerPhoto1() {
+        ViewHelper.getImagePager(getActivity(), cusImgList, 0, false, remainLocalIdSize);
     }
+
     @OnClick(R.id.iv_cust_photo_2)
-    public void goViewCustomerPhoto2(){
-        ViewHelper.getImagePager(getActivity(), cusImgList, 1,false,remainLocalIdSize);
+    public void goViewCustomerPhoto2() {
+        ViewHelper.getImagePager(getActivity(), cusImgList, 1, false, remainLocalIdSize);
     }
+
     @OnClick(R.id.iv_cust_photo_3)
-    public void goViewCustomerPhoto3(){
-        ViewHelper.getImagePager(getActivity(), cusImgList, 2,false,remainLocalIdSize);
+    public void goViewCustomerPhoto3() {
+        ViewHelper.getImagePager(getActivity(), cusImgList, 2, false, remainLocalIdSize);
     }
-
-
-
-
-
 
 
     @Override
