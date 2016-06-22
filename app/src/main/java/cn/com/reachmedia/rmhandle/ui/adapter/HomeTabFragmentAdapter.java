@@ -193,11 +193,13 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
             }else{
                 bean.ivXia.setVisibility(View.VISIBLE);
             }
-            if(data.getWorkUpPhone()==1 || data.getWorkDownPhone()==1){
-                bean.ivPai.setVisibility(View.VISIBLE);
-            }else{
-                bean.ivPai.setVisibility(View.GONE);
-            }
+//            if(data.getWorkUpPhone()==1 || data.getWorkDownPhone()==1){
+//                bean.ivPai.setVisibility(View.VISIBLE);
+//            }else{
+//                bean.ivPai.setVisibility(View.GONE);
+//            }
+            bean.ivPai.setVisibility(View.GONE);
+
 
         }
 

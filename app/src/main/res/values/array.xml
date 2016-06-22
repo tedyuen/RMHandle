@@ -10,5 +10,13 @@
         <item>选择本地图片</item>
     </array>
 
+    <array name="dialog_add_photo_big">
+        <item>拍照</item>
+        <item>选择本地图片</item>
+        <item>查看大图</item>
+    </array>
+
+
+
 
 </resources>

@@ -22,6 +22,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,6 +50,7 @@ import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.PhotoSavePathUtil;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
+import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 
 /**
  * Author:    tedyuen
@@ -123,22 +126,22 @@ public class CardEditFragment extends BaseToolbarFragment {
 
         }
     }
-
+    String[] preGate,prePest;
     private void setCardPhoto(String cGatePic,String cPestPic){
-        String[] gate = cGatePic.split("@&");
-        String[] pest = cPestPic.split("@&");
+        preGate = cGatePic.split("@&");
+        prePest = cPestPic.split("@&");
 
-        for(int i=0;i<gate.length;i++){
+        for(int i=0;i<preGate.length;i++){
             if(i<gatePhotos.length){
-                if(!StringUtils.isEmpty(gate[i])){
-                    Picasso.with(getContext()).load(gate[i]).placeholder(R.drawable.abc).into(gatePhotos[i]);
+                if(!StringUtils.isEmpty(preGate[i])){
+                    Picasso.with(getContext()).load(preGate[i]).placeholder(R.drawable.abc).into(gatePhotos[i]);
                 }
             }
         }
-        for(int i=0;i<pest.length;i++){
+        for(int i=0;i<prePest.length;i++){
             if(i<pestPhotos.length){
-                if(!StringUtils.isEmpty(pest[i])){
-                    Picasso.with(getContext()).load(pest[i]).placeholder(R.drawable.abc).into(pestPhotos[i]);
+                if(!StringUtils.isEmpty(prePest[i])){
+                    Picasso.with(getContext()).load(prePest[i]).placeholder(R.drawable.abc).into(pestPhotos[i]);
                 }
             }
         }
@@ -213,6 +216,7 @@ public class CardEditFragment extends BaseToolbarFragment {
     private String photo_path;
 
     private String[] photo_ids,photo_paths;
+    private Bitmap[] photoCacheBitmap;
 
     private File[] photoFile;
     private Uri[] origUri,cropUri;
@@ -229,6 +233,7 @@ public class CardEditFragment extends BaseToolbarFragment {
         photo_path = path + "card/";
         int size = gatePhotoSize + pestPhotoSize;
         photo_ids = new String[size];
+        photoCacheBitmap = new Bitmap[size];
         photo_paths = new String[size];
         photoFile = new File[size];
         origUri = new Uri[size];
@@ -268,6 +273,7 @@ public class CardEditFragment extends BaseToolbarFragment {
                     photo_ids[index] = ImageUtils.getGatePicId(model.getCommunityid(),userId,index);
                     photo_paths[index] = ImageUtils.saveCompressPicPath(bitmapTemp,ImageUtils.getPointPicPath(photo_ids[index],photo_path),photo_path);
                     allPhotos[index].setImageBitmap(bitmapTemp);
+                    photoCacheBitmap[index] = bitmapTemp;
 //                    saveCompressPic(myBitmap);
                     myBitmapDoor.recycle();
                 } catch (Exception e) {
@@ -294,6 +300,7 @@ public class CardEditFragment extends BaseToolbarFragment {
                     photo_ids[index] = ImageUtils.getGatePicId(model.getCommunityid(),userId,index);
                     photo_paths[index] = ImageUtils.saveCompressPicPath(bitmapTemp2,ImageUtils.getPointPicPath(photo_ids[index],photo_path),photo_path);
                     allPhotos[index].setImageBitmap(bitmapTemp2);
+                    photoCacheBitmap[index] = bitmapTemp2;
                     myBitmap3.recycle();
                 }catch(Exception e){
                     e.printStackTrace();
@@ -318,6 +325,7 @@ public class CardEditFragment extends BaseToolbarFragment {
                     photo_ids[index] = ImageUtils.getGatePicId(model.getCommunityid(),userId,index);
                     photo_paths[index] = ImageUtils.saveCompressPicPath(bitmapTemp3,ImageUtils.getPointPicPath(photo_ids[index],photo_path),photo_path);
                     allPhotos[index].setImageBitmap(bitmapTemp3);
+                    photoCacheBitmap[index] = bitmapTemp3;
                     myBitmap4.recycle();
                 }catch(Exception e){
                     e.printStackTrace();
@@ -331,30 +339,34 @@ public class CardEditFragment extends BaseToolbarFragment {
     @OnClick(R.id.iv_gate_photo_1)
     public void iv_gate_photo_1(){
         index = 0;
-        showAddPhotoDialog();
+        showAddPhotoDialog(preGate.length>0 || !StringUtils.isEmpty(photo_ids[0]));
     }
 
     @OnClick(R.id.iv_gate_photo_2)
     public void iv_gate_photo_2(){
         index = 1;
-        showAddPhotoDialog();
+        showAddPhotoDialog(preGate.length>1 || !StringUtils.isEmpty(photo_ids[1]));
     }
 
     @OnClick(R.id.iv_pest_photo_1)
     public void iv_pest_photo_1(){
         index = 2;
-        showAddPhotoDialog();
+        showAddPhotoDialog(prePest.length>0 || !StringUtils.isEmpty(photo_ids[2]));
     }
     @OnClick(R.id.iv_pest_photo_2)
     public void iv_pest_photo_2(){
         index = 3;
-        showAddPhotoDialog();
+        showAddPhotoDialog(prePest.length>1 || !StringUtils.isEmpty(photo_ids[3]));
     }
 
-    private void showAddPhotoDialog(){
+    /**
+     *
+     * @param flag true 查看大图  false 无
+     */
+    private void showAddPhotoDialog(boolean flag){
         new MaterialDialog.Builder(getActivity())
                 .title(R.string.dialog_title_add_photo)
-                .items(R.array.dialog_add_photo)
+                .items(flag?R.array.dialog_add_photo_big:R.array.dialog_add_photo)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -365,6 +377,73 @@ public class CardEditFragment extends BaseToolbarFragment {
                         // 相册选图
                         else if (which == 1) {
                             startImagePick();
+                        }
+                        else if (which ==2){
+                            List<String> url = new ArrayList<>();
+                            List<Boolean> imageFlag = new ArrayList<>();
+                            List<Bitmap> imageLocal = new ArrayList<>();
+                            boolean[] indexFlag = new boolean[4];
+
+                            if(!StringUtils.isEmpty(photo_ids[0])){
+                                imageLocal.add(photoCacheBitmap[0]);
+                                url.add("");
+                                indexFlag[0] = true;
+                            }else{
+                                if(preGate.length>0 && !StringUtils.isEmpty(preGate[0])){
+                                    imageLocal.add(null);
+                                    url.add(preGate[0]);
+                                    indexFlag[0] = true;
+                                }
+                            }
+
+
+                            if(!StringUtils.isEmpty(photo_ids[1])){
+                                imageLocal.add(photoCacheBitmap[1]);
+                                url.add("");
+                                indexFlag[1] = true;
+                            }else{
+                                if(preGate.length>1 && !StringUtils.isEmpty(preGate[1])){
+                                    imageLocal.add(null);
+                                    url.add(preGate[1]);
+                                    indexFlag[1] = true;
+                                }
+                            }
+
+                            if(!StringUtils.isEmpty(photo_ids[2])){
+                                imageLocal.add(photoCacheBitmap[2]);
+                                url.add("");
+                                indexFlag[2] = true;
+                            }else{
+                                if(prePest.length>0 && !StringUtils.isEmpty(prePest[0])){
+                                    imageLocal.add(null);
+                                    url.add(prePest[0]);
+                                    indexFlag[2] = true;
+                                }
+                            }
+
+                            if(!StringUtils.isEmpty(photo_ids[3])){
+                                imageLocal.add(photoCacheBitmap[3]);
+                                url.add("");
+                                indexFlag[3] = true;
+                            }else{
+                                if(prePest.length>1 && !StringUtils.isEmpty(prePest[1])){
+                                    imageLocal.add(null);
+                                    url.add(prePest[1]);
+                                    indexFlag[3] = true;
+                                }
+                            }
+
+                            int tempIndex = 0;
+                            for(int i=0;i<index;i++){
+                                if(indexFlag[i]){
+                                    tempIndex++;
+                                }
+
+                            }
+
+
+                            ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal,tempIndex);
+
                         }
                     }
                 })

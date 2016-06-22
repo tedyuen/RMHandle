@@ -138,6 +138,9 @@
         </activity>
         <activity android:name=".ui.view.imagepager.ImagePagerActivity" android:theme="@android:style/android:Theme.Black.NoTitleBar.Fullscreen">
         </activity>
+        <activity android:name=".ui.view.imagepager.ImageMergePagerActivity" android:theme="@android:style/android:Theme.Black.NoTitleBar.Fullscreen">
+        </activity>
+
         <activity android:label="选择相片" android:name=".utils.album.ImgsActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.Toolbar">
         </activity>
 

@@ -2,10 +2,14 @@ package cn.com.reachmedia.rmhandle.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Parcelable;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageMergePagerActivity;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImagePagerActivity;
 
 /**
@@ -60,6 +64,28 @@ public class ViewHelper {
         intent.putExtra("merge", merge);
         intent.putExtra("local_size", localSize);
         context.startActivity(intent);
+    }
+
+
+    public static void getNewImagePager(Context context, List<String> urlList, List<Boolean> imageFlag, List<Bitmap> imageLocal,int index){
+        Intent intent = new Intent();
+        intent.setClass(context.getApplicationContext(),ImageMergePagerActivity.class);
+        String[] temp = new String[urlList.size()];
+        for(int i=0;i<urlList.size();i++){
+            temp[i] = urlList.get(i);
+        }
+        boolean[] tempImageFlag = new boolean[imageFlag.size()];
+        for(int i=0;i<imageFlag.size();i++){
+            tempImageFlag[i] = imageFlag.get(i);
+        }
+
+        intent.putExtra("images", temp);
+        intent.putExtra("images_merge_flag", tempImageFlag);
+        intent.putExtra("image_index", index);
+        intent.putParcelableArrayListExtra("images_local", (ArrayList<? extends Parcelable>) imageLocal);
+        context.startActivity(intent);
+
+
     }
 
     /**
