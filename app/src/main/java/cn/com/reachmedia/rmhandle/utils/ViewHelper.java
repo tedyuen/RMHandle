@@ -82,7 +82,9 @@ public class ViewHelper {
         intent.putExtra("images", temp);
         intent.putExtra("images_merge_flag", tempImageFlag);
         intent.putExtra("image_index", index);
-        intent.putParcelableArrayListExtra("images_local", (ArrayList<? extends Parcelable>) imageLocal);
+
+        ImageMergePagerActivity.imageLocal = imageLocal;
+
         context.startActivity(intent);
 
 

@@ -388,11 +388,14 @@ public class CardEditFragment extends BaseToolbarFragment {
                                 imageLocal.add(photoCacheBitmap[0]);
                                 url.add("");
                                 indexFlag[0] = true;
+                                imageFlag.add(false);
                             }else{
                                 if(preGate.length>0 && !StringUtils.isEmpty(preGate[0])){
                                     imageLocal.add(null);
                                     url.add(preGate[0]);
                                     indexFlag[0] = true;
+                                    imageFlag.add(true);
+
                                 }
                             }
 
@@ -401,11 +404,15 @@ public class CardEditFragment extends BaseToolbarFragment {
                                 imageLocal.add(photoCacheBitmap[1]);
                                 url.add("");
                                 indexFlag[1] = true;
+                                imageFlag.add(false);
+
                             }else{
                                 if(preGate.length>1 && !StringUtils.isEmpty(preGate[1])){
                                     imageLocal.add(null);
                                     url.add(preGate[1]);
                                     indexFlag[1] = true;
+                                    imageFlag.add(true);
+
                                 }
                             }
 
@@ -413,11 +420,15 @@ public class CardEditFragment extends BaseToolbarFragment {
                                 imageLocal.add(photoCacheBitmap[2]);
                                 url.add("");
                                 indexFlag[2] = true;
+                                imageFlag.add(false);
+
                             }else{
                                 if(prePest.length>0 && !StringUtils.isEmpty(prePest[0])){
                                     imageLocal.add(null);
                                     url.add(prePest[0]);
                                     indexFlag[2] = true;
+                                    imageFlag.add(true);
+
                                 }
                             }
 
@@ -425,11 +436,14 @@ public class CardEditFragment extends BaseToolbarFragment {
                                 imageLocal.add(photoCacheBitmap[3]);
                                 url.add("");
                                 indexFlag[3] = true;
+                                imageFlag.add(false);
+
                             }else{
                                 if(prePest.length>1 && !StringUtils.isEmpty(prePest[1])){
                                     imageLocal.add(null);
                                     url.add(prePest[1]);
                                     indexFlag[3] = true;
+                                    imageFlag.add(true);
                                 }
                             }
 

@@ -62,6 +62,7 @@ public class ImageMergePagerActivity extends Activity implements ViewPager.OnPag
     private final static int FAILED = 1;//保存图片失败
     private int SelectImage; // 选中的图片
 
+    public static List<Bitmap> imageLocal;
 
     // 拍照保存的绝对路径
     private final static String path = Environment
@@ -80,7 +81,6 @@ public class ImageMergePagerActivity extends Activity implements ViewPager.OnPag
         mBitmap = new Bitmap[imageUrls.length];
 
         boolean[] imageMergeFlag = bundle.getBooleanArray(IMAGES_MERGE_FLAG);
-        List<Bitmap> imageLocal = bundle.getParcelableArrayList(IMAGES_LOCAL);
         int pagerPosition = bundle.getInt(IMAGE_POSITION, 0);
 
         if (savedInstanceState != null) {
