@@ -1,9 +1,11 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -260,6 +262,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
      *
      * @param flag true:可编辑，false:不可编辑
      */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void changeEditMode(boolean flag) {
         if (flag) {
             ll_done_mode.setVisibility(View.GONE);
@@ -273,6 +276,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
             }
             rl_right_text.setVisibility(View.GONE);
 
+            if(StringUtils.isEmpty(bean.getCDoorPic())){
+                ivCommPhoto2.setImageDrawable(getResources().getDrawable(R.mipmap.picture_add_icon));
+            }
 
         } else {
             ll_done_mode.setVisibility(View.VISIBLE);
@@ -285,6 +291,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 addPhotos[photoCount].setVisibility(View.GONE);
             }
             rl_right_text.setVisibility(View.VISIBLE);
+
+            if(StringUtils.isEmpty(bean.getCDoorPic())){
+                ivCommPhoto2.setImageDrawable(getResources().getDrawable(R.drawable.abc));
+            }
 
         }
 
@@ -376,7 +386,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
             Picasso.with(getActivity()).load(pointListModel.getCPestPic()).placeholder(R.drawable.abc).into(ivCommPhoto3);
         }
         if (!StringUtils.isEmpty(bean.getCDoorPic())) {
-            Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.drawable.abc).into(ivCommPhoto2);
+            Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.mipmap.picture_add_icon).into(ivCommPhoto2);
         }
         mergeLocalPhoto();
         initPhoto();
@@ -633,7 +643,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         System.out.println("==>size:  " + localFileIdDataR.length + ":" + photo_full_id.length + ":" + (prePhotoSize - deletePrePhoto.size()) + ":" + photoCount);
         System.out.println("==>size:2  " + remainLocalIdSize + ":" + deleteLocalPrePhoto.size());
         String[] resultFileIdData = concat(localFileIdDataR, photo_full_id, prePhotoSize - deletePrePhoto.size() + remainLocalIdSize - deleteLocalPrePhoto.size(), photoCount - prePhotoSize + deletePrePhoto.size() - remainLocalIdSize + deleteLocalPrePhoto.size());
-        String[] resultFilePathData = concat(localFilePathDataR, photo_full_path, prePhotoSize - deletePrePhoto.size(), photoCount);
+        String[] resultFilePathData = concat(localFilePathDataR, photo_full_path, prePhotoSize - deletePrePhoto.size() + remainLocalIdSize - deleteLocalPrePhoto.size(), photoCount - prePhotoSize + deletePrePhoto.size() - remainLocalIdSize + deleteLocalPrePhoto.size());
         System.out.println("====>photo delete size: " + localFileIdDataR.length + ":" + resultFileIdData.length);
         System.out.println("====>photo size:" + photoCount + ":" + prePhotoSize + ":" + deletePrePhoto.size() + ":" + remainLocalIdSize + ":" + deleteLocalPrePhoto.size());
 
@@ -1272,25 +1282,57 @@ public class PointDetailFragment extends BaseToolbarFragment {
     //楼栋照 start
     @OnClick(R.id.iv_comm_photo_2)
     public void changeDoorPhoto() {
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.dialog_title_add_photo)
-                .items(R.array.dialog_add_photo)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        if (which == 0) {
-                            startActionCameraDoor();
+        if(ll_done_mode.getVisibility()==View.VISIBLE){
+            if(!StringUtils.isEmpty(bean.getCDoorPic())){
+                List<String> url = new ArrayList<>();
+                List<Boolean> imageFlag = new ArrayList<>();
+                List<Bitmap> imageLocal = new ArrayList<>();
+                imageLocal.add(null);
+                url.add(bean.getCDoorPic());
+                imageFlag.add(true);
+                ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal,0);
+            }else{
+                ToastHelper.showInfo(getActivity(),"暂无图片,上传图片请点击修改进行操作。");
+            }
+        }else{
+            System.out.println("==>door_photo_full_id   "+door_photo_full_id+":"+bean.getCDoorPic());
+            boolean textFlag = !StringUtils.isEmpty(door_photo_full_id) || !StringUtils.isEmpty(bean.getCDoorPic());
+            new MaterialDialog.Builder(getActivity())
+                    .title(R.string.dialog_title_add_photo)
+                    .items(textFlag?R.array.dialog_add_photo_big:R.array.dialog_add_photo)
+                    .itemsCallback(new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                            if (which == 0) {
+                                startActionCameraDoor();
+                            }
+                            // 相册选图
+                            else if (which == 1) {
+                                startImagePick();
+                            }else if (which == 2) {
+                                List<String> url = new ArrayList<>();
+                                List<Boolean> imageFlag = new ArrayList<>();
+                                List<Bitmap> imageLocal = new ArrayList<>();
+                                if(!StringUtils.isEmpty(door_photo_full_id)){
+                                    imageLocal.add(ImageUtils.doorPhotoBitmap);
+                                    url.add("");
+                                    imageFlag.add(false);
 
+                                }else{
+                                    if (!StringUtils.isEmpty(bean.getCDoorPic())) {
+                                        imageLocal.add(null);
+                                        url.add(bean.getCDoorPic());
+                                        imageFlag.add(true);
+                                    }
+                                }
+
+                                ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal,0);
+
+                            }
                         }
-                        // 相册选图
-                        else if (which == 1) {
-                            startImagePick();
-                        }
-                    }
-                })
-                .show();
-
-
+                    })
+                    .show();
+        }
     }
 
     /**

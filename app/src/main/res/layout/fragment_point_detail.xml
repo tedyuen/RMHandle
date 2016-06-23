@@ -266,7 +266,7 @@
                             android:layout_height="wrap_content"
                             android:scaleType="centerCrop"
                             app:proportion="0.87"
-                            android:src="@drawable/abc"/>
+                            android:src="@mipmap/picture_add_icon"/>
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
