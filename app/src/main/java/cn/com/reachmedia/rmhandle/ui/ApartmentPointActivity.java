@@ -364,8 +364,8 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 
                     tv_mima_door.setText(builder);
 
-                    tv_carddesc.setText("密码："+data.getCarddesc());
-                    tv_doordesc.setText("门卡备注："+data.getDoordesc());
+                    tv_carddesc.setText("密码："+data.getDoordesc());
+                    tv_doordesc.setText("门卡备注："+data.getCarddesc());
                     setCardPhoto(data.getCGatePic(),data.getCPestPic());
                     ApartmentPointUtils.getIns().pointListModel = data;
                     List<PointListModel.NewListBean> newList = data.getNewList();

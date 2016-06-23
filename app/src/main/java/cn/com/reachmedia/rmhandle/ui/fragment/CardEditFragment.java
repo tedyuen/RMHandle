@@ -117,8 +117,8 @@ public class CardEditFragment extends BaseToolbarFragment {
                 setTitle(model.getCommunity());
             }
 
-            etGateCard.setText(model.getDoordesc());
-            etPassword.setText(model.getCarddesc());
+            etGateCard.setText(model.getCarddesc());
+            etPassword.setText(model.getDoordesc());
 
             setCardPhoto(model.getCGatePic(),model.getCPestPic());
 
@@ -183,8 +183,8 @@ public class CardEditFragment extends BaseToolbarFragment {
                         });
                         CardSubmitParam cardSubmitParam = new CardSubmitParam();
                         cardSubmitParam.communityId = model.getCommunityid();
-                        cardSubmitParam.doordesc = etGateCard.getText().toString();
-                        cardSubmitParam.carddesc = etPassword.getText().toString();
+                        cardSubmitParam.doordesc = etPassword.getText().toString();
+                        cardSubmitParam.carddesc = etGateCard.getText().toString();
                         cardSubmitController.cardSubmit(cardSubmitParam);
                         showProgressDialog();
                     }
