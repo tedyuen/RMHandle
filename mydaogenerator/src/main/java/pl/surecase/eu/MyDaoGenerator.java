@@ -42,6 +42,7 @@ public class MyDaoGenerator {
         pointBean.addStringProperty("cDoorPic");
         pointBean.addStringProperty("errorDesc");
         pointBean.addStringProperty("stateTypeDesc");
+        pointBean.addIntProperty("checkState");
         pointBean.addIntProperty("isPhoto");
         pointBean.addIntProperty("state");
         pointBean.addIntProperty("stateType");
@@ -68,6 +69,7 @@ public class MyDaoGenerator {
         pointWorkBean.addIntProperty("repairType");
         pointWorkBean.addStringProperty("repairDesc");
         pointWorkBean.addIntProperty("errorType");
+        pointWorkBean.addIntProperty("checkState");
         pointWorkBean.addStringProperty("errorDesc");
         pointWorkBean.addStringProperty("lon");
         pointWorkBean.addStringProperty("lat");

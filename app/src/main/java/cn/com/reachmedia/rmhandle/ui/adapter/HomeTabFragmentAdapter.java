@@ -115,10 +115,7 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
                                 data.getLon(), data.getLat(),
                                 "", "", data.getAddress());
                         dialog1.show(mContext.getSupportFragmentManager(),null);
-
-
-
-                        ToastHelper.showInfo(mContext, "安装百度地图");
+//                        ToastHelper.showInfo(mContext, "安装百度地图");
 
                     }else {
                         ToastHelper.showAlert(mContext, "手机没有安装百度地图");

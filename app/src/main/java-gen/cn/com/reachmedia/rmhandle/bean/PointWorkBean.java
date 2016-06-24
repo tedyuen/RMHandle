@@ -15,6 +15,7 @@ public class PointWorkBean {
     private Integer repairType;
     private String repairDesc;
     private Integer errorType;
+    private Integer checkState;
     private String errorDesc;
     private String lon;
     private String lat;
@@ -43,7 +44,7 @@ public class PointWorkBean {
         this.id = id;
     }
 
-    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, String errorDesc, String lon, String lat, java.util.Date workTime, String onlineTime, java.util.Date starttime, String communityid, String nativeState, Integer fileCount, String filedelete, String fileXY, String fileTime, String fileIdData, String filePathData, String doorpicid, String doorpic, String doorpicXY, String doorpicTime, String communityname, String cname) {
+    public PointWorkBean(Long id, Long lastId, String userId, String workId, String pointId, Integer state, Integer repairType, String repairDesc, Integer errorType, Integer checkState, String errorDesc, String lon, String lat, java.util.Date workTime, String onlineTime, java.util.Date starttime, String communityid, String nativeState, Integer fileCount, String filedelete, String fileXY, String fileTime, String fileIdData, String filePathData, String doorpicid, String doorpic, String doorpicXY, String doorpicTime, String communityname, String cname) {
         this.id = id;
         this.lastId = lastId;
         this.userId = userId;
@@ -53,6 +54,7 @@ public class PointWorkBean {
         this.repairType = repairType;
         this.repairDesc = repairDesc;
         this.errorType = errorType;
+        this.checkState = checkState;
         this.errorDesc = errorDesc;
         this.lon = lon;
         this.lat = lat;
@@ -145,6 +147,14 @@ public class PointWorkBean {
 
     public void setErrorType(Integer errorType) {
         this.errorType = errorType;
+    }
+
+    public Integer getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(Integer checkState) {
+        this.checkState = checkState;
     }
 
     public String getErrorDesc() {

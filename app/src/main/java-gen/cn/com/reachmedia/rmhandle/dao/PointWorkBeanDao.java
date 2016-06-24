@@ -32,26 +32,27 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         public final static Property RepairType = new Property(6, Integer.class, "repairType", false, "REPAIR_TYPE");
         public final static Property RepairDesc = new Property(7, String.class, "repairDesc", false, "REPAIR_DESC");
         public final static Property ErrorType = new Property(8, Integer.class, "errorType", false, "ERROR_TYPE");
-        public final static Property ErrorDesc = new Property(9, String.class, "errorDesc", false, "ERROR_DESC");
-        public final static Property Lon = new Property(10, String.class, "lon", false, "LON");
-        public final static Property Lat = new Property(11, String.class, "lat", false, "LAT");
-        public final static Property WorkTime = new Property(12, java.util.Date.class, "workTime", false, "WORK_TIME");
-        public final static Property OnlineTime = new Property(13, String.class, "onlineTime", false, "ONLINE_TIME");
-        public final static Property Starttime = new Property(14, java.util.Date.class, "starttime", false, "STARTTIME");
-        public final static Property Communityid = new Property(15, String.class, "communityid", false, "COMMUNITYID");
-        public final static Property NativeState = new Property(16, String.class, "nativeState", false, "NATIVE_STATE");
-        public final static Property FileCount = new Property(17, Integer.class, "fileCount", false, "FILE_COUNT");
-        public final static Property Filedelete = new Property(18, String.class, "filedelete", false, "FILEDELETE");
-        public final static Property FileXY = new Property(19, String.class, "fileXY", false, "FILE_XY");
-        public final static Property FileTime = new Property(20, String.class, "fileTime", false, "FILE_TIME");
-        public final static Property FileIdData = new Property(21, String.class, "fileIdData", false, "FILE_ID_DATA");
-        public final static Property FilePathData = new Property(22, String.class, "filePathData", false, "FILE_PATH_DATA");
-        public final static Property Doorpicid = new Property(23, String.class, "doorpicid", false, "DOORPICID");
-        public final static Property Doorpic = new Property(24, String.class, "doorpic", false, "DOORPIC");
-        public final static Property DoorpicXY = new Property(25, String.class, "doorpicXY", false, "DOORPIC_XY");
-        public final static Property DoorpicTime = new Property(26, String.class, "doorpicTime", false, "DOORPIC_TIME");
-        public final static Property Communityname = new Property(27, String.class, "communityname", false, "COMMUNITYNAME");
-        public final static Property Cname = new Property(28, String.class, "cname", false, "CNAME");
+        public final static Property CheckState = new Property(9, Integer.class, "checkState", false, "CHECK_STATE");
+        public final static Property ErrorDesc = new Property(10, String.class, "errorDesc", false, "ERROR_DESC");
+        public final static Property Lon = new Property(11, String.class, "lon", false, "LON");
+        public final static Property Lat = new Property(12, String.class, "lat", false, "LAT");
+        public final static Property WorkTime = new Property(13, java.util.Date.class, "workTime", false, "WORK_TIME");
+        public final static Property OnlineTime = new Property(14, String.class, "onlineTime", false, "ONLINE_TIME");
+        public final static Property Starttime = new Property(15, java.util.Date.class, "starttime", false, "STARTTIME");
+        public final static Property Communityid = new Property(16, String.class, "communityid", false, "COMMUNITYID");
+        public final static Property NativeState = new Property(17, String.class, "nativeState", false, "NATIVE_STATE");
+        public final static Property FileCount = new Property(18, Integer.class, "fileCount", false, "FILE_COUNT");
+        public final static Property Filedelete = new Property(19, String.class, "filedelete", false, "FILEDELETE");
+        public final static Property FileXY = new Property(20, String.class, "fileXY", false, "FILE_XY");
+        public final static Property FileTime = new Property(21, String.class, "fileTime", false, "FILE_TIME");
+        public final static Property FileIdData = new Property(22, String.class, "fileIdData", false, "FILE_ID_DATA");
+        public final static Property FilePathData = new Property(23, String.class, "filePathData", false, "FILE_PATH_DATA");
+        public final static Property Doorpicid = new Property(24, String.class, "doorpicid", false, "DOORPICID");
+        public final static Property Doorpic = new Property(25, String.class, "doorpic", false, "DOORPIC");
+        public final static Property DoorpicXY = new Property(26, String.class, "doorpicXY", false, "DOORPIC_XY");
+        public final static Property DoorpicTime = new Property(27, String.class, "doorpicTime", false, "DOORPIC_TIME");
+        public final static Property Communityname = new Property(28, String.class, "communityname", false, "COMMUNITYNAME");
+        public final static Property Cname = new Property(29, String.class, "cname", false, "CNAME");
     };
 
 
@@ -76,26 +77,27 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
                 "'REPAIR_TYPE' INTEGER," + // 6: repairType
                 "'REPAIR_DESC' TEXT," + // 7: repairDesc
                 "'ERROR_TYPE' INTEGER," + // 8: errorType
-                "'ERROR_DESC' TEXT," + // 9: errorDesc
-                "'LON' TEXT," + // 10: lon
-                "'LAT' TEXT," + // 11: lat
-                "'WORK_TIME' INTEGER," + // 12: workTime
-                "'ONLINE_TIME' TEXT," + // 13: onlineTime
-                "'STARTTIME' INTEGER," + // 14: starttime
-                "'COMMUNITYID' TEXT," + // 15: communityid
-                "'NATIVE_STATE' TEXT," + // 16: nativeState
-                "'FILE_COUNT' INTEGER," + // 17: fileCount
-                "'FILEDELETE' TEXT," + // 18: filedelete
-                "'FILE_XY' TEXT," + // 19: fileXY
-                "'FILE_TIME' TEXT," + // 20: fileTime
-                "'FILE_ID_DATA' TEXT," + // 21: fileIdData
-                "'FILE_PATH_DATA' TEXT," + // 22: filePathData
-                "'DOORPICID' TEXT," + // 23: doorpicid
-                "'DOORPIC' TEXT," + // 24: doorpic
-                "'DOORPIC_XY' TEXT," + // 25: doorpicXY
-                "'DOORPIC_TIME' TEXT," + // 26: doorpicTime
-                "'COMMUNITYNAME' TEXT," + // 27: communityname
-                "'CNAME' TEXT);"); // 28: cname
+                "'CHECK_STATE' INTEGER," + // 9: checkState
+                "'ERROR_DESC' TEXT," + // 10: errorDesc
+                "'LON' TEXT," + // 11: lon
+                "'LAT' TEXT," + // 12: lat
+                "'WORK_TIME' INTEGER," + // 13: workTime
+                "'ONLINE_TIME' TEXT," + // 14: onlineTime
+                "'STARTTIME' INTEGER," + // 15: starttime
+                "'COMMUNITYID' TEXT," + // 16: communityid
+                "'NATIVE_STATE' TEXT," + // 17: nativeState
+                "'FILE_COUNT' INTEGER," + // 18: fileCount
+                "'FILEDELETE' TEXT," + // 19: filedelete
+                "'FILE_XY' TEXT," + // 20: fileXY
+                "'FILE_TIME' TEXT," + // 21: fileTime
+                "'FILE_ID_DATA' TEXT," + // 22: fileIdData
+                "'FILE_PATH_DATA' TEXT," + // 23: filePathData
+                "'DOORPICID' TEXT," + // 24: doorpicid
+                "'DOORPIC' TEXT," + // 25: doorpic
+                "'DOORPIC_XY' TEXT," + // 26: doorpicXY
+                "'DOORPIC_TIME' TEXT," + // 27: doorpicTime
+                "'COMMUNITYNAME' TEXT," + // 28: communityname
+                "'CNAME' TEXT);"); // 29: cname
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_POINT_WORK_BEAN_ID ON POINT_WORK_BEAN" +
                 " (ID);");
@@ -157,104 +159,109 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
             stmt.bindLong(9, errorType);
         }
  
+        Integer checkState = entity.getCheckState();
+        if (checkState != null) {
+            stmt.bindLong(10, checkState);
+        }
+ 
         String errorDesc = entity.getErrorDesc();
         if (errorDesc != null) {
-            stmt.bindString(10, errorDesc);
+            stmt.bindString(11, errorDesc);
         }
  
         String lon = entity.getLon();
         if (lon != null) {
-            stmt.bindString(11, lon);
+            stmt.bindString(12, lon);
         }
  
         String lat = entity.getLat();
         if (lat != null) {
-            stmt.bindString(12, lat);
+            stmt.bindString(13, lat);
         }
  
         java.util.Date workTime = entity.getWorkTime();
         if (workTime != null) {
-            stmt.bindLong(13, workTime.getTime());
+            stmt.bindLong(14, workTime.getTime());
         }
  
         String onlineTime = entity.getOnlineTime();
         if (onlineTime != null) {
-            stmt.bindString(14, onlineTime);
+            stmt.bindString(15, onlineTime);
         }
  
         java.util.Date starttime = entity.getStarttime();
         if (starttime != null) {
-            stmt.bindLong(15, starttime.getTime());
+            stmt.bindLong(16, starttime.getTime());
         }
  
         String communityid = entity.getCommunityid();
         if (communityid != null) {
-            stmt.bindString(16, communityid);
+            stmt.bindString(17, communityid);
         }
  
         String nativeState = entity.getNativeState();
         if (nativeState != null) {
-            stmt.bindString(17, nativeState);
+            stmt.bindString(18, nativeState);
         }
  
         Integer fileCount = entity.getFileCount();
         if (fileCount != null) {
-            stmt.bindLong(18, fileCount);
+            stmt.bindLong(19, fileCount);
         }
  
         String filedelete = entity.getFiledelete();
         if (filedelete != null) {
-            stmt.bindString(19, filedelete);
+            stmt.bindString(20, filedelete);
         }
  
         String fileXY = entity.getFileXY();
         if (fileXY != null) {
-            stmt.bindString(20, fileXY);
+            stmt.bindString(21, fileXY);
         }
  
         String fileTime = entity.getFileTime();
         if (fileTime != null) {
-            stmt.bindString(21, fileTime);
+            stmt.bindString(22, fileTime);
         }
  
         String fileIdData = entity.getFileIdData();
         if (fileIdData != null) {
-            stmt.bindString(22, fileIdData);
+            stmt.bindString(23, fileIdData);
         }
  
         String filePathData = entity.getFilePathData();
         if (filePathData != null) {
-            stmt.bindString(23, filePathData);
+            stmt.bindString(24, filePathData);
         }
  
         String doorpicid = entity.getDoorpicid();
         if (doorpicid != null) {
-            stmt.bindString(24, doorpicid);
+            stmt.bindString(25, doorpicid);
         }
  
         String doorpic = entity.getDoorpic();
         if (doorpic != null) {
-            stmt.bindString(25, doorpic);
+            stmt.bindString(26, doorpic);
         }
  
         String doorpicXY = entity.getDoorpicXY();
         if (doorpicXY != null) {
-            stmt.bindString(26, doorpicXY);
+            stmt.bindString(27, doorpicXY);
         }
  
         String doorpicTime = entity.getDoorpicTime();
         if (doorpicTime != null) {
-            stmt.bindString(27, doorpicTime);
+            stmt.bindString(28, doorpicTime);
         }
  
         String communityname = entity.getCommunityname();
         if (communityname != null) {
-            stmt.bindString(28, communityname);
+            stmt.bindString(29, communityname);
         }
  
         String cname = entity.getCname();
         if (cname != null) {
-            stmt.bindString(29, cname);
+            stmt.bindString(30, cname);
         }
     }
 
@@ -277,26 +284,27 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
             cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // repairType
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // repairDesc
             cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // errorType
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // errorDesc
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // lon
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // lat
-            cursor.isNull(offset + 12) ? null : new java.util.Date(cursor.getLong(offset + 12)), // workTime
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // onlineTime
-            cursor.isNull(offset + 14) ? null : new java.util.Date(cursor.getLong(offset + 14)), // starttime
-            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // communityid
-            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // nativeState
-            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // fileCount
-            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // filedelete
-            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // fileXY
-            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // fileTime
-            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // fileIdData
-            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // filePathData
-            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // doorpicid
-            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24), // doorpic
-            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // doorpicXY
-            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // doorpicTime
-            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27), // communityname
-            cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28) // cname
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // checkState
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // errorDesc
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // lon
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // lat
+            cursor.isNull(offset + 13) ? null : new java.util.Date(cursor.getLong(offset + 13)), // workTime
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // onlineTime
+            cursor.isNull(offset + 15) ? null : new java.util.Date(cursor.getLong(offset + 15)), // starttime
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // communityid
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // nativeState
+            cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18), // fileCount
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // filedelete
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // fileXY
+            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // fileTime
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // fileIdData
+            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23), // filePathData
+            cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24), // doorpicid
+            cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // doorpic
+            cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // doorpicXY
+            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27), // doorpicTime
+            cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28), // communityname
+            cursor.isNull(offset + 29) ? null : cursor.getString(offset + 29) // cname
         );
         return entity;
     }
@@ -313,26 +321,27 @@ public class PointWorkBeanDao extends AbstractDao<PointWorkBean, Long> {
         entity.setRepairType(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
         entity.setRepairDesc(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setErrorType(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setErrorDesc(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setLon(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setLat(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setWorkTime(cursor.isNull(offset + 12) ? null : new java.util.Date(cursor.getLong(offset + 12)));
-        entity.setOnlineTime(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setStarttime(cursor.isNull(offset + 14) ? null : new java.util.Date(cursor.getLong(offset + 14)));
-        entity.setCommunityid(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
-        entity.setNativeState(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
-        entity.setFileCount(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
-        entity.setFiledelete(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
-        entity.setFileXY(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
-        entity.setFileTime(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
-        entity.setFileIdData(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
-        entity.setFilePathData(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
-        entity.setDoorpicid(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
-        entity.setDoorpic(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
-        entity.setDoorpicXY(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
-        entity.setDoorpicTime(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
-        entity.setCommunityname(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
-        entity.setCname(cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28));
+        entity.setCheckState(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setErrorDesc(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setLon(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setLat(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setWorkTime(cursor.isNull(offset + 13) ? null : new java.util.Date(cursor.getLong(offset + 13)));
+        entity.setOnlineTime(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setStarttime(cursor.isNull(offset + 15) ? null : new java.util.Date(cursor.getLong(offset + 15)));
+        entity.setCommunityid(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setNativeState(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setFileCount(cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18));
+        entity.setFiledelete(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setFileXY(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setFileTime(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
+        entity.setFileIdData(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
+        entity.setFilePathData(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
+        entity.setDoorpicid(cursor.isNull(offset + 24) ? null : cursor.getString(offset + 24));
+        entity.setDoorpic(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
+        entity.setDoorpicXY(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
+        entity.setDoorpicTime(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
+        entity.setCommunityname(cursor.isNull(offset + 28) ? null : cursor.getString(offset + 28));
+        entity.setCname(cursor.isNull(offset + 29) ? null : cursor.getString(offset + 29));
      }
     
     /** @inheritdoc */

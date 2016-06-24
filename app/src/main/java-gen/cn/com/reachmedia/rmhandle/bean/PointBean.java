@@ -23,6 +23,7 @@ public class PointBean {
     private String cDoorPic;
     private String errorDesc;
     private String stateTypeDesc;
+    private Integer checkState;
     private Integer isPhoto;
     private Integer state;
     private Integer stateType;
@@ -44,7 +45,7 @@ public class PointBean {
         this.id = id;
     }
 
-    public PointBean(Long id, String userId, String workId, String cid, String cname, String doorId, String door, Integer workUp, Integer workUpPhone, Integer workDown, Integer workDownPhone, Integer workCheck, String pointId, Integer ground, String cDoorPic, String errorDesc, String stateTypeDesc, Integer isPhoto, Integer state, Integer stateType, String updateTime, String pictime, String worktime, java.util.Date starttime, java.util.Date endtime, String communityid, String communityname, String fileId, String fileUrlB, String fileUrlS) {
+    public PointBean(Long id, String userId, String workId, String cid, String cname, String doorId, String door, Integer workUp, Integer workUpPhone, Integer workDown, Integer workDownPhone, Integer workCheck, String pointId, Integer ground, String cDoorPic, String errorDesc, String stateTypeDesc, Integer checkState, Integer isPhoto, Integer state, Integer stateType, String updateTime, String pictime, String worktime, java.util.Date starttime, java.util.Date endtime, String communityid, String communityname, String fileId, String fileUrlB, String fileUrlS) {
         this.id = id;
         this.userId = userId;
         this.workId = workId;
@@ -62,6 +63,7 @@ public class PointBean {
         this.cDoorPic = cDoorPic;
         this.errorDesc = errorDesc;
         this.stateTypeDesc = stateTypeDesc;
+        this.checkState = checkState;
         this.isPhoto = isPhoto;
         this.state = state;
         this.stateType = stateType;
@@ -211,6 +213,14 @@ public class PointBean {
 
     public void setStateTypeDesc(String stateTypeDesc) {
         this.stateTypeDesc = stateTypeDesc;
+    }
+
+    public Integer getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(Integer checkState) {
+        this.checkState = checkState;
     }
 
     public Integer getIsPhoto() {

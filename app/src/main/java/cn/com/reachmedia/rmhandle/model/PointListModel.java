@@ -237,6 +237,7 @@ public class PointListModel extends BaseModel implements Parcelable {
         private int workDown;
         private int workDownPhone;
         private int workCheck;
+        private int checkState;
         private String pointId;
         private int ground;
         private String cDoorPic;
@@ -262,6 +263,7 @@ public class PointListModel extends BaseModel implements Parcelable {
             bean.setWorkDown(this.workDown);
             bean.setWorkDownPhone(this.workDownPhone);
             bean.setWorkCheck(this.workCheck);
+            bean.setCheckState(this.checkState);
             bean.setPointId(this.pointId);
             bean.setGround(this.ground);
             bean.setCDoorPic(this.cDoorPic);
@@ -318,11 +320,21 @@ public class PointListModel extends BaseModel implements Parcelable {
             bean.setUserId(userId);
             return bean;
         }
+
+        public int getCheckState() {
+            return checkState;
+        }
+
+        public void setCheckState(int checkState) {
+            this.checkState = checkState;
+        }
+
         /**
          * fileId : 12
          * fileUrlB : http://aa.ss.s
          * fileUrlS : http://aa.ss.s
          */
+
 
         private List<PFileListBean> pFileList;
 

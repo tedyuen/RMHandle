@@ -106,13 +106,17 @@ public class ApartmentPointTabFragmentAdapter2 extends ApartmentPointTabBaseAdap
 
             if(data.getWorkUp()==0){
                 bean.ivShang.setVisibility(View.GONE);
+                if(data.getWorkDown()==0){
+                    bean.ivXia.setVisibility(View.GONE);
+                    bean.ivXun.setVisibility(View.VISIBLE);
+                }else{
+                    bean.ivXun.setVisibility(View.GONE);
+                    bean.ivXia.setVisibility(View.VISIBLE);
+                }
             }else{
-                bean.ivShang.setVisibility(View.VISIBLE);
-            }
-            if(data.getWorkDown()==0){
+                bean.ivXun.setVisibility(View.GONE);
                 bean.ivXia.setVisibility(View.GONE);
-            }else{
-                bean.ivXia.setVisibility(View.VISIBLE);
+                bean.ivShang.setVisibility(View.VISIBLE);
             }
             if(data.getWorkUpPhone()==1 || data.getWorkDownPhone()==1){
                 bean.ivPai.setVisibility(View.VISIBLE);
@@ -143,6 +147,8 @@ public class ApartmentPointTabFragmentAdapter2 extends ApartmentPointTabBaseAdap
         ImageView ivShang;
         @Bind(R.id.iv_xia)
         ImageView ivXia;
+        @Bind(R.id.iv_xun)
+        ImageView ivXun;
         @Bind(R.id.iv_pai)
         ImageView ivPai;
         @Bind(R.id.bt_logout)

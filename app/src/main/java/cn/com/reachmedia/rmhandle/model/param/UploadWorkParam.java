@@ -30,6 +30,7 @@ public class UploadWorkParam extends TokenParam{
     public int repairType;
     public String repairDesc;
     public int errorType;
+    public int checkState;
     public String errorDesc;
     public String lon;
     public String lat;
@@ -57,6 +58,7 @@ public class UploadWorkParam extends TokenParam{
         this.repairDesc = bean.getRepairDesc();
         this.errorType = bean.getErrorType();
         this.errorDesc = bean.getErrorDesc();
+        this.checkState = bean.getCheckState();
         this.lon = bean.getLon();
         this.lat = bean.getLat();
         this.workTime = TimeUtils.dateAddByDateForString(bean.getWorkTime(),"yyyy-MM-dd HH:mm:ss",0);

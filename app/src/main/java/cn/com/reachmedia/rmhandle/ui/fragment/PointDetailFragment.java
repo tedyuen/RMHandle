@@ -19,6 +19,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -145,6 +146,14 @@ public class PointDetailFragment extends BaseToolbarFragment {
     TextView tvErrorDesc;
     @Bind(R.id.ll_error_frame)
     LinearLayout llErrorFrame;
+    @Bind(R.id.rb_check_1)
+    RadioButton rbCheck1;
+    @Bind(R.id.rb_check_2)
+    RadioButton rbCheck2;
+    @Bind(R.id.ll_checkstate_frame)
+    LinearLayout llCheckstateFrame;
+
+
     //当前图片数量
     private int photoCount;
     private int photoName;
@@ -209,51 +218,72 @@ public class PointDetailFragment extends BaseToolbarFragment {
         String backText = "完成";
 
         switch (stateFinish) {
-            case 0:
+            case 0://未完成
                 changeEditMode(true);
                 llErrorFrame.setVisibility(View.GONE);
 
                 break;
-            case 1:
+            case 1://完成
                 changeEditMode(false);
                 llErrorFrame.setVisibility(View.GONE);
 
                 break;
-            case 2:
+            case 2://保修
                 changeEditMode(false);
                 llErrorFrame.setVisibility(View.VISIBLE);
                 tvErrorText.setText(bean.getStateTypeDesc());
-                tvErrorDesc.setText(StringUtils.isEmpty(bean.getErrorDesc())?"无备注":bean.getErrorDesc());
+                tvErrorDesc.setText(StringUtils.isEmpty(bean.getErrorDesc()) ? "无备注" : bean.getErrorDesc());
+                backText = "报修";
                 break;
-            case 3:
+            case 3://无法进入
                 changeEditMode(false);
                 llErrorFrame.setVisibility(View.VISIBLE);
                 tvErrorText.setText(bean.getStateTypeDesc());
-                tvErrorDesc.setText(StringUtils.isEmpty(bean.getErrorDesc())?"无备注":bean.getErrorDesc());
-                backText = "报错";
+                tvErrorDesc.setText(StringUtils.isEmpty(bean.getErrorDesc()) ? "无备注" : bean.getErrorDesc());
+                backText = "无法进入";
                 break;
         }
 
         if (bean != null) {
             if (bean.getWorkUp() == 1) {
+                llCheckstateFrame.setVisibility(View.GONE);
                 stateType = 0;
-                btDone.setText("上刊" + backText);
-                bt_has_done.setText("上刊" + backText);
-                btCantEnter.setText("无法进入");
+                btDone.setText("上刊完成");
+                bt_has_done.setText("完成".equals(backText) ? "上刊" + backText : backText);
 
             } else if (bean.getWorkDown() == 1) {
+                llCheckstateFrame.setVisibility(View.GONE);
                 stateType = 1;
-                btDone.setText("下刊" + backText);
-                bt_has_done.setText("下刊" + backText);
-                btCantEnter.setText("无法进入");
-
+                btDone.setText("下刊完成");
+                bt_has_done.setText("完成".equals(backText) ? "下刊" + backText : backText);
             } else {
+                llCheckstateFrame.setVisibility(View.VISIBLE);
+                if(bean.getCheckState()==2){
+                    rbCheck2.setChecked(true);
+                }else {
+                    rbCheck1.setChecked(true);
+                }
                 stateType = 2;
-                btDone.setText("巡检" + backText);
-                bt_has_done.setText("巡检" + backText);
-                btCantEnter.setText("报告问题");
+                btDone.setText("巡检完成");
+                bt_has_done.setText("完成".equals(backText) ? "巡检" + backText : backText);
             }
 
+        }
+    }
+
+    /**
+     * 获得巡检状态
+     * @return
+     */
+    private int getCheckState(){
+        if(stateType!=2){
+            return 0;
+        }else{
+            if(rbCheck1.isChecked()){
+                return 1;
+            }else{
+                return 2;
+            }
         }
     }
 
@@ -276,9 +306,13 @@ public class PointDetailFragment extends BaseToolbarFragment {
             }
             rl_right_text.setVisibility(View.GONE);
 
-            if(StringUtils.isEmpty(bean.getCDoorPic())){
+            if (StringUtils.isEmpty(bean.getCDoorPic())) {
                 ivCommPhoto2.setImageDrawable(getResources().getDrawable(R.mipmap.picture_add_icon));
             }
+            rbCheck1.setVisibility(View.VISIBLE);
+            rbCheck2.setVisibility(View.VISIBLE);
+            rbCheck1.setEnabled(true);
+            rbCheck2.setEnabled(true);
 
         } else {
             ll_done_mode.setVisibility(View.VISIBLE);
@@ -292,9 +326,11 @@ public class PointDetailFragment extends BaseToolbarFragment {
             }
             rl_right_text.setVisibility(View.VISIBLE);
 
-            if(StringUtils.isEmpty(bean.getCDoorPic())){
+            if (StringUtils.isEmpty(bean.getCDoorPic())) {
                 ivCommPhoto2.setImageDrawable(getResources().getDrawable(R.drawable.abc));
             }
+            rbCheck1.setEnabled(false);
+            rbCheck2.setEnabled(false);
 
         }
 
@@ -377,13 +413,24 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 break;
             }
         }
+        System.out.println("==>checkstate:  "+bean.getCheckState());
+        if(bean.getCheckState()==1){
+            rbCheck1.setChecked(true);
+            rbCheck1.setVisibility(View.VISIBLE);
+            rbCheck2.setVisibility(View.GONE);
+        }else {
+            rbCheck2.setChecked(true);
+            rbCheck2.setVisibility(View.VISIBLE);
+            rbCheck1.setVisibility(View.GONE);
+        }
+
         //客户文字和照片 end
 
         if (!StringUtils.isEmpty(pointListModel.getCGatePic())) {
-            Picasso.with(getActivity()).load(pointListModel.getCGatePic()).placeholder(R.drawable.abc).into(ivCommPhoto1);
+            Picasso.with(getActivity()).load(pointListModel.getCGatePic().split("@&")[0]).placeholder(R.drawable.abc).into(ivCommPhoto1);
         }
         if (!StringUtils.isEmpty(pointListModel.getCPestPic())) {
-            Picasso.with(getActivity()).load(pointListModel.getCPestPic()).placeholder(R.drawable.abc).into(ivCommPhoto3);
+            Picasso.with(getActivity()).load(pointListModel.getCPestPic().split("@&")[0]).placeholder(R.drawable.abc).into(ivCommPhoto3);
         }
         if (!StringUtils.isEmpty(bean.getCDoorPic())) {
             Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.mipmap.picture_add_icon).into(ivCommPhoto2);
@@ -587,6 +634,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setRepairDesc(repairDesc);
         pointWorkBean.setErrorType(errorType);
         pointWorkBean.setErrorDesc(errorDesc);
+        pointWorkBean.setCheckState(getCheckState());
         pointWorkBean.setLon(lon);
         pointWorkBean.setLat(lat);
         pointWorkBean.setWorkTime(TimeUtils.getNowDate());
@@ -1282,24 +1330,24 @@ public class PointDetailFragment extends BaseToolbarFragment {
     //楼栋照 start
     @OnClick(R.id.iv_comm_photo_2)
     public void changeDoorPhoto() {
-        if(ll_done_mode.getVisibility()==View.VISIBLE){
-            if(!StringUtils.isEmpty(bean.getCDoorPic())){
+        if (ll_done_mode.getVisibility() == View.VISIBLE) {
+            if (!StringUtils.isEmpty(bean.getCDoorPic())) {
                 List<String> url = new ArrayList<>();
                 List<Boolean> imageFlag = new ArrayList<>();
                 List<Bitmap> imageLocal = new ArrayList<>();
                 imageLocal.add(null);
                 url.add(bean.getCDoorPic());
                 imageFlag.add(true);
-                ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal,0);
-            }else{
-                ToastHelper.showInfo(getActivity(),"暂无图片,上传图片请点击修改进行操作。");
+                ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal, 0);
+            } else {
+                ToastHelper.showInfo(getActivity(), "暂无图片,上传图片请点击修改进行操作。");
             }
-        }else{
-            System.out.println("==>door_photo_full_id   "+door_photo_full_id+":"+bean.getCDoorPic());
+        } else {
+            System.out.println("==>door_photo_full_id   " + door_photo_full_id + ":" + bean.getCDoorPic());
             boolean textFlag = !StringUtils.isEmpty(door_photo_full_id) || !StringUtils.isEmpty(bean.getCDoorPic());
             new MaterialDialog.Builder(getActivity())
                     .title(R.string.dialog_title_add_photo)
-                    .items(textFlag?R.array.dialog_add_photo_big:R.array.dialog_add_photo)
+                    .items(textFlag ? R.array.dialog_add_photo_big : R.array.dialog_add_photo)
                     .itemsCallback(new MaterialDialog.ListCallback() {
                         @Override
                         public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -1309,16 +1357,16 @@ public class PointDetailFragment extends BaseToolbarFragment {
                             // 相册选图
                             else if (which == 1) {
                                 startImagePick();
-                            }else if (which == 2) {
+                            } else if (which == 2) {
                                 List<String> url = new ArrayList<>();
                                 List<Boolean> imageFlag = new ArrayList<>();
                                 List<Bitmap> imageLocal = new ArrayList<>();
-                                if(!StringUtils.isEmpty(door_photo_full_id)){
+                                if (!StringUtils.isEmpty(door_photo_full_id)) {
                                     imageLocal.add(ImageUtils.doorPhotoBitmap);
                                     url.add("");
                                     imageFlag.add(false);
 
-                                }else{
+                                } else {
                                     if (!StringUtils.isEmpty(bean.getCDoorPic())) {
                                         imageLocal.add(null);
                                         url.add(bean.getCDoorPic());
@@ -1326,7 +1374,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                                     }
                                 }
 
-                                ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal,0);
+                                ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal, 0);
 
                             }
                         }
