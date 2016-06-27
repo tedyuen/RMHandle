@@ -115,6 +115,7 @@ public class TaskIndexModel extends BaseModel implements Parcelable {
         private int isCard;
         private int isPswd;
         private int workUp;
+        private int workCheck;
         private int workUpPhone;
         private int workDown;
         private int workDownPhone;
@@ -125,6 +126,14 @@ public class TaskIndexModel extends BaseModel implements Parcelable {
          */
 
         private List<CListBean> cList;
+
+        public int getWorkCheck() {
+            return workCheck;
+        }
+
+        public void setWorkCheck(int workCheck) {
+            this.workCheck = workCheck;
+        }
 
         public String getCommunityid() {
             return communityid;
