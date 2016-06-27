@@ -49,6 +49,7 @@
         android:padding="5dp"
         android:minHeight="150dp"
         style="@style/EditTextStyle2"
+        android:maxLength="200"
         android:gravity="left|top"
         android:hint="可添加描述(选填)"/>
 

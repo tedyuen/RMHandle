@@ -339,7 +339,7 @@ public class CardEditFragment extends BaseToolbarFragment {
     @OnClick(R.id.iv_gate_photo_1)
     public void iv_gate_photo_1(){
         index = 0;
-        showAddPhotoDialog(preGate.length>0 || !StringUtils.isEmpty(photo_ids[0]));
+        showAddPhotoDialog(preGate.length>0 && !StringUtils.isEmpty(preGate[0]) || !StringUtils.isEmpty(photo_ids[0]));
     }
 
     @OnClick(R.id.iv_gate_photo_2)
@@ -351,7 +351,7 @@ public class CardEditFragment extends BaseToolbarFragment {
     @OnClick(R.id.iv_pest_photo_1)
     public void iv_pest_photo_1(){
         index = 2;
-        showAddPhotoDialog(prePest.length>0 || !StringUtils.isEmpty(photo_ids[2]));
+        showAddPhotoDialog(prePest.length>0  && !StringUtils.isEmpty(prePest[0]) || !StringUtils.isEmpty(photo_ids[2]));
     }
     @OnClick(R.id.iv_pest_photo_2)
     public void iv_pest_photo_2(){
