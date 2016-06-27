@@ -45,5 +45,7 @@ public class AppSpContact {
     //小区点位
 
 
+    public static final String SP_KEY_CHECK_UPDATE_TIME = "check_update_time";
+
 
 }

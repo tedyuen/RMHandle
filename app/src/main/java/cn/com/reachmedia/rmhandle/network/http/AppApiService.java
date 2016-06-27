@@ -4,6 +4,7 @@ import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
 import cn.com.reachmedia.rmhandle.model.CardListModel;
 import cn.com.reachmedia.rmhandle.model.CardSubmitModel;
+import cn.com.reachmedia.rmhandle.model.GetVersionModel;
 import cn.com.reachmedia.rmhandle.model.LoginModel;
 import cn.com.reachmedia.rmhandle.model.PicSubmitModel;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
@@ -116,8 +117,10 @@ public interface AppApiService {
     void getCardList(@Field("json") String json,
                        Callback<CardListModel> cb);
 
-
-
+    @FormUrlEncoded
+    @POST(AppApiContact.API_ACTION_UPDATE)
+    void getVersion(@Field("json") String json,
+                    Callback<GetVersionModel> cb);
 
 
     /**

@@ -40,6 +40,15 @@
     <string name="hint_phone">请输入您的手机号码...</string>
     <string name="hint_password">请输入密码...</string>
 
+    <!-- 版本更新 -->
+    <string name="no_update_version">当前版本是最新版本</string>
+    <string name="update_version">版本更新</string>
+    <string name="update_message">发现新版本%1$s，是否需要更新</string>
+    <string name="download">更新</string>
+    <string name="later">忽略</string>
+    <string name="exit">退出</string>
+    <!-- 版本更新 -->
+
     <!-- toast -->
     <string name="toast_sdcard_error">请检查SD卡是否挂载</string>
 

@@ -117,7 +117,12 @@
                     android:layout_height="wrap_content"
                     android:src="@mipmap/home_xia_icon"
                     android:layout_marginRight="5dp"/>
-
+                <ImageView
+                    android:id="@+id/iv_xun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/home_xun_icon"
+                    android:layout_marginRight="5dp"/>
                 <ImageView
                     android:id="@+id/iv_pai"
                     android:layout_width="wrap_content"

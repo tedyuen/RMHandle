@@ -10,11 +10,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
 
 /**
@@ -42,6 +46,8 @@ public class RepairDialogFragment extends SupportBlurDialogFragment {
     RadioGroup rgErrorType;
     @Bind(R.id.et_error_desc)
     EditText etErrorDesc;
+    @Bind(R.id.tv_empty_error)
+    TextView tv_empty_error;
 
     private int repair_type;
 
@@ -72,6 +78,7 @@ public class RepairDialogFragment extends SupportBlurDialogFragment {
             case 1:
             case 2:
                 rgErrorType.setVisibility(View.GONE);
+                etErrorDesc.setHint("添加描述,必填");
                 break;
             case 0:
                 rgErrorType.setVisibility(View.VISIBLE);
@@ -105,6 +112,18 @@ public class RepairDialogFragment extends SupportBlurDialogFragment {
     @OnClick(R.id.bt_submit)
     public void doSubmit(){
         if(mListener!=null){
+            switch (stateType){
+                case 1:
+                case 2:
+                    if(StringUtils.isEditTextEmpty(etErrorDesc)){
+//                        ToastHelper.showAlert(getActivity(),"请输入描述");
+                        tv_empty_error.setVisibility(View.VISIBLE);
+                        return;
+                    }
+            }
+
+            tv_empty_error.setVisibility(View.GONE);
+
             mListener.doSubmit(repair_type,etErrorDesc.getText().toString());
         }
         this.dismiss();

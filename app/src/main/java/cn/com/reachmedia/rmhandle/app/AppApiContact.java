@@ -16,6 +16,7 @@ public class AppApiContact {
     public static final String API_HOST_MN = "http://120.26.64.180:8281/app";//API Host 模拟
     public static final String API_ACTION = "/data.api";//api action
     public static final String API_ACTION_FILE = "/file.api";//api action
+    public static final String API_ACTION_UPDATE = "/app/getversion.jsp";//api action
 
     public static String getApiHost(){
 //http://120.26.64.180:8281/app/data.api
@@ -83,17 +84,10 @@ public class AppApiContact {
         public static final String CARD_LIST = "RM_GCBAPP_cardList";
 
 
-
-
-
-
-
-
         /**
          * 4.1 版本检测接口
          */
         public static final String VERSION_METHOD = "RM_GCBAPP_version";
-
 
 
 

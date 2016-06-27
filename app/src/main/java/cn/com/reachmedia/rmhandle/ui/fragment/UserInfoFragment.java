@@ -20,6 +20,7 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.app.AppUpdateManager;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
 import cn.com.reachmedia.rmhandle.ui.LoginActivity;
@@ -178,7 +179,9 @@ public class UserInfoFragment extends BaseToolbarFragment {
     //检查更新
     @OnClick(R.id.rl_gengxin)
     public void checkUpdate(){
-
+        AppUpdateManager mAppUpdateManager = new AppUpdateManager(getActivity());
+        mAppUpdateManager.setShowMessage(true);
+        mAppUpdateManager.checkUpdateInfo(getActivity());
     }
 
 

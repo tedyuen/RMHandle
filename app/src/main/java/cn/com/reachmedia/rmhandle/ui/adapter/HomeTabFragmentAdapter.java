@@ -182,13 +182,17 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
             }
             if(data.getWorkUp()==0){
                 bean.ivShang.setVisibility(View.GONE);
+                if(data.getWorkDown()==0){
+                    bean.ivXia.setVisibility(View.GONE);
+                    bean.ivXun.setVisibility(View.VISIBLE);
+                }else{
+                    bean.ivXun.setVisibility(View.GONE);
+                    bean.ivXia.setVisibility(View.VISIBLE);
+                }
             }else{
-                bean.ivShang.setVisibility(View.VISIBLE);
-            }
-            if(data.getWorkDown()==0){
+                bean.ivXun.setVisibility(View.GONE);
                 bean.ivXia.setVisibility(View.GONE);
-            }else{
-                bean.ivXia.setVisibility(View.VISIBLE);
+                bean.ivShang.setVisibility(View.VISIBLE);
             }
 //            if(data.getWorkUpPhone()==1 || data.getWorkDownPhone()==1){
 //                bean.ivPai.setVisibility(View.VISIBLE);
@@ -228,7 +232,8 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
         ImageView ivArrowIconUp;
         @Bind(R.id.iv_arrow_icon_down)
         ImageView ivArrowIconDown;
-
+        @Bind(R.id.iv_xun)
+        ImageView ivXun;
         @Bind(R.id.ll_warning)
         LinearLayout llWarning;
         @Bind(R.id.tv_tips)

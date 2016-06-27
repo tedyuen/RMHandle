@@ -53,6 +53,16 @@
         android:hint="可添加描述(选填)"/>
 
 
+    <TextView
+        android:id="@+id/tv_empty_error"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="请输入描述!"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        android:gravity="center"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="65dp">
