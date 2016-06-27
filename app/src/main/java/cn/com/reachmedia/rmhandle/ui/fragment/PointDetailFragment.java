@@ -231,16 +231,18 @@ public class PointDetailFragment extends BaseToolbarFragment {
             case 2://保修
                 changeEditMode(false);
                 llErrorFrame.setVisibility(View.VISIBLE);
-                tvErrorText.setText(bean.getStateTypeDesc());
-                tvErrorDesc.setText(StringUtils.isEmpty(bean.getErrorDesc()) ? "无备注" : bean.getErrorDesc());
                 backText = "报修";
+                tvErrorText.setText(backText);
+                String tempDesc1 = bean.getStateTypeDesc()+":"+(StringUtils.isEmpty(bean.getErrorDesc()) ? "无备注" : bean.getErrorDesc());
+                tvErrorDesc.setText(tempDesc1);
                 break;
             case 3://无法进入
                 changeEditMode(false);
                 llErrorFrame.setVisibility(View.VISIBLE);
-                tvErrorText.setText(bean.getStateTypeDesc());
-                tvErrorDesc.setText(StringUtils.isEmpty(bean.getErrorDesc()) ? "无备注" : bean.getErrorDesc());
                 backText = "无法进入";
+                tvErrorText.setText(backText);
+                String tempDesc2 = bean.getStateTypeDesc()+":"+(StringUtils.isEmpty(bean.getErrorDesc()) ? "无备注" : bean.getErrorDesc());
+                tvErrorDesc.setText(tempDesc2);
                 break;
         }
 

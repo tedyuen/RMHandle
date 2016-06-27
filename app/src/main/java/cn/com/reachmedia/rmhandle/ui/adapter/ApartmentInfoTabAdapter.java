@@ -110,6 +110,7 @@ public class ApartmentInfoTabAdapter extends BaseAdapter {
             String tempDistrict = "";
             LinearLayout tempLine = null;
             ViewHolder2 tempBean = null;
+            int areaCount = 0;
             for (TaskDetailModel.CrListBean.ComListBean comList : data.getComList()) {
                 boolean flag = comList.getDistrict().trim().equals(tempDistrict);
                 if (!flag) {
@@ -125,15 +126,20 @@ public class ApartmentInfoTabAdapter extends BaseAdapter {
                 bean3.tvApName.setText(comList.getCommunityname());
                 bean3.tvApInfo.setText("点位数："+comList.getPointing()+"/"+comList.getPointcount());
                 tempBean.tvDistrict.setText(comList.getDistrict());
-                if(!mFlag && tempBean.llInnerFrame.getChildCount()<5){
-                    tempBean.llInnerFrame.addView(rlTemp);
-                }else if(mFlag){
-                    tempBean.llInnerFrame.addView(rlTemp);
-                }
+//                if(!mFlag && tempBean.llInnerFrame.getChildCount()<5){
+//                    tempBean.llInnerFrame.addView(rlTemp);
+//                }else if(mFlag){
+//                    tempBean.llInnerFrame.addView(rlTemp);
+//                }
+                tempBean.llInnerFrame.addView(rlTemp);
+                areaCount++;
 
                 if (!flag) {
                     bean.llInfoFrame.addView(tempLine);
                     tempDistrict = comList.getDistrict().trim();
+                }
+                if(!mFlag && areaCount>=5){
+                    break;
                 }
             }
         }
