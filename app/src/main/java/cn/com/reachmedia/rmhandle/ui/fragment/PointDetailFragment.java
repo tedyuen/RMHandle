@@ -380,8 +380,36 @@ public class PointDetailFragment extends BaseToolbarFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        commImgList.add(StringUtils.isEmpty(pointListModel.getCGatePic()) ? "" : pointListModel.getCGatePic().split("@&")[0]);
-        commImgList.add(StringUtils.isEmpty(pointListModel.getCPestPic()) ? "" : pointListModel.getCPestPic().split("@&")[0]);
+
+        if (!StringUtils.isEmpty(pointListModel.getCGatePic())) {
+            String[] gatePath = pointListModel.getCGatePic().split("@&");
+            if(!StringUtils.isEmpty(gatePath[0])){
+                Picasso.with(getActivity()).load(gatePath[0]).placeholder(R.drawable.abc).into(ivCommPhoto1);
+                commImgList.add(gatePath[0]);
+            }else if(gatePath.length>1 && !StringUtils.isEmpty(gatePath[1])){
+                commImgList.add(gatePath[1]);
+                Picasso.with(getActivity()).load(gatePath[1]).placeholder(R.drawable.abc).into(ivCommPhoto1);
+            }else{
+                commImgList.add("");
+            }
+        }else{
+            commImgList.add("");
+        }
+
+        if (!StringUtils.isEmpty(pointListModel.getCPestPic())) {
+            String[] pestPath = pointListModel.getCPestPic().split("@&");
+            if(!StringUtils.isEmpty(pestPath[0])){
+                commImgList.add(pestPath[0]);
+                Picasso.with(getActivity()).load(pestPath[0]).placeholder(R.drawable.abc).into(ivCommPhoto3);
+            }else if(pestPath.length>1 && !StringUtils.isEmpty(pestPath[1])){
+                commImgList.add(pestPath[1]);
+                Picasso.with(getActivity()).load(pestPath[1]).placeholder(R.drawable.abc).into(ivCommPhoto3);
+            }else{
+                commImgList.add("");
+            }
+        }else{
+            commImgList.add("");
+        }
 
         try {
             int tempName = Integer.parseInt(bean.getDoor());
@@ -427,13 +455,22 @@ public class PointDetailFragment extends BaseToolbarFragment {
         }
 
         //客户文字和照片 end
-
-        if (!StringUtils.isEmpty(pointListModel.getCGatePic())) {
-            Picasso.with(getActivity()).load(pointListModel.getCGatePic().split("@&")[0]).placeholder(R.drawable.abc).into(ivCommPhoto1);
-        }
-        if (!StringUtils.isEmpty(pointListModel.getCPestPic())) {
-            Picasso.with(getActivity()).load(pointListModel.getCPestPic().split("@&")[0]).placeholder(R.drawable.abc).into(ivCommPhoto3);
-        }
+//        if (!StringUtils.isEmpty(pointListModel.getCGatePic())) {
+//            String[] gatePath = pointListModel.getCGatePic().split("@&");
+//            if(!StringUtils.isEmpty(gatePath[0])){
+//                Picasso.with(getActivity()).load(gatePath[0]).placeholder(R.drawable.abc).into(ivCommPhoto1);
+//            }else if(gatePath.length>1 && !StringUtils.isEmpty(gatePath[1])){
+//                Picasso.with(getActivity()).load(gatePath[1]).placeholder(R.drawable.abc).into(ivCommPhoto1);
+//            }
+//        }
+//        if (!StringUtils.isEmpty(pointListModel.getCPestPic())) {
+//            String[] pestPath = pointListModel.getCPestPic().split("@&");
+//            if(!StringUtils.isEmpty(pestPath[0])){
+//                Picasso.with(getActivity()).load(pestPath[0]).placeholder(R.drawable.abc).into(ivCommPhoto3);
+//            }else if(pestPath.length>1 && !StringUtils.isEmpty(pestPath[1])){
+//                Picasso.with(getActivity()).load(pestPath[1]).placeholder(R.drawable.abc).into(ivCommPhoto3);
+//            }
+//        }
         if (!StringUtils.isEmpty(bean.getCDoorPic())) {
             Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.mipmap.picture_add_icon).into(ivCommPhoto2);
         }
@@ -484,42 +521,47 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     @OnClick(R.id.bt_done)
     public void goDone() {
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.dialog_title_submit_point)
-                .negativeText("取消")
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                })
-                .positiveText("确定")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        PointWorkBean pointWorkBean = getPointBean(true, 1, 0, "", 0, "", mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE), mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
-                        if (pointWorkBean == null) {
+        if(isPhotoEmpty()){
+            ToastHelper.showInfo(getActivity(), "请添加图片!");
+        }else{
+            new MaterialDialog.Builder(getActivity())
+                    .title(R.string.dialog_title_submit_point)
+                    .negativeText("取消")
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             dialog.dismiss();
-                            ToastHelper.showInfo(getActivity(), "请添加图片!");
-                        } else {
-                            if (insertOrUpdate) {
-                                PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
-                            } else {
-                                PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
-                            }
-                            ServiceHelper.getIns().startPointWorkService(getActivity());
-                            ToastHelper.showInfo(getActivity(), "提交成功!");
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getActivity().finish();
-                                }
-                            }, 1000);
                         }
+                    })
+                    .positiveText("确定")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            PointWorkBean pointWorkBean = getPointBean(false, 1, 0, "", 0, "", mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE), mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
+                            if (pointWorkBean == null) {
+                                dialog.dismiss();
+                                ToastHelper.showInfo(getActivity(), "请添加图片!");
+                            } else {
+                                if (insertOrUpdate) {
+                                    PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                                } else {
+                                    PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
+                                }
+                                ServiceHelper.getIns().startPointWorkService(getActivity());
+                                ToastHelper.showInfo(getActivity(), "提交成功!");
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getActivity().finish();
+                                    }
+                                }, 1000);
+                            }
 
-                    }
-                })
-                .show();
+                        }
+                    })
+                    .show();
+        }
+
     }
 
     @OnClick(R.id.bt_cant_enter)
@@ -566,48 +608,94 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
     @OnClick(R.id.bt_report_question)
     public void goReportQuestion() {
-        RepairDialogFragment repairDialogFragment = new RepairDialogFragment(new RepairDialogFragment.OnDialogEnterListener() {
-            @Override
-            public void doSubmit(final int type, final String content) {
-                new MaterialDialog.Builder(getActivity())
-                        .title(R.string.dialog_title_submit_point)
-                        .negativeText("取消")
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .positiveText("确定")
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                PointWorkBean pointWorkBean = getPointBean(true, 2, type, content, 0, "", mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE), mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
-                                if (pointWorkBean == null) {
+        if(isPhotoEmpty()){
+            ToastHelper.showInfo(getActivity(), "请添加图片!");
+        }else {
+            RepairDialogFragment repairDialogFragment = new RepairDialogFragment(new RepairDialogFragment.OnDialogEnterListener() {
+                @Override
+                public void doSubmit(final int type, final String content) {
+                    new MaterialDialog.Builder(getActivity())
+                            .title(R.string.dialog_title_submit_point)
+                            .negativeText("取消")
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     dialog.dismiss();
-                                    ToastHelper.showInfo(getActivity(), "请添加图片!");
-                                } else {
-                                    if (insertOrUpdate) {
-                                        PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
-                                    } else {
-                                        PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
-                                    }
-                                    ServiceHelper.getIns().startPointWorkService(getActivity());
-                                    ToastHelper.showInfo(getActivity(), "提交成功!");
-                                    new Handler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            getActivity().finish();
-                                        }
-                                    }, 1000);
                                 }
+                            })
+                            .positiveText("确定")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    PointWorkBean pointWorkBean = getPointBean(false, 2, type, content, 0, "", mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE), mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE));
+                                    if (pointWorkBean == null) {
+                                        dialog.dismiss();
+                                        ToastHelper.showInfo(getActivity(), "请添加图片!");
+                                    } else {
+                                        if (insertOrUpdate) {
+                                            PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                                        } else {
+                                            PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
+                                        }
+                                        ServiceHelper.getIns().startPointWorkService(getActivity());
+                                        ToastHelper.showInfo(getActivity(), "提交成功!");
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                getActivity().finish();
+                                            }
+                                        }, 1000);
+                                    }
 
-                            }
-                        })
-                        .show();
+                                }
+                            })
+                            .show();
+                }
+            }, stateType);
+            repairDialogFragment.show(getFragmentManager(), null);
+        }
+    }
+
+    /**
+     * 图片是否为空
+     * @return
+     */
+    public boolean isPhotoEmpty(){
+        String[] localFileIdDataR = new String[0];
+        insertOrUpdate = pointWorkBean == null;
+        if (!insertOrUpdate && !pointWorkBean.getNativeState().equals("2")) {
+            List<String> localFileIdDataRL = new ArrayList<>();
+            List<String> localFilePathDataRL = new ArrayList<>();
+            if (remainFileId != null) {
+                for (int i = 0; i < remainFileId.length; i++) {
+                    boolean addFlag = true;
+                    for (String tempId : deleteLocalPrePhoto) {
+                        if (tempId.equals(remainFileId[i])) {
+                            addFlag = false;
+                            break;
+                        }
+                    }
+                    for (String tempId : deletePrePhoto) {
+                        if (tempId.equals(remainFileId[i])) {
+                            addFlag = false;
+                            break;
+                        }
+                    }
+                    if (addFlag) {
+                        localFileIdDataRL.add(remainFileId[i]);
+                        localFilePathDataRL.add(remainFilePath[i]);
+                    }
+                }
             }
-        },stateType);
-        repairDialogFragment.show(getFragmentManager(), null);
+            localFileIdDataR = localFileIdDataRL.toArray(new String[localFileIdDataRL.size()]);
+        }
+
+        //---------- 数量打印
+        String[] resultFileIdData = concat(localFileIdDataR, photo_full_id, prePhotoSize - deletePrePhoto.size() + remainLocalIdSize - deleteLocalPrePhoto.size(), photoCount - prePhotoSize + deletePrePhoto.size() - remainLocalIdSize + deleteLocalPrePhoto.size());
+
+//        pointWorkBean.setFileCount(resultFileIdData.length);
+
+        return resultFileIdData.length<=0;
     }
 
 
