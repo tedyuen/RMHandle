@@ -604,7 +604,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                         })
                         .show();
             }
-        });
+        },stateType);
         repairDialogFragment.show(getFragmentManager(), null);
     }
 

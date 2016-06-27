@@ -45,13 +45,16 @@ public class RepairDialogFragment extends SupportBlurDialogFragment {
 
     private int repair_type;
 
+    private int stateType;//0:上刊 1:下刊 2:巡检
+
     public RepairDialogFragment() {
     }
 
     @SuppressLint("ValidFragment")
-    public RepairDialogFragment(OnDialogEnterListener listener) {
+    public RepairDialogFragment(OnDialogEnterListener listener,int stateType) {
         this.mListener = listener;
         repair_type = REPAIR_TYPE_0;
+        this.stateType = stateType;
     }
 
     @Override
@@ -65,6 +68,15 @@ public class RepairDialogFragment extends SupportBlurDialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         View view = inflater.inflate(R.layout.dialog_repair, container);
         ButterKnife.bind(this, view);
+        switch (stateType){
+            case 1:
+            case 2:
+                rgErrorType.setVisibility(View.GONE);
+                break;
+            case 0:
+                rgErrorType.setVisibility(View.VISIBLE);
+                break;
+        }
         rbError0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
