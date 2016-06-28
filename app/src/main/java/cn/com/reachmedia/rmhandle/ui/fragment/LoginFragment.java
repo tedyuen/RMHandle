@@ -64,6 +64,8 @@ public class LoginFragment extends BaseFragment {
             startActivity(new Intent(getActivity(),HomeActivity.class));
             getActivity().finish();
         }
+        etUsername.setText("");
+        etPassword.setText("");
         return rootView;
     }
 

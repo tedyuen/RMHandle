@@ -9,6 +9,7 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.model.LatLng;
 
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.model.TaskMapModel;
 
 /**
  * Author:    tedyuen
@@ -27,10 +28,29 @@ public class MyMarkerItem implements ClusterItem {
     private View view;
     private String text;
 
-    public MyMarkerItem(LatLng latLng,View view,String text) {
+    private TaskMapModel.CListBean bean;
+
+    public MyMarkerItem(LatLng latLng,View view,String text,TaskMapModel.CListBean bean) {
         mPosition = latLng;
         this.view = view;
         this.text = text;
+        this.bean = bean;
+    }
+
+    public View getView() {
+        return view;
+    }
+
+    public void setView(View view) {
+        this.view = view;
+    }
+
+    public TaskMapModel.CListBean getBean() {
+        return bean;
+    }
+
+    public void setBean(TaskMapModel.CListBean bean) {
+        this.bean = bean;
     }
 
     @Override

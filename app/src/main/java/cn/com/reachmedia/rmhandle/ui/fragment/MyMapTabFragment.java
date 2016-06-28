@@ -1,11 +1,15 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -16,6 +20,7 @@ import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
@@ -27,12 +32,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
+import cn.com.reachmedia.rmhandle.app.AppParamContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.cache.MyMarkerItem;
 import cn.com.reachmedia.rmhandle.model.TaskMapModel;
 import cn.com.reachmedia.rmhandle.model.param.TaskMapParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.TaskMapController;
+import cn.com.reachmedia.rmhandle.ui.ApartmentPointActivity;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 
@@ -79,6 +86,7 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
     boolean isFirstLoc = true; // 是否首次定位
     //Marker相关
     View descImg;
+    View descGreyImg;
     private ClusterManager<MyMarkerItem> mClusterManager;
 
     // 定位相关
@@ -108,6 +116,7 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
         }
         setUpViewComponent();
         descImg = inflater.inflate(R.layout.map_bit_desc_img, container, false);
+        descGreyImg = inflater.inflate(R.layout.map_bit_desc_img_grey, container, false);
 //        initOverlay();
         return rootView;
     }
@@ -130,14 +139,18 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
         mLocClient.setLocOption(option);
     }
 
+    List<MyMarkerItem> items = new ArrayList<>();
+
 
     private void initOverlay(List<TaskMapModel.CListBean> list) {
-        List<MyMarkerItem> items = new ArrayList<>();
         for(TaskMapModel.CListBean bean:list){
             try {
                 LatLng tempL = new LatLng(Double.parseDouble(bean.getLat()), Double.parseDouble(bean.getLon()));
 
-                MyMarkerItem item = new MyMarkerItem(tempL, descImg, bean.getPoints()+"");
+                MyMarkerItem item = new MyMarkerItem(tempL, descImg, bean.getPoints()+"",bean);
+                if(bean.getStatus()==1){
+                    item.setView(descGreyImg);
+                }
                 items.add(item);
 
             }catch(Exception e){
@@ -149,6 +162,41 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
         mClusterManager.addItems(items);
         // 设置地图监听，当地图状态发生改变时，进行点聚合运算
         mBaiduMap.setOnMapStatusChangeListener(mClusterManager);
+        mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener(){
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                for(final MyMarkerItem item:items){
+                    if(marker.getPosition().equals(item.getPosition())){
+                        StringBuffer buffer = new StringBuffer();
+                        buffer.append("已上点位:");
+                        buffer.append(item.getBean().getPointe());
+                        buffer.append("\t");
+                        buffer.append("总点位数:");
+                        buffer.append(item.getBean().getPoints());
+                        new MaterialDialog.Builder(getActivity())
+                                .title(item.getBean().getCommunity())
+                                .content(buffer.toString())
+                                .positiveText("前往小区")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        System.out.println("====>  "+item.getBean().getCid()+":"+item.getBean().getCommunity());
+                                        Intent intent = new Intent(getContext(), ApartmentPointActivity.class);
+                                        intent.putExtra(AppParamContact.PARAM_KEY_TITLE,item.getBean().getCommunity());
+                                        intent.putExtra(AppParamContact.PARAM_KEY_ID,item.getBean().getCid());
+                                        getActivity().startActivity(intent);
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+
+                        break;
+                    }
+                }
+
+                return false;
+            }
+        });
         mLocClient.start();
     }
 
