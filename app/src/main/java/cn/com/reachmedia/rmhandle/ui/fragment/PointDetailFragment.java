@@ -694,8 +694,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
         String[] resultFileIdData = concat(localFileIdDataR, photo_full_id, prePhotoSize - deletePrePhoto.size() + remainLocalIdSize - deleteLocalPrePhoto.size(), photoCount - prePhotoSize + deletePrePhoto.size() - remainLocalIdSize + deleteLocalPrePhoto.size());
 
 //        pointWorkBean.setFileCount(resultFileIdData.length);
+//        System.out.println("prePhotoSize===>  "+(prePhotoSize-deletePrePhoto.size()));
 
-        return resultFileIdData.length<=0;
+        return (resultFileIdData.length+prePhotoSize-deletePrePhoto.size())<=0;
     }
 
 

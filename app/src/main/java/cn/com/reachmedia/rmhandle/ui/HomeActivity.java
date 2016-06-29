@@ -1,7 +1,9 @@
 package cn.com.reachmedia.rmhandle.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
@@ -370,4 +372,22 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         super.onResume();
         ServiceHelper.getIns().startPointWorkService(this);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+
+    }
+
+    private void doNext(int requestCode, int[] grantResults) {
+//        if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                // Permission Granted
+//            } else {
+//                // Permission Denied
+//            }
+//        }
+    }
+
 }

@@ -73,6 +73,11 @@ public class PointWorkBeanDbUtil {
         return list;
     }
 
+    public void delete(PointWorkBean bean){
+        pointWorkBeanDaoHelper.getDao().delete(bean);
+    }
+
+
     public void changeNativeState(String workId,String pointId,String preState,String nativeState){
         PointWorkBean bean = pointWorkBeanDaoHelper.getDao().queryBuilder()
                 .where(PointWorkBeanDao.Properties.WorkId.eq(workId),

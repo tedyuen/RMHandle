@@ -45,7 +45,7 @@ public class PointWorkService extends Service {
         String userId = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID);
         if(userId!=null){
             List<PointWorkBean> listBean = pointWorkBeanDbUtil.getUpload(userId,"0");//获取文字未提交信息
-            for(PointWorkBean bean:listBean){
+            for(final PointWorkBean bean:listBean){
                 UploadWorkParam param = new UploadWorkParam(bean);
                 UploadWorkController controller = new UploadWorkController(new UiDisplayListener<UploadWorkModel>() {
                     @Override
@@ -54,6 +54,8 @@ public class PointWorkService extends Service {
                             if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
                                 System.out.println("workId: "+data.getWorkId()+"\tpointId: "+data.getPoint());
                                 pointWorkBeanDbUtil.changeNativeState(data.getWorkId(),data.getPoint(),"0","1");
+                            }else{
+                                pointWorkBeanDbUtil.delete(bean);
                             }
                         }
                     }
