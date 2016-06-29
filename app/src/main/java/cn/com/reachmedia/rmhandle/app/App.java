@@ -107,8 +107,7 @@ public class App extends Application {
     private void setUpSharedPreferencesHelper(Context context) {
         SharedPreferencesHelper sph = SharedPreferencesHelper.getInstance();
         sph.Builder(context);
-        String deviceId = ((TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-        sph.putString(AppSpContact.SP_KEY_DEVICE_ID, deviceId);
+
     }
 
     private HomeActivity homeActivity;

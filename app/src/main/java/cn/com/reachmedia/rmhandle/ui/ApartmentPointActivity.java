@@ -1,9 +1,11 @@
 package cn.com.reachmedia.rmhandle.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
@@ -12,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -20,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.anthonycr.grant.PermissionsManager;
+import com.anthonycr.grant.PermissionsResultAction;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 import com.google.gson.Gson;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
@@ -52,6 +57,7 @@ import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 import cn.com.reachmedia.rmhandle.utils.LogUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 
 /**
  * Author:    tedyuen
@@ -117,7 +123,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     public PointListModel data;
 
     HomeFilterUtil homeFilterUtil = HomeFilterUtil.getIns();
-
+    private ApartmentPointActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +132,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         Intent intent = getIntent();
+        activity = this;
         if(intent!=null){
             communityId = intent.getStringExtra(AppParamContact.PARAM_KEY_ID);
 //            communityId = "663";
@@ -255,8 +262,24 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 
     @OnClick(R.id.rl_right_img)
     public void callPhone(){
-        ApartmentPhoneDialogFragment dialog = new ApartmentPhoneDialogFragment();
-        dialog.show(getSupportFragmentManager(), "Write Comments");
+
+        PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
+                new String[]{Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.CALL_PHONE},
+                new PermissionsResultAction() {
+                    @Override
+                    public void onGranted() {
+                        ApartmentPhoneDialogFragment dialog = new ApartmentPhoneDialogFragment();
+                        dialog.show(activity.getSupportFragmentManager(), "Write Comments");
+                    }
+
+                    @Override
+                    public void onDenied(String permission) {
+                        ToastHelper.showAlert(activity,"没有拨打电话权限,请前往设置");
+                    }
+                });
+
+
     }
 
     @OnClick(R.id.iv_back)
@@ -434,5 +457,13 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     @OnClick(R.id.bt_edit_save)
     public void editSave(){
         startActivity(new Intent(this,CardEditActivity.class));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        Log.i(TAG, "Activity-onRequestPermissionsResult() PermissionsManager.notifyPermissionsChange()");
+        PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
     }
 }

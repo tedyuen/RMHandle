@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.anthonycr.grant.PermissionsManager;
+import com.anthonycr.grant.PermissionsResultAction;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -468,9 +472,24 @@ public class CardEditFragment extends BaseToolbarFragment {
      * 相机拍照
      */
     private void startActionGatePhoto() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, getCameraTempFileDoor());
-        startActivityForResult(intent, REQUEST_CODE_GETIMAGE_BYCAMERA);
+        PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this,
+                new String[]{Manifest.permission.CAMERA}, new PermissionsResultAction() {
+
+                    @Override
+                    public void onGranted() {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, getCameraTempFileDoor());
+                        startActivityForResult(intent, REQUEST_CODE_GETIMAGE_BYCAMERA);
+                    }
+
+                    @Override
+                    public void onDenied(String permission) {
+                        ToastHelper.showAlert(getActivity(),getString(R.string.camera_denied));
+                    }
+                }
+        );
+
+
     }
 
     private Uri getCameraTempFileDoor() {
@@ -601,5 +620,13 @@ public class CardEditFragment extends BaseToolbarFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        Log.i(TAG, "Activity-onRequestPermissionsResult() PermissionsManager.notifyPermissionsChange()");
+        PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
     }
 }

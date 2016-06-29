@@ -1,14 +1,19 @@
 package cn.com.reachmedia.rmhandle.ui;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,10 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.anthonycr.grant.PermissionsManager;
+import com.anthonycr.grant.PermissionsResultAction;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -34,6 +42,7 @@ import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.HomeTabFragment;
 import cn.com.reachmedia.rmhandle.ui.interf.HomeUiDataUpdate;
 import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 
 /**
  * Author:    tedyuen
@@ -72,10 +81,9 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     TextView tv_area;
     @Bind(R.id.tv_custom)
     TextView tv_custom;
-
+    HomeActivity activity;
 
     Map<Integer, HomeTabFragment> fragmentMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +91,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         ButterKnife.bind(this);
         initFilter();
         setSupportActionBar(mToolbar);
+        activity = this;
         fragmentMap = new HashMap<>();
         ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
         mToolbarView.set(mToolbar);
@@ -111,6 +120,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         mPager.setCurrentItem(0);
         mIvBottom2.setImageLevel(2);
         App.getIns().addHomeActivity(this);
+        permissionRequest();
 //        setPage(0);
     }
 
@@ -371,23 +381,44 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     protected void onResume() {
         super.onResume();
         ServiceHelper.getIns().startPointWorkService(this);
+
     }
+
+
+    public void permissionRequest(){
+        PermissionsManager.getInstance().requestAllManifestPermissionsIfNecessary(activity, new PermissionsResultAction() {
+            @Override
+            public void onGranted() {
+
+            }
+
+            @Override
+            public void onDenied(String permission) {
+                System.out.println("permission:  ==>  "+permission);
+                if("android.permission.ACCESS_COARSE_LOCATION".equals(permission)){
+                    ToastHelper.showAlert(activity,"没有定位权限无法使用，请前往设置");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    },1500);
+                }
+
+            }
+        });
+
+
+
+    }
+
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-
-    }
-
-    private void doNext(int requestCode, int[] grantResults) {
-//        if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                // Permission Granted
-//            } else {
-//                // Permission Denied
-//            }
-//        }
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        Log.i(TAG, "Activity-onRequestPermissionsResult() PermissionsManager.notifyPermissionsChange()");
+        PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
     }
 
 }
