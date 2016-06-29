@@ -48,6 +48,11 @@ public class HomeFilterUtil {
     public int preWeek = 6;
     public int nextWeek = 20;
 
+    public void initUtil(){
+        homeFilterUtil = new HomeFilterUtil();
+    }
+
+
     public String getNextWednesday(String startTime){
         Calendar wednesday = getCbyStrPlus6(startTime);
         String result = TimeUtils.dateAddByDateForString(wednesday.getTime(),"yyyy-MM-dd",0);

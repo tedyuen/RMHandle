@@ -64,7 +64,7 @@ public class LoginFragment extends BaseFragment {
             startActivity(new Intent(getActivity(),HomeActivity.class));
             getActivity().finish();
         }
-        etUsername.setText("");
+        etUsername.setText(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LOGIN_NAME,""));
         etPassword.setText("");
         return rootView;
     }
@@ -92,6 +92,7 @@ public class LoginFragment extends BaseFragment {
                                 if (data != null) {
                                     if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
                                         String token = data.getUsertoken();
+                                        mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LOGIN_NAME, etUsername.getText().toString());
                                         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_TOKEN,token);
                                         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_USER_ID,data.getUserId());
                                         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_CITY_ID,data.getCityId());
@@ -101,6 +102,7 @@ public class LoginFragment extends BaseFragment {
                                         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_TITLE,data.getTitle());
                                         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_PIC_URL,data.getPicUrl());
                                         HomeFilterUtil homeFilterUtil = HomeFilterUtil.getIns();
+                                        homeFilterUtil.initUtil();
                                         homeFilterUtil.getThursday();
                                         startActivity(new Intent(getActivity(),HomeActivity.class));
                                         getActivity().finish();

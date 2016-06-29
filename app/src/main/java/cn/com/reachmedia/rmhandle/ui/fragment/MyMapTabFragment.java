@@ -180,12 +180,12 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        System.out.println("====>  "+item.getBean().getCid()+":"+item.getBean().getCommunity());
+//                                        System.out.println("====>  "+item.getBean().getCid()+":"+item.getBean().getCommunity());
                                         Intent intent = new Intent(getContext(), ApartmentPointActivity.class);
                                         intent.putExtra(AppParamContact.PARAM_KEY_TITLE,item.getBean().getCommunity());
                                         intent.putExtra(AppParamContact.PARAM_KEY_ID,item.getBean().getCid());
                                         getActivity().startActivity(intent);
-                                        dialog.dismiss();
+                                        getActivity().finish();
                                     }
                                 })
                                 .show();

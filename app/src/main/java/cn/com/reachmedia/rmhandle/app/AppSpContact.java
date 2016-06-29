@@ -16,6 +16,8 @@ public class AppSpContact {
     public static final String SP_KEY_TOKEN = "token";
     public static final String SP_KEY_USER_ID = "userid";
     public static final String SP_KEY_CITY_ID = "cityid";
+    public static final String SP_KEY_LOGIN_NAME = "login_name";
+
     public static final String SP_KEY_CITY = "cityname";
     public static final String SP_KEY_SPACE = "space";
     public static final String SP_KEY_USER_NAME = "username";
