@@ -54,6 +54,7 @@
     <string name="toast_sdcard_error">请检查SD卡是否挂载</string>
 
     <string name="camera_denied">没有读取相机权限</string>
+    <string name="sdcard_denied">没有读取sd卡权限</string>
 
 
     <!-- dialog -->

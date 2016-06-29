@@ -380,7 +380,23 @@ public class CardEditFragment extends BaseToolbarFragment {
                         }
                         // 相册选图
                         else if (which == 1) {
-                            startImagePick();
+                            PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(getActivity(),
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, new PermissionsResultAction() {
+
+                                        @Override
+                                        public void onGranted() {
+                                            startImagePick();
+                                        }
+
+                                        @Override
+                                        public void onDenied(String permission) {
+                                            if(getActivity()!=null){
+                                                ToastHelper.showAlert(getActivity(),getString(R.string.sdcard_denied));
+                                            }
+                                        }
+                                    }
+                            );
+
                         }
                         else if (which ==2){
                             List<String> url = new ArrayList<>();
