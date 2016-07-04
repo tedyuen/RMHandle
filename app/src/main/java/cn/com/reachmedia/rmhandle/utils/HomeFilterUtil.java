@@ -70,10 +70,11 @@ public class HomeFilterUtil {
     public String getThursday(){
         Calendar now = TimeUtils.getNow();
         int nowDay = now.get(Calendar.DAY_OF_WEEK);
-        if(nowDay>=5){
-            now.add(Calendar.DATE,5-nowDay);
+        System.out.println("nowDay:===>  "+nowDay);
+        if(nowDay>=2){
+            now.add(Calendar.DATE,2-nowDay);
         }else{
-            now.add(Calendar.DATE,-2-nowDay);
+            now.add(Calendar.DATE,-5-nowDay);
         }
         String result = TimeUtils.dateAddByDateForString(now.getTime(),"yyyy-MM-dd",0);
         setStartTime(result);
@@ -82,7 +83,14 @@ public class HomeFilterUtil {
 
     public String getCurThursday(){
         Calendar now = TimeUtils.getNow();
-        now.add(Calendar.DATE,5-now.get(Calendar.DAY_OF_WEEK));
+        int nowDay = now.get(Calendar.DAY_OF_WEEK);
+//        now.add(Calendar.DATE,5-now.get(Calendar.DAY_OF_WEEK));
+        if(nowDay>=2){
+            now.add(Calendar.DATE,2-nowDay);
+        }else{
+            now.add(Calendar.DATE,-5-nowDay);
+        }
+
         String result = TimeUtils.dateAddByDateForString(now.getTime(),"yyyy-MM-dd",0);
         return result;
     }
