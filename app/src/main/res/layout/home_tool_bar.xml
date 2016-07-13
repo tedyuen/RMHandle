@@ -42,7 +42,7 @@
                 android:textSize="18sp"
                 android:singleLine="true"
                 android:layout_centerInParent="true"
-                android:text="总进度:50/100"
+                android:text="总进度:0/0"
                 />
 
             <RelativeLayout

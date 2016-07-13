@@ -43,6 +43,7 @@ public class GetVersionController extends BaseHttpController<GetVersionModel> {
     protected void getNetData() {
 //        this.getVersionParam = new GetVersionParam();
         LogUtils.json(TAG, getVersionParam.toJson());
+        LogUtils.d(TAG, getVersionParam.toJson());
         App.getAppApiService().getVersion(getVersionParam.toJson(),
                 new HttpBaseCallBack<GetVersionModel>() {
                     @Override
