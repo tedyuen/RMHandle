@@ -24,6 +24,7 @@ import cn.com.reachmedia.rmhandle.model.TaskIndexModel;
 import cn.com.reachmedia.rmhandle.ui.ApartmentPointActivity;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.GoMapAppDialogFragment;
+import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 import cn.com.reachmedia.rmhandle.utils.IntentUtils;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
@@ -98,6 +99,11 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
                     Intent intent = new Intent(mContext, ApartmentPointActivity.class);
                     intent.putExtra(AppParamContact.PARAM_KEY_TITLE,data.getCommunity());
                     intent.putExtra(AppParamContact.PARAM_KEY_ID,data.getCommunityid());
+                    SharedPreferencesHelper helper = SharedPreferencesHelper.getInstance();
+                    helper.putString(AppSpContact.SP_KEY_INDEX_COMMUNITID,data.getCommunityid());
+                    helper.putString(AppSpContact.SP_KEY_INDEX_COMMUNITNAME,data.getCommunity());
+                    helper.putString(AppSpContact.SP_KEY_INDEX_STARTTIME, HomeFilterUtil.getIns().startTime);
+                    helper.putString(AppSpContact.SP_KEY_INDEX_ENDTIME, HomeFilterUtil.getIns().endTime);
                     mContext.startActivity(intent);
                 }
             });

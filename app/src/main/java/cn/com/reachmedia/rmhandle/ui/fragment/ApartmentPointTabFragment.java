@@ -134,11 +134,15 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
         activity.onRefresh();
     }
 
-    public void onSuccessDisplay(PointListModel data,boolean swipeflag){
+    public void onSuccessDisplay(PointListModel data,boolean swipeflag,boolean enterType){
         if(mSwipeContainer==null) return;
         if(swipeflag){
             mSwipeContainer.setRefreshing(false);
             mPageListView.setState(PageListView.PageListViewState.Idle);
+        }
+        String tempStartTime = homeFilterUtil.startTime;
+        if(enterType){
+            tempStartTime = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_STARTTIME);
         }
         if(data!=null) {
             List<PointBean> list = null;

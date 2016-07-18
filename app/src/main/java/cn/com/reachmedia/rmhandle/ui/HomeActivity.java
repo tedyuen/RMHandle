@@ -36,12 +36,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.App;
+import cn.com.reachmedia.rmhandle.app.AppParamContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.HomeTabFragment;
 import cn.com.reachmedia.rmhandle.ui.interf.HomeUiDataUpdate;
 import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
+import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 
 /**
@@ -121,7 +124,24 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         mIvBottom2.setImageLevel(2);
         App.getIns().addHomeActivity(this);
         permissionRequest();
+        hasInnerIndex();
 //        setPage(0);
+    }
+
+    /**
+     * 判断有没有点位列表的进入历史
+     */
+    private void hasInnerIndex(){
+        String indexCommunityId = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_COMMUNITID);
+        if(!StringUtils.isEmpty(indexCommunityId)){
+            Intent intent = new Intent(this, ApartmentPointActivity.class);
+            intent.putExtra(AppParamContact.PARAM_KEY_TITLE,mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_COMMUNITNAME));
+            intent.putExtra(AppParamContact.PARAM_KEY_ID,indexCommunityId);
+            intent.putExtra(AppParamContact.PARAM_KEY_TYPE,true);
+            startActivity(intent);
+        }
+
+
     }
 
     private static class NavigationAdapter extends CacheFragmentStatePagerAdapter {

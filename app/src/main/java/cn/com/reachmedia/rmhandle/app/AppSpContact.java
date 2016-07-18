@@ -30,6 +30,11 @@ public class AppSpContact {
 
     public static final String SP_KEY_ON_LINE_TIME = "onlinetime";
 
+    public static final String SP_KEY_INDEX_COMMUNITID = "index_communitid";
+    public static final String SP_KEY_INDEX_COMMUNITNAME = "index_communitname";
+    public static final String SP_KEY_INDEX_STARTTIME = "index_communitstarttime";
+    public static final String SP_KEY_INDEX_ENDTIME = "index_communitendtime";
+
     //首页tab
     public static final int SP_KEY_UNDONE = 0;//未完成
     public static final int SP_KEY_DONE = 1;//已完成

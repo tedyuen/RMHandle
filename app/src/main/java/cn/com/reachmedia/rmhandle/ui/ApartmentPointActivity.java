@@ -117,6 +117,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     PointListController pointListController;
 
     private String communityId;
+    private boolean enterType;
     private String starttime;
     private String endtime;
 
@@ -134,11 +135,17 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         Intent intent = getIntent();
         activity = this;
         if(intent!=null){
-            communityId = intent.getStringExtra(AppParamContact.PARAM_KEY_ID);
+            enterType = intent.getBooleanExtra(AppParamContact.PARAM_KEY_TYPE,false);
+            if(enterType){
+                communityId = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_COMMUNITID);
+                setTitle(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_COMMUNITNAME));
+            }else{
+                communityId = intent.getStringExtra(AppParamContact.PARAM_KEY_ID);
 //            communityId = "663";
 //            starttime = "2016-05-05";
 //            endtime = "2016-05-11";
-            setTitle(intent.getStringExtra(AppParamContact.PARAM_KEY_TITLE));
+                setTitle(intent.getStringExtra(AppParamContact.PARAM_KEY_TITLE));
+            }
         }
         gatePhotos = new ImageView[]{iv_apart_photo_1,iv_apart_photo_2};
         pestPhotos = new ImageView[]{iv_apart_photo_3,iv_apart_photo_4};
@@ -292,8 +299,14 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     public void onRefresh(){
         PointListParam param = new PointListParam();
         param.communityid = communityId;
-        param.startime = homeFilterUtil.startTime;
-        param.endtime = homeFilterUtil.endTime;
+        if(enterType){
+            param.startime = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_STARTTIME);
+            param.endtime = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_ENDTIME);
+        }else{
+            param.startime = homeFilterUtil.startTime;
+            param.endtime = homeFilterUtil.endTime;
+        }
+
         param.space = homeFilterUtil.getAreaId();
         param.customer = homeFilterUtil.getCustomerId();
         pointListController.getTaskIndex(param);
@@ -315,7 +328,13 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 
 
     public void updateData(boolean swipeflag){
-        String dataJson = mSharedPreferencesHelper.getString(communityId+"_"+homeFilterUtil.startTime);
+        String tempStartTime = homeFilterUtil.startTime;
+        String tempEndTime = homeFilterUtil.endTime;
+        if(enterType){
+            tempStartTime = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_STARTTIME);
+            tempEndTime = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_ENDTIME);
+        }
+        String dataJson = mSharedPreferencesHelper.getString(communityId+"_"+tempStartTime);
         if(!StringUtils.isEmpty(dataJson)){
             Gson gson = new Gson();
             try{
@@ -393,10 +412,10 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                     ApartmentPointUtils.getIns().pointListModel = data;
                     List<PointListModel.NewListBean> newList = data.getNewList();
                     PointBeanDbUtil util = PointBeanDbUtil.getIns();
-                    util.insertData(newList,communityId,homeFilterUtil.startTime,homeFilterUtil.endTime,data.getCommunity());
-                    resetTitle(util.getItemNumber(communityId,homeFilterUtil.startTime));
+                    util.insertData(newList,communityId,tempStartTime,tempEndTime,data.getCommunity());
+                    resetTitle(util.getItemNumber(communityId,tempStartTime));
                     for(Integer key:fragmentMap.keySet()){
-                        fragmentMap.get(key).onSuccessDisplay(data,swipeflag);
+                        fragmentMap.get(key).onSuccessDisplay(data,swipeflag,enterType);
                     }
                 }
             }catch (Exception e){
