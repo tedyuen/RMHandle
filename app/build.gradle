@@ -8,8 +8,8 @@ android {
         applicationId "cn.com.reachmedia.rmhandle"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
         signingConfigs {
             release {
                 storeFile file("../wojiawang.keystore")
