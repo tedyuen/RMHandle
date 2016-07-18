@@ -141,9 +141,6 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                 setTitle(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_COMMUNITNAME));
             }else{
                 communityId = intent.getStringExtra(AppParamContact.PARAM_KEY_ID);
-//            communityId = "663";
-//            starttime = "2016-05-05";
-//            endtime = "2016-05-11";
                 setTitle(intent.getStringExtra(AppParamContact.PARAM_KEY_TITLE));
             }
         }
@@ -307,6 +304,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
             param.endtime = homeFilterUtil.endTime;
         }
 
+
         param.space = homeFilterUtil.getAreaId();
         param.customer = homeFilterUtil.getCustomerId();
         pointListController.getTaskIndex(param);
@@ -334,6 +332,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
             tempStartTime = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_STARTTIME);
             tempEndTime = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_ENDTIME);
         }
+
         String dataJson = mSharedPreferencesHelper.getString(communityId+"_"+tempStartTime);
         if(!StringUtils.isEmpty(dataJson)){
             Gson gson = new Gson();

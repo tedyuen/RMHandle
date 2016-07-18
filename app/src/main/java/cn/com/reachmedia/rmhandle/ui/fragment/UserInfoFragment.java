@@ -149,6 +149,10 @@ public class UserInfoFragment extends BaseToolbarFragment {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         mSharedPreferencesHelper.remove(AppSpContact.SP_KEY_TOKEN);
+                        mSharedPreferencesHelper.remove(AppSpContact.SP_KEY_INDEX_COMMUNITID);
+                        mSharedPreferencesHelper.remove(AppSpContact.SP_KEY_INDEX_COMMUNITNAME);
+                        mSharedPreferencesHelper.remove(AppSpContact.SP_KEY_INDEX_STARTTIME);
+                        mSharedPreferencesHelper.remove(AppSpContact.SP_KEY_INDEX_ENDTIME);
                         App.getIns().closeHomeActivity();
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         dialog.dismiss();
