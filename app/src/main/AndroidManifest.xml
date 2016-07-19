@@ -146,6 +146,9 @@
 
         <service android:name="cn.com.reachmedia.rmhandle.service.PointWorkService">
         </service>
+        <service android:name="cn.com.reachmedia.rmhandle.service.PointWorkNoPicService">
+        </service>
+
         <service android:name="cn.com.reachmedia.rmhandle.service.PointPicService">
         </service>
 

@@ -105,7 +105,7 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        ServiceHelper.getIns().startPointWorkService(getApplicationContext());
+                        ServiceHelper.getIns().startPointWorkWithPicService(getApplicationContext());
                         ToastHelper.showInfo(activity,"开始上传,请稍后刷新状态!");
                         dialog.dismiss();
                     }

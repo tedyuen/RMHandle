@@ -27,9 +27,16 @@ public class ServiceHelper {
     Intent locationIntent;
 
     public void startPointWorkService(Context context){
+        context.startService(new Intent(context,PointWorkNoPicService.class));
+
+    }
+
+    public void startPointWorkWithPicService(Context context){
         context.startService(new Intent(context,PointWorkService.class));
 
     }
+
+
 
     public void startPointPicService(Context context){
         context.startService(new Intent(context,PointPicService.class));
