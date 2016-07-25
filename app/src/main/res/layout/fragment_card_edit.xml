@@ -20,6 +20,7 @@
                 android:paddingLeft="@dimen/padding_lr"
                 android:paddingRight="@dimen/padding_lr"
                 android:background="@color/white"
+                android:visibility="gone"
                 >
 
                 <TextView
@@ -127,7 +128,10 @@
                     android:id="@+id/et_gate_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/EditTextStyle"
+                    style="@style/EditTextStyle2"
+                    android:gravity="top"
+                    android:padding="5dp"
+                    android:minHeight="80dp"
                     android:hint="输入备注"/>
 
 
@@ -175,7 +179,10 @@
                     android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/EditTextStyle"
+                    style="@style/EditTextStyle2"
+                    android:gravity="top"
+                    android:padding="5dp"
+                    android:minHeight="80dp"
                     android:hint="输入备注"/>
 
                 <LinearLayout
