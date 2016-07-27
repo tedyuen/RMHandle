@@ -717,6 +717,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
      */
     public PointWorkBean getPointBean(boolean emptyFlag, int state, int repairType, String repairDesc, int errorType, String errorDesc, String lon, String lat) {
 //        PointWorkBean pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPID(bean.getWorkId(),bean.getPointId());
+        System.out.println("入库前定位: "+lon+":"+lat);
+
         insertOrUpdate = pointWorkBean == null;
         if (insertOrUpdate) {
             pointWorkBean = new PointWorkBean();
