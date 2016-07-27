@@ -59,15 +59,34 @@ public class UpdateLocation {
             if (location == null) {
                 return;
             }
-            MyLocationData locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
-                    // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(100).latitude(location.getLatitude())
-                    .longitude(location.getLongitude()).build();
-            mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE,location.getLongitude()+"");
-            mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,location.getLatitude()+"");
+//            MyLocationData locData = new MyLocationData.Builder()
+//                    .accuracy(location.getRadius())
+//                    // 此处设置开发者获取到的方向信息，顺时针0-360
+//                    .direction(100).latitude(location.getLatitude())
+//                    .longitude(location.getLongitude()).build();
             System.out.println("timer==>   "+location.getLatitude()+":"+location.getLongitude());
+
+            if (location.getLocType() == BDLocation.TypeGpsLocation){// GPS定位结果
+//                sb.append("gps定位成功");
+                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE,location.getLongitude()+"");
+                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,location.getLatitude()+"");
+            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){// 网络定位结果
+                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE,location.getLongitude()+"");
+                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,location.getLatitude()+"");
+//                sb.append("网络定位成功");
+            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
+                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE,location.getLongitude()+"");
+                mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,location.getLatitude()+"");
+//                sb.append("离线定位成功，离线定位结果也是有效的");
+            } else if (location.getLocType() == BDLocation.TypeServerError) {
+//                sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
+            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
+//                sb.append("网络不同导致定位失败，请检查网络是否通畅");
+            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
+//                sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
+            }
             mLocClient.stop();
+
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
