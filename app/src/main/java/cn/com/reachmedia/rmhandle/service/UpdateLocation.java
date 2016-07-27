@@ -14,6 +14,7 @@ import com.baidu.mapapi.model.LatLng;
 
 import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.utils.LogUtils;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 
 /**
@@ -68,15 +69,18 @@ public class UpdateLocation {
 
             if (location.getLocType() == BDLocation.TypeGpsLocation){// GPS定位结果
 //                sb.append("gps定位成功");
+                LogUtils.d("UpdateLocation","gps定位成功");
                 mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE,location.getLongitude()+"");
                 mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,location.getLatitude()+"");
             } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){// 网络定位结果
                 mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE,location.getLongitude()+"");
                 mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,location.getLatitude()+"");
+                LogUtils.d("UpdateLocation","网络定位成功");
 //                sb.append("网络定位成功");
             } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
                 mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE,location.getLongitude()+"");
                 mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,location.getLatitude()+"");
+                LogUtils.d("UpdateLocation","离线定位成功，离线定位结果也是有效的");
 //                sb.append("离线定位成功，离线定位结果也是有效的");
             } else if (location.getLocType() == BDLocation.TypeServerError) {
 //                sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
