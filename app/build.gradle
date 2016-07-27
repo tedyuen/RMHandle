@@ -8,8 +8,8 @@ android {
         applicationId "cn.com.reachmedia.rmhandle"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 5
-        versionName "1.0.4"
+        versionCode 6
+        versionName "1.0.5"
         signingConfigs {
             release {
                 storeFile file("../wojiawang.keystore")
@@ -28,6 +28,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }

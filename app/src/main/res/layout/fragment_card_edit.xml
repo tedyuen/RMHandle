@@ -20,7 +20,6 @@
                 android:paddingLeft="@dimen/padding_lr"
                 android:paddingRight="@dimen/padding_lr"
                 android:background="@color/white"
-                android:visibility="gone"
                 >
 
                 <TextView
