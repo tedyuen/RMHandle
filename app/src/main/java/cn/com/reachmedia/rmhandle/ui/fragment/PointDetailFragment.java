@@ -552,7 +552,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                                 } else {
                                     PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
                                 }
-                                ServiceHelper.getIns().startPointWorkService(getActivity());
+                                ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
                                 ToastHelper.showInfo(getActivity(), "提交成功!");
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -593,7 +593,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                                 } else {
                                     PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
                                 }
-                                ServiceHelper.getIns().startPointWorkService(getActivity());
+                                ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
                                 ToastHelper.showInfo(getActivity(), "提交成功!");
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -642,7 +642,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                                         } else {
                                             PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
                                         }
-                                        ServiceHelper.getIns().startPointWorkService(getActivity());
+                                        ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
                                         ToastHelper.showInfo(getActivity(), "提交成功!");
                                         new Handler().postDelayed(new Runnable() {
                                             @Override

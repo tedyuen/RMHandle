@@ -26,7 +26,11 @@ public class ServiceHelper {
 
     Intent locationIntent;
 
-    public void startPointWorkService(Context context){
+    /**
+     * 没有wifi也传图片
+     * @param context
+     */
+    public void startPointWorkWOwifiService(Context context){
         context.startService(new Intent(context,PointWorkNoPicService.class));
 
     }
@@ -40,8 +44,11 @@ public class ServiceHelper {
 
     public void startPointPicService(Context context){
         context.startService(new Intent(context,PointPicService.class));
-
     }
+    public void startPointPicWOwifiService(Context context){
+        context.startService(new Intent(context,PointPicWOwifiService.class));
+    }
+
 
 
 

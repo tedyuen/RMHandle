@@ -22,6 +22,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.network.AppNetworkInfo;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarTabActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.BaseFragment;
@@ -92,25 +93,31 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
 
     @OnClick(R.id.rl_right_text)
     public void goSynchronize(){
-        new MaterialDialog.Builder(this)
-                .title(R.string.dialog_title_synchronize)
-                .negativeText("取消")
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                })
-                .positiveText("确定")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        ServiceHelper.getIns().startPointWorkWithPicService(getApplicationContext());
-                        ToastHelper.showInfo(activity,"开始上传,请稍后刷新状态!");
-                        dialog.dismiss();
-                    }
-                })
-                .show();
+        if(AppNetworkInfo.isWifi(this)){
+            ServiceHelper.getIns().startPointWorkWithPicService(getApplicationContext());
+            ToastHelper.showInfo(activity,"开始上传,请稍后刷新状态!");
+        }else{
+            new MaterialDialog.Builder(this)
+                    .title(R.string.dialog_title_synchronize)
+                    .negativeText("取消")
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .positiveText("确定")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
+                            ToastHelper.showInfo(activity,"开始上传,请稍后刷新状态!");
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+        }
+
 
     }
 

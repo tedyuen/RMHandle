@@ -151,6 +151,9 @@
 
         <service android:name="cn.com.reachmedia.rmhandle.service.PointPicService">
         </service>
+        <service android:name="cn.com.reachmedia.rmhandle.service.PointPicWOwifiService">
+        </service>
+
 
         <service android:name="cn.com.reachmedia.rmhandle.service.LocationService">
         </service>
@@ -164,6 +167,14 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="IfTwDgeweY05u9S5aLM617ZtnAKPR1qe" />
+
+        <receiver android:name=".receiver.WifiReceiver">
+            <intent-filter>
+                <action android:name="android.net.wifi.RSSI_CHANGED"/>
+                <action android:name="android.net.wifi.STATE_CHANGE"/>
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

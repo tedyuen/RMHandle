@@ -31,7 +31,7 @@ import cn.com.reachmedia.rmhandle.utils.StringUtils;
  * 16/5/24          tedyuen             1.0             1.0
  * Why & What is modified:
  */
-public class PointPicService extends Service {
+public class PointPicWOwifiService extends Service {
 
     private PointWorkBeanDbUtil pointWorkBeanDbUtil;
     @Override
@@ -126,11 +126,7 @@ public class PointPicService extends Service {
                 communityDoorXY = bean.getDoorpicXY()==null?"":bean.getDoorpicXY();
                 communityDoorTime = bean.getDoorpicTime()==null?"":bean.getDoorpicTime();
 
-                if(AppNetworkInfo.isWifi(getApplicationContext())){
-                    uploadPicController.uploadPic(uploadPicParam,file1,file2,file3,doorFile,file1Id,file2Id,file3Id,communityDoorId,communityDoorXY,communityDoorTime);
-                }else{
-                    break;
-                }
+                uploadPicController.uploadPic(uploadPicParam,file1,file2,file3,doorFile,file1Id,file2Id,file3Id,communityDoorId,communityDoorXY,communityDoorTime);
             }
         }
 

@@ -22,6 +22,7 @@ import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.app.AppUpdateManager;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
+import cn.com.reachmedia.rmhandle.network.AppNetworkInfo;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
 import cn.com.reachmedia.rmhandle.ui.LoginActivity;
 import cn.com.reachmedia.rmhandle.ui.OfflineMapActivity;
@@ -200,4 +201,10 @@ public class UserInfoFragment extends BaseToolbarFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+//    @OnClick(R.id.iv_head_portrait)
+//    public void testWifi(){
+//        System.out.println("wifi: "+AppNetworkInfo.isWifi(getContext()));
+//        System.out.println("network: "+AppNetworkInfo.isNetworkAvailable(getContext()));
+//    }
 }

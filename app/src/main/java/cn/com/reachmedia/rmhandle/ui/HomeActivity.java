@@ -400,7 +400,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     @Override
     protected void onResume() {
         super.onResume();
-        ServiceHelper.getIns().startPointWorkService(this);
+        ServiceHelper.getIns().startPointWorkWithPicService(this);
 
     }
 
