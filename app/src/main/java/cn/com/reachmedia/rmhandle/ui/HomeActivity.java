@@ -38,6 +38,7 @@ import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.app.AppParamContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.network.AppNetworkInfo;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.HomeTabFragment;
@@ -400,8 +401,9 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     @Override
     protected void onResume() {
         super.onResume();
-        ServiceHelper.getIns().startPointWorkWithPicService(this);
-
+        if(AppNetworkInfo.isNetworkAvailable(this)){
+            ServiceHelper.getIns().startPointWorkWithPicService(this);
+        }
     }
 
 
