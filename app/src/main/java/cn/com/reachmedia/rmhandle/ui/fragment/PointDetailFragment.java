@@ -1318,44 +1318,44 @@ public class PointDetailFragment extends BaseToolbarFragment {
                     long time1 = System.currentTimeMillis();
                     super.onActivityResult(requestCode, resultCode, data);
                     byte[] mContent = ImageUtils.readStream(resolver.openInputStream(origUri[photoCount]));
-                    long time2 = System.currentTimeMillis();
-                    System.out.println("拍照处理时间 1："+(time2-time1));
+//                    long time2 = System.currentTimeMillis();
+//                    System.out.println("拍照处理时间 1："+(time2-time1));
                     //图片旋转
                     int a = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), origUri[photoCount]));
-                    long time3 = System.currentTimeMillis();
-                    System.out.println("拍照处理时间 2："+(time3-time2));
+//                    long time3 = System.currentTimeMillis();
+//                    System.out.println("拍照处理时间 2："+(time3-time2));
                     if (a != 0) {
                         myBitmap = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption()), a);
                     } else {
                         myBitmap = ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption());
                     }
-                    long time4 = System.currentTimeMillis();
-                    System.out.println("拍照处理时间 3："+(time4-time3));
+//                    long time4 = System.currentTimeMillis();
+//                    System.out.println("拍照处理时间 3："+(time4-time3));
                     //将字节数组转换为ImageView可调用的Bitmap对象
 
                     //把得到的图片绑定在控件上显示
                     Bitmap bitmapTemp = ImageUtils.comp(myBitmap);
-                    long time5 = System.currentTimeMillis();
-                    System.out.println("拍照处理时间 4："+(time5-time4));
+//                    long time5 = System.currentTimeMillis();
+//                    System.out.println("拍照处理时间 4："+(time5-time4));
                     photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, String.valueOf(photoName), bean.getUserId());
-                    long time6 = System.currentTimeMillis();
-                    System.out.println("拍照处理时间 5："+(time6-time5));
+//                    long time6 = System.currentTimeMillis();
+//                    System.out.println("拍照处理时间 5："+(time6-time5));
                     photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(bitmapTemp, ImageUtils.getPointPicPath(photo_full_id[photoCount], photo_path), photo_path);
-                    long time7 = System.currentTimeMillis();
-                    System.out.println("拍照处理时间 6："+(time7-time6));
+//                    long time7 = System.currentTimeMillis();
+//                    System.out.println("拍照处理时间 6："+(time7-time6));
                     photoName++;
                     ImageUtils.photoBitmap.add(bitmapTemp);
-                    long time8 = System.currentTimeMillis();
-                    System.out.println("拍照处理时间 7："+(time8-time7));
+//                    long time8 = System.currentTimeMillis();
+//                    System.out.println("拍照处理时间 7："+(time8-time7));
                     addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size() - 1));
-                    long time9 = System.currentTimeMillis();
-                    System.out.println("拍照处理时间 8："+(time9-time8));
+//                    long time9 = System.currentTimeMillis();
+//                    System.out.println("拍照处理时间 8："+(time9-time8));
 //                    saveCompressPic(myBitmap);
                     myBitmap.recycle();
                     initNextPhoto();
-                    long time10 = System.currentTimeMillis();
-                    System.out.println("拍照处理时间 9："+(time10-time9));
-                    System.out.println("拍照处理时间 总时间："+(time10-time1));
+//                    long time10 = System.currentTimeMillis();
+//                    System.out.println("拍照处理时间 9："+(time10-time9));
+//                    System.out.println("拍照处理时间 总时间："+(time10-time1));
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
