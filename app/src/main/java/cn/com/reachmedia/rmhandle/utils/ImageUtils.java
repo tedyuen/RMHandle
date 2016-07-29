@@ -33,6 +33,8 @@ import java.io.InputStream;
 import java.util.List;
 
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.App;
+//import id.zelory.compressor.Compressor;
 
 /**
  * Author:    tedyuen
@@ -288,9 +290,18 @@ public class ImageUtils {
      * @return
      */
     public static Bitmap comp(Bitmap image) {
+//        compressedImage = new Compressor.Builder(App.getIns().getContext())
+//                .setMaxWidth(640)
+//                .setMaxHeight(480)
+//                .setQuality(75)
+//                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+//                .setDestinationDirectoryPath(Environment.getExternalStoragePublicDirectory(
+//                        Environment.DIRECTORY_PICTURES).getAbsolutePath())
+//                .build()
+//                .compressToFile(image);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        image.compress(Bitmap.CompressFormat.JPEG, 80, baos);
         if( baos.toByteArray().length / 1024>2048) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
             baos.reset();//重置baos即清空baos
             image.compress(Bitmap.CompressFormat.JPEG, 50, baos);//这里压缩50%，把压缩后的数据存放到baos中
@@ -304,8 +315,8 @@ public class ImageUtils {
         int w = newOpts.outWidth;
         int h = newOpts.outHeight;
         //现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
-        float hh = 960f;//这里设置高度为800f
-        float ww = 540f;//这里设置宽度为480f
+        float hh = 800f;//这里设置高度为800f
+        float ww = 480f;//这里设置宽度为480f
         //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
         int be = 1;//be=1表示不缩放
         if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
@@ -319,7 +330,8 @@ public class ImageUtils {
         //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
-        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
+//        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
+        return bitmap;//压缩好比例大小后再进行质量压缩
     }
 
 
