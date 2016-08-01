@@ -168,19 +168,4 @@ public class StringUtils {
         return tmpstr;
     }
 
-    /***
-     * 去掉字符串前后的空间，中间的空格保留
-     * @param str
-     * @return
-     */
-    public String trimInnerSpaceStr(String str){
-        str = str.trim();
-        while(str.startsWith(" ")){
-            str = str.substring(1,str.length()).trim();
-        }
-        while(str.endsWith(" ")){
-            str = str.substring(0,str.length()-1).trim();
-        }
-        return str;
-    }
 }

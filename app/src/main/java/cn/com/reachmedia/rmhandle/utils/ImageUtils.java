@@ -336,7 +336,7 @@ public class ImageUtils {
 
 
     public static byte[] readStream(InputStream inStream) throws Exception {
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[2048];
         int len = -1;
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         while ((len = inStream.read(buffer)) != -1) {
