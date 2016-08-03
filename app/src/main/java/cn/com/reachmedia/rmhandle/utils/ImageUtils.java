@@ -301,10 +301,10 @@ public class ImageUtils {
 //                .compressToFile(image);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+        image.compress(Bitmap.CompressFormat.JPEG, 60, baos);
         if( baos.toByteArray().length / 1024>2048) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
             baos.reset();//重置baos即清空baos
-            image.compress(Bitmap.CompressFormat.JPEG, 50, baos);//这里压缩50%，把压缩后的数据存放到baos中
+            image.compress(Bitmap.CompressFormat.JPEG, 80, baos);//这里压缩80%，把压缩后的数据存放到baos中
         }
 //        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
         BitmapFactory.Options newOpts = new BitmapFactory.Options();
@@ -517,6 +517,32 @@ public class ImageUtils {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
+    public static void testImageExifInfo(String filepath){
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(filepath);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        if (exif != null) {
+            String dateTime = exif.getAttribute(ExifInterface.TAG_DATETIME);
+            System.out.println("TAG_DATETIME: "+dateTime);
+            String TAG_GPS_LATITUDE = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+            System.out.println("TAG_GPS_LATITUDE: "+TAG_GPS_LATITUDE);
+
+            String TAG_GPS_LONGITUDE = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+            System.out.println("TAG_GPS_LONGITUDE: "+TAG_GPS_LONGITUDE);
+
+            String TAG_GPS_LATITUDE_REF = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
+            System.out.println("TAG_GPS_LATITUDE_REF: "+TAG_GPS_LATITUDE_REF);
+
+            String TAG_GPS_LONGITUDE_REF = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
+            System.out.println("TAG_GPS_LONGITUDE_REF: "+TAG_GPS_LONGITUDE_REF);
+
+
+        }
+
+    }
 
     /**
      * 获得图片旋转角度
@@ -524,6 +550,7 @@ public class ImageUtils {
      * @return
      */
     public static int getExifOrientation(String filepath) {
+        testImageExifInfo(filepath);
         int degree = 0;
         ExifInterface exif = null;
         try {
