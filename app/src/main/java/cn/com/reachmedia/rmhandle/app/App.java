@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.bind.DateTypeAdapter;
 import com.squareup.okhttp.OkHttpClient;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -61,7 +62,7 @@ public class App extends Application {
         super.onCreate();
         sContext = getApplicationContext();
         app = this;
-
+        CrashReport.initCrashReport(getApplicationContext(), "900046108", true);
         setUpSharedPreferencesHelper(getApplicationContext());//初始化SharedPreferences
         setUpApiService();//初始化APP API
 //        EventBus.getDefault().register(this);//注册接收定位信息事件

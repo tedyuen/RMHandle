@@ -21,12 +21,12 @@ public class AppApiContact {
 
     public static String getApiHost(){
 //http://120.26.64.180:8281/app/data.api
-        return API_HOST_ST;
+        return API_HOST_MN;
     }
 
 
     /**
-     * 接口method定义
+     * 接口method定义ç
      */
     public class InterfaceMethod{
         /**

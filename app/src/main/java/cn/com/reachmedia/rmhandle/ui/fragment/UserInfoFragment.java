@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -187,6 +188,8 @@ public class UserInfoFragment extends BaseToolbarFragment {
         AppUpdateManager mAppUpdateManager = new AppUpdateManager(getActivity());
         mAppUpdateManager.setShowMessage(true);
         mAppUpdateManager.checkUpdateInfo(getActivity());
+
+        CrashReport.testJavaCrash();
     }
 
 

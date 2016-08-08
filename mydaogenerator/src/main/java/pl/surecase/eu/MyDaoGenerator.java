@@ -19,6 +19,7 @@ public class MyDaoGenerator {
 
         initPointBean(schema);
         initPointWorkBean(schema);
+        initCommDoorPicBean(schema);
         new DaoGenerator().generateAll(schema, args[0]);
 //        testSpilt();
     }
@@ -94,6 +95,21 @@ public class MyDaoGenerator {
 
     }
 
+    private static void initCommDoorPicBean(Schema schema){
+        Entity commDoorPicBean = schema.addEntity("CommDoorPicBean");//table name
+        commDoorPicBean.addLongProperty("id").primaryKey().index().autoincrement();
+        commDoorPicBean.addStringProperty("userId");
+        commDoorPicBean.addStringProperty("communityId");
+        commDoorPicBean.addStringProperty("communityFile1");
+        commDoorPicBean.addStringProperty("communitySpace1");
+        commDoorPicBean.addStringProperty("communitySpaceId1");
+        commDoorPicBean.addStringProperty("communityFile2");
+        commDoorPicBean.addStringProperty("communityFileId2");
+        commDoorPicBean.addStringProperty("communitySpace2");
+        commDoorPicBean.addStringProperty("communitySpaceId2");
+        commDoorPicBean.addDateProperty("workTime");
+        commDoorPicBean.addStringProperty("nativeState");//0:未同步，1:已同步未同步图片，2:全部同步
+    }
 
 
 

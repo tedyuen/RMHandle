@@ -304,7 +304,7 @@ public class ImageUtils {
         image.compress(Bitmap.CompressFormat.JPEG, 60, baos);
         if( baos.toByteArray().length / 1024>2048) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
             baos.reset();//重置baos即清空baos
-            image.compress(Bitmap.CompressFormat.JPEG, 80, baos);//这里压缩80%，把压缩后的数据存放到baos中
+            image.compress(Bitmap.CompressFormat.JPEG, 50, baos);//这里压缩80%，把压缩后的数据存放到baos中
         }
 //        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
         BitmapFactory.Options newOpts = new BitmapFactory.Options();
@@ -336,7 +336,7 @@ public class ImageUtils {
 
 
     public static byte[] readStream(InputStream inStream) throws Exception {
-        byte[] buffer = new byte[2048];
+        byte[] buffer = new byte[1024];
         int len = -1;
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         while ((len = inStream.read(buffer)) != -1) {
