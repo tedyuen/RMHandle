@@ -154,6 +154,14 @@
         <service android:name="cn.com.reachmedia.rmhandle.service.PointPicWOwifiService">
         </service>
 
+        <service android:name="cn.com.reachmedia.rmhandle.service.DoorPicWOwifiService">
+        </service>
+        <service android:name="cn.com.reachmedia.rmhandle.service.DoorPicService">
+        </service>
+
+
+
+
 
         <service android:name="cn.com.reachmedia.rmhandle.service.LocationService">
         </service>

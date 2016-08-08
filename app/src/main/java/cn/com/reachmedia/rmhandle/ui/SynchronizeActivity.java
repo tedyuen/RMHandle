@@ -95,6 +95,7 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
     public void goSynchronize(){
         if(AppNetworkInfo.isWifi(this)){
             ServiceHelper.getIns().startPointWorkWithPicService(getApplicationContext());
+            ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(),false);
             ToastHelper.showInfo(activity,"开始上传,请稍后刷新状态!");
         }else{
             new MaterialDialog.Builder(this)
@@ -111,6 +112,7 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
+                            ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(),true);
                             ToastHelper.showInfo(activity,"开始上传,请稍后刷新状态!");
                             dialog.dismiss();
                         }

@@ -10,6 +10,7 @@ public class CommDoorPicBean {
     private String userId;
     private String communityId;
     private String communityFile1;
+    private String communityFileId1;
     private String communitySpace1;
     private String communitySpaceId1;
     private String communityFile2;
@@ -26,11 +27,12 @@ public class CommDoorPicBean {
         this.id = id;
     }
 
-    public CommDoorPicBean(Long id, String userId, String communityId, String communityFile1, String communitySpace1, String communitySpaceId1, String communityFile2, String communityFileId2, String communitySpace2, String communitySpaceId2, java.util.Date workTime, String nativeState) {
+    public CommDoorPicBean(Long id, String userId, String communityId, String communityFile1, String communityFileId1, String communitySpace1, String communitySpaceId1, String communityFile2, String communityFileId2, String communitySpace2, String communitySpaceId2, java.util.Date workTime, String nativeState) {
         this.id = id;
         this.userId = userId;
         this.communityId = communityId;
         this.communityFile1 = communityFile1;
+        this.communityFileId1 = communityFileId1;
         this.communitySpace1 = communitySpace1;
         this.communitySpaceId1 = communitySpaceId1;
         this.communityFile2 = communityFile2;
@@ -71,6 +73,14 @@ public class CommDoorPicBean {
 
     public void setCommunityFile1(String communityFile1) {
         this.communityFile1 = communityFile1;
+    }
+
+    public String getCommunityFileId1() {
+        return communityFileId1;
+    }
+
+    public void setCommunityFileId1(String communityFileId1) {
+        this.communityFileId1 = communityFileId1;
     }
 
     public String getCommunitySpace1() {

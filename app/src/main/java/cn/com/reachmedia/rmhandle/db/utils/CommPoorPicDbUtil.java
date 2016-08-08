@@ -1,8 +1,11 @@
 package cn.com.reachmedia.rmhandle.db.utils;
 
+import java.util.List;
+
 import cn.com.reachmedia.rmhandle.bean.CommDoorPicBean;
 import cn.com.reachmedia.rmhandle.dao.CommDoorPicBeanDao;
 import cn.com.reachmedia.rmhandle.db.helper.CommDoorPicDaoHelper;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 
 /**
  * Author:    tedyuen
@@ -42,6 +45,31 @@ public class CommPoorPicDbUtil {
                 .unique();
     }
 
+    public void insertOneData(CommDoorPicBean commDoorPicBean){
+        commDoorPicDaoHelper.addData(commDoorPicBean);
+    }
 
+    /**
+     * 获取状态未提交的数据
+     * @param nativeState
+     */
+    public List<CommDoorPicBean> getUpload(String nativeState){
+        List<CommDoorPicBean> list = commDoorPicDaoHelper.getDao().queryBuilder()
+                .where(CommDoorPicBeanDao.Properties.NativeState.eq(nativeState))
+                .list();
+        return list;
+    }
+
+    public void changeNativeState(String communityId){
+        CommDoorPicBean bean = commDoorPicDaoHelper.getDao().queryBuilder()
+                .where(CommDoorPicBeanDao.Properties.CommunityId.eq(communityId)
+                        ,CommDoorPicBeanDao.Properties.NativeState.eq("0"))
+                .unique();
+        if(bean!=null){
+            bean.setNativeState("1");
+            bean.setWorkTime(TimeUtils.getNowDate());
+            commDoorPicDaoHelper.getDao().update(bean);
+        }
+    }
 
 }

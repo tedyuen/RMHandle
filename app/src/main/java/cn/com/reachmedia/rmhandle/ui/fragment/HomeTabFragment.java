@@ -24,6 +24,7 @@ import cn.com.reachmedia.rmhandle.ui.interf.HomeUiDataUpdate;
 import cn.com.reachmedia.rmhandle.ui.view.PageListView;
 import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 
 /**
  * Author:    tedyuen
@@ -121,6 +122,8 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
                 }
                 mAdapter.updateData(data.getPList());
                 mAdapter.notifyDataSetChanged();
+            }else if(AppApiContact.ErrorCode.ERROR_LON.equals(data.rescode)){
+                ToastHelper.showAlert(getActivity(),"没有定位权限无法使用，请前往设置");
             }
         }
     }

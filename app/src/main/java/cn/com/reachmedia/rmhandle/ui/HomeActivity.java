@@ -401,8 +401,10 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     @Override
     protected void onResume() {
         super.onResume();
+        ServiceHelper.getIns().startLocationWorkService(this);
         if(AppNetworkInfo.isNetworkAvailable(this)){
             ServiceHelper.getIns().startPointWorkWithPicService(this);
+            ServiceHelper.getIns().startCommDoorPicService(this,false);
         }
     }
 

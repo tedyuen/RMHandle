@@ -23,6 +23,7 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        new UpdateLocation().location();
         Timer timer = new Timer();
         timer.schedule(new LocationWork(),0, 90000);
 //        timer.schedule(new LocationWork(),0, 10000);

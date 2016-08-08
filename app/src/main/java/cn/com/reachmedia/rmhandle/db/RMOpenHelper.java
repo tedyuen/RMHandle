@@ -3,6 +3,7 @@ package cn.com.reachmedia.rmhandle.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import cn.com.reachmedia.rmhandle.dao.CommDoorPicBeanDao;
 import cn.com.reachmedia.rmhandle.dao.DaoMaster;
 import cn.com.reachmedia.rmhandle.dao.PointBeanDao;
 import cn.com.reachmedia.rmhandle.dao.PointWorkBeanDao;
@@ -31,6 +32,7 @@ public class RMOpenHelper extends DaoMaster.OpenHelper{
                 //创建新表，注意createTable()是静态方法
                 PointBeanDao.createTable(db, true);
                 PointWorkBeanDao.createTable(db, true);
+                CommDoorPicBeanDao.createTable(db, true);
 
                 // 加入新字段
                 // db.execSQL("ALTER TABLE 'moments' ADD 'audio_path' TEXT;");

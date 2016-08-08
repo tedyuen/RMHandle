@@ -16,6 +16,8 @@ import android.os.Parcelable;
  */
 public class PicSubmitModel extends BaseModel implements Parcelable {
 
+    private String communityId;
+
     @Override
     public int describeContents() {
         return 0;
@@ -23,11 +25,15 @@ public class PicSubmitModel extends BaseModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(communityId);
+
     }
 
     public PicSubmitModel(){}
 
     private PicSubmitModel(Parcel in){
+        communityId = in.readString();
+
     }
 
     public static final Creator<PicSubmitModel> CREATOR = new Creator<PicSubmitModel>() {
@@ -39,5 +45,12 @@ public class PicSubmitModel extends BaseModel implements Parcelable {
             return new PicSubmitModel[size];
         }
     };
-    
+
+    public String getCommunityId() {
+        return communityId;
+    }
+
+    public void setCommunityId(String communityId) {
+        this.communityId = communityId;
+    }
 }

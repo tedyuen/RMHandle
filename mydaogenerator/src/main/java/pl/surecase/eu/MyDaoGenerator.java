@@ -101,6 +101,7 @@ public class MyDaoGenerator {
         commDoorPicBean.addStringProperty("userId");
         commDoorPicBean.addStringProperty("communityId");
         commDoorPicBean.addStringProperty("communityFile1");
+        commDoorPicBean.addStringProperty("communityFileId1");
         commDoorPicBean.addStringProperty("communitySpace1");
         commDoorPicBean.addStringProperty("communitySpaceId1");
         commDoorPicBean.addStringProperty("communityFile2");

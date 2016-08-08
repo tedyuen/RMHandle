@@ -71,9 +71,9 @@ public class PointPicWOwifiService extends Service {
                     filePaths = bean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
                 }
 
-                for(int i=0;i<filePaths.length;i++){
-                    System.out.println("filepath==> "+filePaths[i]);
-                }
+//                for(int i=0;i<filePaths.length;i++){
+//                    System.out.println("filepath==> "+filePaths[i]);
+//                }
                 File file1 = null;
                 if(filePaths.length>0){
                     file1 = new File(filePaths[0]);

@@ -25,7 +25,11 @@ import com.anthonycr.grant.PermissionsManager;
 import com.anthonycr.grant.PermissionsResultAction;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +41,8 @@ import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.app.Constant;
 import cn.com.reachmedia.rmhandle.bean.CommDoorPicBean;
+import cn.com.reachmedia.rmhandle.db.helper.CommDoorPicDaoHelper;
+import cn.com.reachmedia.rmhandle.db.utils.CommPoorPicDbUtil;
 import cn.com.reachmedia.rmhandle.model.CardSubmitModel;
 import cn.com.reachmedia.rmhandle.model.PicSubmitModel;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
@@ -87,8 +93,10 @@ public class CardEditFragment extends BaseToolbarFragment {
     EditText etPassword;
     private PointListModel model;
 
-    CommDoorPicBean commBean;
+    CommDoorPicBean commBean=null;
     boolean insertOrUpdate;
+
+    CommPoorPicDbUtil commPoorPicDbUtil = CommPoorPicDbUtil.getIns();
 
 
     public static CardEditFragment newInstance() {
@@ -128,13 +136,13 @@ public class CardEditFragment extends BaseToolbarFragment {
 
             etGateCard.setText(model.getCarddesc());
             etPassword.setText(model.getDoordesc());
-
+            initBean();
             setCardPhoto(model.getCGatePic(),model.getCPestPic());
-
             initPhoto();
 
         }
     }
+
     String[] preGate,prePest;
     private void setCardPhoto(String cGatePic,String cPestPic){
         preGate = cGatePic.split("@&");
@@ -153,6 +161,10 @@ public class CardEditFragment extends BaseToolbarFragment {
                     Picasso.with(getContext()).load(prePest[i]).placeholder(R.drawable.abc).into(pestPhotos[i]);
                 }
             }
+        }
+
+        if(!insertOrUpdate){//有本地未提交数据
+
         }
 
     }
@@ -579,55 +591,29 @@ public class CardEditFragment extends BaseToolbarFragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
-
-
-                        PicSubmitController picSubmitController = new PicSubmitController(new UiDisplayListener<PicSubmitModel>() {
-                            @Override
-                            public void onSuccessDisplay(PicSubmitModel data) {
-                                closeProgressDialog();
-                                if (data != null) {
-                                    if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
-                                        ToastHelper.showInfo(getActivity(),"修改照片成功!");
-                                        new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                getActivity().finish();
-                                            }
-                                        }, 1000);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onFailDisplay(String errorMsg) {
-                                closeProgressDialog();
-
-                            }
-                        });
-
-                        PicSubmitParam picSubmitParam = new PicSubmitParam();
-                        picSubmitParam.communityId = model.getCommunityid();
-                        int allSize = gatePhotoSize+pestPhotoSize;
-                        File[] resultFile = new File[allSize];
-                        String[] resultId = new String[allSize];
-
-                        for(int i=0;i<allSize;i++){
-                            if(!StringUtils.isEmpty(photo_paths[i])){
-                                resultFile[i] = new File(photo_paths[i]);
-                                if(!resultFile[i].exists()){
-                                    resultFile[i] = null;
-                                }
-                            }
-                            if(!StringUtils.isEmpty(resultId[i])){
-                                resultId[i] = photo_ids[1];
+                        CommDoorPicBean bean = getCommBean();
+                        if (bean == null) {
+                            dialog.dismiss();
+                            ToastHelper.showInfo(getActivity(), "请添加图片!");
+                        } else {
+                            if(insertOrUpdate){
+                                commPoorPicDbUtil.insertOneData(bean);
                             }else{
-                                resultId[i] = "";
+                                commPoorPicDbUtil.updateOneData(bean);
                             }
+                            //service
+                            ServiceHelper.getIns().startCommDoorPicService(getContext(),false);
+                            ToastHelper.showInfo(getActivity(), "提交成功!");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getActivity().finish();
+                                }
+                            }, 1000);
                         }
 
-                        picSubmitController.picSubmit(picSubmitParam,resultFile[0],resultFile[1],resultFile[2],resultFile[3],resultId[0],resultId[1],resultId[2],resultId[3]);
-                        showProgressDialog();
+
+//                        showProgressDialog();
                     }
                 })
                 .show();
@@ -655,11 +641,99 @@ public class CardEditFragment extends BaseToolbarFragment {
     }
 
     public void initBean(){
+        if (!StringUtils.isEmpty(model.getCommunityid())) {
+            commBean = commPoorPicDbUtil.getBeanByCommId(model.getCommunityid(),"0");
+        }
+        insertOrUpdate = commBean==null;
+    }
 
+    private void showLocalPic(String picPath,ImageView imageView){
+        Bitmap myBitmap4 = null;
+        try {
+            byte[] mContent3 = ImageUtils.readStream(new FileInputStream(picPath));
+            int b = ImageUtils.getExifOrientation(picPath);
+            if (b != 0) {
+                myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
+            } else {
+                myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
+            }
+            Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
+//            ImageUtils.cacheBitmap.add(bitmapTemp2);
+            imageView.setImageBitmap(bitmapTemp2);
+            myBitmap4.recycle();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public CommDoorPicBean getCommBean(){
+        if(insertOrUpdate){
+            commBean = new CommDoorPicBean();
+            if (!StringUtils.isEmpty(model.getCommunityid())) {
+                commBean.setCommunityId(model.getCommunityid());
+            }else{
+                return null;//没有小区id，异常
+            }
+        }
 
-        return null;
+        int allSize = gatePhotoSize+pestPhotoSize;
+        String[] resultFilePath = new String[allSize];
+        String[] resultId = new String[allSize];
+
+        for(int i=0;i<allSize;i++){
+            if(!StringUtils.isEmpty(photo_paths[i])){
+                resultFilePath[i] = photo_paths[i];
+                if(!(new File(photo_paths[i]).exists())){
+                    resultFilePath[i] = null;
+                }
+            }
+            if(!StringUtils.isEmpty(resultId[i])){
+                resultId[i] = photo_ids[1];
+            }else{
+                resultId[i] = "";
+            }
+        }
+
+        boolean picFlag = false;
+
+        if(!StringUtils.isEmpty(resultFilePath[0])){
+            commBean.setCommunityFile1(resultFilePath[0]);
+            picFlag = true;
+        }
+        if(!StringUtils.isEmpty(resultFilePath[1])){
+            commBean.setCommunityFile2(resultFilePath[1]);
+            picFlag = true;
+        }
+        if(!StringUtils.isEmpty(resultFilePath[2])){
+            commBean.setCommunitySpace1(resultFilePath[2]);
+            picFlag = true;
+        }
+        if(!StringUtils.isEmpty(resultFilePath[3])){
+            commBean.setCommunitySpace2(resultFilePath[3]);
+            picFlag = true;
+        }
+
+        if(!StringUtils.isEmpty(resultId[0])){
+            commBean.setCommunityFileId1(resultId[0]);
+            picFlag = true;
+        }
+        if(!StringUtils.isEmpty(resultId[1])){
+            commBean.setCommunityFileId2(resultId[1]);
+            picFlag = true;
+        }
+        if(!StringUtils.isEmpty(resultId[2])){
+            commBean.setCommunitySpaceId1(resultId[2]);
+            picFlag = true;
+        }
+        if(!StringUtils.isEmpty(resultId[3])){
+            commBean.setCommunitySpaceId2(resultId[3]);
+            picFlag = true;
+        }
+
+        if(!picFlag){
+            return  null;
+        }else{
+            return commBean;
+        }
     }
 }

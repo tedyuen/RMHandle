@@ -50,12 +50,20 @@ public class ServiceHelper {
     }
 
 
+    public void startCommDoorPicService(Context context,boolean wifiFlag){
+        if(wifiFlag){//with out wifi
+            context.startService(new Intent(context,DoorPicWOwifiService.class));
+        }else{
+            context.startService(new Intent(context,DoorPicService.class));
+        }
+    }
+
 
 
     public void startLocationWorkService(Context context){
         if(locationIntent==null)
             locationIntent = new Intent(context,LocationService.class);
-        context.startService(new Intent(context,LocationService.class));
+        context.startService(locationIntent);
     }
     public void stopLocationWorkService(Context context){
         context.stopService(locationIntent);
