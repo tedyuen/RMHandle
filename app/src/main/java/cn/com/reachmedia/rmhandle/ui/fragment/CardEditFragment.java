@@ -36,6 +36,7 @@ import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.app.Constant;
+import cn.com.reachmedia.rmhandle.bean.CommDoorPicBean;
 import cn.com.reachmedia.rmhandle.model.CardSubmitModel;
 import cn.com.reachmedia.rmhandle.model.PicSubmitModel;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
@@ -85,6 +86,10 @@ public class CardEditFragment extends BaseToolbarFragment {
     @Bind(R.id.et_password)
     EditText etPassword;
     private PointListModel model;
+
+    CommDoorPicBean commBean;
+    boolean insertOrUpdate;
+
 
     public static CardEditFragment newInstance() {
         CardEditFragment fragment = new CardEditFragment();
@@ -574,6 +579,9 @@ public class CardEditFragment extends BaseToolbarFragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+
+
                         PicSubmitController picSubmitController = new PicSubmitController(new UiDisplayListener<PicSubmitModel>() {
                             @Override
                             public void onSuccessDisplay(PicSubmitModel data) {
@@ -644,5 +652,14 @@ public class CardEditFragment extends BaseToolbarFragment {
                                            @NonNull int[] grantResults) {
         Log.i(TAG, "Activity-onRequestPermissionsResult() PermissionsManager.notifyPermissionsChange()");
         PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
+    }
+
+    public void initBean(){
+
+    }
+
+    public CommDoorPicBean getCommBean(){
+
+        return null;
     }
 }

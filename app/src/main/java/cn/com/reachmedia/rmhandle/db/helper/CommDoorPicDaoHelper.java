@@ -103,4 +103,10 @@ public class CommDoorPicDaoHelper implements DaoHelperInterface {
     public CommDoorPicBeanDao getDao() {
         return commDoorPicBeanDao;
     }
+
+    public <T> void updateData(T t){
+        if(commDoorPicBeanDao != null && t != null) {
+            commDoorPicBeanDao.update((CommDoorPicBean) t);
+        }
+    }
 }
