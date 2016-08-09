@@ -351,9 +351,9 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 
                     StringBuffer buffer = new StringBuffer();
                     buffer.append("门口照:");
-                    boolean temp = (commBean!=null && StringUtils.isEmpty(commBean.getCommunityFile1())&& StringUtils.isEmpty(commBean.getCommunityFile2()));
-                    System.out.println("====>  "+temp);
-                    if(StringUtils.isEmpty(data.getCGatePic()) && commBean==null && (commBean!=null && StringUtils.isEmpty(commBean.getCommunityFile1())&& StringUtils.isEmpty(commBean.getCommunityFile2()))){
+//                    boolean temp = (commBean!=null && StringUtils.isEmpty(commBean.getCommunityFile1())&& StringUtils.isEmpty(commBean.getCommunityFile2()));
+//                    System.out.println("====>  "+temp);
+                    if(StringUtils.isEmpty(data.getCGatePic()) && (commBean==null || (commBean!=null && StringUtils.isEmpty(commBean.getCommunityFile1())&& StringUtils.isEmpty(commBean.getCommunityFile2())))){
                         buffer.append("未拍;");
                         colorFlag1 = true;
                     }else {
@@ -361,9 +361,9 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                         colorFlag1 = false;
                     }
                     buffer.append("环境照:");
-                    boolean temp2 = (commBean!=null && StringUtils.isEmpty(commBean.getCommunitySpace1())&& StringUtils.isEmpty(commBean.getCommunitySpace2()));
-                    System.out.println("====>  "+temp2);
-                    if(StringUtils.isEmpty(data.getCPestPic()) && commBean==null && (commBean!=null && StringUtils.isEmpty(commBean.getCommunitySpace1())&& StringUtils.isEmpty(commBean.getCommunitySpace2()))){
+//                    boolean temp2 = (commBean!=null && StringUtils.isEmpty(commBean.getCommunitySpace1())&& StringUtils.isEmpty(commBean.getCommunitySpace2()));
+//                    System.out.println("====>  "+temp2);
+                    if(StringUtils.isEmpty(data.getCPestPic()) && (commBean==null || (commBean!=null && StringUtils.isEmpty(commBean.getCommunitySpace1())&& StringUtils.isEmpty(commBean.getCommunitySpace2())))){
                         buffer.append("未拍;");
                         colorFlag2 = true;
                     }else {
