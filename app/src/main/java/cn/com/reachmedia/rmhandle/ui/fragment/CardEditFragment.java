@@ -164,7 +164,10 @@ public class CardEditFragment extends BaseToolbarFragment {
         }
 
         if(!insertOrUpdate){//有本地未提交数据
-
+            showLocalPic(commBean.getCommunityFile1(),gatePhotos[0]);
+            showLocalPic(commBean.getCommunityFile2(),gatePhotos[1]);
+            showLocalPic(commBean.getCommunitySpace1(),pestPhotos[0]);
+            showLocalPic(commBean.getCommunitySpace2(),pestPhotos[1]);
         }
 
     }
@@ -675,7 +678,7 @@ public class CardEditFragment extends BaseToolbarFragment {
                 return null;//没有小区id，异常
             }
         }
-
+        commBean.setNativeState("0");
         int allSize = gatePhotoSize+pestPhotoSize;
         String[] resultFilePath = new String[allSize];
         String[] resultId = new String[allSize];
@@ -687,8 +690,8 @@ public class CardEditFragment extends BaseToolbarFragment {
                     resultFilePath[i] = null;
                 }
             }
-            if(!StringUtils.isEmpty(resultId[i])){
-                resultId[i] = photo_ids[1];
+            if(!StringUtils.isEmpty(photo_ids[i])){
+                resultId[i] = photo_ids[i];
             }else{
                 resultId[i] = "";
             }

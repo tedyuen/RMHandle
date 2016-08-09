@@ -448,7 +448,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 break;
             }
         }
-        System.out.println("==>checkstate:  "+bean.getCheckState());
+//        System.out.println("==>checkstate:  "+bean.getCheckState());
         if(bean.getCheckState()==1){
             rbCheck1.setChecked(true);
             rbCheck1.setVisibility(View.VISIBLE);

@@ -95,8 +95,8 @@ public class DoorPicService extends Service {
             }
             if(AppNetworkInfo.isWifi(getApplicationContext())){
                 picSubmitController.picSubmit(picSubmitParam,resultFile[0],resultFile[1],resultFile[2],resultFile[3]
-                        ,bean.getCommunityFileId1(),bean.getCommunityFileId2()
-                        ,bean.getCommunitySpaceId1(),bean.getCommunitySpaceId2());
+                        ,bean.getCommunityFileId1()==null?"":bean.getCommunityFileId1(),bean.getCommunityFileId2()==null?"":bean.getCommunityFileId2()
+                        ,bean.getCommunitySpaceId1()==null?"":bean.getCommunitySpaceId1(),bean.getCommunitySpaceId2()==null?"":bean.getCommunitySpaceId2());
             }else{
                 break;
             }
