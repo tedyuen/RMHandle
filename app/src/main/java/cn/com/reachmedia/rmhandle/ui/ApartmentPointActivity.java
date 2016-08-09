@@ -2,6 +2,7 @@ package cn.com.reachmedia.rmhandle.ui;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +31,7 @@ import com.google.gson.Gson;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 import com.squareup.picasso.Picasso;
 
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +43,10 @@ import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppParamContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.bean.CommDoorPicBean;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.db.helper.PointBeanDaoHelper;
+import cn.com.reachmedia.rmhandle.db.utils.CommPoorPicDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
@@ -55,6 +59,7 @@ import cn.com.reachmedia.rmhandle.ui.dialog.ApartmentPhoneDialogFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentPointTabFragment;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
+import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.LogUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
@@ -341,9 +346,14 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                 if(data!=null){
                     this.data = data;
                     boolean colorFlag1,colorFlag2,colorFlag3,colorFlag4;
+
+                    CommDoorPicBean commBean = CommPoorPicDbUtil.getIns().getBeanByCommId(communityId,"0");
+
                     StringBuffer buffer = new StringBuffer();
                     buffer.append("门口照:");
-                    if(StringUtils.isEmpty(data.getCGatePic())){
+                    boolean temp = (commBean!=null && StringUtils.isEmpty(commBean.getCommunityFile1())&& StringUtils.isEmpty(commBean.getCommunityFile2()));
+                    System.out.println("====>  "+temp);
+                    if(StringUtils.isEmpty(data.getCGatePic()) && commBean==null && (commBean!=null && StringUtils.isEmpty(commBean.getCommunityFile1())&& StringUtils.isEmpty(commBean.getCommunityFile2()))){
                         buffer.append("未拍;");
                         colorFlag1 = true;
                     }else {
@@ -351,7 +361,9 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                         colorFlag1 = false;
                     }
                     buffer.append("环境照:");
-                    if(StringUtils.isEmpty(data.getCPestPic())){
+                    boolean temp2 = (commBean!=null && StringUtils.isEmpty(commBean.getCommunitySpace1())&& StringUtils.isEmpty(commBean.getCommunitySpace2()));
+                    System.out.println("====>  "+temp2);
+                    if(StringUtils.isEmpty(data.getCPestPic()) && commBean==null && (commBean!=null && StringUtils.isEmpty(commBean.getCommunitySpace1())&& StringUtils.isEmpty(commBean.getCommunitySpace2()))){
                         buffer.append("未拍;");
                         colorFlag2 = true;
                     }else {
@@ -407,7 +419,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 
                     tv_carddesc.setText("密码："+data.getDoordesc());
                     tv_doordesc.setText("门卡备注："+data.getCarddesc());
-                    setCardPhoto(data.getCGatePic(),data.getCPestPic());
+                    setCardPhoto(data.getCGatePic(),data.getCPestPic(),commBean);
                     ApartmentPointUtils.getIns().pointListModel = data;
                     List<PointListModel.NewListBean> newList = data.getNewList();
                     PointBeanDbUtil util = PointBeanDbUtil.getIns();
@@ -423,7 +435,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         }
     }
 
-    private void setCardPhoto(String cGatePic,String cPestPic){
+    private void setCardPhoto(String cGatePic,String cPestPic,CommDoorPicBean commBean){
         String[] gate = cGatePic.split("@&");
         String[] pest = cPestPic.split("@&");
 
@@ -442,6 +454,32 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
             }
         }
 
+        if(commBean!=null){
+            showLocalPic(commBean.getCommunityFile1(),gatePhotos[0]);
+            showLocalPic(commBean.getCommunityFile2(),gatePhotos[1]);
+            showLocalPic(commBean.getCommunitySpace1(),pestPhotos[0]);
+            showLocalPic(commBean.getCommunitySpace2(),pestPhotos[1]);
+        }
+
+    }
+
+    private void showLocalPic(String picPath,ImageView imageView){
+        Bitmap myBitmap4 = null;
+        try {
+            byte[] mContent3 = ImageUtils.readStream(new FileInputStream(picPath));
+            int b = ImageUtils.getExifOrientation(picPath);
+            if (b != 0) {
+                myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
+            } else {
+                myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
+            }
+            Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
+//            ImageUtils.cacheBitmap.add(bitmapTemp2);
+            imageView.setImageBitmap(bitmapTemp2);
+            myBitmap4.recycle();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

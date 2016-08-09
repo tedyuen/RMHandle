@@ -137,8 +137,9 @@ public class CardEditFragment extends BaseToolbarFragment {
             etGateCard.setText(model.getCarddesc());
             etPassword.setText(model.getDoordesc());
             initBean();
-            setCardPhoto(model.getCGatePic(),model.getCPestPic());
+
             initPhoto();
+            setCardPhoto(model.getCGatePic(),model.getCPestPic());
 
         }
     }
@@ -164,10 +165,10 @@ public class CardEditFragment extends BaseToolbarFragment {
         }
 
         if(!insertOrUpdate){//有本地未提交数据
-            showLocalPic(commBean.getCommunityFile1(),gatePhotos[0]);
-            showLocalPic(commBean.getCommunityFile2(),gatePhotos[1]);
-            showLocalPic(commBean.getCommunitySpace1(),pestPhotos[0]);
-            showLocalPic(commBean.getCommunitySpace2(),pestPhotos[1]);
+            showLocalPic(commBean.getCommunityFile1(),gatePhotos[0],0);
+            showLocalPic(commBean.getCommunityFile2(),gatePhotos[1],1);
+            showLocalPic(commBean.getCommunitySpace1(),pestPhotos[0],2);
+            showLocalPic(commBean.getCommunitySpace2(),pestPhotos[1],3);
         }
 
     }
@@ -363,24 +364,24 @@ public class CardEditFragment extends BaseToolbarFragment {
     @OnClick(R.id.iv_gate_photo_1)
     public void iv_gate_photo_1(){
         index = 0;
-        showAddPhotoDialog(preGate.length>0 && !StringUtils.isEmpty(preGate[0]) || !StringUtils.isEmpty(photo_ids[0]));
+        showAddPhotoDialog(photoCacheBitmap[0]!=null || preGate.length>0 && !StringUtils.isEmpty(preGate[0]) || !StringUtils.isEmpty(photo_ids[0]));
     }
 
     @OnClick(R.id.iv_gate_photo_2)
     public void iv_gate_photo_2(){
         index = 1;
-        showAddPhotoDialog(preGate.length>1 || !StringUtils.isEmpty(photo_ids[1]));
+        showAddPhotoDialog(photoCacheBitmap[1]!=null || preGate.length>1 || !StringUtils.isEmpty(photo_ids[1]));
     }
 
     @OnClick(R.id.iv_pest_photo_1)
     public void iv_pest_photo_1(){
         index = 2;
-        showAddPhotoDialog(prePest.length>0  && !StringUtils.isEmpty(prePest[0]) || !StringUtils.isEmpty(photo_ids[2]));
+        showAddPhotoDialog(photoCacheBitmap[2]!=null || prePest.length>0  && !StringUtils.isEmpty(prePest[0]) || !StringUtils.isEmpty(photo_ids[2]));
     }
     @OnClick(R.id.iv_pest_photo_2)
     public void iv_pest_photo_2(){
         index = 3;
-        showAddPhotoDialog(prePest.length>1 || !StringUtils.isEmpty(photo_ids[3]));
+        showAddPhotoDialog(photoCacheBitmap[3]!=null || prePest.length>1 || !StringUtils.isEmpty(photo_ids[3]));
     }
 
     /**
@@ -424,7 +425,7 @@ public class CardEditFragment extends BaseToolbarFragment {
                             List<Bitmap> imageLocal = new ArrayList<>();
                             boolean[] indexFlag = new boolean[4];
 
-                            if(!StringUtils.isEmpty(photo_ids[0])){
+                            if(!StringUtils.isEmpty(photo_ids[0]) || photoCacheBitmap[0]!=null){
                                 imageLocal.add(photoCacheBitmap[0]);
                                 url.add("");
                                 indexFlag[0] = true;
@@ -440,7 +441,7 @@ public class CardEditFragment extends BaseToolbarFragment {
                             }
 
 
-                            if(!StringUtils.isEmpty(photo_ids[1])){
+                            if(!StringUtils.isEmpty(photo_ids[1]) || photoCacheBitmap[1]!=null){
                                 imageLocal.add(photoCacheBitmap[1]);
                                 url.add("");
                                 indexFlag[1] = true;
@@ -456,7 +457,7 @@ public class CardEditFragment extends BaseToolbarFragment {
                                 }
                             }
 
-                            if(!StringUtils.isEmpty(photo_ids[2])){
+                            if(!StringUtils.isEmpty(photo_ids[2]) || photoCacheBitmap[2]!=null){
                                 imageLocal.add(photoCacheBitmap[2]);
                                 url.add("");
                                 indexFlag[2] = true;
@@ -472,7 +473,7 @@ public class CardEditFragment extends BaseToolbarFragment {
                                 }
                             }
 
-                            if(!StringUtils.isEmpty(photo_ids[3])){
+                            if(!StringUtils.isEmpty(photo_ids[3]) || photoCacheBitmap[3]!=null){
                                 imageLocal.add(photoCacheBitmap[3]);
                                 url.add("");
                                 indexFlag[3] = true;
@@ -650,7 +651,7 @@ public class CardEditFragment extends BaseToolbarFragment {
         insertOrUpdate = commBean==null;
     }
 
-    private void showLocalPic(String picPath,ImageView imageView){
+    private void showLocalPic(String picPath,ImageView imageView,int index){
         Bitmap myBitmap4 = null;
         try {
             byte[] mContent3 = ImageUtils.readStream(new FileInputStream(picPath));
@@ -663,6 +664,7 @@ public class CardEditFragment extends BaseToolbarFragment {
             Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
 //            ImageUtils.cacheBitmap.add(bitmapTemp2);
             imageView.setImageBitmap(bitmapTemp2);
+            photoCacheBitmap[index] = bitmapTemp2;
             myBitmap4.recycle();
         } catch (Exception e) {
             e.printStackTrace();
