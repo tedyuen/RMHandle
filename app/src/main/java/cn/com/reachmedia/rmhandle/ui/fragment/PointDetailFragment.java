@@ -206,6 +206,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         pointWorkBeanDbUtil = PointWorkBeanDbUtil.getIns();
         bean = pointBeanDbUtil.getPointBeanByWPID(apartmentPointUtils.workId, apartmentPointUtils.pointId);
         pointListModel = apartmentPointUtils.pointListModel;
+        ImageUtils.doorPhotoBitmap = null;
     }
 
     /**
@@ -1490,7 +1491,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
             }
         } else {
             System.out.println("==>door_photo_full_id   " + door_photo_full_id + ":" + bean.getCDoorPic());
-            boolean textFlag = !StringUtils.isEmpty(door_photo_full_id) || !StringUtils.isEmpty(bean.getCDoorPic());
+            boolean textFlag = ImageUtils.doorPhotoBitmap!=null || !StringUtils.isEmpty(bean.getCDoorPic());
             new MaterialDialog.Builder(getActivity())
                     .title(R.string.dialog_title_add_photo)
                     .items(textFlag ? R.array.dialog_add_photo_big : R.array.dialog_add_photo)
@@ -1522,7 +1523,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                                 List<String> url = new ArrayList<>();
                                 List<Boolean> imageFlag = new ArrayList<>();
                                 List<Bitmap> imageLocal = new ArrayList<>();
-                                if (!StringUtils.isEmpty(door_photo_full_id)) {
+                                if (ImageUtils.doorPhotoBitmap!=null) {
                                     imageLocal.add(ImageUtils.doorPhotoBitmap);
                                     url.add("");
                                     imageFlag.add(false);
