@@ -14,7 +14,7 @@ public class MyDaoGenerator {
 
 
     public static void main(String args[]) throws Exception {
-        Schema schema = new Schema(1, "cn.com.reachmedia.rmhandle.bean");
+        Schema schema = new Schema(2, "cn.com.reachmedia.rmhandle.bean");
         schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
 
         initPointBean(schema);

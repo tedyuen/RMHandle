@@ -27,6 +27,7 @@ public class RMOpenHelper extends DaoMaster.OpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        System.out.println("===>  oldVersion:"+oldVersion+"\tnewVersion:"+newVersion);
         switch (oldVersion) {
             case 1:
                 //创建新表，注意createTable()是静态方法
@@ -38,6 +39,9 @@ public class RMOpenHelper extends DaoMaster.OpenHelper{
                 // db.execSQL("ALTER TABLE 'moments' ADD 'audio_path' TEXT;");
 
                 // TODO
+                break;
+            case 2:
+                CommDoorPicBeanDao.createTable(db, true);
                 break;
         }
     }
