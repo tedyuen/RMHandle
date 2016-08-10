@@ -110,7 +110,7 @@ dependencies {
     //图片压缩 https://github.com/zetbaitsu/Compressor
 //    compile 'id.zelory:compressor:1.0.2'
     //https://bugly.qq.com/androidfast
-    compile 'com.tencent.bugly:crashreport:latest.release'
+//    compile 'com.tencent.bugly:crashreport:latest.release'
 
 
     compile project(':grantlibrary')
