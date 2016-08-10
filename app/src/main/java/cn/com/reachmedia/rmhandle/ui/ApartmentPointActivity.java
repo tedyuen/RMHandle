@@ -442,14 +442,14 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         for(int i=0;i<gate.length;i++){
             if(i<gatePhotos.length){
                 if(!StringUtils.isEmpty(gate[i])){
-                    Picasso.with(this).load(gate[i]).placeholder(R.drawable.abc).into(gatePhotos[i]);
+                    Picasso.with(this).load(gate[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(gatePhotos[i]);
                 }
             }
         }
         for(int i=0;i<pest.length;i++){
             if(i<pestPhotos.length){
                 if(!StringUtils.isEmpty(pest[i])){
-                    Picasso.with(this).load(pest[i]).placeholder(R.drawable.abc).into(pestPhotos[i]);
+                    Picasso.with(this).load(pest[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(pestPhotos[i]);
                 }
             }
         }

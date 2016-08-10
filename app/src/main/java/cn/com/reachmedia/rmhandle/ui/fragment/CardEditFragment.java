@@ -152,14 +152,14 @@ public class CardEditFragment extends BaseToolbarFragment {
         for(int i=0;i<preGate.length;i++){
             if(i<gatePhotos.length){
                 if(!StringUtils.isEmpty(preGate[i])){
-                    Picasso.with(getContext()).load(preGate[i]).placeholder(R.drawable.abc).into(gatePhotos[i]);
+                    Picasso.with(getContext()).load(preGate[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(gatePhotos[i]);
                 }
             }
         }
         for(int i=0;i<prePest.length;i++){
             if(i<pestPhotos.length){
                 if(!StringUtils.isEmpty(prePest[i])){
-                    Picasso.with(getContext()).load(prePest[i]).placeholder(R.drawable.abc).into(pestPhotos[i]);
+                    Picasso.with(getContext()).load(prePest[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(pestPhotos[i]);
                 }
             }
         }
@@ -309,36 +309,11 @@ public class CardEditFragment extends BaseToolbarFragment {
 
                 break;
             case Constant.KITKAT_LESS://门洞照
-                Bitmap myBitmap3 = null;
-                Uri uri = data.getData();
-//                System.out.println("4.4以下，选择好图片了:  " + uri);
-                try {
-                    byte[] mContent3 = ImageUtils.readStream(resolver.openInputStream(uri));
-                    //将字节数组转换为ImageView可调用的Bitmap对象
-                    int b = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), uri));
-                    if(b!=0){
-                        myBitmap3 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()),b);
-                    }else {
-                        myBitmap3 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
-                    }
-                    //把得到的图片绑定在控件上显示
-                    Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap3);
-                    photo_ids[index] = ImageUtils.getGatePicId(model.getCommunityid(),userId,index);
-                    photo_paths[index] = ImageUtils.saveCompressPicPath(bitmapTemp2,ImageUtils.getPointPicPath(photo_ids[index],photo_path),photo_path);
-                    allPhotos[index].setImageBitmap(bitmapTemp2);
-
-                    photoCacheBitmap[index] = bitmapTemp2;
-                    myBitmap3.recycle();
-                }catch(Exception e){
-                    e.printStackTrace();
-                    photo_ids[index] = null;
-                }
-                break;
             case Constant.KITKAT_ABOVE://门洞照
                 Bitmap myBitmap4 = null;
                 Uri uri3 = data.getData();
                 // 先将这个uri转换为path，然后再转换为uri
-//                System.out.println("4.4以上，选择好图片了");
+                System.out.println("4.4以上，选择好图片了");
                 try {
                     byte[] mContent4 = ImageUtils.readStream(resolver.openInputStream(uri3));
                     //将字节数组转换为ImageView可调用的Bitmap对象
@@ -362,6 +337,40 @@ public class CardEditFragment extends BaseToolbarFragment {
                 }
                 break;
 
+        }
+    }
+
+
+    private void setImageUri(Intent data){
+
+        Uri originalUri2 = null;
+        File file2 = null;
+
+        // 先将这个uri转换为path，然后再转换为uri
+        System.out.println("4.4以上，选择好图片了");
+        try {
+            if (null != data && data.getData() != null) {
+                originalUri2 = data.getData();
+                file2 = ImageUtils.getFileFromMediaUri(getActivity(), originalUri2);
+            }
+            Bitmap photoBmp2 = ImageUtils.getBitmapFormUri(getActivity(), Uri.fromFile(file2));
+            int degree = ImageUtils.getBitmapDegree(file2.getAbsolutePath());
+            /**
+             * 把图片旋转为正的方向
+             */
+            Bitmap newbitmap2 = ImageUtils.rotateBitmapByDegree(photoBmp2, degree);
+
+
+
+            photo_ids[index] = ImageUtils.getGatePicId(model.getCommunityid(),userId,index);
+            photo_paths[index] = ImageUtils.saveCompressPicPath(newbitmap2,ImageUtils.getPointPicPath(photo_ids[index],photo_path),photo_path);
+            allPhotos[index].setImageBitmap(newbitmap2);
+
+            photoCacheBitmap[index] = newbitmap2;
+            photoBmp2.recycle();
+        }catch(Exception e){
+            e.printStackTrace();
+            photo_ids[index] = null;
         }
     }
 

@@ -113,7 +113,7 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
         pager = (HackyViewPager) findViewById(R.id.pager);
         if(imageUrls==null){
             pager.setAdapter(new ImagePagerAdapterLocal(this));
-            pager.setOffscreenPageLimit(3);
+            pager.setOffscreenPageLimit(0);
         }else{
             if(merge){
                 mBitmap = new Bitmap[imageUrls.length];
