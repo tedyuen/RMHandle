@@ -277,97 +277,46 @@ public class CardEditFragment extends BaseToolbarFragment {
         ContentResolver resolver = getActivity().getContentResolver();
         if (resultCode != getActivity().RESULT_OK)
             return;
-
         switch (requestCode) {
             case REQUEST_CODE_GETIMAGE_BYCAMERA://门洞照
-                Bitmap myBitmapDoor = null;
-                try {
-                    super.onActivityResult(requestCode, resultCode, data);
-                    byte[] mContent=ImageUtils.readStream(resolver.openInputStream(origUri[index]));
-                    //图片旋转
-                    int a = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), origUri[index]));
-                    if(a!=0){
-                        myBitmapDoor = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption()),a);
-                    }else{
-                        myBitmapDoor = ImageUtils.getPicFromBytes(mContent, ImageUtils.getBitmapOption());
-                    }
-                    //将字节数组转换为ImageView可调用的Bitmap对象
-
-                    //把得到的图片绑定在控件上显示
-                    Bitmap bitmapTemp = ImageUtils.comp(myBitmapDoor);
-                    photo_ids[index] = ImageUtils.getGatePicId(model.getCommunityid(),userId,index);
-                    photo_paths[index] = ImageUtils.saveCompressPicPath(bitmapTemp,ImageUtils.getPointPicPath(photo_ids[index],photo_path),photo_path);
-                    allPhotos[index].setImageBitmap(bitmapTemp);
-                    photoCacheBitmap[index] = bitmapTemp;
-//                    saveCompressPic(myBitmap);
-                    myBitmapDoor.recycle();
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    photo_ids[index] = null;
-                }
-
+//                try {
+                super.onActivityResult(requestCode, resultCode, data);
+                setImageUri(origUri[index],null);
                 break;
             case Constant.KITKAT_LESS://门洞照
-            case Constant.KITKAT_ABOVE://门洞照
-                Bitmap myBitmap4 = null;
-                Uri uri3 = data.getData();
-                // 先将这个uri转换为path，然后再转换为uri
-                System.out.println("4.4以上，选择好图片了");
-                try {
-                    byte[] mContent4 = ImageUtils.readStream(resolver.openInputStream(uri3));
-                    //将字节数组转换为ImageView可调用的Bitmap对象
-                    int c = ImageUtils.getExifOrientation(ImageUtils.getPath(getActivity(), uri3));
-                    if(c!=0){
-                        myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent4, ImageUtils.getBitmapOption()),c);
-                    }else {
-                        myBitmap4 = ImageUtils.getPicFromBytes(mContent4, ImageUtils.getBitmapOption());
-                    }
-                    //把得到的图片绑定在控件上显示
-                    Bitmap bitmapTemp3 = ImageUtils.comp(myBitmap4);
-                    photo_ids[index] = ImageUtils.getGatePicId(model.getCommunityid(),userId,index);
-                    photo_paths[index] = ImageUtils.saveCompressPicPath(bitmapTemp3,ImageUtils.getPointPicPath(photo_ids[index],photo_path),photo_path);
-                    allPhotos[index].setImageBitmap(bitmapTemp3);
-
-                    photoCacheBitmap[index] = bitmapTemp3;
-                    myBitmap4.recycle();
-                }catch(Exception e){
-                    e.printStackTrace();
-                    photo_ids[index] = null;
-                }
+            case Constant.KITKAT_ABOVE://门洞照       System.out.println("4.4以上，选择好图片了");
+                setImageUri(null,data);
                 break;
 
         }
     }
 
 
-    private void setImageUri(Intent data){
-
-        Uri originalUri2 = null;
-        File file2 = null;
-
+    private void setImageUri(Uri uri,Intent data){
+        Uri originalUri = null;
+        File file = null;
         // 先将这个uri转换为path，然后再转换为uri
-        System.out.println("4.4以上，选择好图片了");
         try {
-            if (null != data && data.getData() != null) {
-                originalUri2 = data.getData();
-                file2 = ImageUtils.getFileFromMediaUri(getActivity(), originalUri2);
+            if(uri!=null){
+                originalUri = uri;
+                file = new File(ImageUtils.getPath(getActivity(), originalUri));
+            }else if (null != data && data.getData() != null) {
+                originalUri = data.getData();
+                file = new File(ImageUtils.getPath(getActivity(), originalUri));
             }
-            Bitmap photoBmp2 = ImageUtils.getBitmapFormUri(getActivity(), Uri.fromFile(file2));
-            int degree = ImageUtils.getBitmapDegree(file2.getAbsolutePath());
+            Bitmap photoBmp = ImageUtils.getBitmapFormUri(getActivity(), Uri.fromFile(file));
+            int degree = ImageUtils.getBitmapDegree(file.getAbsolutePath());
             /**
              * 把图片旋转为正的方向
              */
-            Bitmap newbitmap2 = ImageUtils.rotateBitmapByDegree(photoBmp2, degree);
-
-
+            Bitmap newbitmap = ImageUtils.rotateBitmapByDegree(photoBmp, degree);
 
             photo_ids[index] = ImageUtils.getGatePicId(model.getCommunityid(),userId,index);
-            photo_paths[index] = ImageUtils.saveCompressPicPath(newbitmap2,ImageUtils.getPointPicPath(photo_ids[index],photo_path),photo_path);
-            allPhotos[index].setImageBitmap(newbitmap2);
+            photo_paths[index] = ImageUtils.saveCompressPicPath(newbitmap,ImageUtils.getPointPicPath(photo_ids[index],photo_path),photo_path);
+            allPhotos[index].setImageBitmap(newbitmap);
 
-            photoCacheBitmap[index] = newbitmap2;
-            photoBmp2.recycle();
+            photoCacheBitmap[index] = newbitmap;
+//            photoBmp.recycle();
         }catch(Exception e){
             e.printStackTrace();
             photo_ids[index] = null;
