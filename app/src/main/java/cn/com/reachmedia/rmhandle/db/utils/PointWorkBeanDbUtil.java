@@ -84,9 +84,11 @@ public class PointWorkBeanDbUtil {
                         PointWorkBeanDao.Properties.PointId.eq(pointId),
                         PointWorkBeanDao.Properties.NativeState.eq(preState))
                 .unique();
-        bean.setNativeState(nativeState);
-        bean.setWorkTime(TimeUtils.getNowDate());
-        pointWorkBeanDaoHelper.getDao().update(bean);
+        if(bean!=null){
+            bean.setNativeState(nativeState);
+            bean.setWorkTime(TimeUtils.getNowDate());
+            pointWorkBeanDaoHelper.getDao().update(bean);
+        }
     }
 
     public PointWorkBean getPointWorkBeanByWPID(String workId,String pointId){

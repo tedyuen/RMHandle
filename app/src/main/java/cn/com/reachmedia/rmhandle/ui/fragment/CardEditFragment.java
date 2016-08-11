@@ -279,7 +279,6 @@ public class CardEditFragment extends BaseToolbarFragment {
             return;
         switch (requestCode) {
             case REQUEST_CODE_GETIMAGE_BYCAMERA://门洞照
-//                try {
                 super.onActivityResult(requestCode, resultCode, data);
                 setImageUri(origUri[index],null);
                 break;
