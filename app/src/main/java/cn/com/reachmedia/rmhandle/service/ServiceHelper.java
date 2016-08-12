@@ -49,6 +49,10 @@ public class ServiceHelper {
         context.startService(new Intent(context,PointPicWOwifiService.class));
     }
 
+    public void startRemoveDoneFileService(Context context){
+        context.startService(new Intent(context,RemovePhotoService.class));
+    }
+
 
     public void startCommDoorPicService(Context context,boolean wifiFlag){
         if(wifiFlag){//with out wifi

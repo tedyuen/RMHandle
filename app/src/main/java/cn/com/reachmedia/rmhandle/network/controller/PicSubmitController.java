@@ -83,10 +83,11 @@ public class PicSubmitController extends BaseHttpController<PicSubmitModel> {
             tfile4 = null;
         }
         TypedString jsons = new TypedString(picSubmitParam.toJson());
-        TypedString tfile1Id = new TypedString(file1Id);
-        TypedString tfile2Id = new TypedString(file2Id);
-        TypedString tfile3Id = new TypedString(file3Id);
-        TypedString tfile4Id = new TypedString(file4Id);
+
+        TypedString tfile1Id = new TypedString(file1Id==null?"":file1Id);
+        TypedString tfile2Id = new TypedString(file2Id==null?"":file2Id);
+        TypedString tfile3Id = new TypedString(file3Id==null?"":file3Id);
+        TypedString tfile4Id = new TypedString(file4Id==null?"":file4Id);
 
         LogUtils.d(TAG, picSubmitParam.toJson());
         App.getAppApiService().picSubmit(jsons,tfile1,tfile3,tfile2,tfile4,

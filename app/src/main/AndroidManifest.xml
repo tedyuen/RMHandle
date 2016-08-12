@@ -159,6 +159,11 @@
         <service android:name="cn.com.reachmedia.rmhandle.service.DoorPicService">
         </service>
 
+        <service android:name="cn.com.reachmedia.rmhandle.service.RemovePhotoService">
+        </service>
+
+
+
 
 
 
