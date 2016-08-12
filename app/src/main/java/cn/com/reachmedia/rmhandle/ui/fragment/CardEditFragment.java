@@ -309,9 +309,10 @@ public class CardEditFragment extends BaseToolbarFragment {
              * 把图片旋转为正的方向
              */
             Bitmap newbitmap = ImageUtils.rotateBitmapByDegree(photoBmp, degree);
-
-            photo_ids[index] = ImageUtils.getGatePicId(model.getCommunityid(),userId,index);
-            photo_paths[index] = ImageUtils.saveCompressPicPath(newbitmap,ImageUtils.getPointPicPath(photo_ids[index],photo_path),photo_path);
+            if(uri==null) {
+                photo_ids[index] = ImageUtils.getGatePicId(model.getCommunityid(), userId, index);
+                photo_paths[index] = ImageUtils.saveCompressPicPath(newbitmap, ImageUtils.getPointPicPath(photo_ids[index], photo_path), photo_path);
+            }
             allPhotos[index].setImageBitmap(newbitmap);
 
             photoCacheBitmap[index] = newbitmap;

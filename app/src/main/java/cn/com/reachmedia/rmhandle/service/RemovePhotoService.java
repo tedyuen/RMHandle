@@ -66,6 +66,8 @@ public class RemovePhotoService extends Service {
                 for(int i=0;i<filePaths.length;i++){
                     removeFile(filePaths[i]);
                 }
+
+                removeFile(bean.getDoorpic());
             }
         }
 

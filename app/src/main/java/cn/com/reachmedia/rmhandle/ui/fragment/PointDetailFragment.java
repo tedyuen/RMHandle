@@ -1434,10 +1434,11 @@ public class PointDetailFragment extends BaseToolbarFragment {
              * 把图片旋转为正的方向
              */
             Bitmap newbitmap = ImageUtils.rotateBitmapByDegree(photoBmp, degree);
-
-            photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, String.valueOf(photoName), bean.getUserId());
-            photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(newbitmap, ImageUtils.getPointPicPath(photo_full_id[photoCount], photo_path), photo_path);
-            photoName++;
+            if(uri==null) {
+                photo_full_id[photoCount] = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, String.valueOf(photoName), bean.getUserId());
+                photo_full_path[photoCount] = ImageUtils.saveCompressPicPath(newbitmap, ImageUtils.getPointPicPath(photo_full_id[photoCount], photo_path), photo_path);
+                photoName++;
+            }
             ImageUtils.photoBitmap.add(newbitmap);
             addPhotos[photoCount].setImageBitmap(ImageUtils.photoBitmap.get(ImageUtils.photoBitmap.size() - 1));
             initNextPhoto();
@@ -1464,9 +1465,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
              * 把图片旋转为正的方向
              */
             Bitmap newbitmap = ImageUtils.rotateBitmapByDegree(photoBmp, degree);
-
-            door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, "door", bean.getUserId());
-            door_photo_full_path = ImageUtils.saveCompressPicPath(newbitmap, ImageUtils.getPointPicPath(door_photo_full_id, photo_path), photo_path);
+            if(uri==null) {
+                door_photo_full_id = ImageUtils.getPointPicId(apartmentPointUtils.workId, apartmentPointUtils.pointId, "door", bean.getUserId());
+                door_photo_full_path = ImageUtils.saveCompressPicPath(newbitmap, ImageUtils.getPointPicPath(door_photo_full_id, photo_path), photo_path);
+            }
             doorFlag = true;
             ImageUtils.doorPhotoBitmap = newbitmap;
             ivCommPhoto2.setImageBitmap(ImageUtils.doorPhotoBitmap);
