@@ -73,6 +73,16 @@ public class PointWorkBeanDbUtil {
         return list;
     }
 
+    public List<PointWorkBean> getUploadUn(String userId,String nativeState){
+        List<PointWorkBean> list = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.UserId.eq(userId),
+                        PointWorkBeanDao.Properties.NativeState.notEq(nativeState))
+                .list();
+        return list;
+    }
+
+
+
     public void delete(PointWorkBean bean){
         pointWorkBeanDaoHelper.getDao().delete(bean);
     }

@@ -407,6 +407,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
             ServiceHelper.getIns().startCommDoorPicService(this,false);
             ServiceHelper.getIns().startRemoveDoneFileService(this);
         }
+
     }
 
 

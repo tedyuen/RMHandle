@@ -2,10 +2,12 @@ package cn.com.reachmedia.rmhandle.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
@@ -13,6 +15,7 @@ import cn.com.reachmedia.rmhandle.bean.CommDoorPicBean;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.CommPoorPicDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
+import cn.com.reachmedia.rmhandle.utils.FileUtils;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 
@@ -43,20 +46,53 @@ public class RemovePhotoService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("start DoorPicService!");
+        System.out.println("start RemovePhotoService!");
 
-        List<CommDoorPicBean> list = commPoorPicDbUtil.getUpload("1");
+
+        String dirCard = Environment
+                .getExternalStorageDirectory().getAbsolutePath()
+                + File.separator
+                + "RMHandle/card/";
+        List<String> cardFile = FileUtils.getAllFileNameList(dirCard);
+        System.out.println("==========");
+        String dirPoint = Environment
+                .getExternalStorageDirectory().getAbsolutePath()
+                + File.separator
+                + "RMHandle/point/";
+        List<String> pointFile = FileUtils.getAllFileNameList(dirPoint);
+
+        List<String> needDeletePoint = new ArrayList<>();
+        List<String> needDeleteCard = new ArrayList<>();
+
+        List<CommDoorPicBean> list = commPoorPicDbUtil.getUpload("0");
         for(CommDoorPicBean bean:list){
             if(bean!=null){
-                removeFile(bean.getCommunityFile1());
-                removeFile(bean.getCommunityFile2());
-                removeFile(bean.getCommunitySpace1());
-                removeFile(bean.getCommunitySpace2());
+//                removeFile(bean.getCommunityFile1());
+//                removeFile(bean.getCommunityFile2());
+//                removeFile(bean.getCommunitySpace1());
+//                removeFile(bean.getCommunitySpace2());
+                needDeleteCard.add(bean.getCommunityFile1());
+                needDeleteCard.add(bean.getCommunityFile2());
+                needDeleteCard.add(bean.getCommunitySpace1());
+                needDeleteCard.add(bean.getCommunitySpace2());
+            }
+        }
+        for (String path:cardFile){
+            boolean flag = true;
+            for(String targetPath:needDeleteCard){
+                if(path.equals(targetPath)){
+                    System.out.println("-----card 未提交匹配图片--: "+path);
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                removeFile(path);
             }
         }
 
         String userId = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID);
-        List<PointWorkBean> list2 = pointWorkBeanDbUtil.getUpload(userId,"2");
+        List<PointWorkBean> list2 = pointWorkBeanDbUtil.getUploadUn(userId,"2");
         for(PointWorkBean bean:list2){
             if(bean!=null){
                 String[] filePaths = new String[0];
@@ -64,10 +100,26 @@ public class RemovePhotoService extends Service {
                     filePaths = bean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
                 }
                 for(int i=0;i<filePaths.length;i++){
-                    removeFile(filePaths[i]);
+//                    removeFile(filePaths[i]);
+                    needDeletePoint.add(filePaths[i]);
                 }
 
-                removeFile(bean.getDoorpic());
+//                removeFile(bean.getDoorpic());
+                needDeletePoint.add(bean.getDoorpic());
+            }
+        }
+
+        for (String path:pointFile){
+            boolean flag = true;
+            for(String targetPath:needDeletePoint){
+                if(path.equals(targetPath)){
+                    System.out.println("-----point 未提交匹配图片--: "+path);
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                removeFile(path);
             }
         }
 
