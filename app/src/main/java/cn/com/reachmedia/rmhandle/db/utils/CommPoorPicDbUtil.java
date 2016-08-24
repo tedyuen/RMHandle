@@ -61,6 +61,9 @@ public class CommPoorPicDbUtil {
     }
 
     public void changeNativeState(String communityId){
+        if(communityId==null){
+            return;
+        }
         CommDoorPicBean bean = commDoorPicDaoHelper.getDao().queryBuilder()
                 .where(CommDoorPicBeanDao.Properties.CommunityId.eq(communityId)
                         ,CommDoorPicBeanDao.Properties.NativeState.eq("0"))
