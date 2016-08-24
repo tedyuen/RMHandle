@@ -48,6 +48,8 @@ public class PointListModel extends BaseModel implements Parcelable {
     private String telephone;
     private String cGatePic;
     private String cPestPic;
+    private String cGatePics;
+    private String cPestPics;
     /**
      * workId : 22
      * cid : 121
@@ -97,7 +99,9 @@ public class PointListModel extends BaseModel implements Parcelable {
         dest.writeInt(errorNumber);
         dest.writeString(telephone);
         dest.writeString(cGatePic);
+        dest.writeString(cGatePics);
         dest.writeString(cPestPic);
+        dest.writeString(cPestPics);
         dest.writeList(newList);
         dest.writeList(comList);
     }
@@ -114,7 +118,9 @@ public class PointListModel extends BaseModel implements Parcelable {
         errorNumber = in.readInt();
         telephone = in.readString();
         cGatePic = in.readString();
+        cGatePics = in.readString();
         cPestPic = in.readString();
+        cPestPics = in.readString();
         newList = in.readArrayList(NewListBean.class.getClassLoader());
         comList = in.readArrayList(ComListBean.class.getClassLoader());
     }
@@ -225,6 +231,22 @@ public class PointListModel extends BaseModel implements Parcelable {
         this.comList = comList;
     }
 
+
+    public String getCGatePics() {
+        return cGatePics;
+    }
+
+    public void setCGatePics(String cGatePics) {
+        this.cGatePics = cGatePics;
+    }
+
+    public String getCPestPics() {
+        return cPestPics;
+    }
+
+    public void setCPestPics(String cPestPics) {
+        this.cPestPics = cPestPics;
+    }
 
     public static class NewListBean {
         private String workId;

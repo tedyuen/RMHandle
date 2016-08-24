@@ -478,6 +478,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
 //            }
 //        }
         if (!StringUtils.isEmpty(bean.getCDoorPic())) {
+//            System.out.println("== door pic ==> "+bean.getCDoorPic()+":"+bean.getCDoorPic().replace("t_","s_"));
             Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.mipmap.picture_add_icon).resize(300,261).centerCrop().into(ivCommPhoto2);
         }
         mergeLocalPhoto();
@@ -1406,7 +1407,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 List<Boolean> imageFlag = new ArrayList<>();
                 List<Bitmap> imageLocal = new ArrayList<>();
                 imageLocal.add(null);
-                url.add(bean.getCDoorPic());
+                url.add(bean.getCDoorPic().replace("t_","s_"));
                 imageFlag.add(true);
                 ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal, 0);
             } else {
@@ -1454,7 +1455,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                                 } else {
                                     if (!StringUtils.isEmpty(bean.getCDoorPic())) {
                                         imageLocal.add(null);
-                                        url.add(bean.getCDoorPic());
+                                        url.add(bean.getCDoorPic().replace("t_","s_"));
                                         imageFlag.add(true);
                                     }
                                 }

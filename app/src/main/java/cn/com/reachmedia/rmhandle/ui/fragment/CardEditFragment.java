@@ -139,6 +139,13 @@ public class CardEditFragment extends BaseToolbarFragment {
             initBean();
 
             initPhoto();
+            if(model.getCGatePics()!=null && model.getCPestPics()!=null){
+//                System.out.println("s==> "+model.getCGatePics()+":"+model.getCPestPics());
+                setCardPhoto(model.getCGatePics(),model.getCPestPics());
+            }else{
+//                System.out.println("b==> "+model.getCGatePic()+":"+model.getCPestPic());
+                setCardPhoto(model.getCGatePic(),model.getCPestPic());
+            }
             setCardPhoto(model.getCGatePic(),model.getCPestPic());
 
         }

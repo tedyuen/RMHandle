@@ -419,7 +419,13 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 
                     tv_carddesc.setText("密码："+data.getDoordesc());
                     tv_doordesc.setText("门卡备注："+data.getCarddesc());
-                    setCardPhoto(data.getCGatePic(),data.getCPestPic(),commBean);
+                    if(data.getCGatePics()!=null && data.getCPestPics()!=null){
+//                        System.out.println("s==> "+data.getCGatePics()+":"+data.getCPestPics());
+                        setCardPhoto(data.getCGatePics(),data.getCPestPics(),commBean);
+                    }else{
+//                        System.out.println("b==> "+data.getCGatePic()+":"+data.getCPestPic());
+                        setCardPhoto(data.getCGatePic(),data.getCPestPic(),commBean);
+                    }
                     ApartmentPointUtils.getIns().pointListModel = data;
                     List<PointListModel.NewListBean> newList = data.getNewList();
                     PointBeanDbUtil util = PointBeanDbUtil.getIns();
