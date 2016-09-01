@@ -485,6 +485,8 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
             myBitmap4.recycle();
         } catch (Exception e) {
             e.printStackTrace();
+        } catch (Error error){
+            error.printStackTrace();
         }
     }
 

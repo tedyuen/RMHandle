@@ -39,10 +39,70 @@ public class DoorPicWOwifiService extends Service {
         commPoorPicDbUtil = CommPoorPicDbUtil.getIns();
     }
 
+    String userId;
+
+    private void uploadSingle() {
+        CommDoorPicBean bean = commPoorPicDbUtil.getSingleCommDoorPicBean("0");
+        if(bean!=null){
+            PicSubmitController picSubmitController = new PicSubmitController(new UiDisplayListener<PicSubmitModel>() {
+                @Override
+                public void onSuccessDisplay(PicSubmitModel data) {
+                    if (data != null) {
+                        if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
+                            //update native state.
+                            commPoorPicDbUtil.changeNativeState(data.getCommunityId());
+                            uploadSingle();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailDisplay(String errorMsg) {
+
+                }
+            });
+
+            PicSubmitParam picSubmitParam = new PicSubmitParam();
+            picSubmitParam.communityId = bean.getCommunityId();
+            File[] resultFile = new File[4];
+            if(!StringUtils.isEmpty(bean.getCommunityFile1())){
+                resultFile[0] = new File(bean.getCommunityFile1());
+                if(!resultFile[0].exists()){
+                    resultFile[0] = null;
+                }
+            }
+
+            if(!StringUtils.isEmpty(bean.getCommunityFile2())){
+                resultFile[1] = new File(bean.getCommunityFile2());
+                if(!resultFile[1].exists()){
+                    resultFile[1] = null;
+                }
+            }
+            if(!StringUtils.isEmpty(bean.getCommunitySpace1())){
+                resultFile[2] = new File(bean.getCommunitySpace1());
+                if(!resultFile[2].exists()){
+                    resultFile[2] = null;
+                }
+            }
+            if(!StringUtils.isEmpty(bean.getCommunitySpace2())){
+                resultFile[3] = new File(bean.getCommunitySpace2());
+                if(!resultFile[3].exists()){
+                    resultFile[3] = null;
+                }
+            }
+            picSubmitController.picSubmit(picSubmitParam,resultFile[0],resultFile[1],resultFile[2],resultFile[3]
+                    ,bean.getCommunityFileId1()==null?"":bean.getCommunityFileId1(),bean.getCommunityFileId2()==null?"":bean.getCommunityFileId2()
+                    ,bean.getCommunitySpaceId1()==null?"":bean.getCommunitySpaceId1(),bean.getCommunitySpaceId2()==null?"":bean.getCommunitySpaceId2());
+        }
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         System.out.println("start DoorPicService!");
-        String userId = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID);
+        userId = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID);
+        if(userId!=null){
+            uploadSingle();
+        }
 
         List<CommDoorPicBean> list = commPoorPicDbUtil.getUpload("0");
         for(CommDoorPicBean bean:list){

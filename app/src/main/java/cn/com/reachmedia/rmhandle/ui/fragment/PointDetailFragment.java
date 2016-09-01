@@ -952,8 +952,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
                                     myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
                                 }
                                 Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
-                                ImageUtils.cacheBitmap.add(bitmapTemp2);
-                                addPhotos[i].setImageBitmap(bitmapTemp2);
+                                if(bitmapTemp2!=null){
+                                    ImageUtils.cacheBitmap.add(bitmapTemp2);
+                                    addPhotos[i].setImageBitmap(bitmapTemp2);
+                                }
                                 preAddPhotoSize++;
                                 myBitmap4.recycle();
                             } catch (Exception e) {
@@ -982,8 +984,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
                             myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
                         }
                         Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
-                        ImageUtils.cacheLoaclBitmap.add(bitmapTemp2);
-                        addPhotos[preAddPhotoSize].setImageBitmap(bitmapTemp2);
+                        if(bitmapTemp2!=null){
+                            ImageUtils.cacheLoaclBitmap.add(bitmapTemp2);
+                            addPhotos[preAddPhotoSize].setImageBitmap(bitmapTemp2);
+                        }
                         preAddPhotoSize++;
                         myBitmap4.recycle();
                     } catch (Exception e) {
@@ -1297,6 +1301,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
                             initNextPhoto();
                         }catch (Exception e){
                             e.printStackTrace();
+                        }catch (Error error){
+                            error.printStackTrace();
                         }
 
                     }

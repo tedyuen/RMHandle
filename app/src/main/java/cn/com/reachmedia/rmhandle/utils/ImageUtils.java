@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.App;
@@ -290,7 +291,7 @@ public class ImageUtils {
      * @param image
      * @return
      */
-    public static Bitmap comp(Bitmap image) {
+    public static Bitmap comp(Bitmap image) throws Exception{
 //        compressedImage = new Compressor.Builder(App.getIns().getContext())
 //                .setMaxWidth(640)
 //                .setMaxHeight(480)
@@ -319,18 +320,23 @@ public class ImageUtils {
         float hh = 800f;//这里设置高度为800f
         float ww = 480f;//这里设置宽度为480f
         //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;//be=1表示不缩放
+        int be = 8;//be=1表示不缩放
         if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
             be = (int) (newOpts.outWidth / ww);
         } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
             be = (int) (newOpts.outHeight / hh);
         }
         if (be <= 0)
-            be = 1;
+            be = 5;
         newOpts.inSampleSize = be;//设置缩放比例
         //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
+        Bitmap bitmap = null;
+        try{
+            bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
+        }catch (OutOfMemoryError e){
+            e.printStackTrace();
+        }
 //        return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
         return bitmap;//压缩好比例大小后再进行质量压缩
     }
@@ -674,7 +680,7 @@ public class ImageUtils {
         float hh = 800f;//这里设置高度为800f
         float ww = 480f;//这里设置宽度为480f
         //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;//be=1表示不缩放
+        int be = 2;//be=1表示不缩放
         if (originalWidth > originalHeight && originalWidth > ww) {//如果宽度大的话根据宽度固定大小缩放
             be = (int) (originalWidth / ww);
         } else if (originalWidth < originalHeight && originalHeight > hh) {//如果高度高的话根据宽度固定大小缩放

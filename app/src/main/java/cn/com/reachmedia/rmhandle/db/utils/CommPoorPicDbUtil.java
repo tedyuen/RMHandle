@@ -60,6 +60,14 @@ public class CommPoorPicDbUtil {
         return list;
     }
 
+    public CommDoorPicBean getSingleCommDoorPicBean(String nativeState){
+        CommDoorPicBean commDoorPicBean = commDoorPicDaoHelper.getDao().queryBuilder()
+                .where(CommDoorPicBeanDao.Properties.NativeState.eq(nativeState))
+                .limit(1)
+                .unique();
+        return commDoorPicBean;
+    }
+
     public void changeNativeState(String communityId){
         if(communityId==null){
             return;

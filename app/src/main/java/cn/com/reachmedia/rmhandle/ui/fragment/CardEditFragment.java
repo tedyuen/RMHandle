@@ -632,9 +632,11 @@ public class CardEditFragment extends BaseToolbarFragment {
                 myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
             }
             Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
+            if(bitmapTemp2!=null){
+                imageView.setImageBitmap(bitmapTemp2);
+                photoCacheBitmap[index] = bitmapTemp2;
+            }
 //            ImageUtils.cacheBitmap.add(bitmapTemp2);
-            imageView.setImageBitmap(bitmapTemp2);
-            photoCacheBitmap[index] = bitmapTemp2;
             myBitmap4.recycle();
         } catch (Exception e) {
             e.printStackTrace();

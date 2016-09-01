@@ -73,6 +73,15 @@ public class PointWorkBeanDbUtil {
         return list;
     }
 
+    public PointWorkBean getSinglePointWorkBean(String userId,String nativeState){
+        PointWorkBean bean = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.UserId.eq(userId),
+                        PointWorkBeanDao.Properties.NativeState.eq(nativeState))
+                .limit(1)
+                .unique();
+        return bean;
+    }
+
     public List<PointWorkBean> getUploadUn(String userId,String nativeState){
         List<PointWorkBean> list = pointWorkBeanDaoHelper.getDao().queryBuilder()
                 .where(PointWorkBeanDao.Properties.UserId.eq(userId),
