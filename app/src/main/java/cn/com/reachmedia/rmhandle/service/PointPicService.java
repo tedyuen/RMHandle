@@ -19,6 +19,7 @@ import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.UploadPicController;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import de.greenrobot.dao.DaoException;
 
 /**
  * Author:    tedyuen
@@ -53,7 +54,14 @@ public class PointPicService extends Service {
                     if (data != null) {
                         if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
                             System.out.println("workId: "+data.getWorkId()+"\tpointId: "+data.getPoint());
-                            pointWorkBeanDbUtil.changeNativeState(data.getWorkId(),data.getPoint(),"1","2");
+                            try{
+                                pointWorkBeanDbUtil.changeNativeState(data.getWorkId(),data.getPoint(),"1","2");
+
+                            }catch (DaoException e){
+                                e.printStackTrace();
+                                pointWorkBeanDbUtil.changeNativeStateUnunique(data.getWorkId(),data.getPoint(),"1","2");
+
+                            }
                             uploadSingle();
                         }
                     }

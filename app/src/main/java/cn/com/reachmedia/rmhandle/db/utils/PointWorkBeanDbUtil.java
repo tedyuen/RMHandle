@@ -110,6 +110,20 @@ public class PointWorkBeanDbUtil {
         }
     }
 
+    public void changeNativeStateUnunique(String workId,String pointId,String preState,String nativeState){
+        PointWorkBean bean = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.WorkId.eq(workId),
+                        PointWorkBeanDao.Properties.PointId.eq(pointId),
+                        PointWorkBeanDao.Properties.NativeState.eq(preState))
+                .limit(1)
+                .unique();
+        if(bean!=null){
+            bean.setNativeState(nativeState);
+            bean.setWorkTime(TimeUtils.getNowDate());
+            pointWorkBeanDaoHelper.getDao().update(bean);
+        }
+    }
+
     public PointWorkBean getPointWorkBeanByWPID(String workId,String pointId){
         return pointWorkBeanDaoHelper.getDao().queryBuilder()
                 .where(PointWorkBeanDao.Properties.WorkId.eq(workId),
