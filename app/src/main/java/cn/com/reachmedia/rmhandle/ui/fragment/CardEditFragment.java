@@ -176,6 +176,13 @@ public class CardEditFragment extends BaseToolbarFragment {
             showLocalPic(commBean.getCommunityFile2(),gatePhotos[1],1);
             showLocalPic(commBean.getCommunitySpace1(),pestPhotos[0],2);
             showLocalPic(commBean.getCommunitySpace2(),pestPhotos[1],3);
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                }
+//            },200);
+
         }
 
     }
@@ -636,6 +643,7 @@ public class CardEditFragment extends BaseToolbarFragment {
                 imageView.setImageBitmap(bitmapTemp2);
                 photoCacheBitmap[index] = bitmapTemp2;
             }
+
 //            ImageUtils.cacheBitmap.add(bitmapTemp2);
             myBitmap4.recycle();
         } catch (Exception e) {
