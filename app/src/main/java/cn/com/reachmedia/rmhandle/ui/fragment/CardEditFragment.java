@@ -52,6 +52,7 @@ import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.CardSubmitController;
 import cn.com.reachmedia.rmhandle.network.controller.PicSubmitController;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
+import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.ui.CardListActivity;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.ProportionImageView;
@@ -172,10 +173,10 @@ public class CardEditFragment extends BaseToolbarFragment {
         }
 
         if(!insertOrUpdate){//有本地未提交数据
-            showLocalPic(commBean.getCommunityFile1(),gatePhotos[0],0);
-            showLocalPic(commBean.getCommunityFile2(),gatePhotos[1],1);
-            showLocalPic(commBean.getCommunitySpace1(),pestPhotos[0],2);
-            showLocalPic(commBean.getCommunitySpace2(),pestPhotos[1],3);
+            showLocalPic(commBean.getCommunityFile1(),gatePhotos[0],photoCacheBitmap[0]);
+            showLocalPic(commBean.getCommunityFile2(),gatePhotos[1],photoCacheBitmap[1]);
+            showLocalPic(commBean.getCommunitySpace1(),pestPhotos[0],photoCacheBitmap[2]);
+            showLocalPic(commBean.getCommunitySpace2(),pestPhotos[1],photoCacheBitmap[3]);
 //            new Handler().postDelayed(new Runnable() {
 //                @Override
 //                public void run() {
@@ -403,6 +404,7 @@ public class CardEditFragment extends BaseToolbarFragment {
                             boolean[] indexFlag = new boolean[4];
 
                             if(photoCacheBitmap[0]!=null){
+                                System.out.println("cash ==> photoCacheBitmap[0]!=null  "+photoCacheBitmap[0]);
                                 imageLocal.add(photoCacheBitmap[0]);
                                 url.add("");
                                 indexFlag[0] = true;
@@ -419,6 +421,8 @@ public class CardEditFragment extends BaseToolbarFragment {
 
 
                             if(photoCacheBitmap[1]!=null){
+                                System.out.println("cash ==> photoCacheBitmap[1]!=null  "+photoCacheBitmap[1]);
+
                                 imageLocal.add(photoCacheBitmap[1]);
                                 url.add("");
                                 indexFlag[1] = true;
@@ -435,6 +439,8 @@ public class CardEditFragment extends BaseToolbarFragment {
                             }
 
                             if(photoCacheBitmap[2]!=null){
+                                System.out.println("cash ==> photoCacheBitmap[2]!=null  "+photoCacheBitmap[2]);
+
                                 imageLocal.add(photoCacheBitmap[2]);
                                 url.add("");
                                 indexFlag[2] = true;
@@ -451,6 +457,8 @@ public class CardEditFragment extends BaseToolbarFragment {
                             }
 
                             if(photoCacheBitmap[3]!=null){
+                                System.out.println("cash ==> photoCacheBitmap[3]!=null  "+photoCacheBitmap[3]);
+
                                 imageLocal.add(photoCacheBitmap[3]);
                                 url.add("");
                                 indexFlag[3] = true;
@@ -628,27 +636,29 @@ public class CardEditFragment extends BaseToolbarFragment {
         insertOrUpdate = commBean==null;
     }
 
-    private void showLocalPic(String picPath,ImageView imageView,int index){
-        Bitmap myBitmap4 = null;
-        try {
-            byte[] mContent3 = ImageUtils.readStream(new FileInputStream(picPath));
-            int b = ImageUtils.getExifOrientation(picPath);
-            if (b != 0) {
-                myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
-            } else {
-                myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
-            }
-            Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
-            if(bitmapTemp2!=null){
-                imageView.setImageBitmap(bitmapTemp2);
-                photoCacheBitmap[index] = bitmapTemp2;
-            }
-
-//            ImageUtils.cacheBitmap.add(bitmapTemp2);
-            myBitmap4.recycle();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void showLocalPic(String picPath,ImageView imageView,Bitmap cacheBitmap){
+        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,cacheBitmap);
+        task.execute(picPath);
+//        Bitmap myBitmap4 = null;
+//        try {
+//            byte[] mContent3 = ImageUtils.readStream(new FileInputStream(picPath));
+//            int b = ImageUtils.getExifOrientation(picPath);
+//            if (b != 0) {
+//                myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
+//            } else {
+//                myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
+//            }
+//            Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
+//            if(bitmapTemp2!=null){
+//                imageView.setImageBitmap(bitmapTemp2);
+//                photoCacheBitmap[index] = bitmapTemp2;
+//            }
+//
+////            ImageUtils.cacheBitmap.add(bitmapTemp2);
+//            myBitmap4.recycle();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     public CommDoorPicBean getCommBean(){
