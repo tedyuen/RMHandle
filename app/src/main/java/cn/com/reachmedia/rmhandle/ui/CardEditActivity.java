@@ -1,7 +1,10 @@
 package cn.com.reachmedia.rmhandle.ui;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import cn.com.reachmedia.rmhandle.service.ForegroundService;
 import cn.com.reachmedia.rmhandle.ui.base.BaseAbstractActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.CardEditFragment;
 
@@ -18,8 +21,27 @@ import cn.com.reachmedia.rmhandle.ui.fragment.CardEditFragment;
  */
 public class CardEditActivity extends BaseAbstractActionBarActivity {
 
+    private Intent serviceIntent;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        serviceIntent = new Intent(this, ForegroundService.class);
+        startService(serviceIntent);
+        System.out.println("===>start service ForegroundService");
+    }
+
     @Override
     public Fragment getFragment() {
         return new CardEditFragment().newInstance();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(serviceIntent!=null){
+            stopService(serviceIntent);
+            System.out.println("===>stop service ForegroundService");
+        }
     }
 }

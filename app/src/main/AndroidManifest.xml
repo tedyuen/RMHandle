@@ -161,12 +161,10 @@
 
         <service android:name="cn.com.reachmedia.rmhandle.service.RemovePhotoService">
         </service>
-
-
-
-
-
-
+        <service
+            android:name="cn.com.reachmedia.rmhandle.service.ForegroundService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <service android:name="cn.com.reachmedia.rmhandle.service.LocationService">
         </service>
