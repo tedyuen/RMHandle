@@ -28,6 +28,8 @@ import java.io.File;
 import java.util.List;
 
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -63,6 +65,7 @@ public class ImageMergePagerActivity extends Activity implements ViewPager.OnPag
     private int SelectImage; // 选中的图片
 
     public static List<Bitmap> imageLocal;
+    public static List<String> imagePaths;
 
     // 拍照保存的绝对路径
     private final static String path = Environment
@@ -98,7 +101,7 @@ public class ImageMergePagerActivity extends Activity implements ViewPager.OnPag
         pager = (HackyViewPager) findViewById(R.id.pager);
 
 
-        pager.setAdapter(new ImagePagerAdapterLocalMerge(this,imageUrls,imageMergeFlag,imageLocal));
+        pager.setAdapter(new ImagePagerAdapterLocalMerge(this,imageUrls,imageMergeFlag,imageLocal,imagePaths));
 
 
         pager.setCurrentItem(pagerPosition);
@@ -140,12 +143,14 @@ public class ImageMergePagerActivity extends Activity implements ViewPager.OnPag
         private String[] images;
         boolean[] imageMergeFlag;//true 网络 false 本地
         List<Bitmap> imageLocal;
+        List<String> imagePaths;
 
-        ImagePagerAdapterLocalMerge(Context context,String[] images,boolean[] imageMergeFlag,List<Bitmap> imageLocal) {
+        ImagePagerAdapterLocalMerge(Context context,String[] images,boolean[] imageMergeFlag,List<Bitmap> imageLocal,List<String> imagePaths) {
             this.mContext = context;
             this.images = images;
             this.imageMergeFlag = imageMergeFlag;
             this.imageLocal = imageLocal;
+            this.imagePaths = imagePaths;
             inflater = getLayoutInflater();
             resolver = context.getContentResolver();
         }
@@ -213,7 +218,12 @@ public class ImageMergePagerActivity extends Activity implements ViewPager.OnPag
                             }
                         });
             }else{
-                imageView.setImageBitmap(imageLocal.get(position));
+                if(imagePaths!=null && !StringUtils.isEmpty(imagePaths.get(position))){
+                    LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,false);
+                    task.execute(imagePaths.get(position));
+                }else{
+                    imageView.setImageBitmap(imageLocal.get(position));
+                }
             }
 
 

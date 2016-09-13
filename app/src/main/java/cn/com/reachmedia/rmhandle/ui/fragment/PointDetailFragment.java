@@ -1415,7 +1415,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 imageLocal.add(null);
                 url.add(bean.getCDoorPic().replace("t_","s_"));
                 imageFlag.add(true);
-                ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal, 0);
+                ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal,null, 0);
             } else {
                 ToastHelper.showInfo(getActivity(), "暂无图片,上传图片请点击修改进行操作。");
             }
@@ -1466,7 +1466,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                                     }
                                 }
 
-                                ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal, 0);
+                                ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal,null, 0);
 
                             }
                         }

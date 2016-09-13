@@ -12,19 +12,18 @@ import cn.com.reachmedia.rmhandle.utils.StringUtils;
 /**
  * Created by tedyuen on 16-9-13.
  */
-public class LocalImageAsyncTask extends AsyncTask<String,Integer,Bitmap[]> {
+public class LocalImageAsyncTask extends AsyncTask<String,Integer,Bitmap> {
 
     private ImageView imageView;
-    private Bitmap bitmap;
+    private boolean compFlag;//true:需要压缩 false:不需要压缩
 
-    public LocalImageAsyncTask(ImageView imageView,Bitmap bitmap) {
+    public LocalImageAsyncTask(ImageView imageView,boolean compFlag) {
         this.imageView = imageView;
-        this.bitmap = bitmap;
+        this.compFlag = compFlag;
     }
 
     @Override
-    protected Bitmap[] doInBackground(String... picPath) {
-        Bitmap[] result = new Bitmap[2];
+    protected Bitmap doInBackground(String... picPath) {
         System.out.println("===>  start task:"+picPath[0]);
         if(!StringUtils.isEmpty(picPath[0])){
             try {
@@ -36,29 +35,26 @@ public class LocalImageAsyncTask extends AsyncTask<String,Integer,Bitmap[]> {
                 } else {
                     myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
                 }
-                Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
-                result[0] = bitmapTemp2;
-                result[1] = myBitmap4;
+                if(compFlag){
+                    Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
+                    myBitmap4.recycle();
+                    return bitmapTemp2;
+                }else{
+                    return myBitmap4;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
-                return result;
+                return null;
             }
         }
-        return result;
+        return null;
     }
 
 
     @Override
-    protected void onPostExecute(Bitmap[] bitmaps) {
-        if(bitmaps[0]!=null){
-            imageView.setImageBitmap(bitmaps[0]);
-            System.out.println("===>  task has bitmap 11:");
-
-        }
-        if(bitmaps[1]!=null){
-            bitmap = bitmaps[1];
-            System.out.println("===>  task has bitmap 22:");
-
+    protected void onPostExecute(Bitmap bitmap) {
+        if(bitmap!=null){
+            imageView.setImageBitmap(bitmap);
         }
     }
 }

@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -399,30 +400,42 @@ public class CardEditFragment extends BaseToolbarFragment {
                         }
                         else if (which ==2){
                             List<String> url = new ArrayList<>();
+                            List<String> imagePaths = new ArrayList<>();
                             List<Boolean> imageFlag = new ArrayList<>();
                             List<Bitmap> imageLocal = new ArrayList<>();
+
                             boolean[] indexFlag = new boolean[4];
 
-                            if(photoCacheBitmap[0]!=null){
-                                System.out.println("cash ==> photoCacheBitmap[0]!=null  "+photoCacheBitmap[0]);
+                            if(!insertOrUpdate && !StringUtils.isEmpty(commBean.getCommunityFile1())){
+                                imageLocal.add(null);
+                                url.add("");
+                                indexFlag[0] = true;
+                                imageFlag.add(false);
+                                imagePaths.add(commBean.getCommunityFile1());
+                            }else if(photoCacheBitmap[0]!=null){
                                 imageLocal.add(photoCacheBitmap[0]);
                                 url.add("");
                                 indexFlag[0] = true;
                                 imageFlag.add(false);
+                                imagePaths.add(null);
                             }else{
                                 if(preGate.length>0 && !StringUtils.isEmpty(preGate[0])){
                                     imageLocal.add(null);
                                     url.add(preGate[0]);
                                     indexFlag[0] = true;
                                     imageFlag.add(true);
-
+                                    imagePaths.add(null);
                                 }
                             }
 
 
-                            if(photoCacheBitmap[1]!=null){
-                                System.out.println("cash ==> photoCacheBitmap[1]!=null  "+photoCacheBitmap[1]);
-
+                            if(!insertOrUpdate && !StringUtils.isEmpty(commBean.getCommunityFile2())){
+                                imageLocal.add(null);
+                                url.add("");
+                                indexFlag[0] = true;
+                                imageFlag.add(false);
+                                imagePaths.add(commBean.getCommunityFile2());
+                            }else if(photoCacheBitmap[1]!=null){
                                 imageLocal.add(photoCacheBitmap[1]);
                                 url.add("");
                                 indexFlag[1] = true;
@@ -438,9 +451,13 @@ public class CardEditFragment extends BaseToolbarFragment {
                                 }
                             }
 
-                            if(photoCacheBitmap[2]!=null){
-                                System.out.println("cash ==> photoCacheBitmap[2]!=null  "+photoCacheBitmap[2]);
-
+                            if(!insertOrUpdate && !StringUtils.isEmpty(commBean.getCommunitySpace1())){
+                                imageLocal.add(null);
+                                url.add("");
+                                indexFlag[0] = true;
+                                imageFlag.add(false);
+                                imagePaths.add(commBean.getCommunitySpace1());
+                            }else if(photoCacheBitmap[2]!=null){
                                 imageLocal.add(photoCacheBitmap[2]);
                                 url.add("");
                                 indexFlag[2] = true;
@@ -456,9 +473,13 @@ public class CardEditFragment extends BaseToolbarFragment {
                                 }
                             }
 
-                            if(photoCacheBitmap[3]!=null){
-                                System.out.println("cash ==> photoCacheBitmap[3]!=null  "+photoCacheBitmap[3]);
-
+                            if(!insertOrUpdate && !StringUtils.isEmpty(commBean.getCommunitySpace2())){
+                                imageLocal.add(null);
+                                url.add("");
+                                indexFlag[0] = true;
+                                imageFlag.add(false);
+                                imagePaths.add(commBean.getCommunitySpace2());
+                            }else if(photoCacheBitmap[3]!=null){
                                 imageLocal.add(photoCacheBitmap[3]);
                                 url.add("");
                                 indexFlag[3] = true;
@@ -482,7 +503,7 @@ public class CardEditFragment extends BaseToolbarFragment {
                             }
 
 
-                            ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal,tempIndex);
+                            ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal,imagePaths,tempIndex);
 
                         }
                     }
@@ -637,8 +658,9 @@ public class CardEditFragment extends BaseToolbarFragment {
     }
 
     private void showLocalPic(String picPath,ImageView imageView,Bitmap cacheBitmap){
-        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,cacheBitmap);
+        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,true);
         task.execute(picPath);
+
 //        Bitmap myBitmap4 = null;
 //        try {
 //            byte[] mContent3 = ImageUtils.readStream(new FileInputStream(picPath));
@@ -648,14 +670,9 @@ public class CardEditFragment extends BaseToolbarFragment {
 //            } else {
 //                myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
 //            }
-//            Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
-//            if(bitmapTemp2!=null){
-//                imageView.setImageBitmap(bitmapTemp2);
-//                photoCacheBitmap[index] = bitmapTemp2;
-//            }
 //
-////            ImageUtils.cacheBitmap.add(bitmapTemp2);
-//            myBitmap4.recycle();
+//            cacheBitmap = myBitmap4;
+//
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }

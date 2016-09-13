@@ -67,7 +67,7 @@ public class ViewHelper {
     }
 
 
-    public static void getNewImagePager(Context context, List<String> urlList, List<Boolean> imageFlag, List<Bitmap> imageLocal,int index){
+    public static void getNewImagePager(Context context, List<String> urlList, List<Boolean> imageFlag, List<Bitmap> imageLocal,List<String> imagePaths,int index){
         Intent intent = new Intent();
         intent.setClass(context.getApplicationContext(),ImageMergePagerActivity.class);
         String[] temp = new String[urlList.size()];
@@ -84,10 +84,9 @@ public class ViewHelper {
         intent.putExtra("image_index", index);
 
         ImageMergePagerActivity.imageLocal = imageLocal;
+        ImageMergePagerActivity.imagePaths = imagePaths;
 
         context.startActivity(intent);
-
-
     }
 
     /**
