@@ -15,9 +15,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.ui.PointDetailActivity;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
+import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 
 /**
  * Author:    tedyuen
@@ -91,8 +93,11 @@ public class ApartmentPointTabFragmentAdapter extends ApartmentPointTabBaseAdapt
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    System.out.println("====workid: 1  "+data.getPointId()+":"+data.getWorkId());
                     ApartmentPointUtils.getIns().pointId = data.getPointId();
                     ApartmentPointUtils.getIns().workId = data.getWorkId();
+                    SharedPreferencesHelper.getInstance().putString(AppSpContact.SP_KEY_WORK_ID,data.getWorkId());
+                    SharedPreferencesHelper.getInstance().putString(AppSpContact.SP_KEY_POINT_ID,data.getPointId());
                     mContext.startActivity(new Intent(mContext, PointDetailActivity.class));
                 }
             });

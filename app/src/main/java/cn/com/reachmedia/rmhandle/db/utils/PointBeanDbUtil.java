@@ -181,11 +181,18 @@ public class PointBeanDbUtil {
     }
 
     public PointBean getPointBeanByWPID(String workId,String pointId){
-        return pointBeanDaoHelper.getDao().queryBuilder()
-                .where(PointBeanDao.Properties.WorkId.eq(workId),
-                        PointBeanDao.Properties.PointId.eq(pointId),
-                        PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
-                .unique();
+//        try{
+        System.out.println("===>  "+workId+":"+pointId+":"+SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID));
+            return pointBeanDaoHelper.getDao().queryBuilder()
+                    .where(PointBeanDao.Properties.WorkId.eq(workId),
+                            PointBeanDao.Properties.PointId.eq(pointId),
+                            PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                    .limit(1)
+                    .unique();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return null;
+//        }
     }
 
 

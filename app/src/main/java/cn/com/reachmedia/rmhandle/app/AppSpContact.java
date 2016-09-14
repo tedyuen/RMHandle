@@ -54,5 +54,7 @@ public class AppSpContact {
 
     public static final String SP_KEY_CHECK_UPDATE_TIME = "check_update_time";
 
+    public static final String SP_KEY_WORK_ID = "workid";
+    public static final String SP_KEY_POINT_ID = "pointid";
 
 }
