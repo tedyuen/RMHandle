@@ -658,8 +658,9 @@ public class CardEditFragment extends BaseToolbarFragment {
     }
 
     private void showLocalPic(String picPath,ImageView imageView,Bitmap cacheBitmap){
-        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,true);
-        task.execute(picPath);
+//        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,true);
+//        task.execute(picPath);
+        Picasso.with(getContext()).load(new File(picPath)).resize(300,261).centerCrop().into(imageView);
 
 //        Bitmap myBitmap4 = null;
 //        try {

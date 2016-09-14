@@ -23,6 +23,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
@@ -151,6 +152,7 @@ public class ImageMergePagerActivity extends Activity implements ViewPager.OnPag
             this.imageMergeFlag = imageMergeFlag;
             this.imageLocal = imageLocal;
             this.imagePaths = imagePaths;
+            System.out.println("path=====3==> "+imagePaths);
             inflater = getLayoutInflater();
             resolver = context.getContentResolver();
         }
@@ -218,9 +220,13 @@ public class ImageMergePagerActivity extends Activity implements ViewPager.OnPag
                             }
                         });
             }else{
+                System.out.println("path=====4==> "+imagePaths);
+
                 if(imagePaths!=null && !StringUtils.isEmpty(imagePaths.get(position))){
-                    LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,false);
-                    task.execute(imagePaths.get(position));
+//                    LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,false);
+//                    task.execute(imagePaths.get(position));
+                    Picasso.with(mContext).load(new File(imagePaths.get(position))).into(imageView);
+
                 }else{
                     imageView.setImageBitmap(imageLocal.get(position));
                 }

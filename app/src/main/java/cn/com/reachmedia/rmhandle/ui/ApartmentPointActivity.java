@@ -31,6 +31,7 @@ import com.google.gson.Gson;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -471,8 +472,9 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     }
 
     private void showLocalPic(String picPath,ImageView imageView){
-        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,true);
-        task.execute(picPath);
+//        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,true);
+//        task.execute(picPath);
+        Picasso.with(this).load(new File(picPath)).resize(300,261).centerCrop().into(imageView);
 
 //        Bitmap myBitmap4 = null;
 //        try {
