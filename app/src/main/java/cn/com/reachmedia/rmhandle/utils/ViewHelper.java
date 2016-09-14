@@ -9,6 +9,8 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
+import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllPagerActivity;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageMergePagerActivity;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImagePagerActivity;
 
@@ -66,6 +68,16 @@ public class ViewHelper {
         context.startActivity(intent);
     }
 
+
+    public static void getAllImagePager(Context context, List<ImageAllBean> imageDatas,int index){
+        Intent intent = new Intent();
+        intent.setClass(context.getApplicationContext(), ImageAllPagerActivity.class);
+        intent.putExtra("image_index", index);
+
+        ImageAllPagerActivity.imageData = imageDatas;
+
+        context.startActivity(intent);
+    }
 
     public static void getNewImagePager(Context context, List<String> urlList, List<Boolean> imageFlag, List<Bitmap> imageLocal,List<String> imagePaths,int index){
         Intent intent = new Intent();

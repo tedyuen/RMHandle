@@ -57,6 +57,7 @@ import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.ui.CardListActivity;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.ProportionImageView;
+import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 import cn.com.reachmedia.rmhandle.utils.CropImageUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
@@ -174,10 +175,10 @@ public class CardEditFragment extends BaseToolbarFragment {
         }
 
         if(!insertOrUpdate){//有本地未提交数据
-            showLocalPic(commBean.getCommunityFile1(),gatePhotos[0],photoCacheBitmap[0]);
-            showLocalPic(commBean.getCommunityFile2(),gatePhotos[1],photoCacheBitmap[1]);
-            showLocalPic(commBean.getCommunitySpace1(),pestPhotos[0],photoCacheBitmap[2]);
-            showLocalPic(commBean.getCommunitySpace2(),pestPhotos[1],photoCacheBitmap[3]);
+            showLocalPic(commBean.getCommunityFile1(),gatePhotos[0]);
+            showLocalPic(commBean.getCommunityFile2(),gatePhotos[1]);
+            showLocalPic(commBean.getCommunitySpace1(),pestPhotos[0]);
+            showLocalPic(commBean.getCommunitySpace2(),pestPhotos[1]);
 //            new Handler().postDelayed(new Runnable() {
 //                @Override
 //                public void run() {
@@ -257,7 +258,8 @@ public class CardEditFragment extends BaseToolbarFragment {
     private String photo_path;
 
     private String[] photo_ids,photo_paths;
-    private Bitmap[] photoCacheBitmap;
+//    private Bitmap[] photoCacheBitmap;
+    private String[] photoCachePath;
 
     private File[] photoFile;
     private Uri[] origUri,cropUri;
@@ -274,7 +276,8 @@ public class CardEditFragment extends BaseToolbarFragment {
         photo_path = path + "card/";
         int size = gatePhotoSize + pestPhotoSize;
         photo_ids = new String[size];
-        photoCacheBitmap = new Bitmap[size];
+//        photoCacheBitmap = new Bitmap[size];
+        photoCachePath = new String[size];
         photo_paths = new String[size];
         photoFile = new File[size];
         origUri = new Uri[size];
@@ -314,10 +317,12 @@ public class CardEditFragment extends BaseToolbarFragment {
         try {
             if(uri!=null){
                 originalUri = uri;
-                file = new File(ImageUtils.getPath(getActivity(), originalUri));
+                photoCachePath[index] = ImageUtils.getPath(getActivity(), originalUri);
+                file = new File(photoCachePath[index]);
             }else if (null != data && data.getData() != null) {
                 originalUri = data.getData();
-                file = new File(ImageUtils.getPath(getActivity(), originalUri));
+                photoCachePath[index] = ImageUtils.getPath(getActivity(), originalUri);
+                file = new File(photoCachePath[index]);
             }
             Bitmap photoBmp = ImageUtils.getBitmapFormUri(getActivity(), Uri.fromFile(file));
             int degree = ImageUtils.getBitmapDegree(file.getAbsolutePath());
@@ -331,7 +336,7 @@ public class CardEditFragment extends BaseToolbarFragment {
             }
             allPhotos[index].setImageBitmap(newbitmap);
 
-            photoCacheBitmap[index] = newbitmap;
+//            photoCacheBitmap[index] = newbitmap;
 //            photoBmp.recycle();
         }catch(Exception e){
             e.printStackTrace();
@@ -343,24 +348,24 @@ public class CardEditFragment extends BaseToolbarFragment {
     @OnClick(R.id.iv_gate_photo_1)
     public void iv_gate_photo_1(){
         index = 0;
-        showAddPhotoDialog(photoCacheBitmap[0]!=null || preGate.length>0 && !StringUtils.isEmpty(preGate[0]));
+        showAddPhotoDialog(photoCachePath[0]!=null || preGate.length>0 && !StringUtils.isEmpty(preGate[0]));
     }
 
     @OnClick(R.id.iv_gate_photo_2)
     public void iv_gate_photo_2(){
         index = 1;
-        showAddPhotoDialog(photoCacheBitmap[1]!=null || preGate.length>1);
+        showAddPhotoDialog(photoCachePath[1]!=null || preGate.length>1);
     }
 
     @OnClick(R.id.iv_pest_photo_1)
     public void iv_pest_photo_1(){
         index = 2;
-        showAddPhotoDialog(photoCacheBitmap[2]!=null || prePest.length>0  && !StringUtils.isEmpty(prePest[0]));
+        showAddPhotoDialog(photoCachePath[2]!=null || prePest.length>0  && !StringUtils.isEmpty(prePest[0]));
     }
     @OnClick(R.id.iv_pest_photo_2)
     public void iv_pest_photo_2(){
         index = 3;
-        showAddPhotoDialog(photoCacheBitmap[3]!=null || prePest.length>1 );
+        showAddPhotoDialog(photoCachePath[3]!=null || prePest.length>1 );
     }
 
     /**
@@ -399,111 +404,62 @@ public class CardEditFragment extends BaseToolbarFragment {
 
                         }
                         else if (which ==2){
-                            List<String> url = new ArrayList<>();
-                            List<String> imagePaths = new ArrayList<>();
-                            List<Boolean> imageFlag = new ArrayList<>();
-                            List<Bitmap> imageLocal = new ArrayList<>();
+                            List<ImageAllBean> imageData = new ArrayList<>();
 
-                            boolean[] indexFlag = new boolean[4];
 
                             if(!insertOrUpdate && !StringUtils.isEmpty(commBean.getCommunityFile1())){
-                                imageLocal.add(null);
-                                url.add("");
-                                indexFlag[0] = true;
-                                imageFlag.add(false);
-                                imagePaths.add(commBean.getCommunityFile1());
-                            }else if(photoCacheBitmap[0]!=null){
-                                imageLocal.add(photoCacheBitmap[0]);
-                                url.add("");
-                                indexFlag[0] = true;
-                                imageFlag.add(false);
-                                imagePaths.add(null);
+                                ImageAllBean bean = new ImageAllBean(commBean.getCommunityFile1(),ImageAllBean.LOCAL_PATH_IMG);
+                                imageData.add(bean);
+                            }else if(photoCachePath[0]!=null){
+                                ImageAllBean bean = new ImageAllBean(photoCachePath[0],ImageAllBean.LOCAL_PATH_IMG);
+                                imageData.add(bean);
                             }else{
                                 if(preGate.length>0 && !StringUtils.isEmpty(preGate[0])){
-                                    imageLocal.add(null);
-                                    url.add(preGate[0]);
-                                    indexFlag[0] = true;
-                                    imageFlag.add(true);
-                                    imagePaths.add(null);
+                                    ImageAllBean bean = new ImageAllBean(preGate[0],ImageAllBean.URL_IMG);
+                                    imageData.add(bean);
                                 }
                             }
 
 
                             if(!insertOrUpdate && !StringUtils.isEmpty(commBean.getCommunityFile2())){
-                                imageLocal.add(null);
-                                url.add("");
-                                indexFlag[0] = true;
-                                imageFlag.add(false);
-                                imagePaths.add(commBean.getCommunityFile2());
-                            }else if(photoCacheBitmap[1]!=null){
-                                imageLocal.add(photoCacheBitmap[1]);
-                                url.add("");
-                                indexFlag[1] = true;
-                                imageFlag.add(false);
-
+                                ImageAllBean bean = new ImageAllBean(commBean.getCommunityFile2(),ImageAllBean.LOCAL_PATH_IMG);
+                                imageData.add(bean);
+                            }else if(photoCachePath[1]!=null){
+                                ImageAllBean bean = new ImageAllBean(photoCachePath[1],ImageAllBean.LOCAL_PATH_IMG);
+                                imageData.add(bean);
                             }else{
                                 if(preGate.length>1 && !StringUtils.isEmpty(preGate[1])){
-                                    imageLocal.add(null);
-                                    url.add(preGate[1]);
-                                    indexFlag[1] = true;
-                                    imageFlag.add(true);
-
+                                    ImageAllBean bean = new ImageAllBean(preGate[1],ImageAllBean.URL_IMG);
+                                    imageData.add(bean);
                                 }
                             }
 
                             if(!insertOrUpdate && !StringUtils.isEmpty(commBean.getCommunitySpace1())){
-                                imageLocal.add(null);
-                                url.add("");
-                                indexFlag[0] = true;
-                                imageFlag.add(false);
-                                imagePaths.add(commBean.getCommunitySpace1());
-                            }else if(photoCacheBitmap[2]!=null){
-                                imageLocal.add(photoCacheBitmap[2]);
-                                url.add("");
-                                indexFlag[2] = true;
-                                imageFlag.add(false);
-
+                                ImageAllBean bean = new ImageAllBean(commBean.getCommunitySpace1(),ImageAllBean.LOCAL_PATH_IMG);
+                                imageData.add(bean);
+                            }else if(photoCachePath[2]!=null){
+                                ImageAllBean bean = new ImageAllBean(photoCachePath[2],ImageAllBean.LOCAL_PATH_IMG);
+                                imageData.add(bean);
                             }else{
                                 if(prePest.length>0 && !StringUtils.isEmpty(prePest[0])){
-                                    imageLocal.add(null);
-                                    url.add(prePest[0]);
-                                    indexFlag[2] = true;
-                                    imageFlag.add(true);
-
+                                    ImageAllBean bean = new ImageAllBean(prePest[0],ImageAllBean.URL_IMG);
+                                    imageData.add(bean);
                                 }
                             }
 
                             if(!insertOrUpdate && !StringUtils.isEmpty(commBean.getCommunitySpace2())){
-                                imageLocal.add(null);
-                                url.add("");
-                                indexFlag[0] = true;
-                                imageFlag.add(false);
-                                imagePaths.add(commBean.getCommunitySpace2());
-                            }else if(photoCacheBitmap[3]!=null){
-                                imageLocal.add(photoCacheBitmap[3]);
-                                url.add("");
-                                indexFlag[3] = true;
-                                imageFlag.add(false);
-
+                                ImageAllBean bean = new ImageAllBean(commBean.getCommunitySpace2(),ImageAllBean.LOCAL_PATH_IMG);
+                                imageData.add(bean);
+                            }else if(photoCachePath[3]!=null){
+                                ImageAllBean bean = new ImageAllBean(photoCachePath[2],ImageAllBean.LOCAL_PATH_IMG);
+                                imageData.add(bean);
                             }else{
                                 if(prePest.length>1 && !StringUtils.isEmpty(prePest[1])){
-                                    imageLocal.add(null);
-                                    url.add(prePest[1]);
-                                    indexFlag[3] = true;
-                                    imageFlag.add(true);
+                                    ImageAllBean bean = new ImageAllBean(prePest[1],ImageAllBean.URL_IMG);
+                                    imageData.add(bean);
                                 }
                             }
-
-                            int tempIndex = 0;
-                            for(int i=0;i<index;i++){
-                                if(indexFlag[i]){
-                                    tempIndex++;
-                                }
-
-                            }
-
-
-                            ViewHelper.getNewImagePager(getActivity(), url, imageFlag, imageLocal,imagePaths,tempIndex);
+                            ViewHelper.getAllImagePager(getActivity(), imageData,index);
 
                         }
                     }
@@ -657,26 +613,8 @@ public class CardEditFragment extends BaseToolbarFragment {
         insertOrUpdate = commBean==null;
     }
 
-    private void showLocalPic(String picPath,ImageView imageView,Bitmap cacheBitmap){
-//        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,true);
-//        task.execute(picPath);
+    private void showLocalPic(String picPath,ImageView imageView){
         Picasso.with(getContext()).load(new File(picPath)).resize(300,261).centerCrop().into(imageView);
-
-//        Bitmap myBitmap4 = null;
-//        try {
-//            byte[] mContent3 = ImageUtils.readStream(new FileInputStream(picPath));
-//            int b = ImageUtils.getExifOrientation(picPath);
-//            if (b != 0) {
-//                myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
-//            } else {
-//                myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
-//            }
-//
-//            cacheBitmap = myBitmap4;
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     public CommDoorPicBean getCommBean(){
