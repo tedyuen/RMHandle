@@ -76,6 +76,7 @@ public class ImageAllPagerActivity extends Activity implements ViewPager.OnPageC
         pager.setCurrentItem(pagerPosition);
 //        SelectImage = pagerPosition;
         pager.addOnPageChangeListener(this);
+        pager.setOffscreenPageLimit(4);
         mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
     }
@@ -119,59 +120,6 @@ public class ImageAllPagerActivity extends Activity implements ViewPager.OnPageC
                 bean.doPicasso(mContext,imageView);
             }
 
-//            if(imageMergeFlag[position]){
-//                imageLoader.displayImage(images[position], imageView, options,
-//                        new SimpleImageLoadingListener() {
-//                            @Override
-//                            public void onLoadingStarted(String imageUri, View view) {
-//                                spinner.setVisibility(View.VISIBLE);
-//                            }
-//
-//                            @Override
-//                            public void onLoadingFailed(String imageUri, View view,
-//                                                        FailReason failReason) {
-//                                String message = null;
-//                                switch (failReason.getType()) {
-//                                    case IO_ERROR:
-//                                        message = "Input/Output error";
-//                                        break;
-//                                    case DECODING_ERROR:
-//                                        message = "Image can't be decoded";
-//                                        break;
-//                                    case NETWORK_DENIED:
-//                                        message = "Downloads are denied";
-//                                        break;
-//                                    case OUT_OF_MEMORY:
-//                                        message = "Out Of Memory error";
-//                                        break;
-//                                    case UNKNOWN:
-//                                        message = "Unknown error";
-//                                        break;
-//                                }
-//                                Toast.makeText(ImageMergePagerActivity.this, message,
-//                                        Toast.LENGTH_SHORT).show();
-//
-//                                spinner.setVisibility(View.GONE);
-//                            }
-//
-//                            @Override
-//                            public void onLoadingComplete(String imageUri,
-//                                                          View view, Bitmap loadedImage) {
-//                                spinner.setVisibility(View.GONE);
-//                                mBitmap[position] = loadedImage;
-//                            }
-//                        });
-//            }else{
-//
-//                if(imagePaths!=null && !StringUtils.isEmpty(imagePaths.get(position))){
-////                    LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,false);
-////                    task.execute(imagePaths.get(position));
-//                    Picasso.with(mContext).load(new File(imagePaths.get(position))).into(imageView);
-//
-//                }else{
-//                    imageView.setImageBitmap(imageLocal.get(position));
-//                }
-//            }
 
             view.addView(imageLayout, 0);
 

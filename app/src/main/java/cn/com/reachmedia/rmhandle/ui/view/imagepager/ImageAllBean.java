@@ -49,7 +49,7 @@ public class ImageAllBean {
                     Picasso.with(context).load(str).into(imageView);
                     break;
                 case LOCAL_PATH_IMG:
-                    Picasso.with(context).load(new File(str)).into(imageView);
+                    Picasso.with(context).load(new File(str)).resize(1080,1920).centerCrop().into(imageView);
                     break;
                 case LOCAL_URI_IMG:
                     Picasso.with(context).load(str).into(imageView);
