@@ -208,9 +208,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
 //        SharedPreferencesHelper.getInstance().putString(AppSpContact.SP_KEY_POINT_ID,data.getPointId());
         apartmentPointUtils.pointId = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_POINT_ID);
         apartmentPointUtils.workId = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_WORK_ID);
-        System.out.println("====workid: 2  "+apartmentPointUtils.pointId+":"+apartmentPointUtils.workId);
 
         bean = pointBeanDbUtil.getPointBeanByWPID(apartmentPointUtils.workId, apartmentPointUtils.pointId);
+        System.out.println("====workid:   "+apartmentPointUtils.pointListModel);
         pointListModel = apartmentPointUtils.pointListModel;
         ImageUtils.doorPhotoBitmap = null;
     }
