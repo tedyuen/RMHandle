@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.ui.NewPointDetailActivity;
 import cn.com.reachmedia.rmhandle.ui.PointDetailActivity;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
@@ -98,7 +99,7 @@ public class ApartmentPointTabFragmentAdapter extends ApartmentPointTabBaseAdapt
                     ApartmentPointUtils.getIns().workId = data.getWorkId();
                     SharedPreferencesHelper.getInstance().putString(AppSpContact.SP_KEY_WORK_ID,data.getWorkId());
                     SharedPreferencesHelper.getInstance().putString(AppSpContact.SP_KEY_POINT_ID,data.getPointId());
-                    mContext.startActivity(new Intent(mContext, PointDetailActivity.class));
+                    mContext.startActivity(new Intent(mContext, NewPointDetailActivity.class));
                 }
             });
 

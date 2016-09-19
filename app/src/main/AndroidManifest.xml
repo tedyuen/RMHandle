@@ -116,6 +116,11 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".ui.NewPointDetailActivity"
+            android:theme="@style/AppTheme.Toolbar"
+            android:configChanges="mcc|mnc|keyboard|keyboardHidden|navigation|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait"></activity>
+
         <activity android:name=".ui.CardEditActivity"
             android:theme="@style/AppTheme.Toolbar"
             android:screenOrientation="portrait">
