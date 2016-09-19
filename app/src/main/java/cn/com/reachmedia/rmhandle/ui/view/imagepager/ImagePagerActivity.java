@@ -246,7 +246,6 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
             this.localSize = localSize;
             inflater = getLayoutInflater();
             resolver = context.getContentResolver();
-            System.out.println("=-=-=->  "+(images.length+ImageUtils.photoBitmap.size()));
         }
 
         @Override
@@ -339,7 +338,7 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
 
         @Override
         public int getCount() {
-            return images.length+ImageUtils.photoBitmap.size()+ImageUtils.cacheLoaclBitmap.size();
+            return images.length+ImageUtils.photoBitmap.size()+ImageUtils.cacheLocalImgPath.size();
         }
 
         @Override

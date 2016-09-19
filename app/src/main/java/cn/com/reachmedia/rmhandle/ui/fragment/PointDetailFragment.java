@@ -983,27 +983,28 @@ public class PointDetailFragment extends BaseToolbarFragment {
         if (preAddPhotoSize < photoMaxCount - 1) {//判断图片是否超过最大值
             if (pointWorkBean != null && pointWorkBean.getNativeState().equals("0")) {//处理未提交id的图片的显示
                 for (int j = 0; j < remainFileId.length; j++) {
-                    Bitmap myBitmap4 = null;
                     String str = remainFilePath[j];
                     ImageUtils.cacheLocalImgPath.add(str);
-                    try {
-                        byte[] mContent3 = ImageUtils.readStream(new FileInputStream(str));
-                        int b = ImageUtils.getExifOrientation(str);
-                        if (b != 0) {
-                            myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
-                        } else {
-                            myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
-                        }
-                        Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
-                        if(bitmapTemp2!=null){
-                            ImageUtils.cacheLoaclBitmap.add(bitmapTemp2);
-                            addPhotos[preAddPhotoSize].setImageBitmap(bitmapTemp2);
-                        }
-                        preAddPhotoSize++;
-                        myBitmap4.recycle();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    Picasso.with(getContext()).load(new File(str)).resize(300,261).centerCrop().into(addPhotos[preAddPhotoSize]);
+                    preAddPhotoSize++;
+
+//                    try {
+//                        byte[] mContent3 = ImageUtils.readStream(new FileInputStream(str));
+//                        int b = ImageUtils.getExifOrientation(str);
+//                        if (b != 0) {
+//                            myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
+//                        } else {
+//                            myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
+//                        }
+//                        Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
+//                        if(bitmapTemp2!=null){
+//                            ImageUtils.cacheLoaclBitmap.add(bitmapTemp2);
+//                            addPhotos[preAddPhotoSize].setImageBitmap(bitmapTemp2);
+//                        }
+//                        myBitmap4.recycle();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                     initNextPhotoLocal();
                 }
             }
@@ -1236,6 +1237,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
     }
 
     private void initNextPhotoLocal() {
+        System.out.println("==>"+photoCount+":"+photoMaxCount);
+        if(photoCount>=(photoMaxCount-1)) return;
         final int tempIndex = photoCount;
         addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
             @Override
