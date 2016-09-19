@@ -53,6 +53,8 @@ public class ImageUtils {
     public static List<Bitmap> photoBitmap;
     public static List<Bitmap> cacheBitmap;//提交了id，没有提交图片
     public static List<Bitmap> cacheLoaclBitmap;//id和图片都没提交
+    public static List<String> cacheImgPath;//提交了id，没有提交图片
+    public static List<String> cacheLocalImgPath;//id和图片都没提交
     public static Bitmap doorPhotoBitmap;
 
     private final static String SDCARD_MNT = "/mnt/sdcard";

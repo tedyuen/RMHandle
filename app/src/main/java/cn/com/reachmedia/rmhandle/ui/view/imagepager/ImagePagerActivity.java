@@ -30,6 +30,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -245,6 +246,7 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
             this.localSize = localSize;
             inflater = getLayoutInflater();
             resolver = context.getContentResolver();
+            System.out.println("=-=-=->  "+(images.length+ImageUtils.photoBitmap.size()));
         }
 
         @Override
@@ -268,8 +270,10 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
             });
 
             if(position<images.length){//显示网络图片
+
                 if(StringUtils.isEmpty(images[position])){//显示有id没提交图片
-                    imageView.setImageBitmap(ImageUtils.cacheBitmap.get(position));
+//                    imageView.setImageBitmap(ImageUtils.cacheBitmap.get(position));
+                    Picasso.with(mContext).load(new File(ImageUtils.cacheImgPath.get(position))).resize(1080,1920).centerCrop().into(imageView);
 
                 }else{//显示有id有图片的图片
                     imageLoader.displayImage(images[position], imageView, options,
@@ -315,9 +319,12 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
                             });
                 }
             }else if(position>=images.length && position<(localSize+images.length)){
-                imageView.setImageBitmap(ImageUtils.cacheLoaclBitmap.get(position-images.length));
+//                imageView.setImageBitmap(ImageUtils.cacheLoaclBitmap.get(position-images.length));
+                Picasso.with(mContext).load(new File(ImageUtils.cacheLocalImgPath.get(position-images.length))).resize(1080,1920).centerCrop().into(imageView);
+
             }else{
                 imageView.setImageBitmap(ImageUtils.photoBitmap.get(position-images.length-localSize));
+
             }
             ((ViewPager) view).addView(imageLayout, 0);
 
@@ -332,7 +339,7 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
 
         @Override
         public int getCount() {
-            return images.length+ImageUtils.photoBitmap.size();
+            return images.length+ImageUtils.photoBitmap.size()+ImageUtils.cacheLoaclBitmap.size();
         }
 
         @Override

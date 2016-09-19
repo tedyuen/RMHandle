@@ -896,7 +896,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
         photo_full_id = new String[photoMaxCount];
         ImageUtils.photoBitmap = new ArrayList<>();
         ImageUtils.cacheBitmap = new ArrayList<>();
+        ImageUtils.cacheImgPath = new ArrayList<>();
         ImageUtils.cacheLoaclBitmap = new ArrayList<>();
+        ImageUtils.cacheLocalImgPath = new ArrayList<>();
+
         // 保存路径为 WoJiaWang/人员ID/portrait
         photo_path = path + "point/";
         addPhotos[photoCount].setOnClickListener(new View.OnClickListener() {
@@ -949,6 +952,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                         if (prePhotoIds[i].equals(cacheFileId[j])) {
                             Bitmap myBitmap4 = null;
                             String str = cacheFilePath[j];
+                            ImageUtils.cacheImgPath.add(str);
                             try {
                                 byte[] mContent3 = ImageUtils.readStream(new FileInputStream(str));
                                 int b = ImageUtils.getExifOrientation(str);
@@ -981,6 +985,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 for (int j = 0; j < remainFileId.length; j++) {
                     Bitmap myBitmap4 = null;
                     String str = remainFilePath[j];
+                    ImageUtils.cacheLocalImgPath.add(str);
                     try {
                         byte[] mContent3 = ImageUtils.readStream(new FileInputStream(str));
                         int b = ImageUtils.getExifOrientation(str);
@@ -1183,6 +1188,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
 
                         } else if (index < (prePhotoSize - deletePrePhoto.size() + remainLocalIdSize - deleteLocalPrePhoto.size()) && index >= (prePhotoSize - deletePrePhoto.size())) {//id和图片都没提交
                             ImageUtils.cacheLoaclBitmap.remove(index - prePhotoSize + deletePrePhoto.size());
+                            ImageUtils.cacheLocalImgPath.remove(index - prePhotoSize + deletePrePhoto.size());
+
                             int tempRemoteIndex = index;
                             while (validateRemainIndex(tempRemoteIndex)) {
                                 tempRemoteIndex++;
