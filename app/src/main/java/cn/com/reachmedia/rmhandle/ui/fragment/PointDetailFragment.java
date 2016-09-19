@@ -953,24 +953,26 @@ public class PointDetailFragment extends BaseToolbarFragment {
                             Bitmap myBitmap4 = null;
                             String str = cacheFilePath[j];
                             ImageUtils.cacheImgPath.add(str);
-                            try {
-                                byte[] mContent3 = ImageUtils.readStream(new FileInputStream(str));
-                                int b = ImageUtils.getExifOrientation(str);
-                                if (b != 0) {
-                                    myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
-                                } else {
-                                    myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
-                                }
-                                Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
-                                if(bitmapTemp2!=null){
-                                    ImageUtils.cacheBitmap.add(bitmapTemp2);
-                                    addPhotos[i].setImageBitmap(bitmapTemp2);
-                                }
-                                preAddPhotoSize++;
-                                myBitmap4.recycle();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            Picasso.with(getContext()).load(new File(str)).resize(300,261).centerCrop().into(addPhotos[preAddPhotoSize]);
+                            preAddPhotoSize++;
+//                            try {
+//                                byte[] mContent3 = ImageUtils.readStream(new FileInputStream(str));
+//                                int b = ImageUtils.getExifOrientation(str);
+//                                if (b != 0) {
+//                                    myBitmap4 = ImageUtils.rotateBitMap(ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption()), b);
+//                                } else {
+//                                    myBitmap4 = ImageUtils.getPicFromBytes(mContent3, ImageUtils.getBitmapOption());
+//                                }
+//                                Bitmap bitmapTemp2 = ImageUtils.comp(myBitmap4);
+//                                if(bitmapTemp2!=null){
+//                                    ImageUtils.cacheBitmap.add(bitmapTemp2);
+//                                    addPhotos[i].setImageBitmap(bitmapTemp2);
+//                                }
+//                                preAddPhotoSize++;
+//                                myBitmap4.recycle();
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
                             break;
                         }
                     }
