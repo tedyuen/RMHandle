@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">上刊工具</string>
+    <string name="app_name">亿投上刊工具</string>
     <string name="bottom_text_1">工作</string>
     <string name="bottom_text_2">我的</string>
 
@@ -68,4 +68,11 @@
     <string name="dialog_title_submit_gate_photo">确定修改小区照片吗?</string>
     <string name="dialog_map_title">请选择地图导航</string>
 
+
+    <!-- picture selector -->
+    <string name="images">Images</string>
+    <string name="all_image">All Image</string>
+    <string name="done">Done</string>
+    <string name="over_max_count_tips">Up to %1$d photos can be selected</string>
+    <string name="done_with_count">Done(%1$d/%2$d)</string>
 </resources>

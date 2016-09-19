@@ -42,4 +42,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="bottom_line">#B2B2B2</color>
     <color name="home_tab_back">#ECF7FF</color>
+
+    <!-- picture selector -->
+    <color name="common_primary">#f3f3f3</color>
+    <color name="pager_bg">#CA000000</color>
+    <color name="text_40">#282828</color>
 </resources>

@@ -147,6 +147,15 @@
         <activity android:label="选择相片" android:name=".utils.album.ImgsActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.Toolbar">
         </activity>
 
+
+        <activity android:name="cn.com.reachmedia.rmhandle.utils.pictureutils.ui.PhotoPickerActivity"
+            android:configChanges="mcc|mnc|keyboard|keyboardHidden|navigation|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        </activity>
+
+
         <service android:name="cn.com.reachmedia.rmhandle.service.PointWorkService">
         </service>
         <service android:name="cn.com.reachmedia.rmhandle.service.PointWorkNoPicService">
