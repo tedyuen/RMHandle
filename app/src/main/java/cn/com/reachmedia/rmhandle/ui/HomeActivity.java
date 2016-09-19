@@ -65,6 +65,9 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     SlidingTabLayout slidingTabLayout;
     @Bind(R.id.toolbar_title)
     TextView toolbarTitle;
+    @Bind(R.id.toolbar_title_date)
+    TextView toolbarTitleDate;
+
     private NavigationAdapter mPagerAdapter;
 
     @Bind(R.id.toolbar)
@@ -318,6 +321,10 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         );
     }
 
+    public void resetTitleDate(){
+        toolbarTitleDate.setText(homeFilterUtil.startTime.substring(5)+"~"+homeFilterUtil.endTime.substring(5));
+    }
+
 
     private HomeFilterUtil homeFilterUtil;
 
@@ -396,12 +403,14 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         }
 
         triggleFilter();
+        resetTitleDate();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         ServiceHelper.getIns().startLocationWorkService(this);
+        resetTitleDate();
         if(AppNetworkInfo.isNetworkAvailable(this)){
             ServiceHelper.getIns().startPointWorkWithPicService(this);
             ServiceHelper.getIns().startCommDoorPicService(this,false);

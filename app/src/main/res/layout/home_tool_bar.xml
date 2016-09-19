@@ -33,17 +33,33 @@
                     />
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/toolbar_title"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="140dp"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:singleLine="true"
                 android:layout_centerInParent="true"
-                android:text="总进度:0/0"
-                />
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/toolbar_title_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="140dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    />
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="140dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:singleLine="true"
+                    android:text="总进度:0/0"
+                    />
+            </LinearLayout>
+
 
             <RelativeLayout
                 android:id="@+id/rl_info"
