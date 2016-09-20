@@ -21,7 +21,7 @@ public class AppApiContact {
 
     public static String getApiHost(){
 //http://120.26.64.180:8281/app/data.api
-        return API_HOST_PD;
+        return API_HOST_ST;
     }
 
 
@@ -113,6 +113,11 @@ public class AppApiContact {
          * 定位异常
          */
         public static final String ERROR_LON = "20001";
+
+        /**
+         * 缺少文件
+         */
+        public static final String ERROR_LESS_FILE = "2101";
 
     }
 }
