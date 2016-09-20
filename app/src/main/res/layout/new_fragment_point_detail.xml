@@ -79,7 +79,7 @@
                         android:layout_marginBottom="10dp"/>
 
                     <cn.com.reachmedia.rmhandle.ui.view.Line3ImageLayout
-                        android:id="@+id/line_image_3"
+                        android:id="@+id/ll_cust_photo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
