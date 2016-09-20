@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -44,6 +45,11 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     Line3ImageLayout ll_cust_photo;
 
 
+    @Bind(R.id.rb_check_1)
+    RadioButton rbCheck1;
+    @Bind(R.id.rb_check_2)
+    RadioButton rbCheck2;
+
 
     public static NewPointDetailFragment newInstance() {
         NewPointDetailFragment fragment = new NewPointDetailFragment();
@@ -59,7 +65,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     private PointBeanDbUtil pointBeanDbUtil;
     private PointWorkBeanDbUtil pointWorkBeanDbUtil;
     private PointListModel pointListModel;//缓存列表数据
-    private PointBean bean;
+    private PointBean bean;//网络数据
 
 
     @Override
@@ -76,8 +82,6 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
             Gson gson = new Gson();
             try {
                 pointListModel = gson.fromJson(dataJson, PointListModel.class);
-
-
             } catch (Exception e) {
                 e.printStackTrace();
                 getActivity().finish();
@@ -86,8 +90,6 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
             getActivity().finish();
         }
         bean = pointBeanDbUtil.getPointBeanByWPID(workId, pointId);
-
-
 
     }
 
@@ -121,7 +123,6 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                 tvCname.setText(comBean.getCname());
                 wbMemo.getSettings().setDefaultTextEncodingName("utf-8");
                 wbMemo.loadDataWithBaseURL("", comBean.getMemo(), "text/html", "utf-8", "");
-
                 if (comBean.getPicList() == null || comBean.getPicList().size() == 0) {
                     ll_cust_photo.setVisibility(View.GONE);
                 } else {
@@ -133,7 +134,20 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
             }
         }
 
+        //巡检状态
+        if(bean.getCheckState()==1){
+            rbCheck1.setChecked(true);
+            rbCheck1.setVisibility(View.VISIBLE);
+            rbCheck2.setVisibility(View.GONE);
+        }else {
+            rbCheck2.setChecked(true);
+            rbCheck2.setVisibility(View.VISIBLE);
+            rbCheck1.setVisibility(View.GONE);
+        }
+
     }
+
+
 
 
 
