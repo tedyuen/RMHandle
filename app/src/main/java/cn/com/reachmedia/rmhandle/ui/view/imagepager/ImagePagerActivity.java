@@ -272,8 +272,9 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
 
                 if(StringUtils.isEmpty(images[position])){//显示有id没提交图片
 //                    imageView.setImageBitmap(ImageUtils.cacheBitmap.get(position));
-                    Picasso.with(mContext).load(new File(ImageUtils.cacheImgPath.get(position))).resize(1080,1920).centerCrop().into(imageView);
-
+                    if(ImageUtils.cacheImgPath.size()>position && !StringUtils.isEmpty(ImageUtils.cacheImgPath.get(position))) {
+                        Picasso.with(mContext).load(new File(ImageUtils.cacheImgPath.get(position))).resize(1080, 1920).centerCrop().into(imageView);
+                    }
                 }else{//显示有id有图片的图片
                     imageLoader.displayImage(images[position], imageView, options,
                             new SimpleImageLoadingListener() {
