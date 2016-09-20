@@ -42,7 +42,4 @@ public class LineImageLayout extends FrameLayout {
 
     }
 
-    public void test(){
-        pointPhotos[1].setVisibility(View.VISIBLE);
-    }
 }

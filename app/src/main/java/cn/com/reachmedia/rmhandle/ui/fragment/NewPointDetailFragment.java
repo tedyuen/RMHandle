@@ -35,14 +35,18 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.new_fragment_point_detail, container, false);
         ButterKnife.bind(this, rootView);
-//        needTitle();
-        lineImage1.test();
+        needTitle();
+
+
         return rootView;
     }
 
