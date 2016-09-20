@@ -114,5 +114,10 @@ public class AppApiContact {
          */
         public static final String ERROR_LON = "20001";
 
+        /**
+         * 缺少文件
+         */
+        public static final String ERROR_LESS_FILE = "2101";
+
     }
 }
