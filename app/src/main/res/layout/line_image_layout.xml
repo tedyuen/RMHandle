@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dp">
+        <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+            android:id="@+id/iv_point_photo_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:proportion="0.87"
+            android:src="@mipmap/picture_add_icon"/>
+        <ImageView
+            android:id="@+id/iv_delete_1"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/delete"
+            android:visibility="invisible"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dp">
+        <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+            android:visibility="invisible"
+            android:id="@+id/iv_point_photo_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:proportion="0.87"
+            android:src="@mipmap/picture_add_icon"/>
+        <ImageView
+            android:id="@+id/iv_delete_2"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/delete"
+            android:visibility="invisible"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+        <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+            android:visibility="invisible"
+            android:id="@+id/iv_point_photo_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:proportion="0.87"
+            android:src="@mipmap/picture_add_icon"/>
+        <ImageView
+            android:id="@+id/iv_delete_3"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/delete"
+            android:visibility="invisible"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+</LinearLayout>

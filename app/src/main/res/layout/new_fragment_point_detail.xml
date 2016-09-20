@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <cn.com.reachmedia.rmhandle.ui.view.LineButtomLayout
+        android:id="@+id/ll_bottom_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
+
+    </cn.com.reachmedia.rmhandle.ui.view.LineButtomLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_above="@+id/ll_bottom_frame"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/padding_lr"
+                    android:paddingRight="@dimen/padding_lr"
+                    android:background="@color/white"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="点位照片"
+                        android:textColor="@color/username_color"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="10dp"/>
+                    <cn.com.reachmedia.rmhandle.ui.view.LineImageLayout
+                        android:id="@+id/line_image_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </cn.com.reachmedia.rmhandle.ui.view.LineImageLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="小区照片"
+                        android:textColor="@color/username_color"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="10dp"/>
+
+                    <cn.com.reachmedia.rmhandle.ui.view.Line2ImageLayout
+                        android:id="@+id/line_image_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </cn.com.reachmedia.rmhandle.ui.view.Line2ImageLayout>
+
+                    <TextView
+                        android:id="@+id/tv_cname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/username_color"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="10dp"/>
+
+                    <cn.com.reachmedia.rmhandle.ui.view.Line3ImageLayout
+                        android:id="@+id/line_image_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </cn.com.reachmedia.rmhandle.ui.view.Line3ImageLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:background="@color/white"
+                tools:ignore="WebViewLayout"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="拍照要求"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:textColor="@color/username_color"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"/>
+                <View android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/line_color_grey"/>
+
+                <TextView
+                    android:id="@+id/tv_action_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:gravity="center_vertical"
+                    android:text="到画时间：    上画时间："/>
+
+                <WebView
+                    android:id="@+id/wb_memo"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:layout_marginRight="@dimen/padding_lr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </WebView>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_error_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_error_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"/>
+                <View android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/line_color_grey"/>
+
+                <TextView
+                    android:id="@+id/tv_error_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="43dp"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_checkstate_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="巡检状态:"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:textColor="@color/username_color"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical"/>
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    >
+                    <RadioButton
+                        android:id="@+id/rb_check_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="画面正确"/>
+
+                    <RadioButton
+                        android:id="@+id/rb_check_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:text="画面有误"/>
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <include layout="@layout/tool_bar_base"/>
+
+</RelativeLayout>

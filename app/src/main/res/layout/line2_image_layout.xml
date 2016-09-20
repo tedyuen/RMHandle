@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rl_comm_photo_1"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dp"
+        >
+        <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+            android:id="@+id/iv_comm_photo_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:proportion="0.87"
+            android:src="@drawable/abc"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@color/back_black_alpha"
+            android:layout_alignParentBottom="true"
+            android:text="小区门口照"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_comm_photo_3"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dp"
+        >
+        <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+            android:id="@+id/iv_comm_photo_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:proportion="0.87"
+            android:src="@drawable/abc"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@color/back_black_alpha"
+            android:layout_alignParentBottom="true"
+            android:text="环境照"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_comm_photo_2"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        >
+        <cn.com.reachmedia.rmhandle.ui.view.ProportionImageView
+            android:id="@+id/iv_comm_photo_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:proportion="0.87"
+            android:src="@mipmap/picture_add_icon"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@color/back_black_alpha"
+            android:layout_alignParentBottom="true"
+            android:text="楼栋照"/>
+    </RelativeLayout>
+
+</LinearLayout>
