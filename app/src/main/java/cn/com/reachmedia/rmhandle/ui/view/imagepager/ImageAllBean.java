@@ -26,7 +26,10 @@ public class ImageAllBean {
         this.type = type;
     }
 
-    public void doPicassoWH(Context context, ImageView imageView,int targetWidth,int targetHeight){
+    public final static int THUMBNAIL_WIDTH = 300;
+    public final static int THUMBNAIL_HEIGHT = 261;
+
+    public void doPicasso(Context context, ImageView imageView,int targetWidth,int targetHeight){
         if(!StringUtils.isEmpty(str)){
             switch (type){
                 case URL_IMG:

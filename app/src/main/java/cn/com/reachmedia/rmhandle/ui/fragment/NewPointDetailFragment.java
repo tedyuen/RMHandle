@@ -22,8 +22,10 @@ import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
+import cn.com.reachmedia.rmhandle.ui.view.Line2ImageLayout;
 import cn.com.reachmedia.rmhandle.ui.view.Line3ImageLayout;
 import cn.com.reachmedia.rmhandle.ui.view.LineImageLayout;
+import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 
 /**
@@ -34,6 +36,11 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
 
     @Bind(R.id.line_image_1)
     LineImageLayout lineImage1;
+
+
+    @Bind(R.id.line_image_2)
+    Line2ImageLayout lineImage2;
+
 
     @Bind(R.id.tv_action_time)
     TextView tvActionTime;
@@ -143,6 +150,12 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
             rbCheck2.setChecked(true);
             rbCheck2.setVisibility(View.VISIBLE);
             rbCheck1.setVisibility(View.GONE);
+        }
+
+        //门洞照显示
+        if (!StringUtils.isEmpty(bean.getCDoorPic())) {
+            ImageAllBean doorPicBean = new ImageAllBean(bean.getCDoorPic(),ImageAllBean.URL_IMG);
+            lineImage2.setDoorPic(doorPicBean);
         }
 
     }
