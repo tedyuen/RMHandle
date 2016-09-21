@@ -67,12 +67,12 @@ public class PointWorkService extends Service {
                 });
                 controller.getTaskIndex(param);
             }
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ServiceHelper.getIns().startPointPicService(getApplicationContext());
-                }
-            },2000);
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    ServiceHelper.getIns().startPointPicService(getApplicationContext());
+//                }
+//            },2000);
         }
 
         return super.onStartCommand(intent, flags, startId);

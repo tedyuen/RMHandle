@@ -94,7 +94,8 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
     @OnClick(R.id.rl_right_text)
     public void goSynchronize(){
         if(AppNetworkInfo.isWifi(this)){
-            ServiceHelper.getIns().startPointWorkWithPicService(getApplicationContext());
+//            ServiceHelper.getIns().startPointWorkWithPicService(getApplicationContext());
+            ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
             ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(),false);
             ToastHelper.showInfo(activity,"开始上传,请稍后刷新状态!");
         }else{
