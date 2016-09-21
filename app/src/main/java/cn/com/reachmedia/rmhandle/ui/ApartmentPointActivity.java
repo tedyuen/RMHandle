@@ -472,9 +472,9 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     }
 
     private void showLocalPic(String picPath,ImageView imageView){
-//        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,true);
-//        task.execute(picPath);
-        Picasso.with(this).load(new File(picPath)).resize(300,261).centerCrop().into(imageView);
+        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,true);
+        task.execute(picPath);
+//        Picasso.with(this).load(new File(picPath)).resize(300,261).centerCrop().into(imageView);
 
 //        Bitmap myBitmap4 = null;
 //        try {
