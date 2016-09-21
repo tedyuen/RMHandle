@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -158,10 +159,23 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
             lineImage2.setDoorPic(doorPicBean);
         }
 
+        lineImage1.updateAddPhotosClickState(getActivity(),savedInstanceState);
+
     }
 
 
 
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        lineImage1.onActivityResult(requestCode,resultCode,data);
+    }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        lineImage1.onSaveInstanceState(savedInstanceState);
+    }
 
 
     @Override
