@@ -7,6 +7,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 
 /**
@@ -49,7 +50,9 @@ public class ImageAllBean {
                     Picasso.with(context).load(str).into(imageView);
                     break;
                 case LOCAL_PATH_IMG:
-                    Picasso.with(context).load(new File(str)).resize(1080,1920).centerCrop().into(imageView);
+//                    Picasso.with(context).load(new File(str)).resize(1080,1920).centerCrop().into(imageView);
+                    LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,false);
+                    task.execute(str);
                     break;
                 case LOCAL_URI_IMG:
                     Picasso.with(context).load(str).into(imageView);

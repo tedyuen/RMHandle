@@ -223,9 +223,9 @@ public class ImageMergePagerActivity extends Activity implements ViewPager.OnPag
                 System.out.println("path=====4==> "+imagePaths);
 
                 if(imagePaths!=null && !StringUtils.isEmpty(imagePaths.get(position))){
-//                    LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,false);
-//                    task.execute(imagePaths.get(position));
-                    Picasso.with(mContext).load(new File(imagePaths.get(position))).into(imageView);
+                    LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,false);
+                    task.execute(imagePaths.get(position));
+//                    Picasso.with(mContext).load(new File(imagePaths.get(position))).into(imageView);
 
                 }else{
                     imageView.setImageBitmap(imageLocal.get(position));

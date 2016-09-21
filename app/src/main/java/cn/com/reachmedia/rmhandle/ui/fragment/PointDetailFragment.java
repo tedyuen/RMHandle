@@ -51,6 +51,7 @@ import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
+import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.ProportionImageView;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
@@ -914,6 +915,7 @@ public class PointDetailFragment extends BaseToolbarFragment {
         List<String> tempRemailFilePath = new ArrayList<>();
         if (pointWorkBean != null && pointWorkBean.getNativeState() != null && pointWorkBean.getNativeState().equals("0")) {//未提交
             //处理无id无url,全部添加到需要提交的数组
+
             remainFileId = cacheFileId.clone();
             remainFilePath = cacheFilePath.clone();
             remainLocalIdSize = remainFileId.length;
@@ -953,7 +955,13 @@ public class PointDetailFragment extends BaseToolbarFragment {
                             Bitmap myBitmap4 = null;
                             String str = cacheFilePath[j];
                             ImageUtils.cacheImgPath.add(str);
-                            Picasso.with(getContext()).load(new File(str)).resize(300,261).centerCrop().into(addPhotos[preAddPhotoSize]);
+                            System.out.println("====>有id无url :"+str);
+                            File tempfile = new File(str);
+                            System.out.println("tempfile.exists:"+tempfile.exists());
+//                            Picasso.with(getContext()).load(tempfile).resize(300,261).centerCrop().into(addPhotos[preAddPhotoSize]);
+
+                            LocalImageAsyncTask task = new LocalImageAsyncTask(addPhotos[preAddPhotoSize],true);
+                            task.execute(str);
                             preAddPhotoSize++;
 //                            try {
 //                                byte[] mContent3 = ImageUtils.readStream(new FileInputStream(str));
@@ -987,7 +995,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
                 for (int j = 0; j < remainFileId.length; j++) {
                     String str = remainFilePath[j];
                     ImageUtils.cacheLocalImgPath.add(str);
-                    Picasso.with(getContext()).load(new File(str)).resize(300,261).centerCrop().into(addPhotos[preAddPhotoSize]);
+//                    Picasso.with(getContext()).load(new File(str)).resize(300,261).centerCrop().into(addPhotos[preAddPhotoSize]);
+                    LocalImageAsyncTask task = new LocalImageAsyncTask(addPhotos[preAddPhotoSize],true);
+                    task.execute(str);
                     preAddPhotoSize++;
 
 //                    try {

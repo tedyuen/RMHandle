@@ -163,12 +163,16 @@ public class CardEditFragment extends BaseToolbarFragment {
             if(i<gatePhotos.length){
                 if(!StringUtils.isEmpty(preGate[i])){
                     Picasso.with(getContext()).load(preGate[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(gatePhotos[i]);
+                    System.out.println("本地环境图片path 1: "+i+":"+preGate[i]);
+
                 }
             }
         }
         for(int i=0;i<prePest.length;i++){
             if(i<pestPhotos.length){
                 if(!StringUtils.isEmpty(prePest[i])){
+                    System.out.println("本地环境图片path 2: "+i+":"+preGate[i]);
+
                     Picasso.with(getContext()).load(prePest[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(pestPhotos[i]);
                 }
             }
@@ -614,7 +618,9 @@ public class CardEditFragment extends BaseToolbarFragment {
     }
 
     private void showLocalPic(String picPath,ImageView imageView){
-        Picasso.with(getContext()).load(new File(picPath)).resize(300,261).centerCrop().into(imageView);
+        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,true);
+        task.execute(picPath);
+//        Picasso.with(getContext()).load(new File(picPath)).resize(300,261).centerCrop().into(imageView);
     }
 
     public CommDoorPicBean getCommBean(){

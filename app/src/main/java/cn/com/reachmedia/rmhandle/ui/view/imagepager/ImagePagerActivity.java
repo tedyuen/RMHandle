@@ -38,6 +38,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.LogUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
@@ -273,7 +274,9 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
                 if(StringUtils.isEmpty(images[position])){//显示有id没提交图片
 //                    imageView.setImageBitmap(ImageUtils.cacheBitmap.get(position));
                     if(ImageUtils.cacheImgPath.size()>position && !StringUtils.isEmpty(ImageUtils.cacheImgPath.get(position))) {
-                        Picasso.with(mContext).load(new File(ImageUtils.cacheImgPath.get(position))).resize(1080, 1920).centerCrop().into(imageView);
+//                        Picasso.with(mContext).load(new File(ImageUtils.cacheImgPath.get(position))).resize(1080, 1920).centerCrop().into(imageView);
+                        LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,false);
+                        task.execute(ImageUtils.cacheImgPath.get(position));
                     }
                 }else{//显示有id有图片的图片
                     imageLoader.displayImage(images[position], imageView, options,
@@ -320,7 +323,9 @@ public class ImagePagerActivity extends Activity implements ViewPager.OnPageChan
                 }
             }else if(position>=images.length && position<(localSize+images.length)){
 //                imageView.setImageBitmap(ImageUtils.cacheLoaclBitmap.get(position-images.length));
-                Picasso.with(mContext).load(new File(ImageUtils.cacheLocalImgPath.get(position-images.length))).resize(1080,1920).centerCrop().into(imageView);
+//                Picasso.with(mContext).load(new File(ImageUtils.cacheLocalImgPath.get(position-images.length))).resize(1080,1920).centerCrop().into(imageView);
+                LocalImageAsyncTask task = new LocalImageAsyncTask(imageView,false);
+                task.execute(ImageUtils.cacheLocalImgPath.get(position-images.length));
 
             }else{
                 imageView.setImageBitmap(ImageUtils.photoBitmap.get(position-images.length-localSize));
