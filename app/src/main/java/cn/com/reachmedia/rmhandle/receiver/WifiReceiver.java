@@ -41,13 +41,12 @@ public class WifiReceiver extends BroadcastReceiver {
 
                 //获取当前wifi名称
                 System.out.println("连接到网络 " + wifiInfo.getSSID());
-                try{
-                    ServiceHelper.getIns().startPointWorkWithPicService(App.getIns().getApplicationContext());
-                    ServiceHelper.getIns().startCommDoorPicService(App.getIns().getApplicationContext(),false);
-//                    ServiceHelper.getIns().startPointPicService(App.getIns().getApplicationContext());
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+//                try{
+//                    ServiceHelper.getIns().startPointWorkWithPicService(App.getIns().getApplicationContext());
+//                    ServiceHelper.getIns().startCommDoorPicService(App.getIns().getApplicationContext(),false);
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
             }
 
         }
