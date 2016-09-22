@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -182,12 +183,12 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         });
         mPager.setCurrentItem(0);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                onRefresh();
-            }
-        },100);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                onRefresh();
+//            }
+//        },100);
     }
 
     private static class NavigationAdapter extends CacheFragmentStatePagerAdapter {
@@ -515,14 +516,17 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     protected void onResume() {
         super.onResume();
         onRefresh();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                updateData(false);
-            }
-        },100);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                updateData(false);
+//            }
+//        },100);
 
     }
+
+
+
 
     @OnClick(R.id.bt_edit_save)
     public void editSave(){

@@ -30,6 +30,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.anthonycr.grant.PermissionsManager;
 import com.anthonycr.grant.PermissionsResultAction;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -213,6 +214,23 @@ public class PointDetailFragment extends BaseToolbarFragment {
         bean = pointBeanDbUtil.getPointBeanByWPID(apartmentPointUtils.workId, apartmentPointUtils.pointId);
         System.out.println("====workid:   "+apartmentPointUtils.pointListModel);
         pointListModel = apartmentPointUtils.pointListModel;
+        if(pointListModel==null){
+            String tempStartTime = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_STARTTIME);
+            String tempEndTime = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_ENDTIME);
+            String communityId = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_COMMUNITID);
+
+            String dataJson = mSharedPreferencesHelper.getString(communityId+"_"+tempStartTime);
+            if(!StringUtils.isEmpty(dataJson)) {
+                Gson gson = new Gson();
+                try {
+                    pointListModel = gson.fromJson(dataJson, PointListModel.class);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
         ImageUtils.doorPhotoBitmap = null;
     }
 

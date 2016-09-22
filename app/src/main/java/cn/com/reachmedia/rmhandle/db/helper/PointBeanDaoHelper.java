@@ -100,6 +100,12 @@ public class PointBeanDaoHelper implements DaoHelperInterface {
         }
     }
 
+    public <T> void addDataTx(Iterable<T> entities, boolean setPrimaryKey){
+        if(entities!=null){
+            pointBeanDao.insertInTx((Iterable<PointBean>) entities,setPrimaryKey);
+        }
+    }
+
     @Override
     public PointBeanDao getDao() {
         return pointBeanDao;
