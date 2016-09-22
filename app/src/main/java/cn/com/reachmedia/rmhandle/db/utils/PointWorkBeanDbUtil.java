@@ -196,7 +196,7 @@ public class PointWorkBeanDbUtil {
 
 
     public static String tempGetXY(int count){
-        String xy = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE)+FILE_SPLIT3+SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE);
+        String xy = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE)+FILE_SPLIT3+SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LONGITUDE);
         StringBuffer buffer = new StringBuffer();
 
         for(int i=0;i<count;i++){
