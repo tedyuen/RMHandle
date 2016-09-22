@@ -16,6 +16,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
@@ -84,15 +85,30 @@ public class LineImageLayout extends FrameLayout {
             }
         });
         pickManger.flushBundle();
-        addPhotos[photoCount].setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pickManger.setReturnFileCount(3 - pickManger.getSelectsPhotos().size());
-                pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
-            }
-        });
+        setAddPhotosClickEvent(photoCount);
     }
 
+    public void setAddPhotosClickEvent(int index){
+        if(index<addPhotos.length){
+            addPhotos[index].setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pickManger.setReturnFileCount(addPhotos.length - photoCount);
+                    pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
+                }
+            });
+        }
+        for(int i=0;i<index;i++){
+            addPhotos[i].setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    pickManger.setReturnFileCount(3 - pickManger.getSelectsPhotos().size());
+//                    pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
+                }
+            });
+        }
+
+    }
 
     /**
      * 刷新所有图片
@@ -109,6 +125,13 @@ public class LineImageLayout extends FrameLayout {
             }
         }
 
+        photoCount = count;//设置当前图片数量
+        if(count<addPhotos.length){
+            addPhotos[count].setVisibility(View.VISIBLE);
+            addPhotos[count].setImageResource(R.mipmap.picture_add_icon);
+        }
+        setAddPhotosClickEvent(count);
+
     }
 
     /**
@@ -121,6 +144,53 @@ public class LineImageLayout extends FrameLayout {
         }
     }
 
+    /**
+     *
+     * @param index
+     */
+    public void deleteImageData(int index) {
+        int start = 0;
+        for (PictureBean bean : resultDatas) {
+            if(!bean.isDeleted() && start==index){
+                bean.setDeleted(true);
+                break;
+            }else{
+                start++;
+            }
+        }
+        refreshAllImage();
+    }
+
+    /**
+     * 计算当前图片数量
+     * @return
+     */
+    public int getCurrentPhotoSize(){
+        int count = 0;
+        for(PictureBean bean:resultDatas){
+            if(count>=addPhotos.length) break;//超过3帐
+            if (!bean.isDeleted()) {
+                count++;
+            }
+        }
+        photoCount = count;
+        return count;
+    }
+
+    @OnClick({R.id.iv_delete_1,R.id.iv_delete_2,R.id.iv_delete_3})
+    public void initDeleteBtnClickEvent(ImageView button){
+        switch (button.getId()){
+            case R.id.iv_delete_1:
+                deleteImageData(0);
+                break;
+            case R.id.iv_delete_2:
+                deleteImageData(1);
+                break;
+            case R.id.iv_delete_3:
+                deleteImageData(2);
+                break;
+        }
+    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         pickManger.onActivityResult(requestCode,resultCode,data);
