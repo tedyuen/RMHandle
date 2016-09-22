@@ -64,7 +64,7 @@ public class PointPicWOwifiService extends Service {
                                     pointWorkBeanDbUtil.changeNativeState(data.getWorkId(),data.getPoint(),"1","2");
                                 }catch (DaoException e) {
                                     e.printStackTrace();
-                                    pointWorkBeanDbUtil.changeNativeStateUnunique(data.getWorkId(), data.getPoint(), "1", "2");
+//                                    pointWorkBeanDbUtil.changeNativeStateUnunique(data.getWorkId(), data.getPoint(), "1", "2");
                                 }
                                 uploadSingle();
                             }else if (AppApiContact.ErrorCode.ERROR_LESS_FILE.equals(data.rescode)) {
@@ -72,6 +72,7 @@ public class PointPicWOwifiService extends Service {
                                 if(dataList!=null && dataList.size()>0){
                                     dataList.remove(0);
                                 }
+                                uploadSingle();
                             }
                         }
                     }
