@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.service;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
@@ -42,6 +43,7 @@ public class PointWorkNoPicService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         System.out.println("start PointWorkService!");
+//        init(intent,startId);
         String userId = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID);
         if(userId!=null){
             List<PointWorkBean> listBean = pointWorkBeanDbUtil.getUpload(userId,"0");//获取文字未提交信息
@@ -77,6 +79,9 @@ public class PointWorkNoPicService extends Service {
 
         return super.onStartCommand(intent, flags, startId);
     }
+
+
+
 
     @Override
     public void onDestroy() {

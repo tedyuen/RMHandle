@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.service;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -62,6 +63,7 @@ public class PointPicWOwifiService extends Service {
                                 }
                                 try{
                                     pointWorkBeanDbUtil.changeNativeState(data.getWorkId(),data.getPoint(),"1","2");
+                                    sendPointFinishMsg();
                                 }catch (DaoException e) {
                                     e.printStackTrace();
 //                                    pointWorkBeanDbUtil.changeNativeStateUnunique(data.getWorkId(), data.getPoint(), "1", "2");
@@ -160,12 +162,25 @@ public class PointPicWOwifiService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    private void init(Intent intent,int startId){
+        Notification notification = new Notification();
+        notification.flags = Notification.FLAG_ONGOING_EVENT;
+        notification.flags |= Notification.FLAG_NO_CLEAR;
+        notification.flags |= Notification.FLAG_FOREGROUND_SERVICE;
+        startForeground(101, notification);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
-
+    public void sendPointFinishMsg(){
+        Intent intent = new Intent("POINT_FINISHED_MSG");
+        intent.putExtra("msg","finished");
+        System.out.println("===> send point picture upload has finised message.");
+        sendBroadcast(intent);
+    }
 
     @Nullable
     @Override

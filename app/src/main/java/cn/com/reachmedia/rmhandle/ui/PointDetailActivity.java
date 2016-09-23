@@ -26,7 +26,7 @@ public class PointDetailActivity extends BaseAbstractActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        serviceIntent = new Intent(this, ForegroundService.class);
+        serviceIntent = new Intent(this, ForegroundService.class);
 //        startService(serviceIntent);
         System.out.println("===>start service ForegroundService");
     }
