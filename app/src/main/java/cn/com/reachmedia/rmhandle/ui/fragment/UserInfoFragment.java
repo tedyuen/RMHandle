@@ -1,6 +1,9 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -105,6 +108,10 @@ public class UserInfoFragment extends BaseToolbarFragment {
         needTitle();
         hideBackBtn();
         mIvBottom1.setImageLevel(2);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("POINT_FINISHED_MSG");
+        getActivity().registerReceiver(pointSynchronizeReceiver,filter);
     }
 
 
@@ -118,7 +125,7 @@ public class UserInfoFragment extends BaseToolbarFragment {
         tvUsername.setText(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_USER_NAME));
         tvUserinfo.setText("分部:"+mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_SPACE));
 
-        tvShangchuan.setText(pointWorkBeanDbUtil.getUnSynchronize()+"个未同步");
+        getShangchuan();
 
         try {
             tvGengxin.setText("v"+ AppVersionHelper.getVersionName(getContext())+" ");
@@ -128,6 +135,21 @@ public class UserInfoFragment extends BaseToolbarFragment {
         }
 
     }
+
+    public void getShangchuan(){
+        tvShangchuan.setText(pointWorkBeanDbUtil.getUnSynchronize()+"个未同步");
+    }
+
+    private BroadcastReceiver pointSynchronizeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals("POINT_FINISHED_MSG")){
+                String msg = intent.getStringExtra("msg");
+                System.out.println("point synchronize receiver:"+msg);
+                getShangchuan();
+            }
+        }
+    };
 
 
     @OnClick(R.id.ll_bottom_1)
@@ -202,6 +224,9 @@ public class UserInfoFragment extends BaseToolbarFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        if(pointSynchronizeReceiver!=null){
+            getActivity().unregisterReceiver(pointSynchronizeReceiver);
+        }
     }
 
 //    @OnClick(R.id.iv_head_portrait)

@@ -62,6 +62,7 @@ public class PointPicService extends Service {
                                 }
                                 try {
                                     pointWorkBeanDbUtil.changeNativeState(data.getWorkId(), data.getPoint(), "1", "2");
+                                    sendPointFinishMsg();
                                 } catch (DaoException e) {
                                     e.printStackTrace();
 //                                    pointWorkBeanDbUtil.changeNativeStateUnunique(data.getWorkId(), data.getPoint(), "1", "2");
@@ -167,6 +168,12 @@ public class PointPicService extends Service {
         super.onDestroy();
     }
 
+
+    public void sendPointFinishMsg(){
+        Intent intent = new Intent("POINT_FINISHED_MSG");
+        intent.putExtra("msg","finished");
+        sendBroadcast(intent);
+    }
 
 
     @Nullable
