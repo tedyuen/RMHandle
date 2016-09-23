@@ -142,15 +142,19 @@ public class PhotoPickerActivity extends AppCompatActivity {
         }
 
         if (item.getItemId() == R.id.done) {
-            Intent intent = new Intent();
-            ArrayList<String> selectedPhotos = pickerFragment.getPhotoGridAdapter().getSelectedPhotoPaths();
-            intent.putStringArrayListExtra(KEY_SELECTED_PHOTOS, selectedPhotos);
-            setResult(RESULT_OK, intent);
-            finish();
+            clickDone();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void clickDone(){
+        Intent intent = new Intent();
+        ArrayList<String> selectedPhotos = pickerFragment.getPhotoGridAdapter().getSelectedPhotoPaths();
+        intent.putStringArrayListExtra(KEY_SELECTED_PHOTOS, selectedPhotos);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
 

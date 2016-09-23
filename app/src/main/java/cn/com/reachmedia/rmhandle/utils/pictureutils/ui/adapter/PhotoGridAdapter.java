@@ -72,6 +72,19 @@ public class PhotoGridAdapter extends SelectableAdapter<PhotoGridAdapter.PhotoVi
         return holder;
     }
 
+    public void autoSelectFirstPhotoAndDone(){
+        List<Photo> photos = getCurrentPhotos();
+        final Photo photo = photos.get(0);
+        boolean isEnable=true;
+        if (onItemCheckListener != null) {
+            isEnable = onItemCheckListener.OnItemCheck(1, photo, isSelected(photo),
+                    getSelectedPhotos().size());
+        }
+        if (isEnable) {
+            toggleSelection(photo);
+            notifyItemChanged(1);
+        }
+    }
 
     @Override
     public void onBindViewHolder(final PhotoViewHolder holder, final int position) {

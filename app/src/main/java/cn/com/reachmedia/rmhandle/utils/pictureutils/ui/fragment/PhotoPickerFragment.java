@@ -2,6 +2,7 @@ package cn.com.reachmedia.rmhandle.utils.pictureutils.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.ListPopupWindow;
@@ -196,10 +197,20 @@ public class PhotoPickerFragment extends Fragment {
                 directory.getPhotos().add(INDEX_ALL_PHOTOS, new Photo(path.hashCode(), path));
                 directory.setCoverPath(path);
                 photoGridAdapter.notifyDataSetChanged();
+                photoGridAdapter.autoSelectFirstPhotoAndDone();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getPhotoActivity().clickDone();
+                    }
+                },800);
             }
         }
     }
 
+    public PhotoPickerActivity getPhotoActivity(){
+        return (PhotoPickerActivity) getActivity();
+    }
 
     public PhotoGridAdapter getPhotoGridAdapter() {
         return photoGridAdapter;
