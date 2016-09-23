@@ -2,6 +2,7 @@ package cn.com.reachmedia.rmhandle.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -190,5 +191,26 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
     @Override
     public Fragment getFragment() {
         return null;
+    }
+
+    private PowerManager pManager;
+    private PowerManager.WakeLock mWakeLock;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        pManager = ((PowerManager) getSystemService(POWER_SERVICE));
+        mWakeLock = pManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK
+                | PowerManager.ON_AFTER_RELEASE, TAG);
+        mWakeLock.acquire();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if(null != mWakeLock){
+            mWakeLock.release();
+        }
     }
 }
