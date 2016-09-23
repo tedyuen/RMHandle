@@ -9,10 +9,12 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllPagerActivity;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageMergePagerActivity;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImagePagerActivity;
+import cn.com.reachmedia.rmhandle.ui.view.imagepager.NewImageAllPagerActivity;
 
 /**
  * Author:    tedyuen
@@ -76,6 +78,20 @@ public class ViewHelper {
 
         ImageAllPagerActivity.imageData = imageDatas;
 
+        context.startActivity(intent);
+    }
+
+    public static void getNewAllImagePager(Context context,List<PictureBean> resultDatas,int index,int maxCount){
+        Intent intent = new Intent();
+        intent.setClass(context.getApplicationContext(), NewImageAllPagerActivity.class);
+        intent.putExtra("image_index", index);
+        List<PictureBean> result = new ArrayList<>();
+        for(int i=0;i<Math.min(maxCount,resultDatas.size());i++){
+            if(!resultDatas.get(0).isDeleted()){
+                result.add(resultDatas.get(0));
+            }
+        }
+        NewImageAllPagerActivity.resultDatas = result;
         context.startActivity(intent);
     }
 

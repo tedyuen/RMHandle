@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -63,8 +67,6 @@ public class LineImageLayout extends FrameLayout {
 
 
     }
-
-
 
     /**
      * 更新添加图片点击按钮事件
@@ -148,17 +150,34 @@ public class LineImageLayout extends FrameLayout {
      *
      * @param index
      */
-    public void deleteImageData(int index) {
-        int start = 0;
-        for (PictureBean bean : resultDatas) {
-            if(!bean.isDeleted() && start==index){
-                bean.setDeleted(true);
-                break;
-            }else{
-                start++;
-            }
-        }
-        refreshAllImage();
+    public void deleteImageData(final int index) {
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.dialog_title_del_photo)
+                .negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .positiveText("确定")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        int start = 0;
+                        for (PictureBean bean : resultDatas) {
+                            if(!bean.isDeleted()){
+                                if(start==index){
+                                    bean.setDeleted(true);
+                                    break;
+                                }else{
+                                    start++;
+                                }
+                            }
+                        }
+                        refreshAllImage();
+                    }
+                }).show();
     }
 
     /**
