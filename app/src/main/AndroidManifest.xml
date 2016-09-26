@@ -126,8 +126,11 @@
             android:screenOrientation="portrait">
         </activity>
 
-
-
+        <activity android:name=".ui.ImageCacheActivity"
+            android:theme="@style/AppTheme.Toolbar"
+            android:screenOrientation="portrait"
+            android:label="@string/title_image_cache">
+        </activity>
 
         <activity android:name=".ui.LoginActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.Toolbar">
             <intent-filter>

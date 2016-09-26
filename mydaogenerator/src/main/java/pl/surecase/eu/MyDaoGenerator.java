@@ -14,14 +14,25 @@ public class MyDaoGenerator {
 
 
     public static void main(String args[]) throws Exception {
-        Schema schema = new Schema(2, "cn.com.reachmedia.rmhandle.bean");
+        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
         schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
 
         initPointBean(schema);
         initPointWorkBean(schema);
         initCommDoorPicBean(schema);
+        initImageCacheBean(schema);
         new DaoGenerator().generateAll(schema, args[0]);
 //        testSpilt();
+    }
+
+    private static void initImageCacheBean(Schema schema){
+        Entity imageCacheBean = schema.addEntity("ImageCacheBean");//table name
+        imageCacheBean.addLongProperty("id").primaryKey().index().autoincrement();
+        imageCacheBean.addStringProperty("url");
+        imageCacheBean.addStringProperty("path");
+        imageCacheBean.addDateProperty("start_time");
+        imageCacheBean.addDateProperty("create_time");
+        imageCacheBean.addLongProperty("index");
     }
 
     private static void initPointBean(Schema schema){

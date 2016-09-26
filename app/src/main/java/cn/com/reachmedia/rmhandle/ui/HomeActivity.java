@@ -223,7 +223,12 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
 
     @OnClick(R.id.rl_info)
     public void goTaskInfo() {
-        startActivity(new Intent(this, TaskInforActivity.class));
+//        startActivity(new Intent(this, TaskInforActivity.class));
+        if(AppNetworkInfo.isWifi(this)){
+            startActivity(new Intent(this, ImageCacheActivity.class));
+        }else{
+            ToastHelper.showAlert(this,"图片缓存需要在Wi-Fi环境下进行");
+        }
     }
 
     @OnClick(R.id.rl_filter)
