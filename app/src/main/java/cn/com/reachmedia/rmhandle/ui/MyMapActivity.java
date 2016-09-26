@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -57,6 +58,9 @@ public class MyMapActivity extends BaseActionBarActivity {
     @Bind(R.id.toolbar_title)
     TextView toolbarTitle;
 
+    @Bind(R.id.rl_right_img)
+    RelativeLayout rlRightImg;
+
     Map<Integer,MyMapTabFragment> fragmentMap;
 
     @Override
@@ -65,6 +69,7 @@ public class MyMapActivity extends BaseActionBarActivity {
 //        SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_map_tab);
         ButterKnife.bind(this);
+        rlRightImg.setVisibility(View.VISIBLE);
         setSupportActionBar(mToolbar);
         needTitle();
         fragmentMap = new HashMap<>();
@@ -167,4 +172,9 @@ public class MyMapActivity extends BaseActionBarActivity {
     }
 
 
+
+    @OnClick(R.id.rl_right_img)
+    public void goTaskInfo() {
+        startActivity(new Intent(this, TaskInforActivity.class));
+    }
 }

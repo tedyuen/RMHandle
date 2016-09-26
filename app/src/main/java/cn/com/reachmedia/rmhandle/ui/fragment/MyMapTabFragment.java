@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -30,6 +32,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppParamContact;
@@ -40,6 +43,7 @@ import cn.com.reachmedia.rmhandle.model.param.TaskMapParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.TaskMapController;
 import cn.com.reachmedia.rmhandle.ui.ApartmentPointActivity;
+import cn.com.reachmedia.rmhandle.ui.TaskInforActivity;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 
@@ -69,6 +73,8 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
     BaiduMap mBaiduMap;
     MapStatus ms;
 
+    @Bind(R.id.rl_right_img)
+    RelativeLayout rlRightImg;
 
     TaskMapController taskMapController;
 
@@ -106,6 +112,8 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.bmap_layout, container, false);
         ButterKnife.bind(this, rootView);
+        rlRightImg.setVisibility(View.VISIBLE);
+
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
         needTitle();
 
@@ -287,10 +295,12 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
     public void onSuccessDisplay(TaskMapModel data) {
         if (data != null) {
             if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
-                tvCommunity.setText("小区:"+data.getComNumber()+"/"+data.getComCount());
-                tvPoint.setText("点位:"+data.getPointNumber()+"/"+data.getPointCount());
+                if(tvCommunity!=null){
+                    tvCommunity.setText("小区:"+data.getComNumber()+"/"+data.getComCount());
+                    tvPoint.setText("点位:"+data.getPointNumber()+"/"+data.getPointCount());
 
-                initOverlay(data.getCList());
+                    initOverlay(data.getCList());
+                }
             }
         }
     }
@@ -311,5 +321,11 @@ public class MyMapTabFragment extends BaseToolbarFragment implements BaiduMap.On
     @Override
     protected int getLayoutResId() {
         return 0;
+    }
+
+    @OnClick(R.id.rl_right_img)
+    public void goTaskInfo() {
+        startActivity(new Intent(getActivity(), TaskInforActivity.class));
+
     }
 }

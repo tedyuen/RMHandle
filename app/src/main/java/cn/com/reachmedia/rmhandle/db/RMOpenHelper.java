@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import cn.com.reachmedia.rmhandle.dao.CommDoorPicBeanDao;
 import cn.com.reachmedia.rmhandle.dao.DaoMaster;
+import cn.com.reachmedia.rmhandle.dao.ImageCacheBeanDao;
 import cn.com.reachmedia.rmhandle.dao.PointBeanDao;
 import cn.com.reachmedia.rmhandle.dao.PointWorkBeanDao;
 
@@ -34,7 +35,7 @@ public class RMOpenHelper extends DaoMaster.OpenHelper{
                 PointBeanDao.createTable(db, true);
                 PointWorkBeanDao.createTable(db, true);
                 CommDoorPicBeanDao.createTable(db, true);
-
+                ImageCacheBeanDao.createTable(db,true);
                 // 加入新字段
                 // db.execSQL("ALTER TABLE 'moments' ADD 'audio_path' TEXT;");
 
@@ -42,6 +43,10 @@ public class RMOpenHelper extends DaoMaster.OpenHelper{
                 break;
             case 2:
                 CommDoorPicBeanDao.createTable(db, true);
+                ImageCacheBeanDao.createTable(db,true);
+                break;
+            case 3:
+                ImageCacheBeanDao.createTable(db,true);
                 break;
         }
     }
