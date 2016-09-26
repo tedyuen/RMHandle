@@ -12,6 +12,7 @@ public class ImageCacheBean {
     private java.util.Date start_time;
     private java.util.Date create_time;
     private Long index;
+    private String community_id;
 
     public ImageCacheBean() {
     }
@@ -20,13 +21,14 @@ public class ImageCacheBean {
         this.id = id;
     }
 
-    public ImageCacheBean(Long id, String url, String path, java.util.Date start_time, java.util.Date create_time, Long index) {
+    public ImageCacheBean(Long id, String url, String path, java.util.Date start_time, java.util.Date create_time, Long index, String community_id) {
         this.id = id;
         this.url = url;
         this.path = path;
         this.start_time = start_time;
         this.create_time = create_time;
         this.index = index;
+        this.community_id = community_id;
     }
 
     public Long getId() {
@@ -75,6 +77,14 @@ public class ImageCacheBean {
 
     public void setIndex(Long index) {
         this.index = index;
+    }
+
+    public String getCommunity_id() {
+        return community_id;
+    }
+
+    public void setCommunity_id(String community_id) {
+        this.community_id = community_id;
     }
 
 }

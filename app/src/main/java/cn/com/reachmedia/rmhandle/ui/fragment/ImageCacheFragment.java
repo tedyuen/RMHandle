@@ -31,8 +31,18 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         ButterKnife.bind(this, rootView);
         needTitle();
 
+
         return rootView;
     }
+
+
+
+
+
+
+
+
+
 
     @Override
     protected int getLayoutResId() {

@@ -29,6 +29,7 @@ public class ImageCacheBeanDao extends AbstractDao<ImageCacheBean, Long> {
         public final static Property Start_time = new Property(3, java.util.Date.class, "start_time", false, "START_TIME");
         public final static Property Create_time = new Property(4, java.util.Date.class, "create_time", false, "CREATE_TIME");
         public final static Property Index = new Property(5, Long.class, "index", false, "INDEX");
+        public final static Property Community_id = new Property(6, String.class, "community_id", false, "COMMUNITY_ID");
     };
 
 
@@ -49,7 +50,8 @@ public class ImageCacheBeanDao extends AbstractDao<ImageCacheBean, Long> {
                 "'PATH' TEXT," + // 2: path
                 "'START_TIME' INTEGER," + // 3: start_time
                 "'CREATE_TIME' INTEGER," + // 4: create_time
-                "'INDEX' INTEGER);"); // 5: index
+                "'INDEX' INTEGER," + // 5: index
+                "'COMMUNITY_ID' TEXT);"); // 6: community_id
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_IMAGE_CACHE_BEAN_ID ON IMAGE_CACHE_BEAN" +
                 " (ID);");
@@ -95,6 +97,11 @@ public class ImageCacheBeanDao extends AbstractDao<ImageCacheBean, Long> {
         if (index != null) {
             stmt.bindLong(6, index);
         }
+ 
+        String community_id = entity.getCommunity_id();
+        if (community_id != null) {
+            stmt.bindString(7, community_id);
+        }
     }
 
     /** @inheritdoc */
@@ -112,7 +119,8 @@ public class ImageCacheBeanDao extends AbstractDao<ImageCacheBean, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // path
             cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // start_time
             cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // create_time
-            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5) // index
+            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // index
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // community_id
         );
         return entity;
     }
@@ -126,6 +134,7 @@ public class ImageCacheBeanDao extends AbstractDao<ImageCacheBean, Long> {
         entity.setStart_time(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
         entity.setCreate_time(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
         entity.setIndex(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
+        entity.setCommunity_id(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
      }
     
     /** @inheritdoc */

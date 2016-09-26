@@ -33,6 +33,7 @@ public class MyDaoGenerator {
         imageCacheBean.addDateProperty("start_time");
         imageCacheBean.addDateProperty("create_time");
         imageCacheBean.addLongProperty("index");
+        imageCacheBean.addStringProperty("community_id");
     }
 
     private static void initPointBean(Schema schema){
