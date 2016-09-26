@@ -86,6 +86,24 @@
                     />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/rl_right_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:layout_alignParentRight="true"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/iv_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:scaleType="center"
+                    android:src="@mipmap/bar_info_icon"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    />
+            </RelativeLayout>
+
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
