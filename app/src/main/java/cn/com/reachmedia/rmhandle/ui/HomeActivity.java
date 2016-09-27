@@ -44,6 +44,7 @@ import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarActivity;
 import cn.com.reachmedia.rmhandle.ui.fragment.HomeTabFragment;
 import cn.com.reachmedia.rmhandle.ui.interf.HomeUiDataUpdate;
 import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
+import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
@@ -386,6 +387,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
 
     @OnClick(R.id.bt_logout)
     public void sendRefresh() {
+        ImageCacheUtils.getInstance().cleanData();
         if (!homeFilterUtil.startTime.equals(tv_start_time.getText().toString())) {// 时间改变了
             if (tv_custom.getText().toString().equals(homeFilterUtil.defaultC)) {
                 homeFilterUtil.currentCustomer = homeFilterUtil.defaultC;
