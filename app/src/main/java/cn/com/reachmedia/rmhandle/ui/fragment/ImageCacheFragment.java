@@ -41,6 +41,10 @@ public class ImageCacheFragment extends BaseToolbarFragment {
     RelativeLayout rlRightImg;
     @Bind(R.id.iv_top_shadow)
     ImageView ivTopShadow;
+    @Bind(R.id.tv_detail2)
+    TextView tvDetail2;
+    @Bind(R.id.tv_image_count)
+    TextView tvImageCount;
     private ImageCacheUtils imageCacheUtils;
 
     public static ImageCacheFragment newInstance() {
@@ -62,7 +66,7 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         imageCacheUtils = ImageCacheUtils.getInstance();
         imageCacheUtils.mergeCommunityAB();//合并小区数据
         totalCommunityCount = imageCacheUtils.getCommunityIds().size();
-        if(imageCacheUtils.getCommunityIds()!=null && imageCacheUtils.getCommunityIds().size()>0){
+        if (imageCacheUtils.getCommunityIds() != null && imageCacheUtils.getCommunityIds().size() > 0) {
             imageCacheUtils.getImageCacheResBeens().clear();//清除图片数据
             getPointData();
         }
@@ -71,13 +75,13 @@ public class ImageCacheFragment extends BaseToolbarFragment {
 
     private int totalCommunityCount;
 
-    private void setCommunityCount(){
-        int tempCount = totalCommunityCount-imageCacheUtils.getCommunityIds().size();
-        tvCommunityCount.setText("小区: "+tempCount+"/"+totalCommunityCount);
+    private void setCommunityCount() {
+        int tempCount = totalCommunityCount - imageCacheUtils.getCommunityIds().size();
+        tvCommunityCount.setText("小区: " + tempCount + "/" + totalCommunityCount);
     }
 
     public void getPointData() {
-        if(getActivity()==null) return;
+        if (getActivity() == null) return;
         setCommunityCount();
         if (imageCacheUtils.getCommunityIds() != null && imageCacheUtils.getCommunityIds().size() > 0) {
 
@@ -146,7 +150,11 @@ public class ImageCacheFragment extends BaseToolbarFragment {
             pointListController.getTaskIndex(param);
 
         } else {//点位数据加载完毕
-            tvDetail.setText("小区数据加载完毕,总共"+imageCacheUtils.getImageCacheResBeens().size()+"张图片需要缓存");
+            tvDetail2.setText("小区数据加载完毕,总共" + imageCacheUtils.getImageCacheResBeens().size() + "张图片需要缓存");
+            tvDetail.setText("正在下载图片...");
+            tvImageCount.setVisibility(View.VISIBLE);
+
+
 
         }
 
