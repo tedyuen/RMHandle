@@ -23,6 +23,7 @@ import cn.com.reachmedia.rmhandle.ui.adapter.HomeTabFragmentAdapter;
 import cn.com.reachmedia.rmhandle.ui.interf.HomeUiDataUpdate;
 import cn.com.reachmedia.rmhandle.ui.view.PageListView;
 import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
+import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 
@@ -114,6 +115,7 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
                     updateListener.updateTabCount(data.getOngoing(),data.getFinish());
                 }
                 for(TaskIndexModel.PListBean pListBean:data.getPList()){
+                    ImageCacheUtils.getInstance().addCommunityIds(pListBean.getCommunityid(),listType);
                     for(TaskIndexModel.PListBean.CListBean cListBean:pListBean.getCList()){
                         homeFilterUtil.customers.add(cListBean.getCname());
                         homeFilterUtil.customersMap.put(cListBean.getCname(),cListBean.getCid()+"");
@@ -143,6 +145,11 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
     @Override
     public void onRefresh() {
         if(taskIndexController!=null){
+            if(listType==AppSpContact.SP_KEY_UNDONE){
+                ImageCacheUtils.getInstance().getCommunityIdsA().clear();
+            }else if(listType==AppSpContact.SP_KEY_DONE){
+                ImageCacheUtils.getInstance().getCommunityIdsB().clear();
+            }
             mPageListView.setState(PageListView.PageListViewState.Loading);
             param.state = listType;
             param.startime = homeFilterUtil.startTime;
