@@ -145,7 +145,9 @@ public class PointPicWOwifiService extends Service {
                 communityDoorXY = bean.getDoorpicXY()==null?"":bean.getDoorpicXY();
                 communityDoorTime = bean.getDoorpicTime()==null?"":bean.getDoorpicTime();
 
-                uploadPicController.uploadPic(uploadPicParam,file1,file2,file3,doorFile,file1Id,file2Id,file3Id,communityDoorId,communityDoorXY,communityDoorTime);
+                if(AppNetworkInfo.isWifi(getApplicationContext())) {
+                    uploadPicController.uploadPic(uploadPicParam, file1, file2, file3, doorFile, file1Id, file2Id, file3Id, communityDoorId, communityDoorXY, communityDoorTime);
+                }
             }
         }
     }
