@@ -62,4 +62,14 @@ public class ImageCacheResBean {
     public void setCommunityId(String communityId) {
         this.communityId = communityId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return url.equals(((ImageCacheResBean)o).getUrl());
+    }
+
+    @Override
+    public int hashCode() {
+        return url.hashCode();
+    }
 }

@@ -29,14 +29,25 @@ public class MyDaoGenerator {
             }
         }
         return null;
+
+//        String msg = "本次获取的验证码，为(123Ab679)。请保存好不要丢失123ej";
+//        String keyword = "";
+//        int keylength = 8;
+//        testMsg(msg,keyword,keylength);
+    }
+
+    private static void hashCodeTest(){
+        String url1 = "abcefghjil";
+        String url2 = "abcefghjil";
+        String url3 = "abcefghjil1abcefghjil1abcefghjil1abcefghjil1";
+        System.out.println(url1.hashCode());
+        System.out.println(url2.hashCode());
+        System.out.println(url3.hashCode());
     }
 
 
     public static void main(String args[]) throws Exception {
-        String msg = "本次获取的验证码，为(123Ab679)。请保存好不要丢失123ej";
-        String keyword = "";
-        int keylength = 8;
-        testMsg(msg,keyword,keylength);
+        hashCodeTest();
 //        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
 //        schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
 //
