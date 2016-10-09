@@ -112,6 +112,9 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     ImageView iv_apart_photo_3;
     @Bind(R.id.iv_apart_photo_4)
     ImageView iv_apart_photo_4;
+    @Bind(R.id.iv_info)
+    ImageView iv_info;
+
     ImageView[] gatePhotos;
     ImageView[] pestPhotos;
 
@@ -142,6 +145,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         setSupportActionBar(mToolbar);
         Intent intent = getIntent();
         activity = this;
+        iv_info.setImageResource(R.mipmap.imported_layers);
         if(intent!=null){
             enterType = intent.getBooleanExtra(AppParamContact.PARAM_KEY_TYPE,false);
             if(enterType){
