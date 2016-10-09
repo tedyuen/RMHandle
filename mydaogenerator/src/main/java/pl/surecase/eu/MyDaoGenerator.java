@@ -19,7 +19,7 @@ public class MyDaoGenerator {
 //        String regEx="[A-Z,a-z,0-9]*";
         String regEx="^[a-z0-9A-Z]+$";
 
-        for(int i=0;i<temp.length();i++){
+        for(int i=0;i<temp.length()-keylength+1;i++){
             String subStr = temp.substring(i,i+keylength);
 //            boolean flag = Pattern.compile(regEx).matcher(subStr).find();
             boolean flag = subStr.matches(regEx);
@@ -33,8 +33,8 @@ public class MyDaoGenerator {
 
 
     public static void main(String args[]) throws Exception {
-        String msg = "本次获取的验证码，为(12345679)。请保存好不要丢失123ej";
-        String keyword = "验证码";
+        String msg = "本次获取的验证码，为(123Ab679)。请保存好不要丢失123ej";
+        String keyword = "";
         int keylength = 8;
         testMsg(msg,keyword,keylength);
 //        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
