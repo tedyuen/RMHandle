@@ -1,6 +1,7 @@
 package cn.com.reachmedia.rmhandle.utils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
@@ -22,7 +23,7 @@ public class ImageCacheUtils {
             instance.communityIds = new ArrayList<>();
             instance.communityIdsA = new ArrayList<>();
             instance.communityIdsB = new ArrayList<>();
-            instance.imageCacheResBeens = new ArrayList<>();
+            instance.imageCacheResBeens = new LinkedHashSet<>();
         }
         return instance;
     }
@@ -32,7 +33,7 @@ public class ImageCacheUtils {
     private List<String> communityIdsA;
     private List<String> communityIdsB;
     //需要下载的所有图片信息
-    private List<ImageCacheResBean> imageCacheResBeens;
+    private LinkedHashSet<ImageCacheResBean> imageCacheResBeens;
 
     //清空查询条件
     public void cleanData(){
@@ -63,11 +64,11 @@ public class ImageCacheUtils {
         imageCacheResBeens.add(bean);
     }
 
-    public List<ImageCacheResBean> getImageCacheResBeens() {
+    public LinkedHashSet<ImageCacheResBean> getImageCacheResBeens() {
         return imageCacheResBeens;
     }
 
-    public void setImageCacheResBeens(List<ImageCacheResBean> imageCacheResBeens) {
+    public void setImageCacheResBeens(LinkedHashSet<ImageCacheResBean> imageCacheResBeens) {
         this.imageCacheResBeens = imageCacheResBeens;
     }
 

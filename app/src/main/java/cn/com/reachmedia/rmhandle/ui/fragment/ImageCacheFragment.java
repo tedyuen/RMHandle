@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.bean.ImageCacheBean;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.model.param.PointListParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
@@ -33,6 +34,9 @@ public class ImageCacheFragment extends BaseToolbarFragment {
     TextView tvDetail;
     @Bind(R.id.tv_community_count)
     TextView tvCommunityCount;
+    @Bind(R.id.tv_detail_url)
+    TextView tv_detail_url;
+
     @Bind(R.id.rl_right_text)
     RelativeLayout rlRightText;
     @Bind(R.id.iv_info)

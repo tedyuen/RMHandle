@@ -2,42 +2,52 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
-    <LinearLayout
-        android:layout_marginTop="?attr/actionBarSize"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/activity_horizontal_margin"
-        android:orientation="vertical">
+        android:layout_marginTop="?attr/actionBarSize"
+        >
 
-        <TextView
-            android:id="@+id/tv_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="正在获取缓存信息..."/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_community_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="小区: 0/0"/>
+            <TextView
+                android:id="@+id/tv_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正在获取缓存信息..."/>
 
-        <TextView
-            android:id="@+id/tv_detail2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            />
+            <TextView
+                android:id="@+id/tv_community_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="小区: 0/0"/>
 
-        <TextView
-            android:id="@+id/tv_image_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:visibility="gone"
-            android:text="图片: 0/0"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_detail2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_image_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:text="图片: 0/0"/>
+            <TextView
+                android:id="@+id/tv_detail_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+
 
     <include layout="@layout/tool_bar_base"/>
 
