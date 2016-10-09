@@ -1,5 +1,7 @@
 package pl.surecase.eu;
 
+import java.util.regex.Pattern;
+
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Schema;
@@ -12,17 +14,37 @@ public class MyDaoGenerator {
         System.out.println(str.split("@&")[0]);
     }
 
+    private static String testMsg(String msg,String keyword,int keylength){
+        String temp = msg.substring(msg.indexOf(keyword.trim()));
+//        String regEx="[A-Z,a-z,0-9]*";
+        String regEx="^[a-z0-9A-Z]+$";
+
+        for(int i=0;i<temp.length();i++){
+            String subStr = temp.substring(i,i+keylength);
+//            boolean flag = Pattern.compile(regEx).matcher(subStr).find();
+            boolean flag = subStr.matches(regEx);
+            System.out.println("substr: "+i+":"+flag+" : "+subStr);
+            if(flag){
+                return subStr;
+            }
+        }
+        return null;
+    }
+
 
     public static void main(String args[]) throws Exception {
-        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
-        schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
-
-        initPointBean(schema);
-        initPointWorkBean(schema);
-        initCommDoorPicBean(schema);
-        initImageCacheBean(schema);
-        new DaoGenerator().generateAll(schema, args[0]);
-//        testSpilt();
+        String msg = "本次获取的验证码，为(12345679)。请保存好不要丢失123ej";
+        String keyword = "验证码";
+        int keylength = 8;
+        testMsg(msg,keyword,keylength);
+//        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
+//        schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
+//
+//        initPointBean(schema);
+//        initPointWorkBean(schema);
+//        initCommDoorPicBean(schema);
+//        initImageCacheBean(schema);
+//        new DaoGenerator().generateAll(schema, args[0]);
     }
 
     private static void initImageCacheBean(Schema schema){
