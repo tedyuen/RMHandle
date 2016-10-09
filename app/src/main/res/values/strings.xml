@@ -30,6 +30,7 @@
     <string name="btn_text_shangkan_done">上刊完成</string>
     <string name="btn_text_cant_enter">无法进入</string>
     <string name="btn_text_report_question">报修</string>
+    <string name="btn_text_show_webview">显示详情</string>
 
     <string name="quit_redo">再按一次退出程序</string>
 

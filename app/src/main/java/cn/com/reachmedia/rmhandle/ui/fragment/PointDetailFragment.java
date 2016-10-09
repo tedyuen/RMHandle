@@ -121,6 +121,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
     Button btCantEnter;
     @Bind(R.id.bt_report_question)
     Button btReportQuestion;
+    @Bind(R.id.bt_show_webview)
+    Button btShowWebview;
+
     @Bind(R.id.iv_left_text)
     TextView ivLeftText;
     @Bind(R.id.rl_left_text)
@@ -165,6 +168,8 @@ public class PointDetailFragment extends BaseToolbarFragment {
     private int photoCount;
     private int photoName;
     private int photoMaxCount = 4;
+
+    private String webViewStr;
 
     public static PointDetailFragment newInstance() {
         PointDetailFragment fragment = new PointDetailFragment();
@@ -455,9 +460,14 @@ public class PointDetailFragment extends BaseToolbarFragment {
         for (PointListModel.ComListBean comBean : pointListModel.getComList()) {
             if (comBean.getCid().trim().equals(cid)) {
                 tvCname.setText(comBean.getCname());
-                wbMemo.getSettings().setDefaultTextEncodingName("utf-8");
-                wbMemo.loadDataWithBaseURL("", comBean.getMemo(), "text/html", "utf-8", "");
-
+//                wbMemo.getSettings().setDefaultTextEncodingName("utf-8");
+//                wbMemo.loadDataWithBaseURL("", comBean.getMemo(), "text/html", "utf-8", "");
+                webViewStr = comBean.getMemo();
+                if(StringUtils.isEmpty(webViewStr)){
+                    btShowWebview.setVisibility(View.GONE);
+                }else{
+                    btShowWebview.setVisibility(View.VISIBLE);
+                }
                 if (comBean.getPicList() == null || comBean.getPicList().size() == 0) {
                     ll_cust_photo.setVisibility(View.GONE);
                 } else {
@@ -509,6 +519,20 @@ public class PointDetailFragment extends BaseToolbarFragment {
         mergeLocalPhoto();
         initPhoto();
         initStateType();
+
+    }
+
+    @OnClick(R.id.bt_show_webview)
+    public void clickShowWebView(){
+        showWebview();
+    }
+
+    private void showWebview(){
+        if(!StringUtils.isEmpty(webViewStr)){
+            wbMemo.getSettings().setDefaultTextEncodingName("utf-8");
+            wbMemo.loadDataWithBaseURL("", webViewStr, "text/html", "utf-8", "");
+            btShowWebview.setVisibility(View.GONE);
+        }
 
     }
 
