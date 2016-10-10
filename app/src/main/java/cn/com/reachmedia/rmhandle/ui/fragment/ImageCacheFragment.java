@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import butterknife.Bind;
@@ -157,12 +166,96 @@ public class ImageCacheFragment extends BaseToolbarFragment {
             tvDetail2.setText("小区数据加载完毕,总共" + imageCacheUtils.getImageCacheResBeens().size() + "张图片需要缓存");
             tvDetail.setText("正在下载图片...");
             tvImageCount.setVisibility(View.VISIBLE);
-
+            DownloadImgTask task = new DownloadImgTask();
+            task.execute(imageCacheUtils.getImageCacheResBeens());
 
 
         }
 
 
+    }
+
+
+    public class DownloadImgTask extends AsyncTask<LinkedHashSet<ImageCacheResBean>,Integer,Boolean>{
+
+        private int fileSize = 0;
+
+        @Override
+        protected Boolean doInBackground(LinkedHashSet<ImageCacheResBean>... linkedHashSets) {
+            if(linkedHashSets!=null && linkedHashSets.length>0){
+                fileSize = linkedHashSets[0].size();
+                Iterator<ImageCacheResBean> iterator = linkedHashSets[0].iterator();
+                while (iterator.hasNext()){
+                    ImageCacheResBean bean = iterator.next();
+                    System.out.println("==>"+bean.getUrl());
+
+
+                    publishProgress(1);
+                }
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            fileSize--;
+            System.out.println(fileSize);
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if(aBoolean){
+                tv_detail_url.setText("图片下载完成");
+            }else{
+                tv_detail_url.setText("图片下载失败,请重试!");
+            }
+        }
+    }
+
+
+    public static void downloadFile(String _url){
+        String newFilename = "";
+        File file = new File(newFilename);
+        //如果目标文件已经存在，则删除。产生覆盖旧文件的效果
+        if(file.exists())
+        {
+            file.delete();
+        }
+        try {
+            // 构造URL
+            URL url = new URL(_url);
+            // 打开连接
+            URLConnection con = url.openConnection();
+            //获得文件的长度
+            int contentLength = con.getContentLength();
+            System.out.println("长度 :"+contentLength);
+            // 输入流
+            InputStream is = con.getInputStream();
+            // 1K的数据缓冲
+            byte[] bs = new byte[1024];
+            // 读取到的数据长度
+            int len;
+            // 输出的文件流
+            OutputStream os = new FileOutputStream(newFilename);
+            // 开始读取
+            while ((len = is.read(bs)) != -1) {
+                os.write(bs, 0, len);
+            }
+            // 完毕，关闭所有链接
+            os.close();
+            is.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String generateFileName(String url){
+
+        return null;
     }
 
 
@@ -176,4 +269,8 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+
+
+
 }
