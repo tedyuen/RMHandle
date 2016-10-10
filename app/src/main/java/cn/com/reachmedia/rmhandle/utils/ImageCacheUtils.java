@@ -1,11 +1,17 @@
 package cn.com.reachmedia.rmhandle.utils;
 
+import android.widget.ImageView;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.bean.ImageCacheBean;
+import cn.com.reachmedia.rmhandle.db.helper.ImageCacheDaoHelper;
 import cn.com.reachmedia.rmhandle.ui.bean.ImageCacheResBean;
+import cn.com.reachmedia.rmhandle.utils.pictureutils.utils.SimpleImageLoader;
 
 /**
  * Created by tedyuen on 16-9-26.
@@ -49,7 +55,18 @@ public class ImageCacheUtils {
         communityIds.addAll(communityIdsB);
     }
 
-
+    public static boolean displayImage(String url, ImageView imageView){
+        ImageCacheBean bean = ImageCacheDaoHelper.getInstance().getBeanByUrl(url);
+        if(bean!=null && !StringUtils.isEmpty(bean.getPath())){
+            File file = new File(bean.getPath());
+            if(file.exists()){
+                SimpleImageLoader.displayImage(file,imageView);
+                System.out.println("local path: "+url);
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     public void addCommunityIds(String cId,int type){
