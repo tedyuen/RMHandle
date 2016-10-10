@@ -1,6 +1,10 @@
 package cn.com.reachmedia.rmhandle.ui.bean;
 
 
+import cn.com.reachmedia.rmhandle.bean.ImageCacheBean;
+import cn.com.reachmedia.rmhandle.db.helper.ImageCacheDaoHelper;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
+
 /**
  * Created by tedyuen on 16-9-27.
  */
@@ -21,6 +25,34 @@ public class ImageCacheResBean {
             startTime = initData[0];
             communityId = initData[1];
         }
+    }
+
+    public ImageCacheBean returnBean(ImageCacheDaoHelper imageCacheDaoHelper){
+        ImageCacheBean bean = imageCacheDaoHelper.getBeanByUrl(url);
+        if(bean==null){
+            bean = new ImageCacheBean(url,path,
+                    TimeUtils.simpleDateParse(startTime,"yyyy-MM-dd"),
+                    TimeUtils.simpleDateParse(createTime,"yyyy-MM-dd"),
+                    0l,communityId);
+        }
+        return bean;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("communityId:");
+        buffer.append(communityId);
+        buffer.append("\tstartTime:");
+        buffer.append(startTime);
+        buffer.append("\tcreateTime:");
+        buffer.append(createTime);
+        buffer.append("\turl:");
+        buffer.append(url);
+        buffer.append("\tpath:");
+        buffer.append(path);
+
+        return buffer.toString();
     }
 
     public String getUrl() {

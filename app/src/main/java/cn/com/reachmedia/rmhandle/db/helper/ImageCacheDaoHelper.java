@@ -100,4 +100,13 @@ public class ImageCacheDaoHelper implements DaoHelperInterface {
             imageCacheBeanDao.update((ImageCacheBean) t);
         }
     }
+
+    public ImageCacheBean getBeanByUrl(String url){
+        ImageCacheBean bean = imageCacheBeanDao.queryBuilder()
+                .where(ImageCacheBeanDao.Properties.Url.eq(url))
+                .limit(1)
+                .unique();
+        return bean;
+    }
+
 }
