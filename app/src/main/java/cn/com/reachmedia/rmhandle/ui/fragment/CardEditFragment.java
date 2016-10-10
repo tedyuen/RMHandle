@@ -60,6 +60,7 @@ import cn.com.reachmedia.rmhandle.ui.view.ProportionImageView;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 import cn.com.reachmedia.rmhandle.utils.CropImageUtils;
+import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.PhotoSavePathUtil;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
@@ -162,8 +163,10 @@ public class CardEditFragment extends BaseToolbarFragment {
         for(int i=0;i<preGate.length;i++){
             if(i<gatePhotos.length){
                 if(!StringUtils.isEmpty(preGate[i])){
-                    Picasso.with(getContext()).load(preGate[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(gatePhotos[i]);
-                    System.out.println("本地环境图片path 1: "+i+":"+preGate[i]);
+                    if(!ImageCacheUtils.getInstance().displayImage(preGate[i],gatePhotos[i])) {
+                        Picasso.with(getContext()).load(preGate[i]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(gatePhotos[i]);
+                    }
+//                    System.out.println("本地环境图片path 1: "+i+":"+preGate[i]);
 
                 }
             }
@@ -171,9 +174,10 @@ public class CardEditFragment extends BaseToolbarFragment {
         for(int i=0;i<prePest.length;i++){
             if(i<pestPhotos.length){
                 if(!StringUtils.isEmpty(prePest[i])){
-                    System.out.println("本地环境图片path 2: "+i+":"+preGate[i]);
-
-                    Picasso.with(getContext()).load(prePest[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(pestPhotos[i]);
+//                    System.out.println("本地环境图片path 2: "+i+":"+preGate[i]);
+                    if(!ImageCacheUtils.getInstance().displayImage(prePest[i],pestPhotos[i])) {
+                        Picasso.with(getContext()).load(prePest[i]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(pestPhotos[i]);
+                    }
                 }
             }
         }

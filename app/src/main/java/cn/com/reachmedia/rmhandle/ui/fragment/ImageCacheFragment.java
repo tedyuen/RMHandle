@@ -212,8 +212,8 @@ public class ImageCacheFragment extends BaseToolbarFragment {
                         imageCacheDaoHelper.addData(bean.returnBean(imageCacheDaoHelper));
                         publishProgress(length);
 
-                        ImageCacheBean temp = imageCacheDaoHelper.getBeanByUrl(bean.getUrl());
-                        System.out.println("dbpath:=>"+temp.getPath());
+//                        ImageCacheBean temp = imageCacheDaoHelper.getBeanByUrl(bean.getUrl());
+//                        System.out.println("dbpath:=>"+temp.getPath());
                     }
                 }
                 return true;

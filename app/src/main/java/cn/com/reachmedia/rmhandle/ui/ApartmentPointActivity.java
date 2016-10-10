@@ -62,10 +62,12 @@ import cn.com.reachmedia.rmhandle.ui.dialog.ApartmentPhoneDialogFragment;
 import cn.com.reachmedia.rmhandle.ui.fragment.ApartmentPointTabFragment;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
+import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.LogUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
+import cn.com.reachmedia.rmhandle.utils.pictureutils.utils.SimpleImageLoader;
 
 /**
  * Author:    tedyuen
@@ -144,6 +146,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         Intent intent = getIntent();
+        SimpleImageLoader.init(this);
         activity = this;
         iv_info.setImageResource(R.mipmap.imported_layers);
         if(intent!=null){
@@ -455,14 +458,18 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         for(int i=0;i<gate.length;i++){
             if(i<gatePhotos.length){
                 if(!StringUtils.isEmpty(gate[i])){
-                    Picasso.with(this).load(gate[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(gatePhotos[i]);
+                    if(!ImageCacheUtils.getInstance().displayImage(gate[i],gatePhotos[i])){
+                        Picasso.with(this).load(gate[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(gatePhotos[i]);
+                    }
                 }
             }
         }
         for(int i=0;i<pest.length;i++){
             if(i<pestPhotos.length){
                 if(!StringUtils.isEmpty(pest[i])){
-                    Picasso.with(this).load(pest[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(pestPhotos[i]);
+                    if(!ImageCacheUtils.getInstance().displayImage(pest[i],pestPhotos[i])) {
+                        Picasso.with(this).load(pest[i]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(pestPhotos[i]);
+                    }
                 }
             }
         }

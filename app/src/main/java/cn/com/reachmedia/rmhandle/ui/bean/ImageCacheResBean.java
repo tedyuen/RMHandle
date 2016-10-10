@@ -38,6 +38,8 @@ public class ImageCacheResBean {
         return bean;
     }
 
+
+
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
