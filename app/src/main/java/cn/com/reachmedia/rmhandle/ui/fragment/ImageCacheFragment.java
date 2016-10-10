@@ -2,6 +2,7 @@ package cn.com.reachmedia.rmhandle.ui.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -25,6 +27,7 @@ import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.ImageCacheBean;
+import cn.com.reachmedia.rmhandle.db.helper.ImageCacheDaoHelper;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.model.param.PointListParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
@@ -32,7 +35,9 @@ import cn.com.reachmedia.rmhandle.network.controller.PointListController;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.bean.ImageCacheResBean;
 import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
+import cn.com.reachmedia.rmhandle.utils.PhotoSavePathUtil;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 
 /**
  * Created by tedyuen on 16-9-26.
@@ -45,6 +50,9 @@ public class ImageCacheFragment extends BaseToolbarFragment {
     TextView tvCommunityCount;
     @Bind(R.id.tv_detail_url)
     TextView tv_detail_url;
+    @Bind(R.id.tv_total_data)
+    TextView tv_total_data;
+
 
     @Bind(R.id.rl_right_text)
     RelativeLayout rlRightText;
@@ -179,18 +187,31 @@ public class ImageCacheFragment extends BaseToolbarFragment {
     public class DownloadImgTask extends AsyncTask<LinkedHashSet<ImageCacheResBean>,Integer,Boolean>{
 
         private int fileSize = 0;
+        private int totalSize;
+        private double totalData;
+
+        private ImageCacheDaoHelper imageCacheDaoHelper;
+
+        @Override
+        protected void onPreExecute() {
+            imageCacheDaoHelper = ImageCacheDaoHelper.getInstance();
+        }
 
         @Override
         protected Boolean doInBackground(LinkedHashSet<ImageCacheResBean>... linkedHashSets) {
             if(linkedHashSets!=null && linkedHashSets.length>0){
-                fileSize = linkedHashSets[0].size();
+                totalSize = fileSize = linkedHashSets[0].size();
                 Iterator<ImageCacheResBean> iterator = linkedHashSets[0].iterator();
                 while (iterator.hasNext()){
                     ImageCacheResBean bean = iterator.next();
-                    System.out.println("==>"+bean.getUrl());
-
-
-                    publishProgress(1);
+                    System.out.println("url==>"+bean.getUrl());
+                    int length = downloadFile(bean);
+                    if(length>0){
+                        System.out.println("bean==>"+bean);
+                        bean.setCreateTime(TimeUtils.getNowStr());
+                        imageCacheDaoHelper.addData(bean.returnBean(imageCacheDaoHelper));
+                        publishProgress(length);
+                    }
                 }
                 return true;
             }else{
@@ -200,61 +221,104 @@ public class ImageCacheFragment extends BaseToolbarFragment {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            fileSize--;
-            System.out.println(fileSize);
-
+            if(values[0]>0){
+                fileSize--;
+                int tempSize = totalSize-fileSize;
+                tvImageCount.setText("图片: "+tempSize+"/"+totalSize);
+                totalData += values[0];
+                tv_total_data.setText("已下载容量: "+getDataContent(totalData));
+            }
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             if(aBoolean){
-                tv_detail_url.setText("图片下载完成");
+                tv_detail_url.setText("图片下载完成,可以关闭本页");
             }else{
                 tv_detail_url.setText("图片下载失败,请重试!");
             }
         }
     }
 
-
-    public static void downloadFile(String _url){
-        String newFilename = "";
-        File file = new File(newFilename);
-        //如果目标文件已经存在，则删除。产生覆盖旧文件的效果
-        if(file.exists())
-        {
-            file.delete();
-        }
-        try {
-            // 构造URL
-            URL url = new URL(_url);
-            // 打开连接
-            URLConnection con = url.openConnection();
-            //获得文件的长度
-            int contentLength = con.getContentLength();
-            System.out.println("长度 :"+contentLength);
-            // 输入流
-            InputStream is = con.getInputStream();
-            // 1K的数据缓冲
-            byte[] bs = new byte[1024];
-            // 读取到的数据长度
-            int len;
-            // 输出的文件流
-            OutputStream os = new FileOutputStream(newFilename);
-            // 开始读取
-            while ((len = is.read(bs)) != -1) {
-                os.write(bs, 0, len);
-            }
-            // 完毕，关闭所有链接
-            os.close();
-            is.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static String getDataContent(double dataLength){
+        long M = 1024*1024;
+        if((int)(dataLength/M)>0){
+            double mtemp = dataLength/M;
+            return new DecimalFormat("#.00").format(mtemp)+" Mb";
+        }else if((int)(dataLength/1024)>0){
+            double ktemp = dataLength/1024;
+            return new DecimalFormat("#.00").format(ktemp)+" Kb";
+        }else{
+            return (int)dataLength+" B";
         }
     }
 
-    public static String generateFileName(String url){
 
+    public static int downloadFile(ImageCacheResBean imageCacheResBean){
+        String newFilename = generateFileName(imageCacheResBean.getUrl());
+        if (PhotoSavePathUtil.checkSDCard()) {
+            File savedir = new File(path);
+            if (!savedir.exists()) {
+                savedir.mkdirs();
+            }
+        }else{
+            return -1;
+        }
+
+        if(!StringUtils.isEmpty(newFilename)){
+            File file = new File(newFilename);
+            //如果目标文件已经存在，则删除。产生覆盖旧文件的效果
+            if(file.exists()){
+                file.delete();
+            }
+            try {
+                // 构造URL
+                URL url = new URL(imageCacheResBean.getUrl());
+                // 打开连接
+                URLConnection con = url.openConnection();
+                //获得文件的长度
+                int contentLength = con.getContentLength();
+                System.out.println("长度 :"+contentLength);
+                // 输入流
+                InputStream is = con.getInputStream();
+                // 1K的数据缓冲
+                byte[] bs = new byte[1024];
+                // 读取到的数据长度
+                int len;
+                // 输出的文件流
+                OutputStream os = new FileOutputStream(newFilename);
+                // 开始读取
+                while ((len = is.read(bs)) != -1) {
+                    os.write(bs, 0, len);
+                }
+                // 完毕，关闭所有链接
+                os.close();
+                is.close();
+                imageCacheResBean.setPath(newFilename);
+                return contentLength;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        }else{
+            return -1;
+        }
+    }
+
+    private final static String path = Environment
+            .getExternalStorageDirectory().getAbsolutePath()
+            + File.separator
+            + "RMHandle/cache/";
+
+    public static String generateFileName(String url){
+        if(url!=null){
+            try{
+                String result = url.substring(url.lastIndexOf("/")+1);
+                return path+result;
+            }catch (Exception e){
+                return null;
+            }
+        }
         return null;
     }
 

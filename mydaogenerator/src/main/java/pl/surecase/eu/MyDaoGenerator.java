@@ -1,5 +1,6 @@
 package pl.surecase.eu;
 
+import java.text.DecimalFormat;
 import java.util.regex.Pattern;
 
 import de.greenrobot.daogenerator.DaoGenerator;
@@ -45,17 +46,44 @@ public class MyDaoGenerator {
         System.out.println(url3.hashCode());
     }
 
+    public static String generateFileName(String url){
+        if(url!=null){
+            try{
+                String result = url.substring(url.lastIndexOf("/")+1);
+                return result;
+            }catch (Exception e){
+                return null;
+            }
+        }
+        return null;
+//        String url = "http://120.26.65.65:8085/img/res/images/40/t_20161009142318664.jpg";
+//        System.out.println("=>filename:"+generateFileName(url));
+    }
+
+    public static String getDataContent(double dataLength){
+        long M = 1024*1024;
+        if((int)(dataLength/M)>0){
+            double mtemp = dataLength/M;
+            return new DecimalFormat("#.00").format(mtemp)+" Mb";
+        }else if((int)(dataLength/1024)>0){
+            double ktemp = dataLength/1024;
+            return new DecimalFormat("#.00").format(ktemp)+" Kb";
+        }else{
+            return (int)dataLength+" B";
+        }
+//        System.out.println("==>"+getDataContent(53202321));
+    }
+
 
     public static void main(String args[]) throws Exception {
-        hashCodeTest();
-//        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
-//        schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
-//
-//        initPointBean(schema);
-//        initPointWorkBean(schema);
-//        initCommDoorPicBean(schema);
-//        initImageCacheBean(schema);
-//        new DaoGenerator().generateAll(schema, args[0]);
+        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
+        schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
+
+        initPointBean(schema);
+        initPointWorkBean(schema);
+        initCommDoorPicBean(schema);
+        initImageCacheBean(schema);
+        new DaoGenerator().generateAll(schema, args[0]);
     }
 
     private static void initImageCacheBean(Schema schema){
