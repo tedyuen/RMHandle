@@ -204,13 +204,16 @@ public class ImageCacheFragment extends BaseToolbarFragment {
                 Iterator<ImageCacheResBean> iterator = linkedHashSets[0].iterator();
                 while (iterator.hasNext()){
                     ImageCacheResBean bean = iterator.next();
-                    System.out.println("url==>"+bean.getUrl());
+//                    System.out.println("url==>"+bean.getUrl());
                     int length = downloadFile(bean);
                     if(length>0){
-                        System.out.println("bean==>"+bean);
+//                        System.out.println("bean==>"+bean);
                         bean.setCreateTime(TimeUtils.getNowStr());
                         imageCacheDaoHelper.addData(bean.returnBean(imageCacheDaoHelper));
                         publishProgress(length);
+
+                        ImageCacheBean temp = imageCacheDaoHelper.getBeanByUrl(bean.getUrl());
+                        System.out.println("dbpath:=>"+temp.getPath());
                     }
                 }
                 return true;
