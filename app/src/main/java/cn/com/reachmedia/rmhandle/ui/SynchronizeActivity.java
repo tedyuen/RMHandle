@@ -10,6 +10,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -23,6 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.network.AppNetworkInfo;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseActionBarTabActivity;
@@ -47,6 +49,8 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
 
     @Bind(R.id.rl_right_text)
     RelativeLayout rlLeftText;
+    @Bind(R.id.tv_info)
+    TextView tv_info;
     private NavigationAdapter mPagerAdapter;
 
     Map<Integer, BaseFragment> fragmentMap;
@@ -94,14 +98,37 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
 
     @OnClick(R.id.rl_right_text)
     public void goSynchronize(){
-        if(AppNetworkInfo.isWifi(this)){
+        if(PointWorkBeanDbUtil.getIns().getUnSynchronize()>0) {
+            if (AppNetworkInfo.isWifi(this)) {
 //            ServiceHelper.getIns().startPointWorkWithPicService(getApplicationContext());
-            ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
-            ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(),false);
-            ToastHelper.showInfo(activity,"开始上传,请稍后刷新状态!");
+                ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
+                ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(), false);
+                ToastHelper.showInfo(activity, "开始上传,请稍后刷新状态!");
+            } else {
+                new MaterialDialog.Builder(this)
+                        .title(R.string.dialog_title_synchronize)
+                        .negativeText("取消")
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .positiveText("确定")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
+                                ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(), true);
+                                ToastHelper.showInfo(activity, "开始上传,请稍后刷新状态!");
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            }
         }else{
             new MaterialDialog.Builder(this)
-                    .title(R.string.dialog_title_synchronize)
+                    .title(R.string.dialog_title_synchronize_clean)
                     .negativeText("取消")
                     .onNegative(new MaterialDialog.SingleButtonCallback() {
                         @Override
@@ -109,13 +136,12 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
                             dialog.dismiss();
                         }
                     })
-                    .positiveText("确定")
+                    .positiveText("确定清空")
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
-                            ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(),true);
-                            ToastHelper.showInfo(activity,"开始上传,请稍后刷新状态!");
+                            ServiceHelper.getIns().startRemoveDoneFileService(getApplicationContext());
+                            ToastHelper.showInfo(activity, "清空图片任务正在后台运行...");
                             dialog.dismiss();
                         }
                     })
@@ -199,10 +225,19 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        updateRightText();
         pManager = ((PowerManager) getSystemService(POWER_SERVICE));
         mWakeLock = pManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK
                 | PowerManager.ON_AFTER_RELEASE, TAG);
         mWakeLock.acquire();
+    }
+
+    public void updateRightText(){
+        if(PointWorkBeanDbUtil.getIns().getUnSynchronize()>0){
+            tv_info.setText("上传");
+        }else{
+            tv_info.setText("清空");
+        }
     }
 
     @Override

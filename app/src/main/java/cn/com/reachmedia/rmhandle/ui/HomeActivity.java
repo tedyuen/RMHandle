@@ -421,7 +421,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         if(AppNetworkInfo.isNetworkAvailable(this)){
             ServiceHelper.getIns().startPointWorkWithPicService(this);
             ServiceHelper.getIns().startCommDoorPicService(this,false);
-            ServiceHelper.getIns().startRemoveDoneFileService(this);
+//            ServiceHelper.getIns().startRemoveDoneFileService(this);
         }
 
     }
