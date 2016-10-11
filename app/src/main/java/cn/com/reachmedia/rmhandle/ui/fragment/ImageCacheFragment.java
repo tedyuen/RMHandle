@@ -146,6 +146,15 @@ public class ImageCacheFragment extends BaseToolbarFragment {
                                     }
                                 }
                             }
+                            for(PointListModel.ComListBean comListBean:data.getComList()){
+                                for(PointListModel.ComListBean.PicListBean picListBean:comListBean.getPicList()){
+                                    if (!StringUtils.isEmpty(picListBean.getPicurlS())) {
+                                        ImageCacheResBean fileBean = new ImageCacheResBean(initData);
+                                        fileBean.setUrl(picListBean.getPicurlS());
+                                        imageCacheUtils.addPointBean(fileBean);
+                                    }
+                                }
+                            }
                         }
                     }
                     if (imageCacheUtils.getCommunityIds() != null && imageCacheUtils.getCommunityIds().size() > 0) {
@@ -225,11 +234,13 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         @Override
         protected void onProgressUpdate(Integer... values) {
             if(values[0]>0){
-                fileSize--;
-                int tempSize = totalSize-fileSize;
-                tvImageCount.setText("图片: "+tempSize+"/"+totalSize);
-                totalData += values[0];
-                tv_total_data.setText("已下载容量: "+getDataContent(totalData));
+                if(tvImageCount!=null){
+                    fileSize--;
+                    int tempSize = totalSize-fileSize;
+                    tvImageCount.setText("图片: "+tempSize+"/"+totalSize);
+                    totalData += values[0];
+                    tv_total_data.setText("已下载容量: "+getDataContent(totalData));
+                }
             }
         }
 

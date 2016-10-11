@@ -56,6 +56,7 @@ import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.ProportionImageView;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
+import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.PhotoSavePathUtil;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
@@ -420,11 +421,15 @@ public class PointDetailFragment extends BaseToolbarFragment {
         if (!StringUtils.isEmpty(pointListModel.getCGatePic())) {
             String[] gatePath = pointListModel.getCGatePic().split("@&");
             if(!StringUtils.isEmpty(gatePath[0])){
-                Picasso.with(getActivity()).load(gatePath[0]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(ivCommPhoto1);
+                if(!ImageCacheUtils.getInstance().displayImage(gatePath[0],ivCommPhoto1)) {
+                    Picasso.with(getActivity()).load(gatePath[0]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(ivCommPhoto1);
+                }
                 commImgList.add(gatePath[0]);
             }else if(gatePath.length>1 && !StringUtils.isEmpty(gatePath[1])){
                 commImgList.add(gatePath[1]);
-                Picasso.with(getActivity()).load(gatePath[1]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(ivCommPhoto1);
+                if(!ImageCacheUtils.getInstance().displayImage(gatePath[1],ivCommPhoto1)) {
+                    Picasso.with(getActivity()).load(gatePath[1]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(ivCommPhoto1);
+                }
             }else{
                 commImgList.add("");
             }
@@ -436,10 +441,14 @@ public class PointDetailFragment extends BaseToolbarFragment {
             String[] pestPath = pointListModel.getCPestPic().split("@&");
             if(!StringUtils.isEmpty(pestPath[0])){
                 commImgList.add(pestPath[0]);
-                Picasso.with(getActivity()).load(pestPath[0]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(ivCommPhoto3);
+                if(!ImageCacheUtils.getInstance().displayImage(pestPath[0],ivCommPhoto3)) {
+                    Picasso.with(getActivity()).load(pestPath[0]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(ivCommPhoto3);
+                }
             }else if(pestPath.length>1 && !StringUtils.isEmpty(pestPath[1])){
                 commImgList.add(pestPath[1]);
-                Picasso.with(getActivity()).load(pestPath[1]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(ivCommPhoto3);
+                if(!ImageCacheUtils.getInstance().displayImage(pestPath[1],ivCommPhoto3)) {
+                    Picasso.with(getActivity()).load(pestPath[1]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(ivCommPhoto3);
+                }
             }else{
                 commImgList.add("");
             }
@@ -477,7 +486,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
                         cusImgList.add(picBean.getPicurlB());
                         if (!StringUtils.isEmpty(picBean.getPicurlB())) {
                             custPhotos[i].setVisibility(View.VISIBLE);
-                            Picasso.with(getActivity()).load(picBean.getPicurlB()).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(custPhotos[i]);
+                            if(!ImageCacheUtils.getInstance().displayImage(picBean.getPicurlB(),custPhotos[i])) {//tedyuen
+                                Picasso.with(getActivity()).load(picBean.getPicurlB()).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(custPhotos[i]);
+                            }
                         }
                     }
                 }
@@ -514,7 +525,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
 //        }
         if (!StringUtils.isEmpty(bean.getCDoorPic())) {
 //            System.out.println("== door pic ==> "+bean.getCDoorPic()+":"+bean.getCDoorPic().replace("t_","s_"));
-            Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.mipmap.picture_add_icon).resize(300,261).centerCrop().into(ivCommPhoto2);
+            if(!ImageCacheUtils.getInstance().displayImage(bean.getCDoorPic(),ivCommPhoto2)) {
+                Picasso.with(getActivity()).load(bean.getCDoorPic()).placeholder(R.mipmap.picture_add_icon).resize(300,261).centerCrop().into(ivCommPhoto2);
+            }
         }
         mergeLocalPhoto();
         initPhoto();
@@ -988,7 +1001,9 @@ public class PointDetailFragment extends BaseToolbarFragment {
             if (i > 2) break;
             if (prePhotoUrlS.length > i) {//有id有url
                 if (!StringUtils.isEmpty(prePhotoUrlS[i])) {
-                    Picasso.with(getActivity()).load(prePhotoUrlS[i]).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(addPhotos[i]);
+                    if(!ImageCacheUtils.getInstance().displayImage(prePhotoUrlS[i],addPhotos[i])) {
+                        Picasso.with(getActivity()).load(prePhotoUrlS[i]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(addPhotos[i]);
+                    }
                 }
             } else {//有id无url
                 if (pointWorkBean != null) {
