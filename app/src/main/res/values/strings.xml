@@ -66,9 +66,11 @@
     <string name="dialog_title_change_edit_mode">确定修改吗?</string>
     <string name="dialog_title_submit_card">确定修改门卡密码吗?</string>
     <string name="dialog_title_synchronize">上传消耗流量,确定继续吗?</string>
+    <string name="dialog_title_synchronize_clean">请确认所有点位是否已提交,删除图片后无法撤销。</string>
     <string name="dialog_title_synchronize_start">开始上传,请稍后刷新状态!</string>
     <string name="dialog_title_submit_gate_photo">确定修改小区照片吗?</string>
     <string name="dialog_map_title">请选择地图导航</string>
+    <string name="dialog_title_clear_cache">确定删除所有图片缓存吗?</string>
 
 
     <!-- picture selector -->

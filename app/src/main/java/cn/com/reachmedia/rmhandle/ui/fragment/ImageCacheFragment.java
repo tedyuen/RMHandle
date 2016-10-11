@@ -3,12 +3,16 @@ package cn.com.reachmedia.rmhandle.ui.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,6 +27,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
@@ -32,12 +37,14 @@ import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.model.param.PointListParam;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.PointListController;
+import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.bean.ImageCacheResBean;
 import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.PhotoSavePathUtil;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 
 /**
  * Created by tedyuen on 16-9-26.
@@ -50,6 +57,8 @@ public class ImageCacheFragment extends BaseToolbarFragment {
     TextView tvCommunityCount;
     @Bind(R.id.tv_detail_url)
     TextView tv_detail_url;
+    @Bind(R.id.tv_clear_cache_result)
+    TextView tv_clear_cache_result;
     @Bind(R.id.tv_total_data)
     TextView tv_total_data;
 
@@ -66,6 +75,9 @@ public class ImageCacheFragment extends BaseToolbarFragment {
     TextView tvDetail2;
     @Bind(R.id.tv_image_count)
     TextView tvImageCount;
+    @Bind(R.id.tv_info)
+    TextView tv_info;
+
     private ImageCacheUtils imageCacheUtils;
 
     public static ImageCacheFragment newInstance() {
@@ -87,10 +99,13 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         imageCacheUtils = ImageCacheUtils.getInstance();
         imageCacheUtils.mergeCommunityAB();//合并小区数据
         totalCommunityCount = imageCacheUtils.getCommunityIds().size();
+        getAllCacheSize();
         if (imageCacheUtils.getCommunityIds() != null && imageCacheUtils.getCommunityIds().size() > 0) {
             imageCacheUtils.getImageCacheResBeens().clear();//清除图片数据
             getPointData();
         }
+        rlRightText.setVisibility(View.VISIBLE);
+        tv_info.setText("清空");
         return rootView;
     }
 
@@ -188,10 +203,7 @@ public class ImageCacheFragment extends BaseToolbarFragment {
 
 
         }
-
-
     }
-
 
     public class DownloadImgTask extends AsyncTask<LinkedHashSet<ImageCacheResBean>,Integer,Boolean>{
 
@@ -247,6 +259,7 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             if(aBoolean){
+                getAllCacheSize();
                 tv_detail_url.setText("图片下载完成,可以关闭本页");
             }else{
                 tv_detail_url.setText("图片下载失败,请重试!");
@@ -319,7 +332,7 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         }
     }
 
-    private final static String path = Environment
+    public final static String path = Environment
             .getExternalStorageDirectory().getAbsolutePath()
             + File.separator
             + "RMHandle/cache/";
@@ -348,7 +361,109 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         ButterKnife.unbind(this);
     }
 
+    @OnClick(R.id.rl_right_text)
+    public void clearCache(){
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.dialog_title_clear_cache)
+                .content("所有图片缓存已经占用"+allCacheSize+"空间。\n共"+allFileCount+"个图片文件。")
+                .negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .positiveText("确定")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        ClearCacheTask clearCacheTask = new ClearCacheTask();
+                        clearCacheTask.execute();
+                        ToastHelper.showInfo(getActivity(), "清空缓存任务正在运行。");
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    public class ClearCacheTask extends AsyncTask<Void,Integer,Boolean>{
+
+        private ImageCacheDaoHelper imageCacheDaoHelper;
+
+        @Override
+        protected void onPreExecute() {
+            imageCacheDaoHelper = ImageCacheDaoHelper.getInstance();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try{
+                imageCacheDaoHelper.deleteAll();
+                deleteFile(new File(path));
+                return true;
+            }catch(Exception e){
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if(aBoolean){
+                tv_clear_cache_result.setText("缓存清空成功");
+            }else{
+                tv_clear_cache_result.setText("缓存清空失败");
+            }
+        }
+    }
 
 
+
+    public String getAllCacheSize(){
+        allFileCount = 0;
+        allCacheSize = getDataContent(getDirSize(new File(path)));
+
+        return allCacheSize;
+    }
+
+    public String allCacheSize="0Kb";
+    public int allFileCount;
+
+    private double getDirSize(File file) {
+        //判断文件是否存在
+        if (file.exists()) {
+            //如果是目录则递归计算其内容的总大小
+            if (file.isDirectory()) {
+                File[] children = file.listFiles();
+                double size = 0;
+                for (File f : children)
+                    size += getDirSize(f);
+                return size;
+            } else {//如果是文件则直接返回其大小,以“兆”为单位
+                allFileCount++;
+                double size = (double) file.length();
+                return size;
+            }
+        } else {
+            System.out.println("文件或者文件夹不存在，请检查路径是否正确！");
+            return 0.0;
+        }
+    }
+
+    private void deleteFile(File file) {
+        if (file.exists()) {//判断文件是否存在
+            if (file.isFile()) {//判断是否是文件
+                file.delete();//删除文件
+            } else if (file.isDirectory()) {//否则如果它是一个目录
+                File[] files = file.listFiles();//声明目录下所有的文件 files[];
+                for (int i = 0;i < files.length;i ++) {//遍历目录下所有的文件
+                    this.deleteFile(files[i]);//把每个文件用这个方法进行迭代
+                }
+                file.delete();//删除文件夹
+            }
+        } else {
+            System.out.println("所删除的文件不存在");
+        }
+    }
 
 }

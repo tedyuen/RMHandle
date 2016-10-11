@@ -53,6 +53,15 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/red"/>
 
+            <TextView
+                android:id="@+id/tv_clear_cache_result"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"/>
+
+
 
         </LinearLayout>
     </ScrollView>
