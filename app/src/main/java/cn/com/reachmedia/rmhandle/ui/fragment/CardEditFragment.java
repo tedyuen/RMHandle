@@ -150,7 +150,7 @@ public class CardEditFragment extends BaseToolbarFragment {
 //                System.out.println("b==> "+model.getCGatePic()+":"+model.getCPestPic());
                 setCardPhoto(model.getCGatePic(),model.getCPestPic());
             }
-            setCardPhoto(model.getCGatePic(),model.getCPestPic());
+//            setCardPhoto(model.getCGatePic(),model.getCPestPic());
 
         }
     }
@@ -163,7 +163,8 @@ public class CardEditFragment extends BaseToolbarFragment {
         for(int i=0;i<preGate.length;i++){
             if(i<gatePhotos.length){
                 if(!StringUtils.isEmpty(preGate[i])){
-                    if(!ImageCacheUtils.getInstance().displayImage(preGate[i],gatePhotos[i])) {
+                    boolean tempBoolean = ImageCacheUtils.getInstance().displayImage(preGate[i],gatePhotos[i]);
+                    if(!tempBoolean) {
                         Picasso.with(getContext()).load(preGate[i]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(gatePhotos[i]);
                     }
 //                    System.out.println("本地环境图片path 1: "+i+":"+preGate[i]);
@@ -175,7 +176,8 @@ public class CardEditFragment extends BaseToolbarFragment {
             if(i<pestPhotos.length){
                 if(!StringUtils.isEmpty(prePest[i])){
 //                    System.out.println("本地环境图片path 2: "+i+":"+preGate[i]);
-                    if(!ImageCacheUtils.getInstance().displayImage(prePest[i],pestPhotos[i])) {
+                    boolean tempBoolean = ImageCacheUtils.getInstance().displayImage(prePest[i],pestPhotos[i]);
+                    if(!tempBoolean) {
                         Picasso.with(getContext()).load(prePest[i]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(pestPhotos[i]);
                     }
                 }

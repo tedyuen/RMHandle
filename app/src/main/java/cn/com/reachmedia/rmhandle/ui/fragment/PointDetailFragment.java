@@ -418,15 +418,16 @@ public class PointDetailFragment extends BaseToolbarFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (!StringUtils.isEmpty(pointListModel.getCGatePic())) {
-            String[] gatePath = pointListModel.getCGatePic().split("@&");
+        if (!StringUtils.isEmpty(pointListModel.getCGatePics())) {
+            String[] gatePath = pointListModel.getCGatePics().split("@&");
+            String[] gatePath2 = pointListModel.getCGatePic().split("@&");
             if(!StringUtils.isEmpty(gatePath[0])){
                 if(!ImageCacheUtils.getInstance().displayImage(gatePath[0],ivCommPhoto1)) {
                     Picasso.with(getActivity()).load(gatePath[0]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(ivCommPhoto1);
                 }
-                commImgList.add(gatePath[0]);
+                commImgList.add(gatePath2[0]);
             }else if(gatePath.length>1 && !StringUtils.isEmpty(gatePath[1])){
-                commImgList.add(gatePath[1]);
+                commImgList.add(gatePath2[1]);
                 if(!ImageCacheUtils.getInstance().displayImage(gatePath[1],ivCommPhoto1)) {
                     Picasso.with(getActivity()).load(gatePath[1]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(ivCommPhoto1);
                 }
@@ -437,15 +438,16 @@ public class PointDetailFragment extends BaseToolbarFragment {
             commImgList.add("");
         }
 
-        if (!StringUtils.isEmpty(pointListModel.getCPestPic())) {
-            String[] pestPath = pointListModel.getCPestPic().split("@&");
+        if (!StringUtils.isEmpty(pointListModel.getCPestPics())) {
+            String[] pestPath = pointListModel.getCPestPics().split("@&");
+            String[] pestPath2 = pointListModel.getCPestPic().split("@&");
             if(!StringUtils.isEmpty(pestPath[0])){
-                commImgList.add(pestPath[0]);
+                commImgList.add(pestPath2[0]);
                 if(!ImageCacheUtils.getInstance().displayImage(pestPath[0],ivCommPhoto3)) {
                     Picasso.with(getActivity()).load(pestPath[0]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(ivCommPhoto3);
                 }
             }else if(pestPath.length>1 && !StringUtils.isEmpty(pestPath[1])){
-                commImgList.add(pestPath[1]);
+                commImgList.add(pestPath2[1]);
                 if(!ImageCacheUtils.getInstance().displayImage(pestPath[1],ivCommPhoto3)) {
                     Picasso.with(getActivity()).load(pestPath[1]).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(ivCommPhoto3);
                 }
@@ -484,10 +486,10 @@ public class PointDetailFragment extends BaseToolbarFragment {
                         if (i >= 3) break;
                         PointListModel.ComListBean.PicListBean picBean = comBean.getPicList().get(i);
                         cusImgList.add(picBean.getPicurlB());
-                        if (!StringUtils.isEmpty(picBean.getPicurlB())) {
+                        if (!StringUtils.isEmpty(picBean.getPicurlS())) {
                             custPhotos[i].setVisibility(View.VISIBLE);
-                            if(!ImageCacheUtils.getInstance().displayImage(picBean.getPicurlB(),custPhotos[i])) {//tedyuen
-                                Picasso.with(getActivity()).load(picBean.getPicurlB()).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(custPhotos[i]);
+                            if(!ImageCacheUtils.getInstance().displayImage(picBean.getPicurlS(),custPhotos[i])) {//tedyuen
+                                Picasso.with(getActivity()).load(picBean.getPicurlS()).placeholder(R.drawable.abc).resize(300, 261).centerCrop().into(custPhotos[i]);
                             }
                         }
                     }
