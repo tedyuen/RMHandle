@@ -80,6 +80,9 @@ public class ImageCacheFragment extends BaseToolbarFragment {
 
     private ImageCacheUtils imageCacheUtils;
 
+    DownloadImgTask task;
+    ClearCacheTask clearCacheTask;
+
     public static ImageCacheFragment newInstance() {
         ImageCacheFragment fragment = new ImageCacheFragment();
         Bundle args = new Bundle();
@@ -198,7 +201,7 @@ public class ImageCacheFragment extends BaseToolbarFragment {
             tvDetail2.setText("小区数据加载完毕,总共" + imageCacheUtils.getImageCacheResBeens().size() + "张图片需要缓存");
             tvDetail.setText("正在下载图片...");
             tvImageCount.setVisibility(View.VISIBLE);
-            DownloadImgTask task = new DownloadImgTask();
+            task = new DownloadImgTask();
             task.execute(imageCacheUtils.getImageCacheResBeens());
 
 
@@ -258,11 +261,13 @@ public class ImageCacheFragment extends BaseToolbarFragment {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            if(aBoolean){
-                getAllCacheSize();
-                tv_detail_url.setText("图片下载完成,可以关闭本页");
-            }else{
-                tv_detail_url.setText("图片下载失败,请重试!");
+            if(tv_detail_url!=null){
+                if(aBoolean){
+                    getAllCacheSize();
+                    tv_detail_url.setText("图片下载完成,可以关闭本页");
+                }else{
+                    tv_detail_url.setText("图片下载失败,请重试!");
+                }
             }
         }
     }
@@ -299,14 +304,14 @@ public class ImageCacheFragment extends BaseToolbarFragment {
                 file.delete();
             }
             try {
-                System.out.println("downfile:"+imageCacheResBean.getUrl());
+//                System.out.println("downfile:"+imageCacheResBean.getUrl());
                 // 构造URL
                 URL url = new URL(imageCacheResBean.getUrl());
                 // 打开连接
                 URLConnection con = url.openConnection();
                 //获得文件的长度
                 int contentLength = con.getContentLength();
-                System.out.println("长度 :"+contentLength);
+//                System.out.println("长度 :"+contentLength);
                 // 输入流
                 InputStream is = con.getInputStream();
                 // 1K的数据缓冲
@@ -378,7 +383,7 @@ public class ImageCacheFragment extends BaseToolbarFragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        ClearCacheTask clearCacheTask = new ClearCacheTask();
+                        clearCacheTask = new ClearCacheTask();
                         clearCacheTask.execute();
                         ToastHelper.showInfo(getActivity(), "清空缓存任务正在运行。");
                         dialog.dismiss();
@@ -467,4 +472,14 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(task!=null && task.getStatus()!=AsyncTask.Status.FINISHED){
+            task.cancel(true);
+        }
+        if(clearCacheTask!=null && clearCacheTask.getStatus()!=AsyncTask.Status.FINISHED){
+            task.cancel(true);
+        }
+    }
 }

@@ -56,14 +56,14 @@ public class ImageCacheUtils {
     }
 
     public static boolean displayImage(String url, ImageView imageView){
-        System.out.println("local path 3: "+url);
+//        System.out.println("local path 3: "+url);
         ImageCacheBean bean = ImageCacheDaoHelper.getInstance().getBeanByUrl(url);
         if(bean!=null && !StringUtils.isEmpty(bean.getPath())){
             File file = new File(bean.getPath());
-            System.out.println("file path: "+bean.getPath());
+//            System.out.println("file path: "+bean.getPath());
             if(file.exists()){
                 SimpleImageLoader.displayImage(file,imageView);
-                System.out.println("local path 2: "+url);
+//                System.out.println("local path 2: "+url);
                 return true;
             }
         }
