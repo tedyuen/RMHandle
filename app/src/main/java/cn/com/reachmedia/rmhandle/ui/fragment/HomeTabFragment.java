@@ -111,8 +111,18 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
         if(data!=null){
             if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
                 if(updateListener!=null){
-                    System.out.println("==>updateListener:  "+data.getFinish()+":"+data.getOngoing());
+//                    System.out.println("==>updateListener:  "+data.getFinish()+":"+data.getOngoing());
                     updateListener.updateTabCount(data.getOngoing(),data.getFinish());
+                }
+
+                if(listType==AppSpContact.SP_KEY_UNDONE){
+                    if(ImageCacheUtils.getInstance().getCommunityIdsA()!=null){
+                        ImageCacheUtils.getInstance().getCommunityIdsA().clear();
+                    }
+                }else if(listType==AppSpContact.SP_KEY_DONE){
+                    if(ImageCacheUtils.getInstance().getCommunityIdsB()!=null) {
+                        ImageCacheUtils.getInstance().getCommunityIdsB().clear();
+                    }
                 }
                 for(TaskIndexModel.PListBean pListBean:data.getPList()){
                     ImageCacheUtils.getInstance().addCommunityIds(pListBean.getCommunityid(),listType);
@@ -145,11 +155,6 @@ public class HomeTabFragment extends BaseFragment implements SwipeRefreshLayout.
     @Override
     public void onRefresh() {
         if(taskIndexController!=null){
-            if(listType==AppSpContact.SP_KEY_UNDONE){
-                ImageCacheUtils.getInstance().getCommunityIdsA().clear();
-            }else if(listType==AppSpContact.SP_KEY_DONE){
-                ImageCacheUtils.getInstance().getCommunityIdsB().clear();
-            }
             mPageListView.setState(PageListView.PageListViewState.Loading);
             param.state = listType;
             param.startime = homeFilterUtil.startTime;
