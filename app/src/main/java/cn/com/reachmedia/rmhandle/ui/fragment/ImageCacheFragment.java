@@ -299,6 +299,7 @@ public class ImageCacheFragment extends BaseToolbarFragment {
                 file.delete();
             }
             try {
+                System.out.println("downfile:"+imageCacheResBean.getUrl());
                 // 构造URL
                 URL url = new URL(imageCacheResBean.getUrl());
                 // 打开连接
