@@ -47,14 +47,11 @@ public class RemovePhotoService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         System.out.println("start RemovePhotoService!");
-
-
         String dirCard = Environment
                 .getExternalStorageDirectory().getAbsolutePath()
                 + File.separator
                 + "RMHandle/card/";
         List<String> cardFile = FileUtils.getAllFileNameList(dirCard);
-        System.out.println("==========");
         String dirPoint = Environment
                 .getExternalStorageDirectory().getAbsolutePath()
                 + File.separator
@@ -64,13 +61,9 @@ public class RemovePhotoService extends Service {
         List<String> needDeletePoint = new ArrayList<>();
         List<String> needDeleteCard = new ArrayList<>();
 
-        List<CommDoorPicBean> list = commPoorPicDbUtil.getUpload("0");
+        List<CommDoorPicBean> list = commPoorPicDbUtil.getUpload("1");
         for(CommDoorPicBean bean:list){
             if(bean!=null){
-//                removeFile(bean.getCommunityFile1());
-//                removeFile(bean.getCommunityFile2());
-//                removeFile(bean.getCommunitySpace1());
-//                removeFile(bean.getCommunitySpace2());
                 needDeleteCard.add(bean.getCommunityFile1());
                 needDeleteCard.add(bean.getCommunityFile2());
                 needDeleteCard.add(bean.getCommunitySpace1());
@@ -81,18 +74,18 @@ public class RemovePhotoService extends Service {
             boolean flag = true;
             for(String targetPath:needDeleteCard){
                 if(path.equals(targetPath)){
-                    System.out.println("-----card 未提交匹配图片--: "+path);
+                    System.out.println("-----card 已提交匹配图片--: "+path);
                     flag = false;
                     break;
                 }
             }
-            if(flag){
+            if(!flag){
                 removeFile(path);
             }
         }
 
         String userId = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID);
-        List<PointWorkBean> list2 = pointWorkBeanDbUtil.getUploadUn(userId,"2");
+        List<PointWorkBean> list2 = pointWorkBeanDbUtil.getUpload(userId,"2");
         for(PointWorkBean bean:list2){
             if(bean!=null){
                 String[] filePaths = new String[0];
@@ -113,12 +106,12 @@ public class RemovePhotoService extends Service {
             boolean flag = true;
             for(String targetPath:needDeletePoint){
                 if(path.equals(targetPath)){
-                    System.out.println("-----point 未提交匹配图片--: "+path);
+                    System.out.println("-----point 已提交匹配图片--: "+path);
                     flag = false;
                     break;
                 }
             }
-            if(flag){
+            if(!flag){
                 removeFile(path);
             }
         }

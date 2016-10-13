@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,6 +41,7 @@ import cn.com.reachmedia.rmhandle.network.controller.PointListController;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.bean.ImageCacheResBean;
+import cn.com.reachmedia.rmhandle.utils.HomeFilterUtil;
 import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.PhotoSavePathUtil;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
@@ -56,7 +58,7 @@ public class ImageCacheFragment extends BaseToolbarFragment {
     @Bind(R.id.tv_community_count)
     TextView tvCommunityCount;
     @Bind(R.id.tv_detail_url)
-    TextView tv_detail_url;
+    LinearLayout tv_detail_url;
     @Bind(R.id.tv_clear_cache_result)
     TextView tv_clear_cache_result;
     @Bind(R.id.tv_total_data)
@@ -99,6 +101,8 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         View rootView = inflater.inflate(R.layout.image_cache_fragment, container, false);
         ButterKnife.bind(this, rootView);
         needTitle();
+        HomeFilterUtil homeFilterUtil = HomeFilterUtil.getIns();
+        tvDetail.setText("正在缓存  "+homeFilterUtil.startTime.substring(5)+"~"+homeFilterUtil.endTime.substring(5)+"  的任务图片...");
         imageCacheUtils = ImageCacheUtils.getInstance();
         imageCacheUtils.mergeCommunityAB();//合并小区数据
         totalCommunityCount = imageCacheUtils.getCommunityIds().size();
@@ -107,8 +111,8 @@ public class ImageCacheFragment extends BaseToolbarFragment {
             imageCacheUtils.getImageCacheResBeens().clear();//清除图片数据
             getPointData();
         }
-        rlRightText.setVisibility(View.VISIBLE);
-        tv_info.setText("清空");
+//        rlRightText.setVisibility(View.VISIBLE);
+//        tv_info.setText("清空");
         return rootView;
     }
 
@@ -199,7 +203,7 @@ public class ImageCacheFragment extends BaseToolbarFragment {
 
         } else {//点位数据加载完毕
             tvDetail2.setText("小区数据加载完毕,总共" + imageCacheUtils.getImageCacheResBeens().size() + "张图片需要缓存");
-            tvDetail.setText("正在下载图片...");
+//            tvDetail.setText("正在下载图片...");
             tvImageCount.setVisibility(View.VISIBLE);
             task = new DownloadImgTask();
             task.execute(imageCacheUtils.getImageCacheResBeens());
@@ -264,22 +268,27 @@ public class ImageCacheFragment extends BaseToolbarFragment {
             if(tv_detail_url!=null){
                 if(aBoolean){
                     getAllCacheSize();
-                    tv_detail_url.setText("图片下载完成,可以关闭本页");
+                    tv_detail_url.setVisibility(View.VISIBLE);
                 }else{
-                    tv_detail_url.setText("图片下载失败,请重试!");
+                    ToastHelper.showAlert(getActivity(),"下载失败");
                 }
             }
         }
+    }
+
+    @OnClick(R.id.bt_report_question)
+    public void finishFragment(){
+        getActivity().finish();
     }
 
     public static String getDataContent(double dataLength){
         long M = 1024*1024;
         if((int)(dataLength/M)>0){
             double mtemp = dataLength/M;
-            return new DecimalFormat("#.00").format(mtemp)+" Mb";
+            return new DecimalFormat("#.00").format(mtemp)+" MB";
         }else if((int)(dataLength/1024)>0){
             double ktemp = dataLength/1024;
-            return new DecimalFormat("#.00").format(ktemp)+" Kb";
+            return new DecimalFormat("#.00").format(ktemp)+" KB";
         }else{
             return (int)dataLength+" B";
         }

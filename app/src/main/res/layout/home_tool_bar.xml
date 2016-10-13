@@ -67,12 +67,14 @@
                 android:layout_height="40dp"
                 android:layout_centerInParent="true"
                 android:layout_alignParentRight="true">
-                <ImageView
+                <TextView
                     android:id="@+id/iv_info"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:scaleType="center"
-                    android:src="@mipmap/bar_info_icon"
+                    android:text="任务\n缓存"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     />
