@@ -117,7 +117,14 @@
                     android:layout_marginLeft="@dimen/padding_lr"
                     android:gravity="center_vertical"
                     android:text="到画时间：    上画时间："/>
-
+                <Button
+                    android:id="@+id/bt_show_webview"
+                    android:layout_width="110dp"
+                    android:layout_height="30dp"
+                    style="@style/RedButtonStyle"
+                    android:layout_marginLeft="@dimen/padding_lr"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/btn_text_show_webview"/>
                 <WebView
                     android:id="@+id/wb_memo"
                     android:layout_marginLeft="@dimen/padding_lr"
@@ -159,47 +166,6 @@
                     android:minHeight="43dp"
                     android:layout_marginLeft="@dimen/padding_lr"
                     android:gravity="center_vertical"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_checkstate_frame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="巡检状态:"
-                    android:layout_marginLeft="@dimen/padding_lr"
-                    android:textColor="@color/username_color"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:gravity="center_vertical"/>
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    >
-                    <RadioButton
-                        android:id="@+id/rb_check_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="画面正确"/>
-
-                    <RadioButton
-                        android:id="@+id/rb_check_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp"
-                        android:text="画面有误"/>
-                </RadioGroup>
 
             </LinearLayout>
 

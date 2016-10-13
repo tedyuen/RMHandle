@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
@@ -25,6 +27,7 @@ import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.Line2ImageLayout;
 import cn.com.reachmedia.rmhandle.ui.view.Line3ImageLayout;
+import cn.com.reachmedia.rmhandle.ui.view.LineButtomLayout;
 import cn.com.reachmedia.rmhandle.ui.view.LineImageLayout;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
@@ -38,9 +41,12 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     @Bind(R.id.line_image_1)
     LineImageLayout lineImage1;
 
-
     @Bind(R.id.line_image_2)
     Line2ImageLayout lineImage2;
+
+    @Bind(R.id.ll_bottom_frame)
+    LineButtomLayout lineButtom;
+
 
 
     @Bind(R.id.tv_action_time)
@@ -52,11 +58,11 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     @Bind(R.id.ll_cust_photo)
     Line3ImageLayout ll_cust_photo;
 
+    @Bind(R.id.bt_show_webview)
+    Button btShowWebview;
 
-    @Bind(R.id.rb_check_1)
-    RadioButton rbCheck1;
-    @Bind(R.id.rb_check_2)
-    RadioButton rbCheck2;
+    int stateType;//0:上刊 1:下刊  2:巡查
+    int stateFinish;//0:未完成 1:无法进入 2:报错
 
 
     public static NewPointDetailFragment newInstance() {
@@ -129,8 +135,14 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         for (PointListModel.ComListBean comBean : pointListModel.getComList()) {
             if (comBean.getCid().trim().equals(cid)) {
                 tvCname.setText(comBean.getCname());
-                wbMemo.getSettings().setDefaultTextEncodingName("utf-8");
-                wbMemo.loadDataWithBaseURL("", comBean.getMemo(), "text/html", "utf-8", "");
+//                wbMemo.getSettings().setDefaultTextEncodingName("utf-8");
+//                wbMemo.loadDataWithBaseURL("", comBean.getMemo(), "text/html", "utf-8", "");
+                webViewStr = comBean.getMemo();
+                if(StringUtils.isEmpty(webViewStr)){
+                    btShowWebview.setVisibility(View.GONE);
+                }else{
+                    btShowWebview.setVisibility(View.VISIBLE);
+                }
                 if (comBean.getPicList() == null || comBean.getPicList().size() == 0) {
                     ll_cust_photo.setVisibility(View.GONE);
                 } else {
@@ -143,15 +155,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         }
 
         //巡检状态
-        if(bean.getCheckState()==1){
-            rbCheck1.setChecked(true);
-            rbCheck1.setVisibility(View.VISIBLE);
-            rbCheck2.setVisibility(View.GONE);
-        }else {
-            rbCheck2.setChecked(true);
-            rbCheck2.setVisibility(View.VISIBLE);
-            rbCheck1.setVisibility(View.GONE);
-        }
+        lineButtom.changeXunjianState(bean.getCheckState());
 
         //门洞照显示
         if (!StringUtils.isEmpty(bean.getCDoorPic())) {
@@ -191,5 +195,22 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+
+    private String webViewStr;
+
+    @OnClick(R.id.bt_show_webview)
+    public void clickShowWebView(){
+        showWebview();
+    }
+
+    private void showWebview(){
+        if(!StringUtils.isEmpty(webViewStr)){
+            wbMemo.getSettings().setDefaultTextEncodingName("utf-8");
+            wbMemo.loadDataWithBaseURL("", webViewStr, "text/html", "utf-8", "");
+            btShowWebview.setVisibility(View.GONE);
+        }
+
     }
 }
