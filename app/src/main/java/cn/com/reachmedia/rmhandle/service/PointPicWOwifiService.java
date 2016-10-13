@@ -75,6 +75,11 @@ public class PointPicWOwifiService extends Service {
                                     dataList.remove(0);
                                 }
                                 uploadSingle();
+                            }else{
+                                if(dataList!=null && dataList.size()>0){
+                                    dataList.remove(0);
+                                }
+                                uploadSingle();
                             }
                         }
                     }
