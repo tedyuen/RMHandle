@@ -98,57 +98,85 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
 
     @OnClick(R.id.rl_right_text)
     public void goSynchronize(){
-        if(PointWorkBeanDbUtil.getIns().getUnSynchronize()>0) {
-            if (AppNetworkInfo.isWifi(this)) {
+        if (AppNetworkInfo.isWifi(this)) {
 //            ServiceHelper.getIns().startPointWorkWithPicService(getApplicationContext());
-                ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
-                ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(), false);
-                ToastHelper.showInfo(activity, "开始上传,请稍后刷新状态!");
-            } else {
-                new MaterialDialog.Builder(this)
-                        .title(R.string.dialog_title_synchronize)
-                        .negativeText("取消")
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .positiveText("确定")
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
-                                ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(), true);
-                                ToastHelper.showInfo(activity, "开始上传,请稍后刷新状态!");
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-            }
-        }else{
-            new MaterialDialog.Builder(this)
-                    .title(R.string.dialog_title_synchronize_clean)
-                    .negativeText("取消")
-                    .onNegative(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .positiveText("确定清空")
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            ServiceHelper.getIns().startRemoveDoneFileService(getApplicationContext());
-                            ToastHelper.showInfo(activity, "清空图片任务正在后台运行...");
-                            dialog.dismiss();
-                        }
-                    })
-                    .show();
+            ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
+            ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(), false);
+            ToastHelper.showInfo(activity, "开始上传,请稍后刷新状态!");
+        } else {
+            ToastHelper.showInfo(activity, "请在wifi状态下上传图片");
+
+//            new MaterialDialog.Builder(this)
+//                    .title(R.string.dialog_title_synchronize)
+//                    .negativeText("取消")
+//                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+//                        @Override
+//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                            dialog.dismiss();
+//                        }
+//                    })
+//                    .positiveText("确定")
+//                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                        @Override
+//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                            ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
+//                            ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(), true);
+//                            ToastHelper.showInfo(activity, "开始上传,请稍后刷新状态!");
+//                            dialog.dismiss();
+//                        }
+//                    })
+//                    .show();
         }
 
-
+//        if(PointWorkBeanDbUtil.getIns().getUnSynchronize()>0) {
+//            if (AppNetworkInfo.isWifi(this)) {
+////            ServiceHelper.getIns().startPointWorkWithPicService(getApplicationContext());
+//                ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
+//                ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(), false);
+//                ToastHelper.showInfo(activity, "开始上传,请稍后刷新状态!");
+//            } else {
+//                new MaterialDialog.Builder(this)
+//                        .title(R.string.dialog_title_synchronize)
+//                        .negativeText("取消")
+//                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+//                            @Override
+//                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                dialog.dismiss();
+//                            }
+//                        })
+//                        .positiveText("确定")
+//                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                            @Override
+//                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                ServiceHelper.getIns().startPointWorkWOwifiService(getApplicationContext());
+//                                ServiceHelper.getIns().startCommDoorPicService(getApplicationContext(), true);
+//                                ToastHelper.showInfo(activity, "开始上传,请稍后刷新状态!");
+//                                dialog.dismiss();
+//                            }
+//                        })
+//                        .show();
+//            }
+//        }else{
+//            new MaterialDialog.Builder(this)
+//                    .title(R.string.dialog_title_synchronize_clean)
+//                    .negativeText("取消")
+//                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+//                        @Override
+//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                            dialog.dismiss();
+//                        }
+//                    })
+//                    .positiveText("确定清空")
+//                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                        @Override
+//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                            ServiceHelper.getIns().startRemoveDoneFileService(getApplicationContext());
+//                            ToastHelper.showInfo(activity, "清空图片任务正在后台运行...");
+//                            dialog.dismiss();
+//                        }
+//                    })
+//                    .show();
+//        }
     }
 
 
@@ -233,11 +261,13 @@ public class SynchronizeActivity extends BaseActionBarTabActivity {
     }
 
     public void updateRightText(){
-        if(PointWorkBeanDbUtil.getIns().getUnSynchronize()>0){
-            tv_info.setText("上传");
-        }else{
-            tv_info.setText("清空");
-        }
+        tv_info.setText("上传");
+
+//        if(PointWorkBeanDbUtil.getIns().getUnSynchronize()>0){
+//            tv_info.setText("上传");
+//        }else{
+//            tv_info.setText("清空");
+//        }
     }
 
     @Override
