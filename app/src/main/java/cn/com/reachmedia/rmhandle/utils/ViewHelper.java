@@ -15,6 +15,7 @@ import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllPagerActivity;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageMergePagerActivity;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImagePagerActivity;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.NewImageAllPagerActivity;
+import cn.com.reachmedia.rmhandle.ui.view.imagepager.PictureImagePagerActivity;
 
 /**
  * Author:    tedyuen
@@ -78,6 +79,14 @@ public class ViewHelper {
 
         ImageAllPagerActivity.imageData = imageDatas;
 
+        context.startActivity(intent);
+    }
+
+    public static void getPictureImagePager(Context context,List<PictureBean> imageDatas,int index){
+        Intent intent = new Intent();
+        intent.setClass(context.getApplicationContext(), PictureImagePagerActivity.class);
+        intent.putExtra("image_index", index);
+        PictureImagePagerActivity.imageData = imageDatas;
         context.startActivity(intent);
     }
 

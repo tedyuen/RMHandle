@@ -40,14 +40,12 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
 
     @Bind(R.id.line_image_1)
     LineImageLayout lineImage1;
-
     @Bind(R.id.line_image_2)
     Line2ImageLayout lineImage2;
-
+    @Bind(R.id.ll_cust_photo)
+    Line3ImageLayout ll_cust_photo;
     @Bind(R.id.ll_bottom_frame)
     LineButtomLayout lineButtom;
-
-
 
     @Bind(R.id.tv_action_time)
     TextView tvActionTime;
@@ -55,8 +53,6 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     TextView tvCname;
     @Bind(R.id.wb_memo)
     WebView wbMemo;
-    @Bind(R.id.ll_cust_photo)
-    Line3ImageLayout ll_cust_photo;
 
     @Bind(R.id.bt_show_webview)
     Button btShowWebview;
@@ -168,6 +164,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         }
 
         lineImage1.updateAddPhotosClickState(getActivity(),savedInstanceState);
+        lineImage2.updateAddPhotosClickState(getActivity(),savedInstanceState);
 
     }
 
@@ -179,10 +176,12 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         lineImage1.onActivityResult(requestCode,resultCode,data);
+        lineImage2.onActivityResult(requestCode,resultCode,data);
     }
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         lineImage1.onSaveInstanceState(savedInstanceState);
+        lineImage2.onSaveInstanceState(savedInstanceState);
     }
 
 

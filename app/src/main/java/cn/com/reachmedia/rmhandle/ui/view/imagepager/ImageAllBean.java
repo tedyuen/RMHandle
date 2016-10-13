@@ -54,7 +54,7 @@ public class ImageAllBean {
         if(!StringUtils.isEmpty(str)) {
             switch (type) {
                 case URL_IMG:
-                    Picasso.with(context).load(str).into(imageView);
+                    Picasso.with(context).load(str).resize(1080,1920).centerCrop().into(imageView);
                     break;
                 case LOCAL_PATH_IMG:
 //                    Picasso.with(context).load(new File(str)).resize(1080,1920).centerCrop().into(imageView);

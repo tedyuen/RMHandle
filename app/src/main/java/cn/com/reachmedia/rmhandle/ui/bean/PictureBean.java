@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import java.io.File;
 
+import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.utils.SimpleImageLoader;
 
 /**
@@ -13,7 +14,7 @@ import cn.com.reachmedia.rmhandle.utils.pictureutils.utils.SimpleImageLoader;
  */
 public class PictureBean {
     private String fileId;       // fileId提交用
-    private String mainPath;     // 入库用路径
+    private String mainPath;     // 入库用路径 url
     private String subPath;      // 显示用路径
     private boolean isDeleted;   // 是否被删除
     private PictrueType type;    // 图片类型
@@ -22,6 +23,8 @@ public class PictureBean {
     public PictureBean(){
 
     }
+
+
 
     /**
      * 初始化新建图片

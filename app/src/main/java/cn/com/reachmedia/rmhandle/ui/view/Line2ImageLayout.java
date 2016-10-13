@@ -1,21 +1,35 @@
 package cn.com.reachmedia.rmhandle.ui.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
+import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
+import cn.com.reachmedia.rmhandle.utils.ViewHelper;
+import cn.com.reachmedia.rmhandle.utils.pictureutils.camera.PhotoPickManger;
 
 /**
  * Created by tedyuen on 16-9-20.
@@ -36,52 +50,144 @@ public class Line2ImageLayout extends FrameLayout {
     @Bind(R.id.rl_comm_photo_2)
     RelativeLayout rlCommPhoto2;
 
+
+    List<ImageAllBean> commImageDatas;//小区放大的资料
+
+
+    PhotoPickManger pickManger;
+    PictureBean resultDatas;
+    Activity activity;
+
     public Line2ImageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.line2_image_layout, this);
         ButterKnife.bind(this);
-
-
     }
 
-
+    /**
+     * 设置门洞照片
+     * @param bean
+     */
     public void setDoorPic(ImageAllBean bean) {
+        //TODO 这里还需要设置原有照片到 resultDatas
         bean.doPicasso(getContext(),ivCommPhoto2,ImageAllBean.THUMBNAIL_WIDTH,ImageAllBean.THUMBNAIL_HEIGHT);
     }
 
-
+    /**
+     * 设置小区照片
+     */
     public void setCommunityPhoto(PointListModel pointListModel){
+        commImageDatas = new ArrayList<>();
         if (!StringUtils.isEmpty(pointListModel.getCGatePics())) {
             String[] gatePath = pointListModel.getCGatePics().split("@&");
             String[] gatePath2 = pointListModel.getCGatePic().split("@&");
             if(!StringUtils.isEmpty(gatePath[0])){
-                System.out.println("====>  "+gatePath[0]);
+                ImageAllBean allBean = new ImageAllBean(gatePath2[0],ImageAllBean.URL_IMG);
+                commImageDatas.add(allBean);
                 ImageCacheUtils.getInstance().displayLocalOrUrl(getContext(),gatePath[0],ivCommPhoto1);
-//                commImgList.add(gatePath2[0]);
             }else if(gatePath.length>1 && !StringUtils.isEmpty(gatePath[1])){
-//                commImgList.add(gatePath2[1]);
+                ImageAllBean allBean = new ImageAllBean(gatePath2[1],ImageAllBean.URL_IMG);
+                commImageDatas.add(allBean);
                 ImageCacheUtils.getInstance().displayLocalOrUrl(getContext(),gatePath[1],ivCommPhoto1);
-            }else{
-//                commImgList.add("");
             }
-        }else{
-//            commImgList.add("");
         }
 
         if (!StringUtils.isEmpty(pointListModel.getCPestPics())) {
             String[] pestPath = pointListModel.getCPestPics().split("@&");
             String[] pestPath2 = pointListModel.getCPestPic().split("@&");
             if(!StringUtils.isEmpty(pestPath[0])){
-//                commImgList.add(pestPath2[0]);
+                ImageAllBean allBean = new ImageAllBean(pestPath2[0],ImageAllBean.URL_IMG);
+                commImageDatas.add(allBean);
                 ImageCacheUtils.getInstance().displayLocalOrUrl(getContext(),pestPath[0],ivCommPhoto3);
             }else if(pestPath.length>1 && !StringUtils.isEmpty(pestPath[1])){
-//                commImgList.add(pestPath2[1]);
+                ImageAllBean allBean = new ImageAllBean(pestPath2[1],ImageAllBean.URL_IMG);
+                commImageDatas.add(allBean);
                 ImageCacheUtils.getInstance().displayLocalOrUrl(getContext(),pestPath[1],ivCommPhoto3);
-            }else{
-//                commImgList.add("");
             }
-        }else{
-//            commImgList.add("");
         }
+    }
+
+    @OnClick(R.id.rl_comm_photo_1)
+    public void goViewCommPhoto1(){
+        ViewHelper.getAllImagePager(getContext(), commImageDatas, 0);
+    }
+    @OnClick(R.id.rl_comm_photo_3)
+    public void goViewCommPhoto2(){
+        ViewHelper.getAllImagePager(getContext(), commImageDatas, 1);
+    }
+
+
+    //以下是门洞拍照逻辑
+
+    /**
+     * 放大门洞图
+     */
+    public void goViewDoorPhoto(){
+        if(resultDatas!=null){
+            List<PictureBean> imageDatas = new ArrayList<>();
+            imageDatas.add(resultDatas);
+            ViewHelper.getPictureImagePager(getContext(), imageDatas, 1);
+            return;
+        }
+        ToastHelper.showAlert(activity,"暂无图片,上传图片请点击修改进行操作。");
+    }
+
+    public void updateAddPhotosClickState(Activity activity, Bundle savedInstanceState){
+        this.activity = activity;
+        pickManger = new PhotoPickManger("pickDoor",activity, savedInstanceState,new PhotoPickManger.OnPhotoPickFinsh() {
+            @Override
+            public void onPhotoPick(List<File> list) {
+                StringBuffer buffer = new StringBuffer();
+                for(File file:list){
+                    PictureBean tempBean = new PictureBean(file, PictureBean.PictrueType.TYPE_4,"");
+                    resultDatas = tempBean;
+                    buffer.append("" + file.getAbsolutePath() + " " + file.length()+"\n");
+                }
+                System.out.println("filedetail:==> "+buffer.toString());
+                refreshAllImage();
+            }
+        });
+        pickManger.flushBundle();
+    }
+
+    /**
+     * 刷新所有图片
+     */
+    public void refreshAllImage(){
+        if(resultDatas!=null){
+            resultDatas.displayImage(ivCommPhoto2);
+        }
+    }
+
+    @OnClick(R.id.rl_comm_photo_2)
+    public void clickDoor(){
+        if(resultDatas==null){//直接拍照
+            pickManger.setReturnFileCount(1);
+            pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
+        }else{
+            new MaterialDialog.Builder(getContext())
+                    .title(R.string.dialog_title_add_photo)
+                    .items(R.array.new_dialog_add_photo_big)
+                    .itemsCallback(new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                            if (which == 0) {//拍照
+                                pickManger.setReturnFileCount(1);
+                                pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
+                            }else if (which == 1) {// 查看大图
+                                goViewDoorPhoto();
+                            }
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        pickManger.onActivityResult(requestCode,resultCode,data);
+    }
+
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        pickManger.onSaveInstanceState(savedInstanceState);
     }
 }

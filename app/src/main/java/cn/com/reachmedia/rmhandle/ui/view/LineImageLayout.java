@@ -24,6 +24,8 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
+import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.camera.PhotoPickManger;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.utils.SimpleImageLoader;
 
@@ -101,15 +103,27 @@ public class LineImageLayout extends FrameLayout {
             });
         }
         for(int i=0;i<index;i++){
+            final int y = i;
             addPhotos[i].setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    pickManger.setReturnFileCount(3 - pickManger.getSelectsPhotos().size());
-//                    pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
+                    goViewDoorPhoto(y);
                 }
             });
         }
 
+    }
+
+    public void goViewDoorPhoto(int index){
+        if(resultDatas!=null){
+            List<PictureBean> imageDatas = new ArrayList<>();
+            for(PictureBean temp:resultDatas){
+                if(!temp.isDeleted()){
+                    imageDatas.add(temp);
+                }
+            }
+            ViewHelper.getPictureImagePager(getContext(), imageDatas, index);
+        }
     }
 
     /**
