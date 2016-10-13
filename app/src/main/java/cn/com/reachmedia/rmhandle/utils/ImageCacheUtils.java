@@ -1,12 +1,16 @@
 package cn.com.reachmedia.rmhandle.utils;
 
+import android.content.Context;
 import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.ImageCacheBean;
 import cn.com.reachmedia.rmhandle.db.helper.ImageCacheDaoHelper;
@@ -69,6 +73,20 @@ public class ImageCacheUtils {
         }
         return false;
     }
+
+    public static void displayLocalOrUrl(Context context,String url, ImageView imageView){
+        displayLocalOrUrl(context,url,imageView,300,261);
+    }
+
+    public static void displayLocalOrUrl(Context context,String url, ImageView imageView,int targetWidth, int targetHeight){
+        boolean tempBoolean = ImageCacheUtils.getInstance().displayImage(url,imageView);
+        if(!tempBoolean) {
+            Picasso.with(context).load(url).placeholder(R.drawable.abc).resize(targetWidth, targetHeight).centerCrop().into(imageView);
+        }
+    }
+
+
+
 
 
     public void addCommunityIds(String cId,int type){

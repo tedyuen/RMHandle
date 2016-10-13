@@ -170,6 +170,10 @@ public class ImageCacheFragment extends BaseToolbarFragment {
                                         ImageCacheResBean fileBean = new ImageCacheResBean(initData);
                                         fileBean.setUrl(picListBean.getPicurlS());
                                         imageCacheUtils.addPointBean(fileBean);
+
+//                                        ImageCacheResBean fileBeanB = new ImageCacheResBean(initData);
+//                                        fileBeanB.setUrl(picListBean.getPicurlB());
+//                                        imageCacheUtils.addPointBean(fileBeanB);
                                     }
                                 }
                             }

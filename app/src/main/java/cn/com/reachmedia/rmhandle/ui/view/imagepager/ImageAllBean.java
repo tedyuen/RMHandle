@@ -8,6 +8,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
+import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 
 /**
@@ -31,10 +32,13 @@ public class ImageAllBean {
     public final static int THUMBNAIL_HEIGHT = 261;
 
     public void doPicasso(Context context, ImageView imageView,int targetWidth,int targetHeight){
+        System.out.println("--==--1> str:"+str+" : type"+type);
         if(!StringUtils.isEmpty(str)){
+            System.out.println("--==--2> str:"+str+" : type"+type);
             switch (type){
                 case URL_IMG:
-                    Picasso.with(context).load(str).resize(targetWidth,targetHeight).centerCrop().into(imageView);
+                    ImageCacheUtils.displayLocalOrUrl(context,str,imageView,targetWidth,targetHeight);
+//                    Picasso.with(context).load(str).resize(targetWidth,targetHeight).centerCrop().into(imageView);
                     break;
                 case LOCAL_PATH_IMG:
                     Picasso.with(context).load(new File(str)).resize(targetWidth,targetHeight).centerCrop().into(imageView);

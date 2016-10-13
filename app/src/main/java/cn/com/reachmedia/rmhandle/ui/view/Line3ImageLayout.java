@@ -18,6 +18,7 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
+import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 
@@ -60,7 +61,7 @@ public class Line3ImageLayout extends FrameLayout {
             imageDatas.add(allBean);
             if (!StringUtils.isEmpty(picBean.getPicurlS())) {
                 custPhotos[i].setVisibility(View.VISIBLE);
-                Picasso.with(getContext()).load(picBean.getPicurlS()).placeholder(R.drawable.abc).resize(300,261).centerCrop().into(custPhotos[i]);
+                ImageCacheUtils.displayLocalOrUrl(getContext(),picBean.getPicurlS(),custPhotos[i]);
             }
         }
 

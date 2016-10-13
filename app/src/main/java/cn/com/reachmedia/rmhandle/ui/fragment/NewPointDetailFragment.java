@@ -159,6 +159,10 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
             lineImage2.setDoorPic(doorPicBean);
         }
 
+        if(pointListModel!=null){
+            lineImage2.setCommunityPhoto(pointListModel);
+        }
+
         lineImage1.updateAddPhotosClickState(getActivity(),savedInstanceState);
 
     }
