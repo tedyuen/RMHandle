@@ -74,6 +74,12 @@ public class PointPicService extends Service {
                                     dataList.remove(0);
                                 }
                                 uploadSingle();
+                            } else{
+                                //其他异常
+                                if(dataList!=null && dataList.size()>0){
+                                    dataList.remove(0);
+                                }
+                                uploadSingle();
                             }
                         }
                     }
