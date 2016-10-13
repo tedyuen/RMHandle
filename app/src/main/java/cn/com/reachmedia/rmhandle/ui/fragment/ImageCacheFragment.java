@@ -36,6 +36,7 @@ import cn.com.reachmedia.rmhandle.bean.ImageCacheBean;
 import cn.com.reachmedia.rmhandle.db.helper.ImageCacheDaoHelper;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.model.param.PointListParam;
+import cn.com.reachmedia.rmhandle.network.AppNetworkInfo;
 import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
 import cn.com.reachmedia.rmhandle.network.controller.PointListController;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
@@ -212,7 +213,7 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         }
     }
 
-    public class DownloadImgTask extends AsyncTask<LinkedHashSet<ImageCacheResBean>,Integer,Boolean>{
+    public class DownloadImgTask extends AsyncTask<LinkedHashSet<ImageCacheResBean>,Integer,Integer>{
 
         private int fileSize = 0;
         private int totalSize;
@@ -226,27 +227,31 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         }
 
         @Override
-        protected Boolean doInBackground(LinkedHashSet<ImageCacheResBean>... linkedHashSets) {
+        protected Integer doInBackground(LinkedHashSet<ImageCacheResBean>... linkedHashSets) {
             if(linkedHashSets!=null && linkedHashSets.length>0){
                 totalSize = fileSize = linkedHashSets[0].size();
                 Iterator<ImageCacheResBean> iterator = linkedHashSets[0].iterator();
                 while (iterator.hasNext()){
                     ImageCacheResBean bean = iterator.next();
 //                    System.out.println("url==>"+bean.getUrl());
-                    int length = downloadFile(bean);
-                    if(length>0){
+                    if(AppNetworkInfo.isWifi(getContext())) {//wifi
+                        int length = downloadFile(bean);
+                        if (length > 0) {
 //                        System.out.println("bean==>"+bean);
-                        bean.setCreateTime(TimeUtils.getNowStr());
-                        imageCacheDaoHelper.addData(bean.returnBean(imageCacheDaoHelper));
-                        publishProgress(length);
+                            bean.setCreateTime(TimeUtils.getNowStr());
+                            imageCacheDaoHelper.addData(bean.returnBean(imageCacheDaoHelper));
+                            publishProgress(length);
 
 //                        ImageCacheBean temp = imageCacheDaoHelper.getBeanByUrl(bean.getUrl());
 //                        System.out.println("dbpath:=>"+temp.getPath());
+                        }
+                    }else{
+                        return -2;
                     }
                 }
-                return true;
+                return 0;
             }else{
-                return false;
+                return -1;
             }
         }
 
@@ -264,11 +269,13 @@ public class ImageCacheFragment extends BaseToolbarFragment {
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        protected void onPostExecute(Integer aBoolean) {
             if(tv_detail_url!=null){
-                if(aBoolean){
+                if(aBoolean==0){
                     getAllCacheSize();
                     tv_detail_url.setVisibility(View.VISIBLE);
+                }else if(aBoolean==-2){
+                    ToastHelper.showAlert(getActivity(),"wifi断开,停止下载!");
                 }else{
                     ToastHelper.showAlert(getActivity(),"下载失败");
                 }
