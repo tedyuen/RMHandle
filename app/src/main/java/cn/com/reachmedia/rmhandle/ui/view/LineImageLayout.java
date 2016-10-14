@@ -24,6 +24,8 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
+import cn.com.reachmedia.rmhandle.ui.fragment.NewPointDetailFragment;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.camera.PhotoPickManger;
@@ -32,7 +34,7 @@ import cn.com.reachmedia.rmhandle.utils.pictureutils.utils.SimpleImageLoader;
 /**
  * Created by tedyuen on 16-9-20.
  */
-public class LineImageLayout extends FrameLayout {
+public class LineImageLayout extends FrameLayout implements PointDetailLine{
 
 
     @Bind(R.id.iv_point_photo_1)
@@ -55,6 +57,7 @@ public class LineImageLayout extends FrameLayout {
     private int photoCount;//当前图片数量
 
     PhotoPickManger pickManger;
+    NewPointDetailFragment fragment;
 
 
     List<PictureBean> resultDatas;
@@ -231,5 +234,32 @@ public class LineImageLayout extends FrameLayout {
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         pickManger.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void init(NewPointDetailFragment fragment) {
+        this.fragment = fragment;
+    }
+
+    @Override
+    public void changeEditMode(boolean flag) {
+        if (flag) {
+            for (int i = 0; i < photoCount; i++) {
+                if (i < deletes.length)
+                    deletes[i].setVisibility(View.VISIBLE);
+            }
+            if (photoCount < addPhotos.length) {
+                addPhotos[photoCount].setVisibility(View.VISIBLE);
+            }
+        } else {
+
+            for (int i = 0; i < photoCount; i++) {
+                if (i < deletes.length)
+                    deletes[i].setVisibility(View.GONE);
+            }
+            if (photoCount < addPhotos.length) {
+                addPhotos[photoCount].setVisibility(View.GONE);
+            }
+        }
     }
 }

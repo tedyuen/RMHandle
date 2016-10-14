@@ -24,6 +24,7 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
+import cn.com.reachmedia.rmhandle.ui.fragment.NewPointDetailFragment;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
@@ -34,7 +35,7 @@ import cn.com.reachmedia.rmhandle.utils.pictureutils.camera.PhotoPickManger;
 /**
  * Created by tedyuen on 16-9-20.
  */
-public class Line2ImageLayout extends FrameLayout {
+public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
 
 
     @Bind(R.id.iv_comm_photo_1)
@@ -52,7 +53,7 @@ public class Line2ImageLayout extends FrameLayout {
 
 
     List<ImageAllBean> commImageDatas;//小区放大的资料
-
+    NewPointDetailFragment fragment;
 
     PhotoPickManger pickManger;
     PictureBean resultDatas;
@@ -118,7 +119,6 @@ public class Line2ImageLayout extends FrameLayout {
 
 
     //以下是门洞拍照逻辑
-
     /**
      * 放大门洞图
      */
@@ -137,13 +137,12 @@ public class Line2ImageLayout extends FrameLayout {
         pickManger = new PhotoPickManger("pickDoor",activity, savedInstanceState,new PhotoPickManger.OnPhotoPickFinsh() {
             @Override
             public void onPhotoPick(List<File> list) {
-                StringBuffer buffer = new StringBuffer();
+//                StringBuffer buffer = new StringBuffer();
                 for(File file:list){
                     PictureBean tempBean = new PictureBean(file, PictureBean.PictrueType.TYPE_4,"");
                     resultDatas = tempBean;
-                    buffer.append("" + file.getAbsolutePath() + " " + file.length()+"\n");
+//                    buffer.append("" + file.getAbsolutePath() + " " + file.length()+"\n");
                 }
-                System.out.println("filedetail:==> "+buffer.toString());
                 refreshAllImage();
             }
         });
@@ -189,5 +188,24 @@ public class Line2ImageLayout extends FrameLayout {
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         pickManger.onSaveInstanceState(savedInstanceState);
+    }
+
+
+    @Override
+    public void init(NewPointDetailFragment fragment) {
+        this.fragment = fragment;
+    }
+
+    @Override
+    public void changeEditMode(boolean flag) {
+        if (flag) {
+            if (StringUtils.isEmpty(fragment.bean.getCDoorPic())) {
+                ivCommPhoto2.setImageDrawable(getResources().getDrawable(R.mipmap.picture_add_icon));
+            }
+        } else {
+            if (StringUtils.isEmpty(fragment.bean.getCDoorPic())) {
+                ivCommPhoto2.setImageDrawable(getResources().getDrawable(R.drawable.abc));
+            }
+        }
     }
 }

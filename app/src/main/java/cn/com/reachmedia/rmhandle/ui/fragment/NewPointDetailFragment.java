@@ -1,7 +1,10 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +13,11 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -21,6 +27,7 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
@@ -57,8 +64,19 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     @Bind(R.id.bt_show_webview)
     Button btShowWebview;
 
+    @Bind(R.id.tv_error_text)
+    TextView tvErrorText;
+    @Bind(R.id.tv_error_desc)
+    TextView tvErrorDesc;
+    @Bind(R.id.ll_error_frame)
+    LinearLayout llErrorFrame;
+
+    @Bind(R.id.rl_right_text)
+    RelativeLayout rl_right_text;
+
     int stateType;//0:上刊 1:下刊  2:巡查
     int stateFinish;//0:未完成 1:无法进入 2:报错
+
 
 
     public static NewPointDetailFragment newInstance() {
@@ -75,7 +93,8 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     private PointBeanDbUtil pointBeanDbUtil;
     private PointWorkBeanDbUtil pointWorkBeanDbUtil;
     private PointListModel pointListModel;//缓存列表数据
-    private PointBean bean;//网络数据
+    public PointBean bean;//网络数据
+    PointWorkBean pointWorkBean;
 
 
     @Override
@@ -100,6 +119,9 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
             getActivity().finish();
         }
         bean = pointBeanDbUtil.getPointBeanByWPID(workId, pointId);
+        if(bean!=null){
+            pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(bean.getWorkId(), bean.getPointId());
+        }
 
     }
 
@@ -108,6 +130,9 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         View rootView = inflater.inflate(R.layout.new_fragment_point_detail, container, false);
         ButterKnife.bind(this, rootView);
         needTitle();
+        lineImage1.init(this);
+        lineImage2.init(this);
+        lineButtom.init(this);
         return rootView;
     }
 
@@ -166,10 +191,104 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         lineImage1.updateAddPhotosClickState(getActivity(),savedInstanceState);
         lineImage2.updateAddPhotosClickState(getActivity(),savedInstanceState);
 
+        mergeLocalPhoto();
+        initStateType();
     }
 
+    /**
+     * 整合网络和本地图片
+     */
+    private void mergeLocalPhoto(){
 
 
+    }
+
+    /**
+     * 初始化上下刊状态
+     */
+    private void initStateType(){
+        if (pointWorkBean != null) {
+            stateFinish = pointWorkBean.getState();
+        } else {
+            if (bean != null) {
+                stateFinish = bean.getStateType();
+            }
+        }
+        String backText = "完成";
+
+        switch (stateFinish) {
+            case 0://未完成
+                changeEditMode(true);
+                llErrorFrame.setVisibility(View.GONE);
+
+                break;
+            case 1://完成
+                changeEditMode(false);
+                llErrorFrame.setVisibility(View.GONE);
+
+                break;
+            case 2://保修
+                changeEditMode(false);
+                llErrorFrame.setVisibility(View.VISIBLE);
+                backText = "报修";
+                tvErrorText.setText(backText);
+                String tempDesc1 = bean.getStateTypeDesc()+":"+(StringUtils.isEmpty(bean.getErrorDesc()) ? "无备注" : bean.getErrorDesc());
+                tvErrorDesc.setText(tempDesc1);
+                break;
+            case 3://无法进入
+                changeEditMode(false);
+                llErrorFrame.setVisibility(View.VISIBLE);
+                backText = "无法进入";
+                tvErrorText.setText(backText);
+                String tempDesc2 = bean.getStateTypeDesc()+":"+(StringUtils.isEmpty(bean.getErrorDesc()) ? "无备注" : bean.getErrorDesc());
+                tvErrorDesc.setText(tempDesc2);
+                break;
+        }
+
+        if (bean != null) {
+            stateType = lineButtom.setBottom(bean,backText);
+        }
+
+    }
+
+    /**
+     * 改变编辑模式
+     *
+     * @param flag true:可编辑，false:不可编辑
+     */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void changeEditMode(boolean flag){
+        if(flag){
+            rl_right_text.setVisibility(View.GONE);
+        }else{
+            rl_right_text.setVisibility(View.VISIBLE);
+        }
+        lineImage1.changeEditMode(flag);
+        lineImage2.changeEditMode(flag);
+        lineButtom.changeEditMode(flag);
+
+    }
+
+    @OnClick(R.id.rl_right_text)
+    public void editMode() {
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_title_change_edit_mode)
+                .negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .positiveText("确定")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        changeEditMode(true);
+                    }
+                })
+                .show();
+    }
 
 
     @Override
