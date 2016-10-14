@@ -504,13 +504,14 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setCommunityname(bean.getCommunityname());
         pointWorkBean.setCname(bean.getCname());
 
-        pointWorkBean.setFiledelete("");
-        pointWorkBean.setFileCount(0);
+        LineImageLayout.FileDb fileDb = lineImage1.getFileDB(insertOrUpdate,pointWorkBean);
+        pointWorkBean.setFiledelete(fileDb.getDeleteIds());
+        pointWorkBean.setFileCount(fileDb.getFileCount());
 
-        pointWorkBean.setFileIdData("");
-        pointWorkBean.setFilePathData("");
-        pointWorkBean.setFileXY("");
-        pointWorkBean.setFileTime("");
+        pointWorkBean.setFileIdData(fileDb.getFileIds());
+        pointWorkBean.setFilePathData(fileDb.getFilePaths());
+        pointWorkBean.setFileXY(fileDb.getFileXY());
+        pointWorkBean.setFileTime(fileDb.getFileTime());
 
         pointWorkBean.setDoorpicid("");
         pointWorkBean.setDoorpic("");

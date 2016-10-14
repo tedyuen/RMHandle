@@ -91,7 +91,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                 for(int i=0;i<photoIds.length;i++){
                     PictureBean pictureBean = new PictureBean();
                     pictureBean.setFileId(photoIds[i]);
-                    pictureBean.setType(PictureBean.PictrueType.TYPE_3);
+                    pictureBean.setType(PictureBean.PictureType.TYPE_3);
                     if(i<urlBs.length){
                         pictureBean.setSubPath(urlBs[i]);
                     }else{
@@ -118,7 +118,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                 for(PictureBean pictureBean:resultDatas){
                     if(cacheFileId[i].equals(pictureBean.getFileId())){
                         pictureBean.setMainPath(cacheFilePath[i]);
-                        pictureBean.setType(PictureBean.PictrueType.TYPE_2);
+                        pictureBean.setType(PictureBean.PictureType.TYPE_2);
                         break;
                     }
                 }
@@ -151,7 +151,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
 //                Toast.makeText(getActivity(), "" + list.get(0).getPath() + " " + list.get(0).length(), Toast.LENGTH_SHORT).show();
                 StringBuffer buffer = new StringBuffer();
                 for(File file:list){
-                    PictureBean tempBean = new PictureBean(file, PictureBean.PictrueType.TYPE_4,"");
+                    PictureBean tempBean = new PictureBean(file, PictureBean.PictureType.TYPE_4,"");
                     resultDatas.add(tempBean);
                     buffer.append("" + file.getAbsolutePath() + " " + file.length()+"\n");
                 }
@@ -336,5 +336,114 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
      */
     public boolean isPhotoEmpty(){
         return true;
+    }
+
+    public FileDb getFileDB(boolean insertOrUpdate,PointWorkBean pointWorkBean){
+        FileDb db = new FileDb();
+        int count =0;
+        StringBuffer deleteIds = new StringBuffer();
+        StringBuffer fileIds = new StringBuffer();
+        StringBuffer filePaths = new StringBuffer();
+        StringBuffer fileXY = new StringBuffer();
+        StringBuffer fileTime = new StringBuffer();
+        if (!insertOrUpdate && !StringUtils.isEmpty(pointWorkBean.getFiledelete())){//整合以前删除的图片id
+            deleteIds.append(pointWorkBean.getFiledelete());
+        }
+        for(PictureBean bean:resultDatas){
+            if(count>=addPhotos.length){
+                break;
+            }
+            if(!bean.isDeleted()){
+                if(!bean.getType().equals(PictureBean.PictureType.TYPE_3)){//网络图片不要提交
+                    switch (bean.getType()){
+                        case TYPE_4:
+
+                            break;
+                        case TYPE_2:
+
+                            break;
+                    }
+
+
+
+
+                    count++;
+                }
+            }else{//删除的图片
+                if(deleteIds.length()>0){
+                    deleteIds.append(PointWorkBeanDbUtil.FILE_SPLIT2);
+                }
+                deleteIds.append(bean.getFileId());
+            }
+        }
+
+        db.setDeleteIds(deleteIds.toString());
+        db.setFileIds(fileIds.toString());
+        db.setFilePaths(filePaths.toString());
+        db.setFileXY(fileXY.toString());
+        db.setFileTime(fileTime.toString());
+        db.setFileCount(count);
+        return db;
+    }
+
+    public class FileDb{
+        private String deleteIds;
+        private String fileIds;
+        private String filePaths;
+        private String fileXY;
+        private String fileTime;
+        private int fileCount;
+
+
+
+
+
+        public String getDeleteIds() {
+            return deleteIds;
+        }
+
+        public void setDeleteIds(String deleteIds) {
+            this.deleteIds = deleteIds;
+        }
+
+        public String getFileIds() {
+            return fileIds;
+        }
+
+        public void setFileIds(String fileIds) {
+            this.fileIds = fileIds;
+        }
+
+        public String getFilePaths() {
+            return filePaths;
+        }
+
+        public void setFilePaths(String filePaths) {
+            this.filePaths = filePaths;
+        }
+
+        public String getFileXY() {
+            return fileXY;
+        }
+
+        public void setFileXY(String fileXY) {
+            this.fileXY = fileXY;
+        }
+
+        public String getFileTime() {
+            return fileTime;
+        }
+
+        public void setFileTime(String fileTime) {
+            this.fileTime = fileTime;
+        }
+
+        public int getFileCount() {
+            return fileCount;
+        }
+
+        public void setFileCount(int fileCount) {
+            this.fileCount = fileCount;
+        }
     }
 }

@@ -19,7 +19,7 @@ public class PictureBean {
     private String mainPath;     // 入库用路径 url s
     private String subPath;      // 显示用路径 url b
     private boolean isDeleted;   // 是否被删除
-    private PictrueType type;    // 图片类型
+    private PictureType type;    // 图片类型
     private File file;           // 图片文件
 
     public PictureBean(){
@@ -34,14 +34,14 @@ public class PictureBean {
      * @param type
      * @param fileId
      */
-    public PictureBean(File file,PictrueType type,String fileId){
+    public PictureBean(File file,PictureType type,String fileId){
         this.file = file;
         this.type = type;
         this.fileId = fileId;
         this.isDeleted = false;
     }
 
-    public enum PictrueType{
+    public enum PictureType{
         TYPE_1,    // id和图片都未提交
 
         TYPE_2,    // id已经提交，图片未提交
@@ -91,11 +91,11 @@ public class PictureBean {
         this.fileId = fileId;
     }
 
-    public PictrueType getType() {
+    public PictureType getType() {
         return type;
     }
 
-    public void setType(PictrueType type) {
+    public void setType(PictureType type) {
         this.type = type;
     }
 
