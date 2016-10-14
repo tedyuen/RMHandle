@@ -92,9 +92,9 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
 
     private PointBeanDbUtil pointBeanDbUtil;
     private PointWorkBeanDbUtil pointWorkBeanDbUtil;
-    private PointListModel pointListModel;//缓存列表数据
+    public PointListModel pointListModel;//缓存列表数据
     public PointBean bean;//网络数据
-    PointWorkBean pointWorkBean;
+    public PointWorkBean pointWorkBean;
 
 
     @Override

@@ -5,7 +5,9 @@ import android.widget.ImageView;
 
 import java.io.File;
 
+import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
+import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.utils.SimpleImageLoader;
 
 /**
@@ -14,8 +16,8 @@ import cn.com.reachmedia.rmhandle.utils.pictureutils.utils.SimpleImageLoader;
  */
 public class PictureBean {
     private String fileId;       // fileId提交用
-    private String mainPath;     // 入库用路径 url
-    private String subPath;      // 显示用路径
+    private String mainPath;     // 入库用路径 url s
+    private String subPath;      // 显示用路径 url b
     private boolean isDeleted;   // 是否被删除
     private PictrueType type;    // 图片类型
     private File file;           // 图片文件
@@ -50,26 +52,36 @@ public class PictureBean {
     }
 
     public void displayImage(ImageView imageView){
+        displayImage(imageView,false);
+    }
+
+
+    public void displayImage(ImageView imageView,boolean isLarge){
 
         switch (type){
             case TYPE_1:
-
+                imageView.setVisibility(View.VISIBLE);
+                SimpleImageLoader.displayImage(new File(mainPath), imageView);
                 break;
             case TYPE_2:
-
+                imageView.setVisibility(View.VISIBLE);
+                SimpleImageLoader.displayImage(new File(mainPath), imageView);
                 break;
             case TYPE_3:
-
+                imageView.setVisibility(View.VISIBLE);
+                if(isLarge){
+                    ImageCacheUtils.displayLocalOrUrl(App.getContext(),subPath,imageView,1080,1920);
+                }else{
+                    ImageCacheUtils.displayLocalOrUrl(App.getContext(),mainPath,imageView);
+                }
                 break;
             case TYPE_4:
                 imageView.setVisibility(View.VISIBLE);
                 SimpleImageLoader.displayImage(file, imageView);
                 break;
-
         }
 
     }
-
 
     public String getFileId() {
         return fileId;

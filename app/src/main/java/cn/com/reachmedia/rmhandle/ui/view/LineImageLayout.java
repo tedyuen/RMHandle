@@ -22,6 +22,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
+import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.fragment.NewPointDetailFragment;
@@ -71,6 +74,71 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         resultDatas = new ArrayList<>();
 
 
+    }
+
+
+    @Override
+    public void init(NewPointDetailFragment fragment) {
+        this.fragment = fragment;
+        PointBean bean = fragment.bean;
+        PointWorkBean pointWorkBean = fragment.pointWorkBean;
+        if(bean!=null){
+            //初始化网络图片
+            if(!StringUtils.isEmpty(bean.getFileId())){
+                String[] photoIds = bean.getFileId().split(PointWorkBeanDbUtil.FILE_SPLIT);
+                String[] urlBs = bean.getFileUrlB().split(PointWorkBeanDbUtil.FILE_SPLIT);
+                String[] urlSs = bean.getFileUrlS().split(PointWorkBeanDbUtil.FILE_SPLIT);
+                for(int i=0;i<photoIds.length;i++){
+                    PictureBean pictureBean = new PictureBean();
+                    pictureBean.setFileId(photoIds[i]);
+                    pictureBean.setType(PictureBean.PictrueType.TYPE_3);
+                    if(i<urlBs.length){
+                        pictureBean.setSubPath(urlBs[i]);
+                    }else{
+                        pictureBean.setSubPath("");
+                    }
+                    if(i<urlSs.length){
+                        pictureBean.setMainPath(urlSs[i]);
+                    }else{
+                        pictureBean.setMainPath("");
+                    }
+                    resultDatas.add(pictureBean);
+                }
+            }
+        }
+
+
+        if(pointWorkBean!=null){
+            String[] cacheFileId, cacheFilePath,deleteIds;
+            cacheFileId = pointWorkBean.getFileIdData() == null ? new String[0] : pointWorkBean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+            cacheFilePath = pointWorkBean.getFilePathData() == null ? new String[0] : pointWorkBean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+            deleteIds = pointWorkBean.getFiledelete() == null? new String[0]:pointWorkBean.getFiledelete().split(PointWorkBeanDbUtil.FILE_SPLIT2);
+            //未提交图片
+            for(int i=0;i<cacheFileId.length;i++){
+                for(PictureBean pictureBean:resultDatas){
+                    if(cacheFileId[i].equals(pictureBean.getFileId())){
+                        pictureBean.setMainPath(cacheFilePath[i]);
+                        pictureBean.setType(PictureBean.PictrueType.TYPE_2);
+                        break;
+                    }
+                }
+            }
+            //已经删除图片
+            for(int i=0;i<deleteIds.length;i++){
+                for(PictureBean pictureBean:resultDatas){
+                    if(cacheFileId[i].equals(pictureBean.getFileId())){
+                        pictureBean.setDeleted(true);
+                        break;
+                    }
+                }
+            }
+
+
+
+        }
+
+
+        refreshAllImage();
     }
 
     /**
@@ -141,6 +209,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                 bean.displayImage(addPhotos[count]);
                 deletes[count].setVisibility(View.VISIBLE);
                 count++;
+                System.out.println("!!!===>有  "+bean.getType());
             }
         }
 
@@ -236,10 +305,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         pickManger.onSaveInstanceState(savedInstanceState);
     }
 
-    @Override
-    public void init(NewPointDetailFragment fragment) {
-        this.fragment = fragment;
-    }
+
 
     @Override
     public void changeEditMode(boolean flag) {

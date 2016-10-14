@@ -86,6 +86,13 @@ public class ImageCacheUtils {
     }
 
 
+    public static void displayLocalOrUrlSource(Context context,String url, ImageView imageView){
+        boolean tempBoolean = ImageCacheUtils.getInstance().displayImage(url,imageView);
+        if(!tempBoolean) {
+            Picasso.with(context).load(url).placeholder(R.drawable.abc).into(imageView);
+        }
+    }
+
 
 
 

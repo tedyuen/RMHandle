@@ -114,7 +114,7 @@ public class PictureImagePagerActivity extends Activity implements ViewPager.OnP
 
             PictureBean bean = imageData.get(position);
             if(bean!=null){
-                bean.displayImage(imageView);
+                bean.displayImage(imageView,true);
             }
 
             view.addView(imageLayout, 0);
