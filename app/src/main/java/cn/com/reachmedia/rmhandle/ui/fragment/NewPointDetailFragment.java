@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
+import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.Line2ImageLayout;
 import cn.com.reachmedia.rmhandle.ui.view.Line3ImageLayout;
@@ -38,6 +40,8 @@ import cn.com.reachmedia.rmhandle.ui.view.LineButtomLayout;
 import cn.com.reachmedia.rmhandle.ui.view.LineImageLayout;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 
 /**
  * Created by tedyuen on 16-9-19.
@@ -331,4 +335,210 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         }
 
     }
+
+
+    // 以下是完成逻辑
+    private static final String NEED_IMAGES = "请添加图片!";
+    private static final String COMMIT_SUCCESS = "提交成功!";
+    boolean insertOrUpdate;
+
+    @OnClick(R.id.bt_done)
+    public void goDone() {
+        if(!isPhotoEmpty()){
+            new MaterialDialog.Builder(getActivity())
+                    .title(R.string.dialog_title_submit_point)
+                    .negativeText("取消")
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .positiveText("确定")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            PointWorkBean pointWorkBean = getPointWorkBean(1, 0, "", 0, "");
+                            if (pointWorkBean == null) {
+                                dialog.dismiss();
+                                ToastHelper.showInfo(getActivity(), NEED_IMAGES);
+                            } else {
+                                if (insertOrUpdate) {
+                                    PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                                } else {
+                                    PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
+                                }
+                                ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
+                                ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getActivity().finish();
+                                    }
+                                }, 1000);
+                            }
+
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    @OnClick(R.id.bt_cant_enter)
+    public void goCannotEnter() {
+        CanNotEnterDialogFragment dialogFragment = new CanNotEnterDialogFragment(new CanNotEnterDialogFragment.OnDialogEnterListener() {
+            @Override
+            public void doSubmit(final int type, final String content) {
+                new MaterialDialog.Builder(getActivity())
+                        .title(R.string.dialog_title_submit_point)
+                        .negativeText("取消")
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .positiveText("确定")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                PointWorkBean pointWorkBean = getPointWorkBean(3, 0, "", type, content);
+                                if (insertOrUpdate) {
+                                    PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                                } else {
+                                    PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
+                                }
+                                ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
+                                ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getActivity().finish();
+                                    }
+                                }, 1000);
+                            }
+                        })
+                        .show();
+
+
+            }
+        });
+        dialogFragment.show(getFragmentManager(), null);
+    }
+
+    @OnClick(R.id.bt_report_question)
+    public void goReportQuestion() {
+        if(!isPhotoEmpty()){
+            RepairDialogFragment repairDialogFragment = new RepairDialogFragment(new RepairDialogFragment.OnDialogEnterListener() {
+                @Override
+                public void doSubmit(final int type, final String content) {
+                    new MaterialDialog.Builder(getActivity())
+                            .title(R.string.dialog_title_submit_point)
+                            .negativeText("取消")
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .positiveText("确定")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    PointWorkBean pointWorkBean = getPointWorkBean(2, type, content, 0, "");
+                                    if (pointWorkBean == null) {
+                                        dialog.dismiss();
+                                        ToastHelper.showInfo(getActivity(), "请添加图片!");
+                                    } else {
+                                        if (insertOrUpdate) {
+                                            PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                                        } else {
+                                            PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
+                                        }
+                                        ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
+                                        ToastHelper.showInfo(getActivity(), "提交成功!");
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                getActivity().finish();
+                                            }
+                                        }, 1000);
+                                    }
+
+                                }
+                            })
+                            .show();
+                }
+            }, stateType);
+            repairDialogFragment.show(getFragmentManager(), null);
+        }
+    }
+
+    public PointWorkBean getPointWorkBean(int state, int repairType, String repairDesc, int errorType, String errorDesc){
+        insertOrUpdate = pointWorkBean == null;
+        String lon = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);
+        String lat = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE);
+        insertOrUpdate = pointWorkBean == null;
+        if (insertOrUpdate) {
+            pointWorkBean = new PointWorkBean();
+        }
+
+        pointWorkBean.setLastId(bean.getId());
+        pointWorkBean.setUserId(bean.getUserId());
+        pointWorkBean.setWorkId(bean.getWorkId());
+        pointWorkBean.setPointId(bean.getPointId());
+        pointWorkBean.setState(state);
+        pointWorkBean.setRepairType(repairType);
+        pointWorkBean.setRepairDesc(repairDesc);
+        pointWorkBean.setErrorType(errorType);
+        pointWorkBean.setErrorDesc(errorDesc);
+        pointWorkBean.setCheckState(getCheckState());
+        pointWorkBean.setLon(lon);
+        pointWorkBean.setLat(lat);
+        pointWorkBean.setWorkTime(TimeUtils.getNowDate());
+        pointWorkBean.setOnlineTime(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_ON_LINE_TIME));
+        pointWorkBean.setNativeState("0");
+
+        pointWorkBean.setStarttime(bean.getStarttime());
+        pointWorkBean.setCommunityid(bean.getCommunityid());
+        pointWorkBean.setCommunityname(bean.getCommunityname());
+        pointWorkBean.setCname(bean.getCname());
+
+        pointWorkBean.setFiledelete("");
+        pointWorkBean.setFileCount(0);
+
+        pointWorkBean.setFileIdData("");
+        pointWorkBean.setFilePathData("");
+        pointWorkBean.setFileXY("");
+        pointWorkBean.setFileTime("");
+
+        pointWorkBean.setDoorpicid("");
+        pointWorkBean.setDoorpic("");
+        pointWorkBean.setDoorpicXY("");
+        pointWorkBean.setDoorpicTime("");
+
+        return null;
+    }
+
+
+    /**
+     * 图片是否为空
+     * @return true 空 false 非空
+     */
+    public boolean isPhotoEmpty(){
+        boolean isEmpty = lineImage1.isPhotoEmpty();
+        if(isEmpty){
+            ToastHelper.showInfo(getActivity(), NEED_IMAGES);
+        }
+        return isEmpty;
+    }
+
+    /**
+     * 获得巡检状态
+     * @return
+     */
+    private int getCheckState(){
+        return lineButtom.getCheckState(stateType);
+    }
+
 }

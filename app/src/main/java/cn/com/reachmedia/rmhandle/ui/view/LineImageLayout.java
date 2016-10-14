@@ -328,4 +328,13 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
             }
         }
     }
+
+
+    /**
+     * 图片是否为空
+     * @return
+     */
+    public boolean isPhotoEmpty(){
+        return true;
+    }
 }

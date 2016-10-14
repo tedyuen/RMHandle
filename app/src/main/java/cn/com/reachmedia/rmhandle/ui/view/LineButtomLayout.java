@@ -103,4 +103,20 @@ public class LineButtomLayout extends FrameLayout implements PointDetailLine{
             rbCheck2.setEnabled(false);
         }
     }
+
+    /**
+     * 获得巡检状态
+     * @return
+     */
+    public int getCheckState(int stateType){
+        if(stateType!=2){
+            return 0;
+        }else{
+            if(rbCheck1.isChecked()){
+                return 1;
+            }else{
+                return 2;
+            }
+        }
+    }
 }
