@@ -100,6 +100,8 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     public PointBean bean;//网络数据
     public PointWorkBean pointWorkBean;
 
+    public String workId;
+    public String pointId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,8 +111,8 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         String communityId = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_COMMUNITID);
         String tempStartTime = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_STARTTIME);
         String dataJson = mSharedPreferencesHelper.getString(communityId+"_"+tempStartTime);
-        String workId = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_WORK_ID);
-        String pointId = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_POINT_ID);
+        workId = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_WORK_ID);
+        pointId = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_POINT_ID);
         if(!StringUtils.isEmpty(dataJson)) {
             Gson gson = new Gson();
             try {
@@ -505,9 +507,10 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setCname(bean.getCname());
 
         LineImageLayout.FileDb fileDb = lineImage1.getFileDB(insertOrUpdate,pointWorkBean);
+        System.out.println("到这里了没有啦");
+        System.out.println(fileDb);
         pointWorkBean.setFiledelete(fileDb.getDeleteIds());
         pointWorkBean.setFileCount(fileDb.getFileCount());
-
         pointWorkBean.setFileIdData(fileDb.getFileIds());
         pointWorkBean.setFilePathData(fileDb.getFilePaths());
         pointWorkBean.setFileXY(fileDb.getFileXY());

@@ -27,6 +27,7 @@ import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.fragment.NewPointDetailFragment;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
+import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 import cn.com.reachmedia.rmhandle.utils.ViewHelper;
@@ -139,7 +140,9 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
             public void onPhotoPick(List<File> list) {
 //                StringBuffer buffer = new StringBuffer();
                 for(File file:list){
-                    PictureBean tempBean = new PictureBean(file, PictureBean.PictrueType.TYPE_4,"");
+                    String fileId = ImageUtils.getPointPicId(fragment.workId, fragment.pointId, "door", fragment.bean.getUserId());
+                    String filePath = ImageUtils.getPointPicPath(fileId, LineImageLayout.photo_path);
+                    PictureBean tempBean = new PictureBean(file, PictureBean.PictureType.TYPE_4,fileId,filePath);
                     resultDatas = tempBean;
 //                    buffer.append("" + file.getAbsolutePath() + " " + file.length()+"\n");
                 }

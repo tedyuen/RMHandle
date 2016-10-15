@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -22,13 +23,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.fragment.NewPointDetailFragment;
+import cn.com.reachmedia.rmhandle.utils.ImageUtils;
+import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.camera.PhotoPickManger;
@@ -58,12 +63,19 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
 
     private final static int photoMaxCount = 3;
     private int photoCount;//当前图片数量
+    private int photoName;
 
     PhotoPickManger pickManger;
     NewPointDetailFragment fragment;
 
 
     List<PictureBean> resultDatas;
+
+    private final static String path = Environment
+            .getExternalStorageDirectory().getAbsolutePath()
+            + File.separator
+            + "RMHandle/";
+    public final static String photo_path = path + "point/";
 
     public LineImageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -148,11 +160,13 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         pickManger = new PhotoPickManger("pick",activity, savedInstanceState,new PhotoPickManger.OnPhotoPickFinsh() {
             @Override
             public void onPhotoPick(List<File> list) {
-//                Toast.makeText(getActivity(), "" + list.get(0).getPath() + " " + list.get(0).length(), Toast.LENGTH_SHORT).show();
                 StringBuffer buffer = new StringBuffer();
                 for(File file:list){
-                    PictureBean tempBean = new PictureBean(file, PictureBean.PictureType.TYPE_4,"");
+                    String fileId = ImageUtils.getPointPicId(fragment.workId, fragment.pointId, String.valueOf(photoName), fragment.bean.getUserId());
+                    String filePath = ImageUtils.getPointPicPath(fileId, photo_path);
+                    PictureBean tempBean = new PictureBean(file, PictureBean.PictureType.TYPE_4,fileId,filePath);
                     resultDatas.add(tempBean);
+                    photoName++;
                     buffer.append("" + file.getAbsolutePath() + " " + file.length()+"\n");
                 }
                 System.out.println("filedetail:==> "+buffer.toString());
@@ -209,7 +223,6 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                 bean.displayImage(addPhotos[count]);
                 deletes[count].setVisibility(View.VISIBLE);
                 count++;
-                System.out.println("!!!===>有  "+bean.getType());
             }
         }
 
@@ -335,7 +348,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
      * @return
      */
     public boolean isPhotoEmpty(){
-        return true;
+        return false;
     }
 
     public FileDb getFileDB(boolean insertOrUpdate,PointWorkBean pointWorkBean){
@@ -355,18 +368,30 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
             }
             if(!bean.isDeleted()){
                 if(!bean.getType().equals(PictureBean.PictureType.TYPE_3)){//网络图片不要提交
-                    switch (bean.getType()){
-                        case TYPE_4:
-
-                            break;
-                        case TYPE_2:
-
-                            break;
-                    }
-
-
-
-
+                    appendFileIds(fileIds,bean.getFileId());
+                    appendFilePath(filePaths,bean.getMainPath());
+                    appendFileXY(fileXY);
+                    appendFileTime(fileTime);
+//                    switch (bean.getType()){
+//                        case TYPE_1:
+//                            appendFileIds(fileIds,bean.getFileId());
+//                            appendFilePath(filePaths,bean.getMainPath());
+//                            appendFileXY(fileXY);
+//                            appendFileTime(fileTime);
+//                            break;
+//                        case TYPE_2:
+//                            appendFileIds(fileIds,bean.getFileId());
+//                            appendFilePath(filePaths,bean.getMainPath());
+//                            appendFileXY(fileXY);
+//                            appendFileTime(fileTime);
+//                            break;
+//                        case TYPE_4:
+//                            appendFileIds(fileIds,bean.getFileId());
+//                            appendFilePath(filePaths,bean.getMainPath());
+//                            appendFileXY(fileXY);
+//                            appendFileTime(fileTime);
+//                            break;
+//                    }
                     count++;
                 }
             }else{//删除的图片
@@ -386,6 +411,36 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         return db;
     }
 
+    private void appendFileIds(StringBuffer buffer,String id){
+        if(buffer.length()>0){
+            buffer.append(PointWorkBeanDbUtil.FILE_SPLIT);
+        }
+        buffer.append(id);
+    }
+
+    private void appendFilePath(StringBuffer buffer,String path){
+        if(buffer.length()>0){
+            buffer.append(PointWorkBeanDbUtil.FILE_SPLIT);
+        }
+        buffer.append(path);
+    }
+
+    private void appendFileXY(StringBuffer buffer){
+        if(buffer.length()>0){
+            buffer.append(PointWorkBeanDbUtil.FILE_SPLIT2);
+        }
+        buffer.append(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE)+PointWorkBeanDbUtil.FILE_SPLIT3+SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LONGITUDE));
+    }
+
+    private void appendFileTime(StringBuffer buffer){
+        if(buffer.length()>0){
+            buffer.append(PointWorkBeanDbUtil.FILE_SPLIT);
+        }
+        buffer.append(TimeUtils.getNowStr());
+    }
+
+
+
     public class FileDb{
         private String deleteIds;
         private String fileIds;
@@ -394,9 +449,31 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         private String fileTime;
         private int fileCount;
 
-
-
-
+        @Override
+        public String toString() {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("=====================\n");
+            buffer.append("filedIds: ");
+            buffer.append(fileIds);
+            buffer.append("\n");
+            buffer.append("filePaths: ");
+            buffer.append(filePaths);
+            buffer.append("\n");
+            buffer.append("fileXY: ");
+            buffer.append(fileXY);
+            buffer.append("\n");
+            buffer.append("fileTime: ");
+            buffer.append(fileTime);
+            buffer.append("\n");
+            buffer.append("deleteIds: ");
+            buffer.append(deleteIds);
+            buffer.append("\n");
+            buffer.append("fileCount: ");
+            buffer.append(fileCount);
+            buffer.append("\n");
+            buffer.append("=====================\n");
+            return buffer.toString();
+        }
 
         public String getDeleteIds() {
             return deleteIds;

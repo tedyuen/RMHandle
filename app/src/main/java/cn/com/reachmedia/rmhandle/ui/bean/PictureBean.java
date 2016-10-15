@@ -34,10 +34,12 @@ public class PictureBean {
      * @param type
      * @param fileId
      */
-    public PictureBean(File file,PictureType type,String fileId){
+    public PictureBean(File file,PictureType type,String fileId,String mainPath){
         this.file = file;
         this.type = type;
         this.fileId = fileId;
+        this.mainPath = mainPath;
+        this.subPath = file.getAbsolutePath();
         this.isDeleted = false;
     }
 
