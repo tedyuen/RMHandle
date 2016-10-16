@@ -386,15 +386,8 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                 new AsyncTask<List<PictureBean>,Integer,Integer>(){
                                     @Override
                                     protected Integer doInBackground(List<PictureBean>... lists) {
-
-                                        StringBuffer buffer = new StringBuffer();
-                                        buffer.append("========== copy file ==========\n");
                                         int count=0;
                                         for(PictureBean bean:lists[0]){
-                                            System.out.println(bean.getFileId());
-                                            System.out.println(bean.getMainPath());
-                                            System.out.println(bean.getSubPath());
-                                            System.out.println("-----------------------");
                                             try {
                                                 if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
                                                     count++;
@@ -405,14 +398,13 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                                 continue;
                                             }
                                         }
-                                        buffer.append("=====================\n");
                                         return count;
                                     }
 
                                     @Override
                                     protected void onPostExecute(Integer integer) {
                                         ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
-                                        ToastHelper.showInfo(getActivity(), integer+":"+COMMIT_SUCCESS);
+                                        ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
@@ -454,14 +446,39 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                 } else {
                                     PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
                                 }
-                                ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
-                                ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
-                                new Handler().postDelayed(new Runnable() {
+
+                                new AsyncTask<List<PictureBean>,Integer,Integer>(){
                                     @Override
-                                    public void run() {
-                                        getActivity().finish();
+                                    protected Integer doInBackground(List<PictureBean>... lists) {
+                                        int count=0;
+                                        for(PictureBean bean:lists[0]){
+                                            try {
+                                                if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
+                                                    count++;
+                                                }
+
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                                continue;
+                                            }
+                                        }
+                                        return count;
                                     }
-                                }, 1000);
+
+                                    @Override
+                                    protected void onPostExecute(Integer integer) {
+                                        ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
+                                        ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                getActivity().finish();
+                                            }
+                                        }, 1000);
+                                    }
+                                }.execute(fileDb.copyFile());
+
+
                             }
                         })
                         .show();
@@ -501,14 +518,37 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                         } else {
                                             PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
                                         }
-                                        ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
-                                        ToastHelper.showInfo(getActivity(), "提交成功!");
-                                        new Handler().postDelayed(new Runnable() {
+                                        new AsyncTask<List<PictureBean>,Integer,Integer>(){
                                             @Override
-                                            public void run() {
-                                                getActivity().finish();
+                                            protected Integer doInBackground(List<PictureBean>... lists) {
+                                                int count=0;
+                                                for(PictureBean bean:lists[0]){
+                                                    try {
+                                                        if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
+                                                            count++;
+                                                        }
+
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                        continue;
+                                                    }
+                                                }
+                                                return count;
                                             }
-                                        }, 1000);
+
+                                            @Override
+                                            protected void onPostExecute(Integer integer) {
+                                                ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
+                                                ToastHelper.showInfo(getActivity(), "提交成功!");
+                                                new Handler().postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        getActivity().finish();
+                                                    }
+                                                }, 1000);
+                                            }
+                                        }.execute(fileDb.copyFile());
+
                                     }
 
                                 }
@@ -551,7 +591,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setCname(bean.getCname());
 
         fileDb = lineImage1.getFileDB(insertOrUpdate,pointWorkBean);
-        System.out.println(fileDb);
+//        System.out.println(fileDb);
         pointWorkBean.setFiledelete(fileDb.getDeleteIds());
         pointWorkBean.setFileCount(fileDb.getFileCount());
         pointWorkBean.setFileIdData(fileDb.getFileIds());

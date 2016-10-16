@@ -40,11 +40,13 @@ public class NewPointDetailActivity extends BaseAbstractActionBarActivity {
         List<Fragment> fragments = fm.getFragments();
         if (fragments != null) {
             for (Fragment fragment : fragments) {
-                fragment.onActivityResult(requestCode, resultCode, data);
-                FragmentManager childFragmentManager = fragment.getChildFragmentManager();
-                List<Fragment> childFragments = childFragmentManager.getFragments();
-                if (childFragmentManager != null) {
+                if(fragment!=null){
+                    fragment.onActivityResult(requestCode, resultCode, data);
+                    FragmentManager childFragmentManager = fragment.getChildFragmentManager();
+                    List<Fragment> childFragments = childFragmentManager.getFragments();
+                    if (childFragmentManager != null) {
 
+                    }
                 }
             }
         }
