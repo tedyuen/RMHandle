@@ -30,6 +30,7 @@ import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.fragment.NewPointDetailFragment;
+import cn.com.reachmedia.rmhandle.utils.FileUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
@@ -136,9 +137,11 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                 }
             }
             //已经删除图片
+            System.out.println("===>1 "+pointWorkBean.getFileIdData()+" : "+pointWorkBean.getFiledelete());
+            System.out.println("===>2 "+cacheFileId.length+":"+deleteIds.length);
             for(int i=0;i<deleteIds.length;i++){
                 for(PictureBean pictureBean:resultDatas){
-                    if(cacheFileId[i].equals(pictureBean.getFileId())){
+                    if(deleteIds[i].equals(pictureBean.getFileId())){
                         pictureBean.setDeleted(true);
                         break;
                     }
@@ -156,7 +159,10 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
     /**
      * 更新添加图片点击按钮事件
      */
-    public void updateAddPhotosClickState(Activity activity,Bundle savedInstanceState){
+    public boolean updateAddPhotosClickState(Activity activity,Bundle savedInstanceState){
+        if(!FileUtils.mkdirAndCheck(photo_path)){
+            return false;
+        }
         pickManger = new PhotoPickManger("pick",activity, savedInstanceState,new PhotoPickManger.OnPhotoPickFinsh() {
             @Override
             public void onPhotoPick(List<File> list) {
@@ -175,6 +181,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         });
         pickManger.flushBundle();
         setAddPhotosClickEvent(photoCount);
+        return true;
     }
 
     public void setAddPhotosClickEvent(int index){
@@ -368,6 +375,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
             }
             if(!bean.isDeleted()){
                 if(!bean.getType().equals(PictureBean.PictureType.TYPE_3)){//网络图片不要提交
+                    db.getPictureBeen().add(bean);
                     appendFileIds(fileIds,bean.getFileId());
                     appendFilePath(filePaths,bean.getMainPath());
                     appendFileXY(fileXY);
@@ -448,11 +456,29 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         private String fileXY;
         private String fileTime;
         private int fileCount;
+        private List<PictureBean> pictureBeen;
+
+        public FileDb(){
+            pictureBeen = new ArrayList<>();
+        }
+
+        public List<PictureBean> copyFile(){
+//            StringBuffer buffer = new StringBuffer();
+//            buffer.append("========== copy file ==========\n");
+//            for(PictureBean bean:pictureBeen){
+//                System.out.println(bean.getFileId());
+//                System.out.println(bean.getMainPath());
+//                System.out.println(bean.getSubPath());
+//                System.out.println("-----------------------");
+//            }
+//            buffer.append("=====================\n");
+            return pictureBeen;
+        }
 
         @Override
         public String toString() {
             StringBuffer buffer = new StringBuffer();
-            buffer.append("=====================\n");
+            buffer.append("========== insert db ==========\n");
             buffer.append("filedIds: ");
             buffer.append(fileIds);
             buffer.append("\n");
@@ -473,6 +499,14 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
             buffer.append("\n");
             buffer.append("=====================\n");
             return buffer.toString();
+        }
+
+        public List<PictureBean> getPictureBeen() {
+            return pictureBeen;
+        }
+
+        public void setPictureBeen(List<PictureBean> pictureBeen) {
+            this.pictureBeen = pictureBeen;
         }
 
         public String getDeleteIds() {

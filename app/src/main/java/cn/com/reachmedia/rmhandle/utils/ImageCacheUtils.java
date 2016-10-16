@@ -79,9 +79,13 @@ public class ImageCacheUtils {
     }
 
     public static void displayLocalOrUrl(Context context,String url, ImageView imageView,int targetWidth, int targetHeight){
-        boolean tempBoolean = ImageCacheUtils.getInstance().displayImage(url,imageView);
-        if(!tempBoolean) {
-            Picasso.with(context).load(url).placeholder(R.drawable.abc).resize(targetWidth, targetHeight).centerCrop().into(imageView);
+        if(!StringUtils.isEmpty(url)) {
+            boolean tempBoolean = ImageCacheUtils.getInstance().displayImage(url, imageView);
+            if (!tempBoolean) {
+                Picasso.with(context).load(url).placeholder(R.drawable.abc).resize(targetWidth, targetHeight).centerCrop().into(imageView);
+            }
+        }else {
+            imageView.setImageResource(R.drawable.abc);
         }
     }
 

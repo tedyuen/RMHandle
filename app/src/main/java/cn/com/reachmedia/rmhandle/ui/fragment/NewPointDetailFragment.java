@@ -2,6 +2,7 @@ package cn.com.reachmedia.rmhandle.ui.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,11 +17,15 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,11 +39,13 @@ import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
+import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.view.Line2ImageLayout;
 import cn.com.reachmedia.rmhandle.ui.view.Line3ImageLayout;
 import cn.com.reachmedia.rmhandle.ui.view.LineButtomLayout;
 import cn.com.reachmedia.rmhandle.ui.view.LineImageLayout;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
+import cn.com.reachmedia.rmhandle.utils.FileUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
@@ -102,6 +109,8 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
 
     public String workId;
     public String pointId;
+
+    LineImageLayout.FileDb fileDb;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -194,7 +203,11 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
             lineImage2.setCommunityPhoto(pointListModel);
         }
 
-        lineImage1.updateAddPhotosClickState(getActivity(),savedInstanceState);
+        if(!lineImage1.updateAddPhotosClickState(getActivity(),savedInstanceState)){
+            Toast.makeText(getActivity(), getString(R.string.toast_sdcard_error),
+                    Toast.LENGTH_SHORT).show();
+            //这里需要结束activity
+        }
         lineImage2.updateAddPhotosClickState(getActivity(),savedInstanceState);
 
         mergeLocalPhoto();
@@ -370,14 +383,45 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                 } else {
                                     PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
                                 }
-                                ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
-                                ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
-                                new Handler().postDelayed(new Runnable() {
+                                new AsyncTask<List<PictureBean>,Integer,Integer>(){
                                     @Override
-                                    public void run() {
-                                        getActivity().finish();
+                                    protected Integer doInBackground(List<PictureBean>... lists) {
+
+                                        StringBuffer buffer = new StringBuffer();
+                                        buffer.append("========== copy file ==========\n");
+                                        int count=0;
+                                        for(PictureBean bean:lists[0]){
+                                            System.out.println(bean.getFileId());
+                                            System.out.println(bean.getMainPath());
+                                            System.out.println(bean.getSubPath());
+                                            System.out.println("-----------------------");
+                                            try {
+                                                if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
+                                                    count++;
+                                                }
+
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                                continue;
+                                            }
+                                        }
+                                        buffer.append("=====================\n");
+                                        return count;
                                     }
-                                }, 1000);
+
+                                    @Override
+                                    protected void onPostExecute(Integer integer) {
+                                        ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
+                                        ToastHelper.showInfo(getActivity(), integer+":"+COMMIT_SUCCESS);
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                getActivity().finish();
+                                            }
+                                        }, 1000);
+                                    }
+                                }.execute(fileDb.copyFile());
+
                             }
 
                         }
@@ -506,8 +550,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setCommunityname(bean.getCommunityname());
         pointWorkBean.setCname(bean.getCname());
 
-        LineImageLayout.FileDb fileDb = lineImage1.getFileDB(insertOrUpdate,pointWorkBean);
-        System.out.println("到这里了没有啦");
+        fileDb = lineImage1.getFileDB(insertOrUpdate,pointWorkBean);
         System.out.println(fileDb);
         pointWorkBean.setFiledelete(fileDb.getDeleteIds());
         pointWorkBean.setFileCount(fileDb.getFileCount());
@@ -521,7 +564,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setDoorpicXY("");
         pointWorkBean.setDoorpicTime("");
 
-        return null;
+        return pointWorkBean;
     }
 
 
