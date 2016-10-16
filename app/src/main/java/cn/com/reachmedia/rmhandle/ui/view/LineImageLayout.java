@@ -27,7 +27,7 @@ import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
-import cn.com.reachmedia.rmhandle.service.task.LocalImageAsyncTask;
+import cn.com.reachmedia.rmhandle.ui.bean.FileDb;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.fragment.NewPointDetailFragment;
 import cn.com.reachmedia.rmhandle.utils.FileUtils;
@@ -35,11 +35,8 @@ import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
-import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.camera.PhotoPickManger;
-import cn.com.reachmedia.rmhandle.utils.pictureutils.utils.SimpleImageLoader;
-
 /**
  * Created by tedyuen on 16-9-20.
  */
@@ -137,8 +134,6 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                 }
             }
             //已经删除图片
-            System.out.println("===>1 "+pointWorkBean.getFileIdData()+" : "+pointWorkBean.getFiledelete());
-            System.out.println("===>2 "+cacheFileId.length+":"+deleteIds.length);
             for(int i=0;i<deleteIds.length;i++){
                 for(PictureBean pictureBean:resultDatas){
                     if(deleteIds[i].equals(pictureBean.getFileId())){
@@ -358,7 +353,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         return false;
     }
 
-    public FileDb getFileDB(boolean insertOrUpdate,PointWorkBean pointWorkBean){
+    public FileDb getFileDB(boolean insertOrUpdate, PointWorkBean pointWorkBean){
         FileDb db = new FileDb();
         int count =0;
         StringBuffer deleteIds = new StringBuffer();
@@ -447,114 +442,4 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         buffer.append(TimeUtils.getNowStr());
     }
 
-
-
-    public class FileDb{
-        private String deleteIds;
-        private String fileIds;
-        private String filePaths;
-        private String fileXY;
-        private String fileTime;
-        private int fileCount;
-        private List<PictureBean> pictureBeen;
-
-        public FileDb(){
-            pictureBeen = new ArrayList<>();
-        }
-
-        public List<PictureBean> copyFile(){
-//            StringBuffer buffer = new StringBuffer();
-//            buffer.append("========== copy file ==========\n");
-//            for(PictureBean bean:pictureBeen){
-//                System.out.println(bean.getFileId());
-//                System.out.println(bean.getMainPath());
-//                System.out.println(bean.getSubPath());
-//                System.out.println("-----------------------");
-//            }
-//            buffer.append("=====================\n");
-            return pictureBeen;
-        }
-
-        @Override
-        public String toString() {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("========== insert db ==========\n");
-            buffer.append("filedIds: ");
-            buffer.append(fileIds);
-            buffer.append("\n");
-            buffer.append("filePaths: ");
-            buffer.append(filePaths);
-            buffer.append("\n");
-            buffer.append("fileXY: ");
-            buffer.append(fileXY);
-            buffer.append("\n");
-            buffer.append("fileTime: ");
-            buffer.append(fileTime);
-            buffer.append("\n");
-            buffer.append("deleteIds: ");
-            buffer.append(deleteIds);
-            buffer.append("\n");
-            buffer.append("fileCount: ");
-            buffer.append(fileCount);
-            buffer.append("\n");
-            buffer.append("=====================\n");
-            return buffer.toString();
-        }
-
-        public List<PictureBean> getPictureBeen() {
-            return pictureBeen;
-        }
-
-        public void setPictureBeen(List<PictureBean> pictureBeen) {
-            this.pictureBeen = pictureBeen;
-        }
-
-        public String getDeleteIds() {
-            return deleteIds;
-        }
-
-        public void setDeleteIds(String deleteIds) {
-            this.deleteIds = deleteIds;
-        }
-
-        public String getFileIds() {
-            return fileIds;
-        }
-
-        public void setFileIds(String fileIds) {
-            this.fileIds = fileIds;
-        }
-
-        public String getFilePaths() {
-            return filePaths;
-        }
-
-        public void setFilePaths(String filePaths) {
-            this.filePaths = filePaths;
-        }
-
-        public String getFileXY() {
-            return fileXY;
-        }
-
-        public void setFileXY(String fileXY) {
-            this.fileXY = fileXY;
-        }
-
-        public String getFileTime() {
-            return fileTime;
-        }
-
-        public void setFileTime(String fileTime) {
-            this.fileTime = fileTime;
-        }
-
-        public int getFileCount() {
-            return fileCount;
-        }
-
-        public void setFileCount(int fileCount) {
-            this.fileCount = fileCount;
-        }
-    }
 }

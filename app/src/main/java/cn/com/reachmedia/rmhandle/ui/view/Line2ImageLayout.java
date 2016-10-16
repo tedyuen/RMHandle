@@ -22,13 +22,20 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
+import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
+import cn.com.reachmedia.rmhandle.ui.bean.FileDb;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.fragment.NewPointDetailFragment;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
+import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.camera.PhotoPickManger;
@@ -167,21 +174,25 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
             pickManger.setReturnFileCount(1);
             pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
         }else{
-            new MaterialDialog.Builder(getContext())
-                    .title(R.string.dialog_title_add_photo)
-                    .items(R.array.new_dialog_add_photo_big)
-                    .itemsCallback(new MaterialDialog.ListCallback() {
-                        @Override
-                        public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                            if (which == 0) {//拍照
-                                pickManger.setReturnFileCount(1);
-                                pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
-                            }else if (which == 1) {// 查看大图
-                                goViewDoorPhoto();
+            if(!fragment.checkChangeEditMode()){
+                goViewDoorPhoto();
+            }else{
+                new MaterialDialog.Builder(getContext())
+                        .title(R.string.dialog_title_add_photo)
+                        .items(R.array.new_dialog_add_photo_big)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                if (which == 0) {//拍照
+                                    pickManger.setReturnFileCount(1);
+                                    pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
+                                }else if (which == 1) {// 查看大图
+                                    goViewDoorPhoto();
+                                }
                             }
-                        }
-                    })
-                    .show();
+                        })
+                        .show();
+            }
         }
     }
 
@@ -197,18 +208,61 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
     @Override
     public void init(NewPointDetailFragment fragment) {
         this.fragment = fragment;
+        PointBean bean = fragment.bean;
+        PointWorkBean pointWorkBean = fragment.pointWorkBean;
+        if(bean!=null){
+            if(!StringUtils.isEmpty(bean.getDoorId()) && !StringUtils.isEmpty(bean.getCDoorPic())){
+                resultDatas = new PictureBean();
+                resultDatas.setFileId(bean.getDoorId());
+                resultDatas.setMainPath(bean.getCDoorPic());
+                resultDatas.setSubPath(bean.getCDoorPic().replace("t_","s_"));
+                resultDatas.setType(PictureBean.PictureType.TYPE_3);
+            }
+        }
+
+        if(pointWorkBean!=null) {
+            if(!StringUtils.isEmpty(pointWorkBean.getDoorpicid()) && !StringUtils.isEmpty(pointWorkBean.getDoorpic())){
+                if(resultDatas==null || !resultDatas.getFileId().equals(pointWorkBean.getDoorpicid())){
+                    resultDatas = new PictureBean();
+                    resultDatas.setMainPath(pointWorkBean.getDoorpic());
+                    resultDatas.setFileId(pointWorkBean.getDoorpicid());
+                    resultDatas.setType(PictureBean.PictureType.TYPE_1);
+                }else{
+                    resultDatas.setMainPath(pointWorkBean.getDoorpic());
+                    resultDatas.setType(PictureBean.PictureType.TYPE_2);
+                }
+            }
+        }
+        refreshAllImage();
     }
 
     @Override
     public void changeEditMode(boolean flag) {
-        if (flag) {
-            if (StringUtils.isEmpty(fragment.bean.getCDoorPic())) {
-                ivCommPhoto2.setImageDrawable(getResources().getDrawable(R.mipmap.picture_add_icon));
+        if(resultDatas==null){
+            if (flag) {
+                if (StringUtils.isEmpty(fragment.bean.getCDoorPic())) {
+                    ivCommPhoto2.setImageDrawable(getResources().getDrawable(R.mipmap.picture_add_icon));
+                }
+            } else {
+                if (StringUtils.isEmpty(fragment.bean.getCDoorPic())) {
+                    ivCommPhoto2.setImageDrawable(getResources().getDrawable(R.drawable.abc));
+                }
             }
-        } else {
-            if (StringUtils.isEmpty(fragment.bean.getCDoorPic())) {
-                ivCommPhoto2.setImageDrawable(getResources().getDrawable(R.drawable.abc));
-            }
+        }
+    }
+
+
+    public FileDb getFileDB(){
+        if(resultDatas!=null && !resultDatas.isDeleted()){
+            FileDb db = new FileDb();
+            db.setFileIds(resultDatas.getFileId());
+            db.setFilePaths(resultDatas.getMainPath());
+            db.setFileXY(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LATITUDE)+ PointWorkBeanDbUtil.FILE_SPLIT3+SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_LONGITUDE));
+            db.setFileTime(TimeUtils.getNowStr());
+            db.getPictureBeen().add(resultDatas);
+            return db;
+        }else{
+            return null;
         }
     }
 }

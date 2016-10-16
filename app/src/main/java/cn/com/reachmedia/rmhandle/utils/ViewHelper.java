@@ -73,13 +73,15 @@ public class ViewHelper {
 
 
     public static void getAllImagePager(Context context, List<ImageAllBean> imageDatas,int index){
-        Intent intent = new Intent();
-        intent.setClass(context.getApplicationContext(), ImageAllPagerActivity.class);
-        intent.putExtra("image_index", index);
+        if(imageDatas!=null){
+            Intent intent = new Intent();
+            intent.setClass(context.getApplicationContext(), ImageAllPagerActivity.class);
+            intent.putExtra("image_index", index);
 
-        ImageAllPagerActivity.imageData = imageDatas;
+            ImageAllPagerActivity.imageData = imageDatas;
 
-        context.startActivity(intent);
+            context.startActivity(intent);
+        }
     }
 
     public static void getPictureImagePager(Context context,List<PictureBean> imageDatas,int index){

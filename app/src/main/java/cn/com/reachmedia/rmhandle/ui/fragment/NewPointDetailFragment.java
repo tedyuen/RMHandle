@@ -39,6 +39,7 @@ import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
+import cn.com.reachmedia.rmhandle.ui.bean.FileDb;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.view.Line2ImageLayout;
 import cn.com.reachmedia.rmhandle.ui.view.Line3ImageLayout;
@@ -110,7 +111,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     public String workId;
     public String pointId;
 
-    LineImageLayout.FileDb fileDb;
+    private FileDb fileDb;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -286,6 +287,14 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         lineImage2.changeEditMode(flag);
         lineButtom.changeEditMode(flag);
 
+    }
+
+    /**
+     * 检查是否为编辑模式
+     * @return true 编辑模式
+     */
+    public boolean checkChangeEditMode(){
+        return rl_right_text.getVisibility()==View.GONE;
     }
 
     @OnClick(R.id.rl_right_text)
@@ -567,6 +576,16 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         insertOrUpdate = pointWorkBean == null;
         if (insertOrUpdate) {
             pointWorkBean = new PointWorkBean();
+            pointWorkBean.setDoorpicid("");
+            pointWorkBean.setDoorpic("");
+            pointWorkBean.setDoorpicXY("");
+            pointWorkBean.setDoorpicTime("");
+            pointWorkBean.setFileIdData("");
+            pointWorkBean.setFilePathData("");
+            pointWorkBean.setFileXY("");
+            pointWorkBean.setFileTime("");
+            pointWorkBean.setFiledelete("");
+            pointWorkBean.setFileCount(0);
         }
 
         pointWorkBean.setLastId(bean.getId());
@@ -599,10 +618,16 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setFileXY(fileDb.getFileXY());
         pointWorkBean.setFileTime(fileDb.getFileTime());
 
-        pointWorkBean.setDoorpicid("");
-        pointWorkBean.setDoorpic("");
-        pointWorkBean.setDoorpicXY("");
-        pointWorkBean.setDoorpicTime("");
+        FileDb fileDoorDb = lineImage2.getFileDB();
+        if(fileDoorDb!=null){
+            pointWorkBean.setDoorpicid(fileDoorDb.getFileIds());
+            pointWorkBean.setDoorpic(fileDoorDb.getFilePaths());
+            pointWorkBean.setDoorpicXY(fileDoorDb.getFileXY());
+            pointWorkBean.setDoorpicTime(fileDoorDb.getFileTime());
+            if(fileDoorDb.getPictureBeen()!=null && fileDoorDb.getPictureBeen().size()>0){
+                fileDb.getPictureBeen().add(fileDoorDb.getPictureBeen().get(0));
+            }
+        }
 
         return pointWorkBean;
     }
