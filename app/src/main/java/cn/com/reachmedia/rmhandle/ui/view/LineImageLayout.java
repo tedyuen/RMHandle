@@ -398,6 +398,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         FileDb db = new FileDb();
         int count =0;
         int newCount =0;
+        boolean isAllDelete = true;
         StringBuffer deleteIds = new StringBuffer();
         StringBuffer fileIds = new StringBuffer();
         StringBuffer filePaths = new StringBuffer();
@@ -411,6 +412,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                 break;
             }
             if(!bean.isDeleted()){
+                isAllDelete = false;
                 if(!bean.getType().equals(PictureBean.PictureType.TYPE_3)){//网络图片不要提交
                     db.getPictureBeen().add(bean);
                     appendFileIds(fileIds,bean.getFileId());
@@ -437,6 +439,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         db.setFileTime(fileTime.toString());
         db.setFileCount(count);
         db.setNewCount(newCount);
+        db.setAllDelete(isAllDelete);
         return db;
     }
 

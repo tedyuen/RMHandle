@@ -189,7 +189,7 @@ public class PointBeanDbUtil {
 
         List<PointBean> result = new ArrayList<>();
         for(PointBean pointBean:list2){
-            PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPID(pointBean.getWorkId(),pointBean.getPointId(),3,"2");
+            PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPIDError(pointBean.getWorkId(),pointBean.getPointId(),1,"2");
             if(workBean!=null){
                 result.add(pointBean);
             }

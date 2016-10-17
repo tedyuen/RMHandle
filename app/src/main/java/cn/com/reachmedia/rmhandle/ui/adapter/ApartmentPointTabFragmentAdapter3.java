@@ -143,17 +143,24 @@ public class ApartmentPointTabFragmentAdapter3 extends ApartmentPointTabBaseAdap
                 bean.btLogout.setText(data.getStateTypeDesc());
 
             }else{
-                PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPID(data.getWorkId(),data.getPointId(),3,"2");
-                switch (workBean.getErrorType()){
-                    case 0:
-                        bean.btLogout.setText("门卡无法打开");
-                        break;
-                    case 1:
-                        bean.btLogout.setText("拿不到开门密码");
-                        break;
-                    case 9:
-                        bean.btLogout.setText("其他");
-                        break;
+                PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPID(data.getWorkId(),data.getPointId(),2,"2");
+                if(workBean!=null){
+                    bean.btLogout.setText("保修");
+                }else{
+                    workBean = pointWorkBeanDaoHelper.getDataByWPID(data.getWorkId(),data.getPointId(),3,"2");
+                    if(workBean!=null){
+                        switch (workBean.getErrorType()){
+                            case 0:
+                                bean.btLogout.setText("门卡无法打开");
+                                break;
+                            case 1:
+                                bean.btLogout.setText("拿不到开门密码");
+                                break;
+                            case 9:
+                                bean.btLogout.setText("其他");
+                                break;
+                        }
+                    }
                 }
             }
 

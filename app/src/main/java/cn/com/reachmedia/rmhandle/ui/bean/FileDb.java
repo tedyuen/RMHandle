@@ -14,6 +14,7 @@ public class FileDb {
     private String fileTime;
     private int fileCount;
     private int newCount;//新建数量
+    private boolean isAllDelete;//是否都删除了
     private List<PictureBean> pictureBeen;
 
     public FileDb(){
@@ -121,5 +122,13 @@ public class FileDb {
 
     public void setNewCount(int newCount) {
         this.newCount = newCount;
+    }
+
+    public boolean isAllDelete() {
+        return isAllDelete;
+    }
+
+    public void setAllDelete(boolean allDelete) {
+        isAllDelete = allDelete;
     }
 }

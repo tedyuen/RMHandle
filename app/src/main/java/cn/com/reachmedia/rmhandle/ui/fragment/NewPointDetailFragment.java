@@ -611,7 +611,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setCname(bean.getCname());
 
         fileDb = lineImage1.getFileDB(insertOrUpdate,pointWorkBean);
-        System.out.println(fileDb);
+//        System.out.println(fileDb);
         pointWorkBean.setFiledelete(fileDb.getDeleteIds());
         pointWorkBean.setFileCount(fileDb.getFileCount());
         pointWorkBean.setFileIdData(fileDb.getFileIds());
@@ -629,7 +629,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                 fileDb.getPictureBeen().add(fileDoorDb.getPictureBeen().get(0));
             }
         }
-        if(fileDb.getNewCount()<=0 && !lineImage1.hasDelete()){
+        if(fileDb.getNewCount()<=0 && (!lineImage1.hasDelete() || fileDb.isAllDelete())){//判断能否提交(验证图片)
             if(state!=3){
                 pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(bean.getWorkId(), bean.getPointId());
                 return null;
