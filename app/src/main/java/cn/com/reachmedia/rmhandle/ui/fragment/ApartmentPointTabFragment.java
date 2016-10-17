@@ -149,12 +149,15 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
             switch (listType){
                 case 1:
                     list = PointBeanDbUtil.getIns().getNewList(communityid,tempStartTime);
+                    activity.newCount = list.size();
                     break;
                 case 2:
                     list = PointBeanDbUtil.getIns().getEndList(communityid,tempStartTime);
+                    activity.endCount = list.size();
                     break;
                 case 3:
                     list = PointBeanDbUtil.getIns().getErrorList(communityid,tempStartTime);
+                    activity.errorCount = list.size();
                     break;
             }
             mAdapter.updateData(list);

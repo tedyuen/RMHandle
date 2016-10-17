@@ -122,7 +122,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
             }
         }
 
-        if(pointWorkBean!=null){
+        if(pointWorkBean!=null && !pointWorkBean.getNativeState().equals("2")){
             String[] cacheFileId, cacheFilePath,deleteIds;
             List<String> subFileId = new ArrayList<>();
             List<String> subFilePath = new ArrayList<>();

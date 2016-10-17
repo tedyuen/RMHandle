@@ -440,10 +440,11 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
                     List<PointListModel.NewListBean> newList = data.getNewList();
                     PointBeanDbUtil util = PointBeanDbUtil.getIns();
                     util.insertData(newList,communityId,tempStartTime,tempEndTime,data.getCommunity());
-                    resetTitle(util.getItemNumber(communityId,tempStartTime));
+//                    resetTitle(util.getItemNumber(communityId,tempStartTime));
                     for(Integer key:fragmentMap.keySet()){
                         fragmentMap.get(key).onSuccessDisplay(data,swipeflag,enterType);
                     }
+                    resetTile();
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -496,6 +497,15 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         }
     }
 
+    public int newCount;
+    public int endCount;
+    public int errorCount;
+
+    public void resetTile(){
+        slidingTabLayout.resetTitle("未上点位 ("+newCount+")",
+                "完成点位 ("+endCount+")","报错 ("+errorCount+")"
+        );
+    }
 
     public void resetTitle(long[] number){
         slidingTabLayout.resetTitle("未上点位 ("+number[0]+")",
