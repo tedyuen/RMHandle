@@ -46,6 +46,12 @@ public class TimeUtils {
         return dateAddByDateForString(date.getTime(),"yyyy-MM-dd HH:mm:ss",0);
     }
 
+    public static String getStrByLong(long time) throws Exception{
+        Calendar date = Calendar.getInstance();
+        date.setTimeInMillis(time);
+        return dateAddByDateForString(date.getTime(),"yyyy-MM-dd HH:mm:ss",0);
+    }
+
     public static String getYear(){
         Calendar now = Calendar.getInstance();
         StringBuffer buffer = new StringBuffer();

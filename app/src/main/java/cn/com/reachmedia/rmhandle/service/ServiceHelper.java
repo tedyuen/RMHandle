@@ -3,6 +3,8 @@ package cn.com.reachmedia.rmhandle.service;
 import android.content.Context;
 import android.content.Intent;
 
+import cn.com.reachmedia.rmhandle.service.onlinetime.OnlineTimeService;
+
 /**
  * Author:    tedyuen
  * Version    V1.0
@@ -25,6 +27,7 @@ public class ServiceHelper {
     }
 
     Intent locationIntent;
+    Intent onlineTimeIntent;
 
     /**
      * 没有wifi也传图片
@@ -69,8 +72,20 @@ public class ServiceHelper {
             locationIntent = new Intent(context,LocationService.class);
         context.startService(locationIntent);
     }
+
+    public void startOnlineTimeWorkService(Context context){
+        if(onlineTimeIntent==null)
+            onlineTimeIntent = new Intent(context,OnlineTimeService.class);
+        context.startService(onlineTimeIntent);
+    }
+
     public void stopLocationWorkService(Context context){
         context.stopService(locationIntent);
     }
 
+    public void stopOnlineTimeService(Context context){
+        if(onlineTimeIntent!=null){
+            context.stopService(onlineTimeIntent);
+        }
+    }
 }

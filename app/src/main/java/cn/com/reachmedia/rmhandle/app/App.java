@@ -79,7 +79,7 @@ public class App extends Application {
             mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LATITUDE,"456");
         }
         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_ON_LINE_TIME, TimeUtils.getNowStr());
-
+        ServiceHelper.getIns().startOnlineTimeWorkService(this);
     }
 
     public void setUpApiService() {
@@ -147,6 +147,7 @@ public class App extends Application {
     @Override
     public boolean stopService(Intent name) {
         ServiceHelper.getIns().stopLocationWorkService(this);
+        ServiceHelper.getIns().stopOnlineTimeService(this);
         return super.stopService(name);
     }
 

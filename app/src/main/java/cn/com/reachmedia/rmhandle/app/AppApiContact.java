@@ -18,7 +18,7 @@ public class AppApiContact {
     public static final String API_ACTION = "/data.api";//api action
     public static final String API_ACTION_FILE = "/file.api";//api action
     public static final String API_ACTION_UPDATE = "/app/getversion.jsp";//api action
-
+    public static final String API_ONLINE_TIME = "/time.jsp";
     public static String getApiHost(){
 //http://120.26.64.180:8281/app/data.api
         return API_HOST_ST;

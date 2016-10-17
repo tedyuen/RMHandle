@@ -191,6 +191,9 @@
 
         <service android:name="cn.com.reachmedia.rmhandle.service.LocationService">
         </service>
+        <service android:name="cn.com.reachmedia.rmhandle.service.onlinetime.OnlineTimeService">
+        </service>
+
 
 
         <service

@@ -16,6 +16,7 @@ import cn.com.reachmedia.rmhandle.model.UploadWorkModel;
 import retrofit.Callback;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
+import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
@@ -169,8 +170,8 @@ public interface AppApiService {
                        Callback<PicSubmitModel> cb);
 
 
-
-
+    @GET(AppApiContact.API_ONLINE_TIME)
+    void getOnlineTime(Callback<String> callback);
 
 
 
