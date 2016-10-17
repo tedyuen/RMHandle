@@ -16,10 +16,13 @@ import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
+import cn.com.reachmedia.rmhandle.db.helper.PointWorkBeanDaoHelper;
 import cn.com.reachmedia.rmhandle.ui.NewPointDetailActivity;
 import cn.com.reachmedia.rmhandle.ui.PointDetailActivity;
 import cn.com.reachmedia.rmhandle.utils.ApartmentPointUtils;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 
 /**
  * Author:    tedyuen
@@ -40,16 +43,21 @@ public class ApartmentPointTabFragmentAdapter3 extends ApartmentPointTabBaseAdap
 
     private int listType;
 
+    private PointWorkBeanDaoHelper pointWorkBeanDaoHelper;
+
+
     public ApartmentPointTabFragmentAdapter3(Context context, List<PointBean> mLists,int listType) {
         this.mLists = mLists;
         this.mContext = context;
         this.listType = listType;
+        this.pointWorkBeanDaoHelper = PointWorkBeanDaoHelper.getInstance();
     }
 
     public ApartmentPointTabFragmentAdapter3(Context context,int listType) {
         this.mContext = context;
         this.mLists = new ArrayList<>();
         this.listType = listType;
+        this.pointWorkBeanDaoHelper = PointWorkBeanDaoHelper.getInstance();
     }
 
     @Override
@@ -131,7 +139,24 @@ public class ApartmentPointTabFragmentAdapter3 extends ApartmentPointTabBaseAdap
             }
 
 //            switch (data.)
-            bean.btLogout.setText(data.getStateTypeDesc());
+            if(!StringUtils.isEmpty(data.getStateTypeDesc())){
+                bean.btLogout.setText(data.getStateTypeDesc());
+
+            }else{
+                PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPID(data.getWorkId(),data.getPointId(),3,"2");
+                switch (workBean.getErrorType()){
+                    case 0:
+                        bean.btLogout.setText("门卡无法打开");
+                        break;
+                    case 1:
+                        bean.btLogout.setText("拿不到开门密码");
+                        break;
+                    case 9:
+                        bean.btLogout.setText("其他");
+                        break;
+                }
+            }
+
 
 
         }

@@ -467,7 +467,6 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                                 if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
                                                     count++;
                                                 }
-
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                                 continue;
@@ -612,7 +611,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         pointWorkBean.setCname(bean.getCname());
 
         fileDb = lineImage1.getFileDB(insertOrUpdate,pointWorkBean);
-//        System.out.println(fileDb);
+        System.out.println(fileDb);
         pointWorkBean.setFiledelete(fileDb.getDeleteIds());
         pointWorkBean.setFileCount(fileDb.getFileCount());
         pointWorkBean.setFileIdData(fileDb.getFileIds());
@@ -630,9 +629,11 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                 fileDb.getPictureBeen().add(fileDoorDb.getPictureBeen().get(0));
             }
         }
-        if(fileDb.getNewCount()<=0){
-            pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(bean.getWorkId(), bean.getPointId());
-            return null;
+        if(fileDb.getNewCount()<=0 && !lineImage1.hasDelete()){
+            if(state!=3){
+                pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(bean.getWorkId(), bean.getPointId());
+                return null;
+            }
         }
 
         return pointWorkBean;

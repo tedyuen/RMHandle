@@ -178,13 +178,25 @@ public class PointBeanDbUtil {
                         PointBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
                         PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
                 .list();
+        System.out.println("error list size 1:  "+list.size());
+        List<PointBean> list2 = pointBeanDaoHelper.getDao().queryBuilder()
+                .where(PointBeanDao.Properties.State.eq(0),
+                        PointBeanDao.Properties.Communityid.eq(communityid),
+                        PointBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
+                        PointBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
+                .list();
+        System.out.println("error list size 2:  "+list2.size());
+
         List<PointBean> result = new ArrayList<>();
-        for(PointBean pointBean:list){
-            PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPIDError(pointBean.getWorkId(),pointBean.getPointId(),1,"2");
-            if(workBean==null){
+        for(PointBean pointBean:list2){
+            PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPID(pointBean.getWorkId(),pointBean.getPointId(),3,"2");
+            if(workBean!=null){
                 result.add(pointBean);
             }
         }
+        System.out.println("error list size 3:  "+result.size());
+
+        result.addAll(list);
         return result;
     }
 

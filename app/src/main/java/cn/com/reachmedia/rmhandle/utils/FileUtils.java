@@ -49,22 +49,24 @@ public class FileUtils {
     }
 
     public static boolean copyFile(String sourceStr,String destStr) throws IOException {
-        File source = new File(sourceStr);
-        File dest = new File(destStr);
-        FileChannel inputChannel = null;
-        FileChannel outputChannel = null;
-        if(source.exists()){
-            if(dest.exists()){
-                dest.delete();
-            }
-            try {
-                inputChannel = new FileInputStream(source).getChannel();
-                outputChannel = new FileOutputStream(dest).getChannel();
-                outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
-                return true;
-            } finally {
-                inputChannel.close();
-                outputChannel.close();
+        if(!StringUtils.isEmpty(sourceStr) && !StringUtils.isEmpty(destStr)){
+            File source = new File(sourceStr);
+            File dest = new File(destStr);
+            FileChannel inputChannel = null;
+            FileChannel outputChannel = null;
+            if(source.exists()){
+                if(dest.exists()){
+                    dest.delete();
+                }
+                try {
+                    inputChannel = new FileInputStream(source).getChannel();
+                    outputChannel = new FileOutputStream(dest).getChannel();
+                    outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+                    return true;
+                } finally {
+                    inputChannel.close();
+                    outputChannel.close();
+                }
             }
         }
         return false;

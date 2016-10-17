@@ -74,6 +74,12 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
 
     List<PictureBean> resultDatas;
 
+
+    private boolean hasDelete = false;
+    public boolean hasDelete(){
+        return hasDelete;
+    }
+
     private final static String path = Environment
             .getExternalStorageDirectory().getAbsolutePath()
             + File.separator
@@ -137,7 +143,6 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                     if(cacheFileId[i].equals(pictureBean.getFileId())){
                         pictureBean.setMainPath(cacheFilePath[i]);
                         pictureBean.setType(PictureBean.PictureType.TYPE_2);
-//                        break;
                         flag = false;
                         break;
                     }
@@ -145,6 +150,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                 if(flag){
                     subFileId.add(cacheFileId[i]);
                     subFilePath.add(cacheFilePath[i]);
+                    System.out.println("file++ ==> 1  "+cacheFileId[i]+" : "+cacheFilePath[i]);
                 }
             }
             for(int i=0;i<subFileId.size();i++){
@@ -166,8 +172,6 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
             }
 
         }
-
-
         refreshAllImage();
     }
 
@@ -305,6 +309,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                         for (PictureBean bean : resultDatas) {
                             if(!bean.isDeleted()){
                                 if(start==index){
+                                    hasDelete = true;
                                     bean.setDeleted(true);
                                     break;
                                 }else{
