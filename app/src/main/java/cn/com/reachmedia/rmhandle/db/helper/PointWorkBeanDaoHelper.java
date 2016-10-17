@@ -76,7 +76,7 @@ public class PointWorkBeanDaoHelper implements DaoHelperInterface {
                     .where(PointWorkBeanDao.Properties.WorkId.eq(workId),
                             PointWorkBeanDao.Properties.PointId.eq(pointId),
                             PointWorkBeanDao.Properties.State.eq(state),
-                            PointWorkBeanDao.Properties.NativeState.eq(nativeState))
+                            PointWorkBeanDao.Properties.NativeState.notEq(nativeState))
                     .unique();
         }
         return null;
@@ -94,7 +94,7 @@ public class PointWorkBeanDaoHelper implements DaoHelperInterface {
                     .where(PointWorkBeanDao.Properties.WorkId.eq(workId),
                             PointWorkBeanDao.Properties.PointId.eq(pointId),
                             PointWorkBeanDao.Properties.State.notEq(state),
-                            PointWorkBeanDao.Properties.NativeState.eq(nativeState))
+                            PointWorkBeanDao.Properties.NativeState.notEq(nativeState))
                     .unique();
         }
         return null;

@@ -190,12 +190,12 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
         });
         mPager.setCurrentItem(0);
 
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                onRefresh();
-//            }
-//        },100);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onRefresh();
+            }
+        },100);
     }
 
     private static class NavigationAdapter extends CacheFragmentStatePagerAdapter {
@@ -506,7 +506,7 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
     @Override
     protected void onResume() {
         super.onResume();
-        onRefresh();
+//        onRefresh();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

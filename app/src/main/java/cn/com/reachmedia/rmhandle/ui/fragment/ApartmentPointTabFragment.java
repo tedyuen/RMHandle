@@ -108,15 +108,15 @@ public class ApartmentPointTabFragment extends BaseFragment implements SwipeRefr
     private void setUpViewComponent() {
         switch (listType){
             case 1:
-                mAdapter = new ApartmentPointTabFragmentAdapter(getActivity());
+                mAdapter = new ApartmentPointTabFragmentAdapter(getActivity(),listType);
 
                 break;
             case 2:
-                mAdapter = new ApartmentPointTabFragmentAdapter2(getActivity());
+                mAdapter = new ApartmentPointTabFragmentAdapter2(getActivity(),listType);
 
                 break;
             case 3:
-                mAdapter = new ApartmentPointTabFragmentAdapter3(getActivity());
+                mAdapter = new ApartmentPointTabFragmentAdapter3(getActivity(), listType);
 
                 break;
         }

@@ -122,22 +122,39 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
             }
         }
 
-
         if(pointWorkBean!=null){
             String[] cacheFileId, cacheFilePath,deleteIds;
+            List<String> subFileId = new ArrayList<>();
+            List<String> subFilePath = new ArrayList<>();
             cacheFileId = pointWorkBean.getFileIdData() == null ? new String[0] : pointWorkBean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
             cacheFilePath = pointWorkBean.getFilePathData() == null ? new String[0] : pointWorkBean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
             deleteIds = pointWorkBean.getFiledelete() == null? new String[0]:pointWorkBean.getFiledelete().split(PointWorkBeanDbUtil.FILE_SPLIT2);
             //未提交图片
+
             for(int i=0;i<cacheFileId.length;i++){
+                boolean flag = true;
                 for(PictureBean pictureBean:resultDatas){
                     if(cacheFileId[i].equals(pictureBean.getFileId())){
                         pictureBean.setMainPath(cacheFilePath[i]);
                         pictureBean.setType(PictureBean.PictureType.TYPE_2);
+//                        break;
+                        flag = false;
                         break;
                     }
                 }
+                if(flag){
+                    subFileId.add(cacheFileId[i]);
+                    subFilePath.add(cacheFilePath[i]);
+                }
             }
+            for(int i=0;i<subFileId.size();i++){
+                PictureBean pictureBean = new PictureBean();
+                pictureBean.setFileId(subFileId.get(i));
+                pictureBean.setMainPath(subFilePath.get(i));
+                pictureBean.setType(PictureBean.PictureType.TYPE_1);
+                resultDatas.add(pictureBean);
+            }
+
             //已经删除图片
             for(int i=0;i<deleteIds.length;i++){
                 for(PictureBean pictureBean:resultDatas){
@@ -147,8 +164,6 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                     }
                 }
             }
-
-
 
         }
 

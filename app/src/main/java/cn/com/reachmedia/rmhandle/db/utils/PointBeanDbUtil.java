@@ -79,7 +79,7 @@ public class PointBeanDbUtil {
                 .count();
         long count2 = pointWorkBeanDaoHelper.getDao().queryBuilder()
                 .where(PointWorkBeanDao.Properties.State.ge(1),//1,2,3
-                        PointWorkBeanDao.Properties.NativeState.eq("0"),//未上传
+                        PointWorkBeanDao.Properties.NativeState.notEq("2"),//未上传
                         PointWorkBeanDao.Properties.Communityid.eq(communityid),
                         PointWorkBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
                         PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
@@ -99,7 +99,7 @@ public class PointBeanDbUtil {
                 .count();
         long count2 = pointWorkBeanDaoHelper.getDao().queryBuilder()
                 .where(PointWorkBeanDao.Properties.State.eq(1),
-                        PointWorkBeanDao.Properties.NativeState.eq("0"),//未上传
+                        PointWorkBeanDao.Properties.NativeState.notEq("2"),//未上传
                         PointWorkBeanDao.Properties.Communityid.eq(communityid),
                         PointWorkBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
                         PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
@@ -118,7 +118,7 @@ public class PointBeanDbUtil {
                 .count();
         long count2 = pointWorkBeanDaoHelper.getDao().queryBuilder()
                 .where(PointWorkBeanDao.Properties.State.ge(2),
-                        PointWorkBeanDao.Properties.NativeState.eq("0"),//未上传
+                        PointWorkBeanDao.Properties.NativeState.notEq("2"),//未上传
                         PointWorkBeanDao.Properties.Communityid.eq(communityid),
                         PointWorkBeanDao.Properties.Starttime.eq(TimeUtils.simpleDateParse(starttime,"yyyy-MM-dd")),
                         PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
@@ -137,7 +137,7 @@ public class PointBeanDbUtil {
                 .list();
         List<PointBean> result = new ArrayList<>();
         for(PointBean pointBean:list){
-            PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPIDError(pointBean.getWorkId(),pointBean.getPointId(),0,"0");
+            PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPIDError(pointBean.getWorkId(),pointBean.getPointId(),0,"2");
             if(workBean==null){
                 result.add(pointBean);
             }
@@ -161,7 +161,7 @@ public class PointBeanDbUtil {
                 .list();
         List<PointBean> result = new ArrayList<>();
         for(PointBean bean:list2){
-            PointWorkBean pointWorkBean = pointWorkBeanDaoHelper.getDataByWPID(bean.getWorkId(),bean.getPointId(),1,"0");
+            PointWorkBean pointWorkBean = pointWorkBeanDaoHelper.getDataByWPID(bean.getWorkId(),bean.getPointId(),1,"2");
             if(pointWorkBean!=null){
                 result.add(bean);
             }
@@ -180,7 +180,7 @@ public class PointBeanDbUtil {
                 .list();
         List<PointBean> result = new ArrayList<>();
         for(PointBean pointBean:list){
-            PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPIDError(pointBean.getWorkId(),pointBean.getPointId(),1,"0");
+            PointWorkBean workBean = pointWorkBeanDaoHelper.getDataByWPIDError(pointBean.getWorkId(),pointBean.getPointId(),1,"2");
             if(workBean==null){
                 result.add(pointBean);
             }

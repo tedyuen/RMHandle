@@ -8,6 +8,7 @@ import java.io.File;
 import cn.com.reachmedia.rmhandle.app.App;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.utils.SimpleImageLoader;
 
 /**
@@ -78,8 +79,13 @@ public class PictureBean {
                 }
                 break;
             case TYPE_4:
-                imageView.setVisibility(View.VISIBLE);
-                SimpleImageLoader.displayImage(file, imageView);
+                if(file!=null && file.exists()){
+                    SimpleImageLoader.displayImage(file, imageView);
+                    imageView.setVisibility(View.VISIBLE);
+                }else if(!StringUtils.isEmpty(mainPath)){
+                    SimpleImageLoader.displayImage(new File(mainPath), imageView);
+                    imageView.setVisibility(View.VISIBLE);
+                }
                 break;
         }
 

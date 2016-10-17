@@ -38,16 +38,19 @@ public class ApartmentPointTabFragmentAdapter extends ApartmentPointTabBaseAdapt
     private List<PointBean> mLists;
 
     private Context mContext;
+    private int listType;
 
 
-    public ApartmentPointTabFragmentAdapter(Context context, List<PointBean> mLists) {
+    public ApartmentPointTabFragmentAdapter(Context context, List<PointBean> mLists,int listType) {
         this.mLists = mLists;
         this.mContext = context;
+        this.listType = listType;
     }
 
-    public ApartmentPointTabFragmentAdapter(Context context) {
+    public ApartmentPointTabFragmentAdapter(Context context,int listType) {
         this.mContext = context;
         this.mLists = new ArrayList<>();
+        this.listType = listType;
     }
 
     @Override

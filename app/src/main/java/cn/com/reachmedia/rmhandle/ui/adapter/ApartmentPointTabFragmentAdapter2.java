@@ -39,15 +39,17 @@ public class ApartmentPointTabFragmentAdapter2 extends ApartmentPointTabBaseAdap
 
     private Context mContext;
 
+    private int listType;
 
     public ApartmentPointTabFragmentAdapter2(Context context, List<PointBean> mLists) {
         this.mLists = mLists;
         this.mContext = context;
     }
 
-    public ApartmentPointTabFragmentAdapter2(Context context) {
+    public ApartmentPointTabFragmentAdapter2(Context context,int listType) {
         this.mContext = context;
         this.mLists = new ArrayList<>();
+        this.listType = listType;
     }
 
     @Override
@@ -129,7 +131,7 @@ public class ApartmentPointTabFragmentAdapter2 extends ApartmentPointTabBaseAdap
                 bean.ivPai.setVisibility(View.GONE);
             }
 
-            if(StringUtils.isEmpty(data.getFileId())){
+            if(StringUtils.isEmpty(data.getFileId()) && listType!=AppSpContact.SP_KEY_APAET_POINT_DONE){
                 bean.btLogout.setBackgroundColor(mContext.getResources().getColor(R.color.apartment_point_bgcolor_grey));
                 bean.btLogout.setText("未拍照");
             }else{
