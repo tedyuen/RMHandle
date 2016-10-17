@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.anthonycr.grant.PermissionsManager;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -628,6 +630,10 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                 fileDb.getPictureBeen().add(fileDoorDb.getPictureBeen().get(0));
             }
         }
+        if(fileDb.getNewCount()<=0){
+            pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(bean.getWorkId(), bean.getPointId());
+            return null;
+        }
 
         return pointWorkBean;
     }
@@ -653,4 +659,12 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         return lineButtom.getCheckState(stateType);
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        Log.i(TAG, "Activity-onRequestPermissionsResult() PermissionsManager.notifyPermissionsChange()");
+        PermissionsManager.getInstance().notifyPermissionsChange(permissions, grantResults);
+    }
 }

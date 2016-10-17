@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.ui.view;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.anthonycr.grant.PermissionsManager;
+import com.anthonycr.grant.PermissionsResultAction;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -171,8 +174,7 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
     @OnClick(R.id.rl_comm_photo_2)
     public void clickDoor(){
         if(resultDatas==null){//直接拍照
-            pickManger.setReturnFileCount(1);
-            pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
+            startAlbum();
         }else{
             if(!fragment.checkChangeEditMode()){
                 goViewDoorPhoto();
@@ -184,8 +186,7 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 if (which == 0) {//拍照
-                                    pickManger.setReturnFileCount(1);
-                                    pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
+                                    startAlbum();
                                 }else if (which == 1) {// 查看大图
                                     goViewDoorPhoto();
                                 }
@@ -194,6 +195,26 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
                         .show();
             }
         }
+    }
+
+    private void startAlbum(){
+        PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(fragment.getActivity(),
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, new PermissionsResultAction() {
+
+                    @Override
+                    public void onGranted() {
+                        pickManger.setReturnFileCount(1);
+                        pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
+                    }
+
+                    @Override
+                    public void onDenied(String permission) {
+                        if(fragment.getActivity()!=null){
+                            ToastHelper.showAlert(fragment.getActivity(),fragment.getString(R.string.sdcard_denied));
+                        }
+                    }
+                }
+        );
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

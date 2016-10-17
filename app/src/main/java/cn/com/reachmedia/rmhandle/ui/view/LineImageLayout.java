@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.ui.view;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -14,6 +16,8 @@ import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.anthonycr.grant.PermissionsManager;
+import com.anthonycr.grant.PermissionsResultAction;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,6 +39,7 @@ import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.camera.PhotoPickManger;
 /**
@@ -184,8 +189,24 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
             addPhotos[index].setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    pickManger.setReturnFileCount(addPhotos.length - photoCount);
-                    pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
+                    PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(fragment.getActivity(),
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.CAMERA}, new PermissionsResultAction() {
+
+                                @Override
+                                public void onGranted() {
+                                    pickManger.setReturnFileCount(addPhotos.length - photoCount);
+                                    pickManger.start(PhotoPickManger.Mode.AS_WEIXIN_IMGCAPTRUE);
+                                }
+
+                                @Override
+                                public void onDenied(String permission) {
+                                    if(fragment.getActivity()!=null){
+                                        ToastHelper.showAlert(fragment.getActivity(),fragment.getString(R.string.sdcard_denied));
+                                    }
+                                }
+                            }
+                    );
+
                 }
             });
         }
@@ -356,6 +377,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
     public FileDb getFileDB(boolean insertOrUpdate, PointWorkBean pointWorkBean){
         FileDb db = new FileDb();
         int count =0;
+        int newCount =0;
         StringBuffer deleteIds = new StringBuffer();
         StringBuffer fileIds = new StringBuffer();
         StringBuffer filePaths = new StringBuffer();
@@ -375,27 +397,10 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                     appendFilePath(filePaths,bean.getMainPath());
                     appendFileXY(fileXY);
                     appendFileTime(fileTime);
-//                    switch (bean.getType()){
-//                        case TYPE_1:
-//                            appendFileIds(fileIds,bean.getFileId());
-//                            appendFilePath(filePaths,bean.getMainPath());
-//                            appendFileXY(fileXY);
-//                            appendFileTime(fileTime);
-//                            break;
-//                        case TYPE_2:
-//                            appendFileIds(fileIds,bean.getFileId());
-//                            appendFilePath(filePaths,bean.getMainPath());
-//                            appendFileXY(fileXY);
-//                            appendFileTime(fileTime);
-//                            break;
-//                        case TYPE_4:
-//                            appendFileIds(fileIds,bean.getFileId());
-//                            appendFilePath(filePaths,bean.getMainPath());
-//                            appendFileXY(fileXY);
-//                            appendFileTime(fileTime);
-//                            break;
-//                    }
                     count++;
+                    if(bean.getType().equals(PictureBean.PictureType.TYPE_4)){
+                        newCount++;
+                    }
                 }
             }else{//删除的图片
                 if(deleteIds.length()>0){
@@ -411,6 +416,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         db.setFileXY(fileXY.toString());
         db.setFileTime(fileTime.toString());
         db.setFileCount(count);
+        db.setNewCount(newCount);
         return db;
     }
 
@@ -441,5 +447,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         }
         buffer.append(TimeUtils.getNowStr());
     }
+
+
 
 }

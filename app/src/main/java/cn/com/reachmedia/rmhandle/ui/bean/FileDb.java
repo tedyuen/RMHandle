@@ -13,6 +13,7 @@ public class FileDb {
     private String fileXY;
     private String fileTime;
     private int fileCount;
+    private int newCount;//新建数量
     private List<PictureBean> pictureBeen;
 
     public FileDb(){
@@ -112,5 +113,13 @@ public class FileDb {
 
     public void setFileCount(int fileCount) {
         this.fileCount = fileCount;
+    }
+
+    public int getNewCount() {
+        return newCount;
+    }
+
+    public void setNewCount(int newCount) {
+        this.newCount = newCount;
     }
 }
