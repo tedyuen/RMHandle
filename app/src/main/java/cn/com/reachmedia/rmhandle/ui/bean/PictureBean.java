@@ -60,6 +60,7 @@ public class PictureBean {
 
 
     public void displayImage(ImageView imageView,boolean isLarge){
+        System.out.println("显示图片: "+type+":"+mainPath);
 
         switch (type){
             case TYPE_1:

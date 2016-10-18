@@ -120,6 +120,21 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         super.onCreate(savedInstanceState);
         pointBeanDbUtil = PointBeanDbUtil.getIns();
         pointWorkBeanDbUtil = PointWorkBeanDbUtil.getIns();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.new_fragment_point_detail, container, false);
+        ButterKnife.bind(this, rootView);
+        initData();
+        needTitle();
+        lineImage1.init(this);
+        lineImage2.init(this);
+        lineButtom.init(this);
+        return rootView;
+    }
+
+    public void initData(){
         String communityId = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_COMMUNITID);
         String tempStartTime = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_INDEX_STARTTIME);
         String dataJson = mSharedPreferencesHelper.getString(communityId+"_"+tempStartTime);
@@ -140,19 +155,9 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         if(bean!=null){
             pointWorkBean = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(bean.getWorkId(), bean.getPointId());
         }
-
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.new_fragment_point_detail, container, false);
-        ButterKnife.bind(this, rootView);
-        needTitle();
-        lineImage1.init(this);
-        lineImage2.init(this);
-        lineButtom.init(this);
-        return rootView;
-    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -575,6 +580,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         String lon = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);
         String lat = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE);
         insertOrUpdate = pointWorkBean == null;
+
         if (insertOrUpdate) {
             pointWorkBean = new PointWorkBean();
             pointWorkBean.setDoorpicid("");
