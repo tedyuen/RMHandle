@@ -76,14 +76,14 @@ public class MyDaoGenerator {
 
 
     public static void main(String args[]) throws Exception {
-        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
-        schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
-
-        initPointBean(schema);
-        initPointWorkBean(schema);
-        initCommDoorPicBean(schema);
-        initImageCacheBean(schema);
-        new DaoGenerator().generateAll(schema, args[0]);
+//        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
+//        schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
+//
+//        initPointBean(schema);
+//        initPointWorkBean(schema);
+//        initCommDoorPicBean(schema);
+//        initImageCacheBean(schema);
+//        new DaoGenerator().generateAll(schema, args[0]);
     }
 
     private static void initImageCacheBean(Schema schema){
