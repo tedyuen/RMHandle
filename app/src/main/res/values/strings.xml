@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">亿投上刊工具</string>
     <string name="bottom_text_1">工作</string>
-    <string name="bottom_text_2">我的</string>
+    <string name="bottom_text_2">设置</string>
 
-    <string name="title_user_info">个人中心</string>
+    <string name="title_user_info">设置</string>
     <string name="title_my_map">小区地图</string>
     <string name="title_my_offline_map">离线地图</string>
     <string name="title_apartment_point">小区点位</string>
