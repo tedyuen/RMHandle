@@ -28,6 +28,8 @@ import cn.com.reachmedia.rmhandle.network.cookie.PersistentCookieStore;
 import cn.com.reachmedia.rmhandle.network.http.AppApiService;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
+import cn.com.reachmedia.rmhandle.utils.AppVersionHelper;
+import cn.com.reachmedia.rmhandle.utils.CrashHandler;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 import retrofit.RestAdapter;
@@ -63,7 +65,13 @@ public class App extends Application {
         sContext = getApplicationContext();
         app = this;
 //        CrashReport.initCrashReport(getApplicationContext(), "900046108", true);
+        CrashHandler handler = CrashHandler.getInstance();
+        handler.init(getApplicationContext());
+        Thread.setDefaultUncaughtExceptionHandler(handler);
         setUpSharedPreferencesHelper(getApplicationContext());//初始化SharedPreferences
+        SharedPreferencesHelper mSharedPreferencesHelper = SharedPreferencesHelper.getInstance();
+        initVersionInfo(mSharedPreferencesHelper);
+        ServiceHelper.getIns().startUploadErrorLogService(this);
         setUpApiService();//初始化APP API
 //        EventBus.getDefault().register(this);//注册接收定位信息事件
         DatabaseLoader.init(getApplicationContext());
@@ -71,7 +79,6 @@ public class App extends Application {
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
         ServiceHelper.getIns().startLocationWorkService(this);
-        SharedPreferencesHelper mSharedPreferencesHelper = SharedPreferencesHelper.getInstance();
         if(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE)==null){
             mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_LONGITUDE,"123");
         }
@@ -80,6 +87,19 @@ public class App extends Application {
         }
         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_ON_LINE_TIME, TimeUtils.getNowStr());
         ServiceHelper.getIns().startOnlineTimeWorkService(this);
+    }
+
+    public void initVersionInfo(SharedPreferencesHelper mSharedPreferencesHelper){
+        try{
+            String versionName = AppVersionHelper.getVersionName(getContext());
+            String versionCode = String.valueOf(AppVersionHelper.getVersionCode(getContext()));
+            mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_VERSION_CODE,versionCode);
+            mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_VERSION_NAME,versionName);
+        }catch (Exception e){
+            e.printStackTrace();
+            mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_VERSION_CODE,"-1");
+            mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_VERSION_NAME,"0.1");
+        }
     }
 
     public void setUpApiService() {

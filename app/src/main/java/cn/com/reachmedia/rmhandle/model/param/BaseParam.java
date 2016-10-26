@@ -34,9 +34,9 @@ public class BaseParam {
 
     public BaseParam(){
         clienttype = "ad_ph";
-        clientversion = "1";
+        clientversion = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_VERSION_NAME);
         infversion = "1";
-        imeino = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_DEVICE_ID);;
+        imeino = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_DEVICE_ID);
         timestamp = System.currentTimeMillis()+"";
         md5s = MD5.getMD5KeyStr(timestamp).toUpperCase();
     }

@@ -88,4 +88,8 @@ public class ServiceHelper {
             context.stopService(onlineTimeIntent);
         }
     }
+
+    public void startUploadErrorLogService(Context context){
+        context.startService(new Intent(context,UploadErrorLogService.class));
+    }
 }

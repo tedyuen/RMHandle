@@ -31,17 +31,16 @@ public class FileUtils {
         File file=new File(dir);
         File[] tempList = file.listFiles();
         if(tempList!=null){
-            System.out.println("该目录下对象个数："+tempList.length);
-
+//            System.out.println("该目录下对象个数："+tempList.length);
             for (int i = 0; i < tempList.length; i++) {
                 if (tempList[i].isFile()) {
                     //读取某个文件夹下的所有文件
-                    System.out.println("文件："+tempList[i].getAbsolutePath());
+//                    System.out.println("文件："+tempList[i].getAbsolutePath());
                     result.add(tempList[i].getAbsolutePath());
                 }
                 if (tempList[i].isDirectory()) {
                     //读取某个文件夹下的所有文件夹
-                    System.out.println("文件夹："+tempList[i].getAbsolutePath());
+//                    System.out.println("文件夹："+tempList[i].getAbsolutePath());
                 }
             }
         }

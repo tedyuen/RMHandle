@@ -4,6 +4,7 @@ import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.model.BaseModel;
 import cn.com.reachmedia.rmhandle.model.CardListModel;
 import cn.com.reachmedia.rmhandle.model.CardSubmitModel;
+import cn.com.reachmedia.rmhandle.model.ErrorLogModel;
 import cn.com.reachmedia.rmhandle.model.GetVersionModel;
 import cn.com.reachmedia.rmhandle.model.LoginModel;
 import cn.com.reachmedia.rmhandle.model.PicSubmitModel;
@@ -154,6 +155,12 @@ public interface AppApiService {
                    @Part("communityDoorTime") TypedString communityDoorTime,
                        Callback<UploadPicModel> cb);
 
+    @Multipart
+    @POST(AppApiContact.API_UPLOAD_ERROR_LOG)
+    void uploadErrorLog(@Part("json") TypedString json,
+                        @Part("logFile") TypedFile file,
+                        @Part("fileId") TypedString file1Id,
+                        Callback<ErrorLogModel> cb);
 
 
     @Multipart

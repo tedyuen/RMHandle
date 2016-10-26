@@ -19,6 +19,7 @@ public class AppApiContact {
     public static final String API_ACTION_FILE = "/file.api";//api action
     public static final String API_ACTION_UPDATE = "/app/getversion.jsp";//api action
     public static final String API_ONLINE_TIME = "/time.jsp";
+    public static final String API_UPLOAD_ERROR_LOG = "/log.api";
     public static String getApiHost(){
 //http://120.26.64.180:8281/app/data.api
         return API_HOST_ST;
@@ -86,12 +87,14 @@ public class AppApiContact {
 
 
         /**
-         * 4.1 版本检测接口
+         * 5.1 版本检测接口
          */
         public static final String VERSION_METHOD = "RM_GCBAPP_version";
 
-
-
+        /**
+         * 5.2 错误日志接口
+         */
+        public static final String ERROR_LOG = "RM_GCBAPP_errorLog";
     }
 
     /**
