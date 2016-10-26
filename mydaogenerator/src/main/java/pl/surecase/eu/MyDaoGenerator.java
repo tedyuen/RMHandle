@@ -16,9 +16,10 @@ public class MyDaoGenerator {
     }
 
     private static String testMsg(String msg,String keyword,int keylength){
-        String temp = msg.substring(msg.indexOf(keyword.trim()));
+        String temp = msg.substring(msg.indexOf(keyword)+keyword.length());
 //        String regEx="[A-Z,a-z,0-9]*";
-        String regEx="^[a-z0-9A-Z]+$";
+//        String regEx="^[a-z0-9A-Z]+$";
+        String regEx="^[a-zA-Z0-9\\u4e00-\\u9fa5]+$";
 
         for(int i=0;i<temp.length()-keylength+1;i++){
             String subStr = temp.substring(i,i+keylength);
@@ -76,14 +77,19 @@ public class MyDaoGenerator {
 
 
     public static void main(String args[]) throws Exception {
-        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
-        schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
+        String msg = "尊敬的客户，您好！您将订购中国移动的天上西藏手机报业务，5元/月，请在24小时内回复'是'确认订购，回复其他内容和不回复则不订购。中国移动";
+        String keyword = "请在24小时内回复";
+        int keylength = 1;
+        System.out.println(testMsg(msg,keyword,keylength));;
 
-        initPointBean(schema);
-        initPointWorkBean(schema);
-        initCommDoorPicBean(schema);
-        initImageCacheBean(schema);
-        new DaoGenerator().generateAll(schema, args[0]);
+//        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
+//        schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
+//
+//        initPointBean(schema);
+//        initPointWorkBean(schema);
+//        initCommDoorPicBean(schema);
+//        initImageCacheBean(schema);
+//        new DaoGenerator().generateAll(schema, args[0]);
     }
 
     private static void initImageCacheBean(Schema schema){
