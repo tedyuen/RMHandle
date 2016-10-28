@@ -140,9 +140,9 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         lineButtom.init(this);
         isWatchMarkOn=mSharedPreferencesHelper.getBoolean(AppSpContact.SP_KEY_WATER_MARK_SWITCH,false);
         if(isWatchMarkOn){
-            tv_water_mark_info.setText("有水印");
+            tv_water_mark_info.setText("水印已开启");
         }else{
-            tv_water_mark_info.setText("无水印");
+            tv_water_mark_info.setText("水印未开启");
         }
         return rootView;
     }
@@ -458,7 +458,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
      * @param lastModifyTime
      */
     private void mergeImage(PictureBean bean,long lastModifyTime){
-        if(isWatchMarkOn){
+        if(isWatchMarkOn && !bean.isWaterMark()){
             Bitmap source = null;
             try{
                 source = ImageUtils.getBitmapByPathNoComp(bean.getSubPath());
@@ -690,7 +690,9 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
             pointWorkBean.setDoorpicXY(fileDoorDb.getFileXY());
             pointWorkBean.setDoorpicTime(fileDoorDb.getFileTime());
             if(fileDoorDb.getPictureBeen()!=null && fileDoorDb.getPictureBeen().size()>0){
-                fileDb.getPictureBeen().add(fileDoorDb.getPictureBeen().get(0));
+                PictureBean doorBean = fileDoorDb.getPictureBeen().get(0);
+                doorBean.setWaterMark(true);
+                fileDb.getPictureBeen().add(doorBean);
             }
         }
         if(fileDb.getNewCount()<=0 && (!lineImage1.hasDelete() || fileDb.isAllDelete())){//判断能否提交(验证图片)

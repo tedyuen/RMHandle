@@ -22,7 +22,7 @@ public class PictureBean {
     private boolean isDeleted;   // 是否被删除
     private PictureType type;    // 图片类型
     private File file;           // 图片文件
-
+    private boolean isWaterMark; //是否需要水印 true:否
     public PictureBean(){
 
     }
@@ -138,5 +138,13 @@ public class PictureBean {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public boolean isWaterMark() {
+        return isWaterMark;
+    }
+
+    public void setWaterMark(boolean waterMark) {
+        isWaterMark = waterMark;
     }
 }
