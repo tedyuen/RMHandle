@@ -60,4 +60,6 @@ public class AppSpContact {
     public static final String SP_KEY_VERSION_CODE = "version_code";
     public static final String SP_KEY_VERSION_NAME = "version_name";
 
+    public static final String SP_KEY_WATER_MARK_SWITCH = "water_mark_switch";
+
 }

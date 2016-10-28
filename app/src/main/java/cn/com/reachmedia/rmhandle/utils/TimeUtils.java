@@ -52,6 +52,20 @@ public class TimeUtils {
         return dateAddByDateForString(date.getTime(),"yyyy-MM-dd HH:mm:ss",0);
     }
 
+    public static String getWaterMarkDate(long time,int upOrDown){
+        Calendar date = Calendar.getInstance();
+        date.setTimeInMillis(time);
+        switch (upOrDown){
+            case 0://上面，显示 时:分
+                return dateAddByDateForString(date.getTime(),"HH:mm",0);
+            case 1:
+                String left = dateAddByDateForString(date.getTime(),"MM月dd日",0);
+                String right = getWeekCn(date);
+                return left+" "+right;
+        }
+        return "";
+    }
+
     public static String getYear(){
         Calendar now = Calendar.getInstance();
         StringBuffer buffer = new StringBuffer();
@@ -290,6 +304,28 @@ public class TimeUtils {
             e.printStackTrace();
         }
         return ret;
+    }
+
+    public static String getWeekCn(Calendar cal){
+
+        switch (cal.get(Calendar.DAY_OF_WEEK)){
+            case 2:
+                return "周一";
+            case 3:
+                return "周二";
+            case 4:
+                return "周三";
+            case 5:
+                return "周四";
+            case 6:
+                return "周五";
+            case 7:
+                return "周六";
+            case 1:
+                return "周日";
+
+        }
+        return "";
     }
 
     /**

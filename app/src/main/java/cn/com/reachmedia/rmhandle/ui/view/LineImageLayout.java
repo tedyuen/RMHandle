@@ -136,7 +136,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
             cacheFilePath = pointWorkBean.getFilePathData() == null ? new String[0] : pointWorkBean.getFilePathData().split(PointWorkBeanDbUtil.FILE_SPLIT);
             deleteIds = pointWorkBean.getFiledelete() == null? new String[0]:pointWorkBean.getFiledelete().split(PointWorkBeanDbUtil.FILE_SPLIT2);
             //未提交图片
-            System.out.println("file++ ==> 2  "+pointWorkBean.getFileIdData());
+//            System.out.println("file++ ==> 2  "+pointWorkBean.getFileIdData());
 
             for(int i=0;i<cacheFileId.length;i++){
                 boolean flag = true;
@@ -151,7 +151,7 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                 if(flag){
                     subFileId.add(cacheFileId[i]);
                     subFilePath.add(cacheFilePath[i]);
-                    System.out.println("file++ ==> 1  "+cacheFileId[i]+" : "+cacheFilePath[i]);
+//                    System.out.println("file++ ==> 1  "+cacheFileId[i]+" : "+cacheFilePath[i]);
                 }
             }
             for(int i=0;i<subFileId.size();i++){

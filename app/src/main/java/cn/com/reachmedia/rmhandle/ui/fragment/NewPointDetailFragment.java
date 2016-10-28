@@ -2,6 +2,8 @@ package cn.com.reachmedia.rmhandle.ui.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import com.anthonycr.grant.PermissionsManager;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -49,6 +52,7 @@ import cn.com.reachmedia.rmhandle.ui.view.LineButtomLayout;
 import cn.com.reachmedia.rmhandle.ui.view.LineImageLayout;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
 import cn.com.reachmedia.rmhandle.utils.FileUtils;
+import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
@@ -87,10 +91,13 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
 
     @Bind(R.id.rl_right_text)
     RelativeLayout rl_right_text;
+    @Bind(R.id.tv_water_mark_info)
+    TextView tv_water_mark_info;
 
     int stateType;//0:上刊 1:下刊  2:巡查
     int stateFinish;//0:未完成 1:无法进入 2:报错
 
+    private boolean isWatchMarkOn=false;
 
 
     public static NewPointDetailFragment newInstance() {
@@ -131,6 +138,12 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         lineImage1.init(this);
         lineImage2.init(this);
         lineButtom.init(this);
+        isWatchMarkOn=mSharedPreferencesHelper.getBoolean(AppSpContact.SP_KEY_WATER_MARK_SWITCH,false);
+        if(isWatchMarkOn){
+            tv_water_mark_info.setText("有水印");
+        }else{
+            tv_water_mark_info.setText("无水印");
+        }
         return rootView;
     }
 
@@ -406,9 +419,10 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                         for(PictureBean bean:lists[0]){
                                             try {
                                                 if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
+                                                    long lastModifyTime = System.currentTimeMillis();
+                                                    mergeImage(bean,lastModifyTime);
                                                     count++;
                                                 }
-
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                                 continue;
@@ -435,6 +449,46 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                         }
                     })
                     .show();
+        }
+    }
+
+    /**
+     * 生成水印图片
+     * @param bean
+     * @param lastModifyTime
+     */
+    private void mergeImage(PictureBean bean,long lastModifyTime){
+        if(isWatchMarkOn){
+            Bitmap source = null;
+            try{
+                source = ImageUtils.getBitmapByPathNoComp(bean.getSubPath());
+            }catch (Exception e){
+                e.printStackTrace();
+                source = ImageUtils.getBitmapByPath(bean.getSubPath());
+            }catch (Error error){
+                error.printStackTrace();
+                source = ImageUtils.getBitmapByPath(bean.getSubPath());
+            }
+            if(source!=null){
+                Bitmap target = null;
+                try{
+                    String leftText = TimeUtils.getWaterMarkDate(lastModifyTime,0);
+                    String rightText = TimeUtils.getWaterMarkDate(lastModifyTime,1);
+                    target = ImageUtils.drawTextToRightBottom(getActivity(),source,leftText,rightText,16, Color.WHITE,10,20);
+                    if(target!=null){
+                        ImageUtils.saveCompressPicPath(target,bean.getMainPath(),LineImageLayout.photo_path);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    if(source!=null){
+                        source.recycle();
+                    }
+                    if(target!=null){
+                        target.recycle();
+                    }
+                }
+            }
         }
     }
 
@@ -470,6 +524,8 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                         for(PictureBean bean:lists[0]){
                                             try {
                                                 if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
+                                                    long lastModifyTime = System.currentTimeMillis();
+                                                    mergeImage(bean,lastModifyTime);
                                                     count++;
                                                 }
                                             } catch (IOException e) {
@@ -540,6 +596,8 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                                 for(PictureBean bean:lists[0]){
                                                     try {
                                                         if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
+                                                            long lastModifyTime = System.currentTimeMillis();
+                                                            mergeImage(bean,lastModifyTime);
                                                             count++;
                                                         }
 

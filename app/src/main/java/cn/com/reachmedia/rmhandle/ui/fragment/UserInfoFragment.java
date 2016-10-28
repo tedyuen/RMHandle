@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -72,6 +74,9 @@ public class UserInfoFragment extends BaseToolbarFragment {
     @Bind(R.id.tv_gengxin)
     TextView tvGengxin;
 
+    @Bind(R.id.tb_water_mark_switch)
+    ToggleButton tbWaterMarkSwitch;
+
     private PointWorkBeanDbUtil pointWorkBeanDbUtil;
 
 
@@ -121,6 +126,11 @@ public class UserInfoFragment extends BaseToolbarFragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction("POINT_FINISHED_MSG");
         getActivity().registerReceiver(pointSynchronizeReceiver,filter);
+        tbWaterMarkSwitch.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mSharedPreferencesHelper.putBoolean(AppSpContact.SP_KEY_WATER_MARK_SWITCH,tbWaterMarkSwitch.isChecked());
+            }
+        });
     }
 
 
@@ -133,6 +143,8 @@ public class UserInfoFragment extends BaseToolbarFragment {
         }
         tvUsername.setText(mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_USER_NAME));
         tvUserinfo.setText("分部:"+mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_SPACE));
+
+        tbWaterMarkSwitch.setChecked(mSharedPreferencesHelper.getBoolean(AppSpContact.SP_KEY_WATER_MARK_SWITCH,false));
 
         getShangchuan();
 

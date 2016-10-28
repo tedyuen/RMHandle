@@ -156,6 +156,16 @@ public class ImageUtils {
         return temp;
     }
 
+    public static Bitmap getBitmapByPathNoComp(String path) throws Exception,Error{
+        if (path == null)
+            return null;
+        Bitmap temp = null;
+        if (temp == null) {
+            temp = BitmapFactory.decodeFile(path);
+        }
+        return temp;
+    }
+
 
     /**
      * 保存方法实现
@@ -812,4 +822,97 @@ public class ImageUtils {
         }
         return null;
     }
+
+    //============================= 图片水印 ==================================
+
+    //图片上绘制文字
+    private static Bitmap drawTextToBitmap(Context context, Bitmap bitmap, String text,
+                                           Paint paint, Rect bounds, int paddingLeft, int paddingTop) {
+        android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
+
+        paint.setDither(true); // 获取跟清晰的图像采样
+        paint.setFilterBitmap(true);// 过滤一些
+        if (bitmapConfig == null) {
+            bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
+        }
+        bitmap = bitmap.copy(bitmapConfig, true);
+        Canvas canvas = new Canvas(bitmap);
+
+        canvas.drawText(text, paddingLeft, paddingTop, paint);
+        return bitmap;
+    }
+
+    /**
+     * 绘制文字到右下角
+     * @param context
+     * @param bitmap
+     * @param text
+     * @param size
+     * @param color
+     * @param paddingRight
+     * @param paddingBottom
+     * @return
+     */
+    public static Bitmap drawTextToRightBottom(Context context, Bitmap bitmap, String text,
+                                               int size, int color, int paddingRight, int paddingBottom) {
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(color);
+        paint.setTextSize(dp2px(context, size));
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+        return drawTextToBitmap(context, bitmap, text, paint, bounds,
+                bitmap.getWidth() - bounds.width() - dp2px(context, paddingRight),
+                bitmap.getHeight() - dp2px(context, paddingBottom));
+    }
+
+    public static Bitmap drawTextToRightBottom(Context context, Bitmap bitmap, String text1,String text2,
+                                               int size, int color, int paddingRight, int paddingBottom) {
+        Paint paint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint1.setColor(color);
+        paint1.setTextSize(dp2px(context, size));
+        Rect bounds1 = new Rect();
+        paint1.getTextBounds(text1, 0, text1.length(), bounds1);
+
+        Paint paint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint2.setColor(color);
+        paint2.setTextSize(dp2px(context, size));
+        Rect bounds2 = new Rect();
+        paint2.getTextBounds(text2, 0, text2.length(), bounds2);
+        int x1 = bitmap.getWidth() - bounds1.width() - dp2px(context, paddingRight);
+        int y1 = bitmap.getHeight() - dp2px(context, paddingBottom)-dp2px(context, 25);
+        int x2 = bitmap.getWidth() - bounds2.width() - dp2px(context, paddingRight);
+        int y2 = bitmap.getHeight() - dp2px(context, paddingBottom);
+        System.out.println("====>  "+x1+":"+y1+"\t"+x2+":"+y2);
+        return drawTextToBitmapTwoLine(context, bitmap, text1,text2, paint1, bounds1,paint2, bounds2,
+                x1,y1,x2,y2);
+    }
+
+    private static Bitmap drawTextToBitmapTwoLine(Context context, Bitmap bitmap, String text1,String text2,
+                                           Paint paint1, Rect bounds1,
+                                           Paint paint2, Rect bounds2,
+                                                  int paddingLeft1, int paddingTop1,int paddingLeft2, int paddingTop2) {
+        android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
+        paint1.setDither(true); // 获取跟清晰的图像采样
+        paint1.setFilterBitmap(true);// 过滤一些
+        if (bitmapConfig == null) {
+            bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
+        }
+        bitmap = bitmap.copy(bitmapConfig, true);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawText(text1, paddingLeft1, paddingTop1, paint1);
+        canvas.drawText(text2, paddingLeft2, paddingTop2, paint2);
+        return bitmap;
+    }
+
+    /**
+     * dip转pix
+     * @param context
+     * @param dp
+     * @return
+     */
+    public static int dp2px(Context context, float dp) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
 }

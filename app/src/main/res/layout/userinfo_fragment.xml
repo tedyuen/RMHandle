@@ -87,10 +87,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="27dp"
                     android:layout_marginRight="27dp"
-                    android:layout_marginBottom="45dp">
+                    android:layout_marginBottom="10dp">
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/iv_head_portrait"
                         android:layout_width="80dp"
@@ -354,6 +354,44 @@
                         android:layout_centerVertical="true"/>
                 </RelativeLayout>
                 <!-- 清空点位图片 -->
+
+                <!-- 离线地图 -->
+                <RelativeLayout
+                    android:id="@+id/rl_water_mark_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/panel_height"
+                    android:paddingLeft="@dimen/padding_lr"
+                    android:paddingRight="@dimen/padding_lr">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="水印开关"
+                        android:textColor="@color/username_color"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_water_mark_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text=""
+                        android:textColor="@color/username_color"
+                        android:layout_marginRight="28dp"
+                        android:textSize="15sp"/>
+                    <ToggleButton
+                        android:id="@+id/tb_water_mark_switch"
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:textOn=""
+                        android:textOff=""
+                        android:background="@drawable/toggle_water_mark_switch"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        />
+                </RelativeLayout>
+                <!-- 离线地图 -->
 
                 <!-- 离线地图 -->
                 <RelativeLayout
