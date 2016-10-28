@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -872,17 +873,24 @@ public class ImageUtils {
         paint1.setTextSize(dp2px(context, size));
         Rect bounds1 = new Rect();
         paint1.getTextBounds(text1, 0, text1.length(), bounds1);
+        paint1.setAntiAlias(true);//去除锯齿。
+        paint1.setShadowLayer(5f, 5.0f, 5.0f, Color.BLACK);
+        paint1.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+
 
         Paint paint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint2.setColor(color);
         paint2.setTextSize(dp2px(context, size));
         Rect bounds2 = new Rect();
         paint2.getTextBounds(text2, 0, text2.length(), bounds2);
+        paint2.setAntiAlias(true);
+        paint2.setShadowLayer(5f, 5.0f, 5.0f, Color.BLACK);
+        paint2.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         int x1 = bitmap.getWidth() - bounds1.width() - dp2px(context, paddingRight);
         int y1 = bitmap.getHeight() - dp2px(context, paddingBottom)-dp2px(context, 25);
         int x2 = bitmap.getWidth() - bounds2.width() - dp2px(context, paddingRight);
         int y2 = bitmap.getHeight() - dp2px(context, paddingBottom);
-        System.out.println("====>  "+x1+":"+y1+"\t"+x2+":"+y2);
+//        System.out.println("====>  "+x1+":"+y1+"\t"+x2+":"+y2);
         return drawTextToBitmapTwoLine(context, bitmap, text1,text2, paint1, bounds1,paint2, bounds2,
                 x1,y1,x2,y2);
     }
