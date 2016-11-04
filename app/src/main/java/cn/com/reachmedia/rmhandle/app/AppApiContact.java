@@ -22,7 +22,7 @@ public class AppApiContact {
     public static final String API_UPLOAD_ERROR_LOG = "/log.api";
     public static String getApiHost(){
 //http://120.26.64.180:8281/app/data.api
-        return API_HOST_ST;
+        return API_HOST_PD;
     }
 
 

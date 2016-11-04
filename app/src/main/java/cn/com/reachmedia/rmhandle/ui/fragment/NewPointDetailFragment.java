@@ -460,14 +460,31 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     private void mergeImage(PictureBean bean,long lastModifyTime){
         if(isWatchMarkOn && !bean.isWaterMark()){
             Bitmap source = null;
+            int b = ImageUtils.getBitmapDegree(bean.getSubPath());
+            System.out.println("===>b : "+b);
             try{
-                source = ImageUtils.getBitmapByPathNoComp(bean.getSubPath());
+                if (b != 0) {
+                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPathNoComp(bean.getSubPath()), b);
+                } else {
+                    source = ImageUtils.getBitmapByPathNoComp(bean.getSubPath());
+                }
+//                source = ImageUtils.getBitmapByPathNoComp(bean.getSubPath());
             }catch (Exception e){
                 e.printStackTrace();
-                source = ImageUtils.getBitmapByPath(bean.getSubPath());
+                if (b != 0) {
+                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getSubPath()), b);
+                } else {
+                    source = ImageUtils.getBitmapByPath(bean.getSubPath());
+                }
+//                source = ImageUtils.getBitmapByPath(bean.getSubPath());
             }catch (Error error){
                 error.printStackTrace();
-                source = ImageUtils.getBitmapByPath(bean.getSubPath());
+                if (b != 0) {
+                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getSubPath()), b);
+                } else {
+                    source = ImageUtils.getBitmapByPath(bean.getSubPath());
+                }
+//                source = ImageUtils.getBitmapByPath(bean.getSubPath());
             }
             if(source!=null){
                 Bitmap target = null;
