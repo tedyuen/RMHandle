@@ -436,22 +436,33 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                     protected void onPostExecute(Integer integer) {
                                         ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
                                         ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
-                                        closeProgressDialog();
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
+                                                closeProgressDialog();
                                                 getActivity().finish();
                                             }
                                         }, 500);
                                     }
                                 }.execute(fileDb.copyFile());
-                                showProgressDialog();
+                                showCommitProgressDialog();
                             }
 
                         }
                     })
                     .show();
         }
+    }
+
+    public void showCommitProgressDialog(){
+        showProgressDialog();
+        setCancelable(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setCancelable(true);
+            }
+        }, 10000);
     }
 
     /**
@@ -608,16 +619,16 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                     protected void onPostExecute(Integer integer) {
                                         ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
                                         ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
-                                        closeProgressDialog();
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
+                                                closeProgressDialog();
                                                 getActivity().finish();
                                             }
                                         }, 500);
                                     }
                                 }.execute(fileDb.copyFile());
-                                showProgressDialog();
+                                showCommitProgressDialog();
 
                             }
                         })
@@ -682,16 +693,16 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                             protected void onPostExecute(Integer integer) {
                                                 ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
                                                 ToastHelper.showInfo(getActivity(), "提交成功!");
-                                                closeProgressDialog();
                                                 new Handler().postDelayed(new Runnable() {
                                                     @Override
                                                     public void run() {
+                                                        closeProgressDialog();
                                                         getActivity().finish();
                                                     }
                                                 }, 500);
                                             }
                                         }.execute(fileDb.copyFile());
-                                        showProgressDialog();
+                                        showCommitProgressDialog();
                                     }
 
                                 }

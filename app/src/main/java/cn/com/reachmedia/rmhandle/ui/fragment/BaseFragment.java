@@ -52,6 +52,14 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    public void setCancelable(boolean flag){
+        if(getActivity()!=null && mProgressDialog!=null){
+//            mProgressDialog.setCanceledOnTouchOutside(flag);
+            mProgressDialog.setCancelable(flag);
+        }
+    }
+
+
     public void closeProgressDialog(){
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
