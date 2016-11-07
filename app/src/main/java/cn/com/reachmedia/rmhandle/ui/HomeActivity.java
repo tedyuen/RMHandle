@@ -131,6 +131,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
         permissionRequest();
         hasInnerIndex();
 //        setPage(0);
+//        throw new OutOfMemoryError()
     }
 
     /**

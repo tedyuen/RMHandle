@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.com.reachmedia.rmhandle.app.App;
+
 /**
  * Created by tedyuen on 16-10-26.
  */
@@ -86,6 +88,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
 
             // 退出程序,注释下面的重启启动程序代码
             android.os.Process.killProcess(android.os.Process.myPid());
+//            App.getIns().exit();
             System.exit(1);
             // 重新启动程序，注释上面的退出程序
 //            Intent intent = new Intent();

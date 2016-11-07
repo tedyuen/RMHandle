@@ -52,7 +52,6 @@ public class UploadErrorLogService extends Service {
                             public void onSuccessDisplay(ErrorLogModel data) {
                                 if (data != null) {
                                     if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
-//                                        System.out.println("upload success:"+data.getFileId());
                                         removeFile(CrashHandler.path+data.getFileId());
                                     }
 
