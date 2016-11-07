@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -435,15 +436,16 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                     protected void onPostExecute(Integer integer) {
                                         ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
                                         ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
+                                        closeProgressDialog();
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
                                                 getActivity().finish();
                                             }
-                                        }, 1000);
+                                        }, 500);
                                     }
                                 }.execute(fileDb.copyFile());
-
+                                showProgressDialog();
                             }
 
                         }
@@ -458,37 +460,41 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
      * @param lastModifyTime
      */
     private void mergeImage(PictureBean bean,long lastModifyTime){
+//        showProgressDialog();
+        long time1 = System.currentTimeMillis();
         if(isWatchMarkOn && !bean.isWaterMark()){
+            File sourceFile = new File(bean.getSubPath());
+            if(sourceFile.exists()){
+                lastModifyTime = sourceFile.lastModified();
+            }
+
             Bitmap source = null;
-            int b = ImageUtils.getBitmapDegree(bean.getSubPath());
-            System.out.println("===>b : "+b);
+            int b = ImageUtils.getBitmapDegree(bean.getMainPath());
             try{
                 if (b != 0) {
-                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPathNoComp(bean.getSubPath()), b);
+                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
                 } else {
-                    source = ImageUtils.getBitmapByPathNoComp(bean.getSubPath());
+                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
                 }
-//                source = ImageUtils.getBitmapByPathNoComp(bean.getSubPath());
             }catch (Exception e){
                 e.printStackTrace();
                 if (b != 0) {
-                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getSubPath()), b);
+                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
                 } else {
-                    source = ImageUtils.getBitmapByPath(bean.getSubPath());
+                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
                 }
-//                source = ImageUtils.getBitmapByPath(bean.getSubPath());
             }catch (Error error){
                 error.printStackTrace();
                 if (b != 0) {
-                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getSubPath()), b);
+                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
                 } else {
-                    source = ImageUtils.getBitmapByPath(bean.getSubPath());
+                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
                 }
-//                source = ImageUtils.getBitmapByPath(bean.getSubPath());
             }
             if(source!=null){
                 Bitmap target = null;
                 try{
+//                    source = ImageUtils.compLocal(source);
                     String leftText = TimeUtils.getWaterMarkDate(lastModifyTime,0);
                     String rightText = TimeUtils.getWaterMarkDate(lastModifyTime,1);
                     target = ImageUtils.drawTextToRightBottom(getActivity(),source,leftText,rightText,16, Color.WHITE,10,20);
@@ -506,7 +512,52 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                     }
                 }
             }
+        }else{//没有水印
+            Bitmap source = null;
+            int b = ImageUtils.getBitmapDegree(bean.getMainPath());
+            long time2 = System.currentTimeMillis();
+            System.out.println("time1:  "+(time2-time1));
+
+            try{
+                if (b != 0) {
+                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+                } else {
+                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                if (b != 0) {
+                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+                } else {
+                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
+                }
+            }catch (Error error){
+                error.printStackTrace();
+                if (b != 0) {
+                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+                } else {
+                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
+                }
+            }
+            long time3 = System.currentTimeMillis();
+            System.out.println("time2:  "+(time3-time2));
+            if(source!=null){
+                try{
+//                    source = ImageUtils.compLocal(source);
+                    ImageUtils.saveCompressPicPath(source,bean.getMainPath(),LineImageLayout.photo_path);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    if(source!=null){
+                        source.recycle();
+                    }
+                }
+            }
+            long time4 = System.currentTimeMillis();
+            System.out.println("time3:  "+(time4-time3));
+
         }
+//        closeProgressDialog();
     }
 
     @OnClick(R.id.bt_cant_enter)
@@ -557,15 +608,16 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                     protected void onPostExecute(Integer integer) {
                                         ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
                                         ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
+                                        closeProgressDialog();
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
                                                 getActivity().finish();
                                             }
-                                        }, 1000);
+                                        }, 500);
                                     }
                                 }.execute(fileDb.copyFile());
-
+                                showProgressDialog();
 
                             }
                         })
@@ -630,15 +682,16 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                             protected void onPostExecute(Integer integer) {
                                                 ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
                                                 ToastHelper.showInfo(getActivity(), "提交成功!");
+                                                closeProgressDialog();
                                                 new Handler().postDelayed(new Runnable() {
                                                     @Override
                                                     public void run() {
                                                         getActivity().finish();
                                                     }
-                                                }, 1000);
+                                                }, 500);
                                             }
                                         }.execute(fileDb.copyFile());
-
+                                        showProgressDialog();
                                     }
 
                                 }

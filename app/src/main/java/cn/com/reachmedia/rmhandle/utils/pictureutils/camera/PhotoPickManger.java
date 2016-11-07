@@ -551,7 +551,7 @@ public final class PhotoPickManger {
                     if (!file.exists() || file.length() == 0) {
                         it.remove();
                     } else {
-                        changFile(file.getPath());
+//                        changFile(file.getPath());
                     }
                 }
                 handler.post(new Runnable() {
