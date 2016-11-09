@@ -12,19 +12,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.anthonycr.grant.PermissionsManager;
 import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppApiContact;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
-import cn.com.reachmedia.rmhandle.bean.PointBean;
+import cn.com.reachmedia.rmhandle.bean.CommDoorPicBean;
+import cn.com.reachmedia.rmhandle.db.utils.CommPoorPicDbUtil;
+import cn.com.reachmedia.rmhandle.model.CardSubmitModel;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
+import cn.com.reachmedia.rmhandle.model.param.CardSubmitParam;
+import cn.com.reachmedia.rmhandle.network.callback.UiDisplayListener;
+import cn.com.reachmedia.rmhandle.network.controller.CardSubmitController;
+import cn.com.reachmedia.rmhandle.ui.CardListActivity;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.CardEditLineImage1;
 import cn.com.reachmedia.rmhandle.ui.view.CardEditLineImage2;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
+import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 
 /**
  * Created by tedyuen on 16-11-9.
@@ -55,6 +66,10 @@ public class NewCardEditFragment extends BaseToolbarFragment {
     public String pointId;
     public PointListModel pointListModel;//缓存列表数据
     public String userId;
+    CommPoorPicDbUtil commPoorPicDbUtil = CommPoorPicDbUtil.getIns();
+    CommDoorPicBean commBean=null;
+    boolean insertOrUpdate;
+
 
     public static NewCardEditFragment newInstance() {
         NewCardEditFragment fragment = new NewCardEditFragment();
@@ -74,7 +89,6 @@ public class NewCardEditFragment extends BaseToolbarFragment {
         needTitle();
         lineImage1.init(this);
 //        lineImage2.init(this);
-
         return rootView;
     }
 
@@ -83,6 +97,16 @@ public class NewCardEditFragment extends BaseToolbarFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if (pointListModel != null) {
+            if (!StringUtils.isEmpty(pointListModel.getCommunity())) {
+                setTitle(pointListModel.getCommunity());
+            }
+
+            etGateCard.setText(pointListModel.getCarddesc());
+            etPassword.setText(pointListModel.getDoordesc());
+            initBean();
+
+        }
 
         if(!lineImage1.updateAddPhotosClickState(getActivity(),savedInstanceState)){
             Toast.makeText(getActivity(), getString(R.string.toast_sdcard_error),
@@ -90,6 +114,13 @@ public class NewCardEditFragment extends BaseToolbarFragment {
             //这里需要结束activity
         }
 
+    }
+
+    public void initBean(){
+        if (!StringUtils.isEmpty(pointListModel.getCommunityid())) {
+            commBean = commPoorPicDbUtil.getBeanByCommId(pointListModel.getCommunityid(),"0");
+        }
+        insertOrUpdate = commBean==null;
     }
 
     public void initData(){
@@ -111,6 +142,59 @@ public class NewCardEditFragment extends BaseToolbarFragment {
             getActivity().finish();
         }
 
+    }
+
+    @OnClick({R.id.bt_edit_save_text_1,R.id.bt_edit_save_text_2})
+    public void submitCard(){
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_title_submit_card)
+                .negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .positiveText("确定")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        CardSubmitController cardSubmitController = new CardSubmitController(new UiDisplayListener<CardSubmitModel>() {
+                            @Override
+                            public void onSuccessDisplay(CardSubmitModel data) {
+                                closeProgressDialog();
+                                if (data != null) {
+                                    if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
+                                        ToastHelper.showInfo(getActivity(),"修改成功!");
+
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailDisplay(String errorMsg) {
+                                closeProgressDialog();
+
+                            }
+                        });
+                        CardSubmitParam cardSubmitParam = new CardSubmitParam();
+                        cardSubmitParam.communityId = pointListModel.getCommunityid();
+                        cardSubmitParam.doordesc = etPassword.getText().toString();
+                        cardSubmitParam.carddesc = etGateCard.getText().toString();
+                        cardSubmitController.cardSubmit(cardSubmitParam);
+                        showProgressDialog();
+                    }
+                })
+                .show();
+    }
+
+
+    @OnClick({R.id.bt_edit_history_text_1,R.id.bt_edit_history_text_2})
+    public void goCardList(){
+        Intent intent = new Intent(getActivity(),CardListActivity.class);
+        intent.putExtra("communityId",pointListModel.getCommunityid());
+        intent.putExtra("communityName",pointListModel.getCommunity());
+        startActivity(intent);
     }
 
 

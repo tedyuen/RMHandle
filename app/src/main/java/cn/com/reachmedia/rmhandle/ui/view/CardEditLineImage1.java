@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.anthonycr.grant.PermissionsManager;
 import com.anthonycr.grant.PermissionsResultAction;
 
@@ -116,9 +117,25 @@ public class CardEditLineImage1 extends FrameLayout {
         ivGatePhoto1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(resultDatas1==null){
+                if(resultDatas1==null){
                     takePhoto1(index1);
-//                }
+                }else{
+                    new MaterialDialog.Builder(fragment.getActivity())
+                            .title(R.string.dialog_title_add_photo)
+                            .items(R.array.new_dialog_add_photo_big)
+                            .itemsCallback(new MaterialDialog.ListCallback() {
+                                @Override
+                                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                    if (which == 0) {
+                                        takePhoto1(index1);
+                                    }
+                                    else if (which == 1) {
+                                        //查看大图
+                                    }
+                                }
+                            })
+                            .show();
+                }
 
             }
         });
@@ -126,9 +143,25 @@ public class CardEditLineImage1 extends FrameLayout {
         ivGatePhoto2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(resultDatas2==null){
+                if(resultDatas2==null){
                     takePhoto2(index2);
-//                }
+                }else{
+                    new MaterialDialog.Builder(fragment.getActivity())
+                            .title(R.string.dialog_title_add_photo)
+                            .items(R.array.new_dialog_add_photo_big)
+                            .itemsCallback(new MaterialDialog.ListCallback() {
+                                @Override
+                                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                    if (which == 0) {
+                                        takePhoto2(index2);
+                                    }
+                                    else if (which == 1) {
+                                        //查看大图
+                                    }
+                                }
+                            })
+                            .show();
+                }
 
             }
         });

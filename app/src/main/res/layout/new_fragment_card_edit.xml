@@ -61,6 +61,7 @@
                     style="@style/LogoutButtonStyle"
                     android:layout_gravity="center_horizontal"
                     android:text="@string/btn_text_edit"
+                    android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"/>
 
             </LinearLayout>
