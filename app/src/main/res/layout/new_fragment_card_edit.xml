@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/background"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/background">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/padding_lr"
+                android:paddingRight="@dimen/padding_lr"
+                android:background="@color/white"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/username_color"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp"
+                    android:text="小区门口图:"
+                    android:layout_marginBottom="10dp"/>
+
+                <cn.com.reachmedia.rmhandle.ui.view.CardEditLineImage1
+                    android:id="@+id/line_image_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </cn.com.reachmedia.rmhandle.ui.view.CardEditLineImage1>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/username_color"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp"
+                    android:text="小区环境图:"
+                    android:layout_marginBottom="10dp"/>
+
+                <cn.com.reachmedia.rmhandle.ui.view.CardEditLineImage2
+                    android:id="@+id/line_image_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </cn.com.reachmedia.rmhandle.ui.view.CardEditLineImage2>
+                <Button
+                    android:id="@+id/bt_edit_save_photo"
+                    android:layout_width="99dp"
+                    android:layout_height="35dp"
+                    style="@style/LogoutButtonStyle"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/btn_text_edit"
+                    android:layout_marginBottom="12dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:paddingLeft="@dimen/padding_lr"
+                android:paddingRight="@dimen/padding_lr"
+                android:background="@color/white">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/username_color"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp"
+                    android:text="门卡备注:"
+                    android:layout_marginBottom="10dp"/>
+
+                <EditText
+                    android:id="@+id/et_gate_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/EditTextStyle2"
+                    android:gravity="top"
+                    android:padding="5dp"
+                    android:minHeight="80dp"
+                    android:hint="输入备注"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="12dp">
+
+                    <Button
+                        android:id="@+id/bt_edit_save_text_1"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="35dp"
+                        style="@style/LogoutButtonStyle"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/btn_text_edit"
+                        android:layout_marginRight="16dp"
+                        />
+
+                    <Button
+                        android:id="@+id/bt_edit_history_text_1"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="35dp"
+                        style="@style/LogoutButtonStyle"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/btn_text_edit_record"/>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/username_color"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginTop="10dp"
+                    android:text="密码备注:"
+                    android:layout_marginBottom="10dp"/>
+
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/EditTextStyle2"
+                    android:gravity="top"
+                    android:padding="5dp"
+                    android:minHeight="80dp"
+                    android:hint="输入备注"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="12dp">
+
+                    <Button
+                        android:id="@+id/bt_edit_save_text_2"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="35dp"
+                        style="@style/LogoutButtonStyle"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/btn_text_edit"
+                        android:layout_marginRight="16dp"
+                        />
+
+                    <Button
+                        android:id="@+id/bt_edit_history_text_2"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="35dp"
+                        style="@style/LogoutButtonStyle"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/btn_text_edit_record"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/tool_bar_base"/>
+</RelativeLayout>

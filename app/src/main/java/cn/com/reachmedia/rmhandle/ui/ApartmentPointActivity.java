@@ -531,7 +531,8 @@ public class ApartmentPointActivity extends BaseActionBarTabActivity implements 
 
     @OnClick(R.id.bt_edit_save)
     public void editSave(){
-        startActivity(new Intent(this,CardEditActivity.class));
+//        startActivity(new Intent(this,CardEditActivity.class));
+        startActivity(new Intent(this,NewCardEditActivity.class));
     }
 
     @Override
