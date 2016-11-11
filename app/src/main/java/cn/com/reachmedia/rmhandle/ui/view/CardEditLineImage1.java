@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -34,6 +35,7 @@ import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
+import cn.com.reachmedia.rmhandle.utils.ViewHelper;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.camera.PhotoPickManger;
 
 /**
@@ -277,6 +279,7 @@ public class CardEditLineImage1 extends FrameLayout {
                                     }
                                     else if (which == 1) {
                                         //查看大图
+                                        goViewDoorPhoto(0);
                                     }
                                 }
                             })
@@ -303,6 +306,7 @@ public class CardEditLineImage1 extends FrameLayout {
                                     }
                                     else if (which == 1) {
                                         //查看大图
+                                        goViewDoorPhoto(1);
                                     }
                                 }
                             })
@@ -362,4 +366,25 @@ public class CardEditLineImage1 extends FrameLayout {
         pickManger2.onSaveInstanceState(savedInstanceState);
     }
 
+    public void goViewDoorPhoto(int index){
+        int tempIndex = -1;
+        List<PictureBean> imageDatas = new ArrayList<>();
+        if(resultDatas1!=null){
+            imageDatas.add(resultDatas1);
+            tempIndex = index;
+        }
+        if(resultDatas2!=null){
+            imageDatas.add(resultDatas2);
+            if(tempIndex!=-1){
+                tempIndex = index;
+            }else{
+                tempIndex = 0;
+            }
+        }
+        if(tempIndex!=-1){
+            ViewHelper.getPictureImagePager(getContext(), imageDatas, 1);
+            return;
+        }
+        ToastHelper.showAlert(fragment.getActivity(),"暂无图片,上传图片请点击修改进行操作。");
+    }
 }
