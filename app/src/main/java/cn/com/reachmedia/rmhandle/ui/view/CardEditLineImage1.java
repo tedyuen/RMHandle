@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.anthonycr.grant.PermissionsManager;
 import com.anthonycr.grant.PermissionsResultAction;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
@@ -21,10 +22,13 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.fragment.NewCardEditFragment;
 import cn.com.reachmedia.rmhandle.utils.FileUtils;
+import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 import cn.com.reachmedia.rmhandle.utils.pictureutils.camera.PhotoPickManger;
 
@@ -63,7 +67,40 @@ public class CardEditLineImage1 extends FrameLayout {
 
     public void init(NewCardEditFragment fragment){
         this.fragment = fragment;
+        PointListModel pointListModel = fragment.pointListModel;
+
+        String[] preGate;
+        if(pointListModel.getCGatePics()!=null ){
+            preGate = pointListModel.getCGatePics().split("@&");
+        }else{
+            preGate = pointListModel.getCGatePic().split("@&");
+        }
+
+        if(!StringUtils.isEmpty(preGate[0])){
+            resultDatas1 = new PictureBean();
+            resultDatas1.setFileId("");
+            resultDatas1.setMainPath(preGate[0]);
+            resultDatas1.setSubPath(preGate[0].replace("t_","s_"));
+            resultDatas1.setType(PictureBean.PictureType.TYPE_3);
+        }
+
+        if(!StringUtils.isEmpty(preGate[1])){
+            resultDatas2 = new PictureBean();
+            resultDatas2.setFileId("");
+            resultDatas2.setMainPath(preGate[1]);
+            resultDatas2.setSubPath(preGate[1].replace("t_","s_"));
+            resultDatas2.setType(PictureBean.PictureType.TYPE_3);
+        }
+
+        if(!fragment.insertOrUpdate){//有本地未提交数据
+
+        }
+
+
+
+        refreshAllImage();
     }
+
 
     /**
      * 更新添加图片点击按钮事件

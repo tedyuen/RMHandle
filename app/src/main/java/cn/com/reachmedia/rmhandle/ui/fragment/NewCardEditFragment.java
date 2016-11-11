@@ -68,7 +68,7 @@ public class NewCardEditFragment extends BaseToolbarFragment {
     public String userId;
     CommPoorPicDbUtil commPoorPicDbUtil = CommPoorPicDbUtil.getIns();
     CommDoorPicBean commBean=null;
-    boolean insertOrUpdate;
+    public boolean insertOrUpdate;
 
 
     public static NewCardEditFragment newInstance() {
@@ -87,7 +87,6 @@ public class NewCardEditFragment extends BaseToolbarFragment {
         ButterKnife.bind(this, rootView);
         initData();
         needTitle();
-        lineImage1.init(this);
 //        lineImage2.init(this);
         return rootView;
     }
@@ -107,6 +106,10 @@ public class NewCardEditFragment extends BaseToolbarFragment {
             initBean();
 
         }
+        lineImage1.init(this);
+
+
+
 
         if(!lineImage1.updateAddPhotosClickState(getActivity(),savedInstanceState)){
             Toast.makeText(getActivity(), getString(R.string.toast_sdcard_error),
