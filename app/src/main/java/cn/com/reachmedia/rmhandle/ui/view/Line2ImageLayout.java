@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.bean.CommDoorPicBean;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
@@ -88,7 +89,8 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
     /**
      * 设置小区照片
      */
-    public void setCommunityPhoto(PointListModel pointListModel){
+    public void setCommunityPhoto(PointListModel pointListModel, CommDoorPicBean commBean){
+        // 这里
         commImageDatas = new ArrayList<>();
         if (!StringUtils.isEmpty(pointListModel.getCGatePics())) {
             String[] gatePath = pointListModel.getCGatePics().split("@&");

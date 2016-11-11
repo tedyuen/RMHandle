@@ -38,8 +38,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.bean.CommDoorPicBean;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
+import cn.com.reachmedia.rmhandle.db.utils.CommPoorPicDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
@@ -100,6 +102,8 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
 
     private boolean isWatchMarkOn=false;
 
+    CommPoorPicDbUtil commPoorPicDbUtil = CommPoorPicDbUtil.getIns();
+    public CommDoorPicBean commBean=null;
 
     public static NewPointDetailFragment newInstance() {
         NewPointDetailFragment fragment = new NewPointDetailFragment();
@@ -135,6 +139,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         View rootView = inflater.inflate(R.layout.new_fragment_point_detail, container, false);
         ButterKnife.bind(this, rootView);
         initData();
+        initCommDoorBean();
         needTitle();
         lineImage1.init(this);
         lineImage2.init(this);
@@ -222,7 +227,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         }
 
         if(pointListModel!=null){
-            lineImage2.setCommunityPhoto(pointListModel);
+            lineImage2.setCommunityPhoto(pointListModel,commBean);
         }
 
         if(!lineImage1.updateAddPhotosClickState(getActivity(),savedInstanceState)){
@@ -807,6 +812,15 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         return lineButtom.getCheckState(stateType);
     }
 
+
+    /**
+     * 获取未提交的小区数据
+     */
+    public void initCommDoorBean(){
+        if (!StringUtils.isEmpty(pointListModel.getCommunityid())) {
+            commBean = commPoorPicDbUtil.getBeanByCommId(pointListModel.getCommunityid(),"0");
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
