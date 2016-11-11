@@ -112,6 +112,7 @@ public class NewCardEditFragment extends BaseToolbarFragment {
 
         }
         lineImage1.init(this);
+        lineImage2.init(this);
 
 
 
@@ -121,6 +122,14 @@ public class NewCardEditFragment extends BaseToolbarFragment {
                     Toast.LENGTH_SHORT).show();
             //这里需要结束activity
         }
+
+        if(!lineImage2.updateAddPhotosClickState(getActivity(),savedInstanceState)){
+            Toast.makeText(getActivity(), getString(R.string.toast_sdcard_error),
+                    Toast.LENGTH_SHORT).show();
+            //这里需要结束activity
+        }
+
+
 
     }
 
@@ -274,6 +283,10 @@ public class NewCardEditFragment extends BaseToolbarFragment {
             commBean = lineImage1.getDooBean(commBean);
             picFlag = true;
         }
+        if(lineImage2.hasChange()){
+            commBean = lineImage2.getDooBean(commBean);
+            picFlag = true;
+        }
 
         if(!picFlag){
             return  null;
@@ -286,12 +299,12 @@ public class NewCardEditFragment extends BaseToolbarFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         lineImage1.onActivityResult(requestCode,resultCode,data);
-//        lineImage2.onActivityResult(requestCode,resultCode,data);
+        lineImage2.onActivityResult(requestCode,resultCode,data);
     }
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         lineImage1.onSaveInstanceState(savedInstanceState);
-//        lineImage2.onSaveInstanceState(savedInstanceState);
+        lineImage2.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
