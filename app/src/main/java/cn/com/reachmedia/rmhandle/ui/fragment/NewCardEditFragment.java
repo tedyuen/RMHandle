@@ -1,7 +1,9 @@
 package cn.com.reachmedia.rmhandle.ui.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -16,6 +18,8 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.anthonycr.grant.PermissionsManager;
 import com.google.gson.Gson;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,6 +38,7 @@ import cn.com.reachmedia.rmhandle.ui.CardListActivity;
 import cn.com.reachmedia.rmhandle.ui.base.BaseToolbarFragment;
 import cn.com.reachmedia.rmhandle.ui.view.CardEditLineImage1;
 import cn.com.reachmedia.rmhandle.ui.view.CardEditLineImage2;
+import cn.com.reachmedia.rmhandle.utils.FileUtils;
 import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import cn.com.reachmedia.rmhandle.utils.ToastHelper;
 
@@ -67,7 +72,7 @@ public class NewCardEditFragment extends BaseToolbarFragment {
     public PointListModel pointListModel;//缓存列表数据
     public String userId;
     CommPoorPicDbUtil commPoorPicDbUtil = CommPoorPicDbUtil.getIns();
-    CommDoorPicBean commBean=null;
+    public CommDoorPicBean commBean=null;
     public boolean insertOrUpdate;
 
 
@@ -199,7 +204,83 @@ public class NewCardEditFragment extends BaseToolbarFragment {
         intent.putExtra("communityName",pointListModel.getCommunity());
         startActivity(intent);
     }
+    private static final String COMMIT_SUCCESS = "提交成功!";
 
+    @OnClick(R.id.bt_edit_save_photo)
+    public void picSubmit(){
+
+        new MaterialDialog.Builder(getActivity())
+                .title(R.string.dialog_title_submit_gate_photo)
+                .negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .positiveText("确定")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        CommDoorPicBean bean = getCommBean();
+                        if (bean == null) {
+                            dialog.dismiss();
+                            ToastHelper.showInfo(getActivity(), "请添加图片!");
+                        } else {
+                            if(insertOrUpdate){
+                                commPoorPicDbUtil.insertOneData(bean);
+                            }else{
+                                commPoorPicDbUtil.updateOneData(bean);
+                            }
+                            ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getActivity().finish();
+                                }
+                            }, 500);
+                        }
+                    }
+                })
+                .show();
+
+    }
+
+    public void showCommitProgressDialog(){
+        showProgressDialog();
+        setCancelable(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setCancelable(true);
+            }
+        }, 10000);
+    }
+
+    public CommDoorPicBean getCommBean(){
+        if(insertOrUpdate){
+            commBean = new CommDoorPicBean();
+            if (!StringUtils.isEmpty(pointListModel.getCommunityid())) {
+                commBean.setCommunityId(pointListModel.getCommunityid());
+            }else{
+                return null;//没有小区id，异常
+            }
+        }
+        commBean.setNativeState("0");
+
+        boolean picFlag = false;
+
+        if(lineImage1.hasChange()){
+            commBean = lineImage1.getDooBean(commBean);
+            picFlag = true;
+        }
+
+        if(!picFlag){
+            return  null;
+        }else{
+            return commBean;
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

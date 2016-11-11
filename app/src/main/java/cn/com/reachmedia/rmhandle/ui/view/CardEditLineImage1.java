@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.AttributeSet;
@@ -17,11 +19,13 @@ import com.anthonycr.grant.PermissionsResultAction;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.bean.CommDoorPicBean;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.fragment.NewCardEditFragment;
@@ -46,7 +50,6 @@ public class CardEditLineImage1 extends FrameLayout {
         super(context, attrs);
         LayoutInflater.from(context).inflate(R.layout.card_edit_line_layout_1, this);
         ButterKnife.bind(this);
-
     }
 
     PhotoPickManger pickManger1;
@@ -55,9 +58,6 @@ public class CardEditLineImage1 extends FrameLayout {
 
     PictureBean resultDatas1;
     PictureBean resultDatas2;
-
-
-
 
     private final static String path = Environment
             .getExternalStorageDirectory().getAbsolutePath()
@@ -76,7 +76,7 @@ public class CardEditLineImage1 extends FrameLayout {
             preGate = pointListModel.getCGatePic().split("@&");
         }
 
-        if(!StringUtils.isEmpty(preGate[0])){
+        if(preGate.length>0 && !StringUtils.isEmpty(preGate[0])){
             resultDatas1 = new PictureBean();
             resultDatas1.setFileId("");
             resultDatas1.setMainPath(preGate[0]);
@@ -84,7 +84,7 @@ public class CardEditLineImage1 extends FrameLayout {
             resultDatas1.setType(PictureBean.PictureType.TYPE_3);
         }
 
-        if(!StringUtils.isEmpty(preGate[1])){
+        if(preGate.length>1 && !StringUtils.isEmpty(preGate[1])){
             resultDatas2 = new PictureBean();
             resultDatas2.setFileId("");
             resultDatas2.setMainPath(preGate[1]);
@@ -93,12 +93,84 @@ public class CardEditLineImage1 extends FrameLayout {
         }
 
         if(!fragment.insertOrUpdate){//有本地未提交数据
+            CommDoorPicBean commBean = fragment.commBean;
+            if(commBean!=null){
+                if(!StringUtils.isEmpty(commBean.getCommunityFile1())){
+                    resultDatas1 = new PictureBean();
+                    resultDatas1.setMainPath(commBean.getCommunityFile1());
+                    resultDatas1.setFileId(commBean.getCommunityFileId1());
+                    resultDatas1.setType(PictureBean.PictureType.TYPE_1);
+                }
+                if(!StringUtils.isEmpty(commBean.getCommunityFile2())){
+                    resultDatas2 = new PictureBean();
+                    resultDatas2.setMainPath(commBean.getCommunityFile2());
+                    resultDatas2.setFileId(commBean.getCommunityFileId2());
+                    resultDatas2.setType(PictureBean.PictureType.TYPE_1);
+                }
+            }
+        }
+        refreshAllImage();
+    }
 
+    public boolean hasChange(){
+        boolean flag = false;
+        if(resultDatas1!=null && resultDatas1.getType()==PictureBean.PictureType.TYPE_4){
+            flag = true;
+        }
+        if(resultDatas2!=null && resultDatas2.getType()==PictureBean.PictureType.TYPE_4){
+            flag = true;
+        }
+        return flag;
+    }
+
+    public CommDoorPicBean getDooBean(CommDoorPicBean bean){
+        if(resultDatas1!=null && resultDatas1.getType()==PictureBean.PictureType.TYPE_4) {
+            bean.setCommunityFile1(resultDatas1.getMainPath());
+            bean.setCommunityFileId1(resultDatas1.getFileId());
+        }
+        if(resultDatas2!=null && resultDatas2.getType()==PictureBean.PictureType.TYPE_4) {
+            bean.setCommunityFile2(resultDatas2.getMainPath());
+            bean.setCommunityFileId2(resultDatas2.getFileId());
+        }
+        return bean;
+    }
+
+    public void mergeImage(PictureBean bean){
+        Bitmap source = null;
+        int b = ImageUtils.getBitmapDegree(bean.getMainPath());
+        try{
+            if (b != 0) {
+                source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+            } else {
+                source = ImageUtils.getBitmapByPath(bean.getMainPath());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            if (b != 0) {
+                source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+            } else {
+                source = ImageUtils.getBitmapByPath(bean.getMainPath());
+            }
+        }catch (Error error) {
+            error.printStackTrace();
+            if (b != 0) {
+                source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+            } else {
+                source = ImageUtils.getBitmapByPath(bean.getMainPath());
+            }
+        }
+        if (source != null) {
+            try {
+                ImageUtils.saveCompressPicPath(source, bean.getMainPath(), LineImageLayout.photo_path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (source != null) {
+                    source.recycle();
+                }
+            }
         }
 
-
-
-        refreshAllImage();
     }
 
 
@@ -117,6 +189,25 @@ public class CardEditLineImage1 extends FrameLayout {
                     String filePath = ImageUtils.getPointPicPath(fileId, LineImageLayout.photo_path);
                     PictureBean tempBean = new PictureBean(file, PictureBean.PictureType.TYPE_4,fileId,filePath);
                     resultDatas1 = tempBean;
+
+                    new AsyncTask<PictureBean,Integer,Integer>(){
+
+                        @Override
+                        protected Integer doInBackground(PictureBean... pictureBeen) {
+                            try {
+                                if(FileUtils.copyFile(pictureBeen[0].getSubPath(),pictureBeen[0].getMainPath())){
+                                    mergeImage(pictureBeen[0]);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            return 0;
+                        }
+
+
+                    }.execute(tempBean);
+
                 }
                 refreshAllImage();
             }
@@ -131,6 +222,24 @@ public class CardEditLineImage1 extends FrameLayout {
                     String filePath = ImageUtils.getPointPicPath(fileId, LineImageLayout.photo_path);
                     PictureBean tempBean = new PictureBean(file, PictureBean.PictureType.TYPE_4,fileId,filePath);
                     resultDatas2 = tempBean;
+                    new AsyncTask<PictureBean,Integer,Integer>(){
+
+                        @Override
+                        protected Integer doInBackground(PictureBean... pictureBeen) {
+                            try {
+                                if(FileUtils.copyFile(pictureBeen[0].getSubPath(),pictureBeen[0].getMainPath())){
+                                    mergeImage(pictureBeen[0]);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            return 0;
+                        }
+
+
+                    }.execute(tempBean);
+
                 }
                 refreshAllImage();
             }
@@ -199,10 +308,8 @@ public class CardEditLineImage1 extends FrameLayout {
                             })
                             .show();
                 }
-
             }
         });
-
     }
 
     private void takePhoto1(final int index){

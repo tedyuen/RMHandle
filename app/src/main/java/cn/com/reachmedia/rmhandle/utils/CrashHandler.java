@@ -180,6 +180,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
         ex.printStackTrace(printWriter);
         Throwable cause = ex.getCause();
         while (cause != null) {
+            cause.printStackTrace();
             cause.printStackTrace(printWriter);
             cause = cause.getCause();
         }
