@@ -188,6 +188,6 @@
     </ScrollView>
 
 
-    <include layout="@layout/tool_bar_base"/>
+    <include layout="@layout/tool_bar_base_sb"/>
 
 </RelativeLayout>
