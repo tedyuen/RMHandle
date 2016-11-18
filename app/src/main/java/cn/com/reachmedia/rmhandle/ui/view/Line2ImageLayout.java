@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.anthonycr.grant.PermissionsResultAction;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,7 @@ import cn.com.reachmedia.rmhandle.ui.bean.FileDb;
 import cn.com.reachmedia.rmhandle.ui.bean.PictureBean;
 import cn.com.reachmedia.rmhandle.ui.fragment.NewPointDetailFragment;
 import cn.com.reachmedia.rmhandle.ui.view.imagepager.ImageAllBean;
+import cn.com.reachmedia.rmhandle.utils.FileUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageCacheUtils;
 import cn.com.reachmedia.rmhandle.utils.ImageUtils;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
@@ -155,13 +158,39 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
                     String fileId = ImageUtils.getPointPicId(fragment.workId, fragment.pointId, "door", fragment.bean.getUserId());
                     String filePath = ImageUtils.getPointPicPath(fileId, LineImageLayout.photo_path);
                     PictureBean tempBean = new PictureBean(file, PictureBean.PictureType.TYPE_4,fileId,filePath);
+                    tempBean.setWaterMark(true);
                     resultDatas = tempBean;
+                    CopyFileTask task = new CopyFileTask();
+                    task.execute(tempBean);
 //                    buffer.append("" + file.getAbsolutePath() + " " + file.length()+"\n");
                 }
                 refreshAllImage();
             }
         });
         pickManger.flushBundle();
+    }
+
+    class CopyFileTask extends AsyncTask<PictureBean,Integer,Integer> {
+
+        @Override
+        protected Integer doInBackground(PictureBean... lists) {
+            try {
+                PictureBean bean = lists[0];
+                if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
+                    long lastModifyTime = System.currentTimeMillis();
+                    fragment.mergeImage(bean,lastModifyTime);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return 0;
+            }
+            return 1;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+
+        }
     }
 
     /**

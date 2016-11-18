@@ -4,8 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -20,6 +22,7 @@ import com.anthonycr.grant.PermissionsManager;
 import com.anthonycr.grant.PermissionsResultAction;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -193,15 +196,47 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                     PictureBean tempBean = new PictureBean(file, PictureBean.PictureType.TYPE_4,fileId,filePath);
                     resultDatas.add(tempBean);
                     photoName++;
+                    CopyFileTask task = new CopyFileTask();
+                    task.execute(tempBean);
+                    fragment.setCompFileFlag(tempBean.getMainPath(),false);
                     buffer.append("" + file.getAbsolutePath() + " " + file.length()+"\n");
                 }
-                System.out.println("filedetail:==> "+buffer.toString());
+//                System.out.println("filedetail:==> "+buffer.toString());
                 refreshAllImage();
             }
         });
         pickManger.flushBundle();
         setAddPhotosClickEvent(photoCount);
         return true;
+    }
+
+    class CopyFileTask extends AsyncTask<PictureBean,Integer,String>{
+
+        @Override
+        protected String doInBackground(PictureBean... lists) {
+            PictureBean bean = lists[0];
+            try {
+                if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
+                    long lastModifyTime = System.currentTimeMillis();
+                    fragment.mergeImage(bean,lastModifyTime);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "";
+            }
+            return bean.getMainPath();
+        }
+
+        @Override
+        protected void onPostExecute(String file) {
+            if(fragment!=null && !"".equals(file)){
+                if(!"".equals(file)){
+                    fragment.setCompFileFlag(file,true);
+                }else{
+                    fragment.checkCommit(false);
+                }
+            }
+        }
     }
 
     public void setAddPhotosClickEvent(int index){

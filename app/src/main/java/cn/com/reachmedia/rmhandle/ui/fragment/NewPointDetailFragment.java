@@ -31,7 +31,9 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -126,6 +128,36 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     public String pointId;
 
     private FileDb fileDb;
+
+    private Map<String,Boolean> compFileFlag = new HashMap<>();
+
+    public void setCompFileFlag(String file,boolean status){
+        compFileFlag.put(file,status);
+        checkCommit(false);
+    }
+
+    public void checkCommit(boolean commitImm){
+        boolean hasFinish = true;
+        for(String file:compFileFlag.keySet()){
+            if(!compFileFlag.get(file)){
+                hasFinish = false;
+                break;
+            }
+        }
+        if(hasFinish){//如果结束了
+            if(mProgressDialog!=null && mProgressDialog.isShowing() || commitImm){
+                ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
+                ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeProgressDialog();
+                        getActivity().finish();
+                    }
+                }, 500);
+            }
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -418,39 +450,8 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                 } else {
                                     PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
                                 }
-                                new AsyncTask<List<PictureBean>,Integer,Integer>(){
-                                    @Override
-                                    protected Integer doInBackground(List<PictureBean>... lists) {
-                                        int count=0;
-                                        for(PictureBean bean:lists[0]){
-                                            try {
-                                                if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
-                                                    long lastModifyTime = System.currentTimeMillis();
-                                                    mergeImage(bean,lastModifyTime);
-                                                    count++;
-                                                }
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                                continue;
-                                            }
-                                        }
-                                        return count;
-                                    }
-
-                                    @Override
-                                    protected void onPostExecute(Integer integer) {
-                                        ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
-                                        ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
-                                        new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                closeProgressDialog();
-                                                getActivity().finish();
-                                            }
-                                        }, 500);
-                                    }
-                                }.execute(fileDb.copyFile());
                                 showCommitProgressDialog();
+                                checkCommit(true);
                             }
 
                         }
@@ -475,7 +476,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
      * @param bean
      * @param lastModifyTime
      */
-    private void mergeImage(PictureBean bean,long lastModifyTime){
+    public void mergeImage(PictureBean bean,long lastModifyTime){
 //        showProgressDialog();
         long time1 = System.currentTimeMillis();
         if(isWatchMarkOn && !bean.isWaterMark()){
@@ -485,12 +486,15 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
             }
 
             Bitmap source = null;
+            long time2 = System.currentTimeMillis();
             int b = ImageUtils.getBitmapDegree(bean.getMainPath());
             try{
                 if (b != 0) {
                     source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
                 } else {
                     source = ImageUtils.getBitmapByPath(bean.getMainPath());
+                    long time32 = System.currentTimeMillis();
+                    System.out.println("time2:  "+(time32-time2));
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -507,6 +511,8 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                     source = ImageUtils.getBitmapByPath(bean.getMainPath());
                 }
             }
+            long time3 = System.currentTimeMillis();
+
             if(source!=null){
                 Bitmap target = null;
                 try{
@@ -528,6 +534,8 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                     }
                 }
             }
+            long time4 = System.currentTimeMillis();
+            System.out.println("time3:  "+(time4-time3));
         }else{//没有水印
             Bitmap source = null;
             int b = ImageUtils.getBitmapDegree(bean.getMainPath());
