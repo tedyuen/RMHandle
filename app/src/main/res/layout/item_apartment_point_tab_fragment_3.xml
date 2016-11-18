@@ -20,12 +20,8 @@
             android:id="@+id/tv_apartment_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1号楼 地上 电梯对面"
             android:textColor="@color/username_color"
             android:textSize="14sp"
-            android:maxWidth="130dp"
-            android:maxLines="1"
-            android:ellipsize="end"
             android:textStyle="bold"
             android:layout_marginTop="5dp"
             />
