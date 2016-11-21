@@ -418,6 +418,7 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
     protected void onResume() {
         super.onResume();
         ServiceHelper.getIns().startLocationWorkService(this);
+        ServiceHelper.getIns().startCompImageService(this);
         resetTitleDate();
         if(AppNetworkInfo.isNetworkAvailable(this)){
             ServiceHelper.getIns().startPointWorkWithPicService(this);

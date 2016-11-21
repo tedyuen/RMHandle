@@ -160,8 +160,8 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
                     PictureBean tempBean = new PictureBean(file, PictureBean.PictureType.TYPE_4,fileId,filePath);
                     tempBean.setWaterMark(true);
                     resultDatas = tempBean;
-                    CopyFileTask task = new CopyFileTask();
-                    task.execute(tempBean);
+//                    CopyFileTask task = new CopyFileTask();
+//                    task.execute(tempBean);
 //                    buffer.append("" + file.getAbsolutePath() + " " + file.length()+"\n");
                 }
                 refreshAllImage();
@@ -170,28 +170,6 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
         pickManger.flushBundle();
     }
 
-    class CopyFileTask extends AsyncTask<PictureBean,Integer,Integer> {
-
-        @Override
-        protected Integer doInBackground(PictureBean... lists) {
-            try {
-                PictureBean bean = lists[0];
-                if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
-                    long lastModifyTime = System.currentTimeMillis();
-                    fragment.mergeImage(bean,lastModifyTime);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return 0;
-            }
-            return 1;
-        }
-
-        @Override
-        protected void onPostExecute(Integer integer) {
-
-        }
-    }
 
     /**
      * 刷新所有图片

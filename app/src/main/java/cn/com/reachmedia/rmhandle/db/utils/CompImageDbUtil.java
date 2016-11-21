@@ -1,6 +1,9 @@
 package cn.com.reachmedia.rmhandle.db.utils;
 
+import java.util.List;
+
 import cn.com.reachmedia.rmhandle.bean.CompImageBean;
+import cn.com.reachmedia.rmhandle.dao.CompImageBeanDao;
 import cn.com.reachmedia.rmhandle.db.helper.CompImageDaoHelper;
 
 /**
@@ -27,5 +30,13 @@ public class CompImageDbUtil {
 
     public void insertOneData(CompImageBean compImageBean){
         compImageDaoHelper.addData(compImageBean);
+    }
+
+    public List<CompImageBean> getUpload(String userId,int nativeState){
+        List<CompImageBean> list = compImageDaoHelper.getDao().queryBuilder()
+                .where(CompImageBeanDao.Properties.Userid.eq(userId),
+                        CompImageBeanDao.Properties.State.eq(nativeState))
+                .list();
+        return list;
     }
 }

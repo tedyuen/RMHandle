@@ -318,14 +318,15 @@ public class ImageUtils {
 //        long time1 = System.currentTimeMillis();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+        int options = 50;
+        image.compress(Bitmap.CompressFormat.JPEG, options, baos);
 //        long time2 = System.currentTimeMillis();
 //        System.out.println("  comp==> 1 "+(time2-time1));
-//
-//        System.out.println("  comp size: "+(baos.toByteArray().length / 1024));
-        if( baos.toByteArray().length / 1024>1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
+        while ( baos.toByteArray().length / 1024>100) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
-            image.compress(Bitmap.CompressFormat.JPEG, 90, baos);//这里压缩80%，把压缩后的数据存放到baos中
+            System.out.println("===--==> options:  "+options);
+            options -= 10;//每次都减少10
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
         }
 
 //        long time3 = System.currentTimeMillis();
@@ -339,17 +340,17 @@ public class ImageUtils {
         int w = newOpts.outWidth;
         int h = newOpts.outHeight;
         //现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
-        float hh = 1920f;//这里设置高度为800f
-        float ww = 1080;//这里设置宽度为480f
+        float hh = 800f;//这里设置高度为800f
+        float ww = 480f;//这里设置宽度为480f
         //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;//be=1表示不缩放
+        int be = 3;//be=1表示不缩放
         if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
             be = (int) (newOpts.outWidth / ww);
         } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
             be = (int) (newOpts.outHeight / hh);
         }
         if (be <= 0)
-            be = 1;
+            be = 3;
         newOpts.inSampleSize = be;//设置缩放比例
         //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());

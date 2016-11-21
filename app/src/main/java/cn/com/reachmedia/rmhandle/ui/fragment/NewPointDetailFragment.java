@@ -405,7 +405,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         compImageBean.setCreate_time(time);
         compImageBean.setCompress_time(time);
         compImageBean.setState(0);
-        compImageBean.setWater_mask(isWaterMark);
+        compImageBean.setWater_mask(isWatchMarkOn && !isWaterMark);
         compImageBean.setUserid(bean.getUserId());
         compImageBean.setWorkid(bean.getWorkId());
         compImageBean.setPointid(bean.getPointId());
@@ -460,6 +460,7 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                             PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
                                         }
                                         ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
+                                        ServiceHelper.getIns().startCompImageService(getActivity());
                                         ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
@@ -471,10 +472,6 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                                     }
                                 }.execute(fileDb.copyFile());
                                 showCommitProgressDialog();
-
-
-
-
                             }
 
                         }
@@ -494,118 +491,118 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
         }, 10000);
     }
 
-    /**
-     * 生成水印图片
-     * @param bean
-     * @param lastModifyTime
-     */
-    public void mergeImage(PictureBean bean,long lastModifyTime){
-//        showProgressDialog();
-        long time1 = System.currentTimeMillis();
-        if(isWatchMarkOn && !bean.isWaterMark()){
-            File sourceFile = new File(bean.getSubPath());
-            if(sourceFile.exists()){
-                lastModifyTime = sourceFile.lastModified();
-            }
-
-            Bitmap source = null;
-            long time2 = System.currentTimeMillis();
-            int b = ImageUtils.getBitmapDegree(bean.getMainPath());
-            try{
-                if (b != 0) {
-                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
-                } else {
-                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
-                    long time32 = System.currentTimeMillis();
-                    System.out.println("time2:  "+(time32-time2));
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                if (b != 0) {
-                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
-                } else {
-                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
-                }
-            }catch (Error error){
-                error.printStackTrace();
-                if (b != 0) {
-                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
-                } else {
-                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
-                }
-            }
-            long time3 = System.currentTimeMillis();
-
-            if(source!=null){
-                Bitmap target = null;
-                try{
-//                    source = ImageUtils.compLocal(source);
-                    String leftText = TimeUtils.getWaterMarkDate(lastModifyTime,0);
-                    String rightText = TimeUtils.getWaterMarkDate(lastModifyTime,1);
-                    target = ImageUtils.drawTextToRightBottom(getActivity(),source,leftText,rightText,16, Color.WHITE,10,20);
-                    if(target!=null){
-                        ImageUtils.saveCompressPicPath(target,bean.getMainPath(),LineImageLayout.photo_path);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    if(source!=null){
-                        source.recycle();
-                    }
-                    if(target!=null){
-                        target.recycle();
-                    }
-                }
-            }
-            long time4 = System.currentTimeMillis();
-            System.out.println("time3:  "+(time4-time3));
-        }else{//没有水印
-            Bitmap source = null;
-            int b = ImageUtils.getBitmapDegree(bean.getMainPath());
-            long time2 = System.currentTimeMillis();
-            System.out.println("time1:  "+(time2-time1));
-
-            try{
-                if (b != 0) {
-                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
-                } else {
-                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                if (b != 0) {
-                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
-                } else {
-                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
-                }
-            }catch (Error error){
-                error.printStackTrace();
-                if (b != 0) {
-                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
-                } else {
-                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
-                }
-            }
-            long time3 = System.currentTimeMillis();
-            System.out.println("time2:  "+(time3-time2));
-            if(source!=null){
-                try{
-//                    source = ImageUtils.compLocal(source);
-                    ImageUtils.saveCompressPicPath(source,bean.getMainPath(),LineImageLayout.photo_path);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    if(source!=null){
-                        source.recycle();
-                    }
-                }
-            }
-            long time4 = System.currentTimeMillis();
-            System.out.println("time3:  "+(time4-time3));
-
-        }
-//        closeProgressDialog();
-    }
+//    /**
+//     * 生成水印图片
+//     * @param bean
+//     * @param lastModifyTime
+//     */
+//    public void mergeImage(PictureBean bean,long lastModifyTime){
+////        showProgressDialog();
+//        long time1 = System.currentTimeMillis();
+//        if(isWatchMarkOn && !bean.isWaterMark()){
+//            File sourceFile = new File(bean.getSubPath());
+//            if(sourceFile.exists()){
+//                lastModifyTime = sourceFile.lastModified();
+//            }
+//
+//            Bitmap source = null;
+//            long time2 = System.currentTimeMillis();
+//            int b = ImageUtils.getBitmapDegree(bean.getMainPath());
+//            try{
+//                if (b != 0) {
+//                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+//                } else {
+//                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
+//                    long time32 = System.currentTimeMillis();
+//                    System.out.println("time2:  "+(time32-time2));
+//                }
+//            }catch (Exception e){
+//                e.printStackTrace();
+//                if (b != 0) {
+//                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+//                } else {
+//                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
+//                }
+//            }catch (Error error){
+//                error.printStackTrace();
+//                if (b != 0) {
+//                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+//                } else {
+//                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
+//                }
+//            }
+//            long time3 = System.currentTimeMillis();
+//
+//            if(source!=null){
+//                Bitmap target = null;
+//                try{
+////                    source = ImageUtils.compLocal(source);
+//                    String leftText = TimeUtils.getWaterMarkDate(lastModifyTime,0);
+//                    String rightText = TimeUtils.getWaterMarkDate(lastModifyTime,1);
+//                    target = ImageUtils.drawTextToRightBottom(getActivity(),source,leftText,rightText,16, Color.WHITE,10,20);
+//                    if(target!=null){
+//                        ImageUtils.saveCompressPicPath(target,bean.getMainPath(),LineImageLayout.photo_path);
+//                    }
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }finally {
+//                    if(source!=null){
+//                        source.recycle();
+//                    }
+//                    if(target!=null){
+//                        target.recycle();
+//                    }
+//                }
+//            }
+//            long time4 = System.currentTimeMillis();
+//            System.out.println("time3:  "+(time4-time3));
+//        }else{//没有水印
+//            Bitmap source = null;
+//            int b = ImageUtils.getBitmapDegree(bean.getMainPath());
+//            long time2 = System.currentTimeMillis();
+//            System.out.println("time1:  "+(time2-time1));
+//
+//            try{
+//                if (b != 0) {
+//                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+//                } else {
+//                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
+//                }
+//            }catch (Exception e){
+//                e.printStackTrace();
+//                if (b != 0) {
+//                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+//                } else {
+//                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
+//                }
+//            }catch (Error error){
+//                error.printStackTrace();
+//                if (b != 0) {
+//                    source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getMainPath()), b);
+//                } else {
+//                    source = ImageUtils.getBitmapByPath(bean.getMainPath());
+//                }
+//            }
+//            long time3 = System.currentTimeMillis();
+//            System.out.println("time2:  "+(time3-time2));
+//            if(source!=null){
+//                try{
+////                    source = ImageUtils.compLocal(source);
+//                    ImageUtils.saveCompressPicPath(source,bean.getMainPath(),LineImageLayout.photo_path);
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }finally {
+//                    if(source!=null){
+//                        source.recycle();
+//                    }
+//                }
+//            }
+//            long time4 = System.currentTimeMillis();
+//            System.out.println("time3:  "+(time4-time3));
+//
+//        }
+////        closeProgressDialog();
+//    }
 
     @OnClick(R.id.bt_cant_enter)
     public void goCannotEnter() {
@@ -625,22 +622,16 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                PointWorkBean pointWorkBean = getPointWorkBean(3, 0, "", type, content);
-                                if (insertOrUpdate) {
-                                    PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
-                                } else {
-                                    PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
-                                }
-
+                                final PointWorkBean pointWorkBean = getPointWorkBean(3, 0, "", type, content);
                                 new AsyncTask<List<PictureBean>,Integer,Integer>(){
                                     @Override
                                     protected Integer doInBackground(List<PictureBean>... lists) {
                                         int count=0;
-                                        for(PictureBean bean:lists[0]){
+                                        for(PictureBean tempbean:lists[0]){
                                             try {
-                                                if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
-                                                    long lastModifyTime = System.currentTimeMillis();
-                                                    mergeImage(bean,lastModifyTime);
+                                                if(FileUtils.copyFile(tempbean.getSubPath(),tempbean.getMainPath())){
+                                                    CompImageBean compImageBean = getCompImageBean(tempbean.getSubPath(),tempbean.getMainPath(),pointWorkBean.getWorkTime(),tempbean.isWaterMark());
+                                                    CompImageDbUtil.getIns().insertOneData(compImageBean);
                                                     count++;
                                                 }
                                             } catch (IOException e) {
@@ -653,7 +644,13 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
 
                                     @Override
                                     protected void onPostExecute(Integer integer) {
+                                        if (insertOrUpdate) {
+                                            PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                                        } else {
+                                            PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
+                                        }
                                         ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
+                                        ServiceHelper.getIns().startCompImageService(getActivity());
                                         ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
@@ -695,28 +692,22 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                             .onPositive(new MaterialDialog.SingleButtonCallback() {
                                 @Override
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    PointWorkBean pointWorkBean = getPointWorkBean(2, type, content, 0, "");
+                                    final PointWorkBean pointWorkBean = getPointWorkBean(2, type, content, 0, "");
                                     if (pointWorkBean == null) {
                                         dialog.dismiss();
                                         ToastHelper.showInfo(getActivity(), "请添加图片!");
                                     } else {
-                                        if (insertOrUpdate) {
-                                            PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
-                                        } else {
-                                            PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
-                                        }
                                         new AsyncTask<List<PictureBean>,Integer,Integer>(){
                                             @Override
                                             protected Integer doInBackground(List<PictureBean>... lists) {
                                                 int count=0;
-                                                for(PictureBean bean:lists[0]){
+                                                for(PictureBean tempbean:lists[0]){
                                                     try {
-                                                        if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
-                                                            long lastModifyTime = System.currentTimeMillis();
-                                                            mergeImage(bean,lastModifyTime);
+                                                        if(FileUtils.copyFile(tempbean.getSubPath(),tempbean.getMainPath())){
+                                                            CompImageBean compImageBean = getCompImageBean(tempbean.getSubPath(),tempbean.getMainPath(),pointWorkBean.getWorkTime(),tempbean.isWaterMark());
+                                                            CompImageDbUtil.getIns().insertOneData(compImageBean);
                                                             count++;
                                                         }
-
                                                     } catch (IOException e) {
                                                         e.printStackTrace();
                                                         continue;
@@ -727,8 +718,14 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
 
                                             @Override
                                             protected void onPostExecute(Integer integer) {
+                                                if (insertOrUpdate) {
+                                                    PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                                                } else {
+                                                    PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
+                                                }
                                                 ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
-                                                ToastHelper.showInfo(getActivity(), "提交成功!");
+                                                ServiceHelper.getIns().startCompImageService(getActivity());
+                                                ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
                                                 new Handler().postDelayed(new Runnable() {
                                                     @Override
                                                     public void run() {

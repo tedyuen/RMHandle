@@ -196,6 +196,10 @@
         <service android:name="cn.com.reachmedia.rmhandle.service.UploadErrorLogService">
         </service>
 
+        <service android:name="cn.com.reachmedia.rmhandle.service.CompImageService">
+        </service>
+
+
         <service
             android:name="cn.com.reachmedia.rmhandle.service.ForegroundService"
             android:enabled="true"

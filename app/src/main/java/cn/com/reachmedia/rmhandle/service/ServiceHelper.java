@@ -35,13 +35,17 @@ public class ServiceHelper {
      */
     public void startPointWorkWOwifiService(Context context){
         context.startService(new Intent(context,PointWorkNoPicService.class));
-
     }
 
     public void startPointWorkWithPicService(Context context){
         context.startService(new Intent(context,PointWorkService.class));
-
     }
+
+    public void startCompImageService(Context context){
+        context.startService(new Intent(context,CompImageService.class));
+    }
+
+
 
 
 
