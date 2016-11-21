@@ -76,14 +76,30 @@ public class MyDaoGenerator {
 
 
     public static void main(String args[]) throws Exception {
-//        Schema schema = new Schema(3, "cn.com.reachmedia.rmhandle.bean");
-//        schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
-//
-//        initPointBean(schema);
-//        initPointWorkBean(schema);
-//        initCommDoorPicBean(schema);
-//        initImageCacheBean(schema);
-//        new DaoGenerator().generateAll(schema, args[0]);
+        Schema schema = new Schema(4, "cn.com.reachmedia.rmhandle.bean");
+        schema.setDefaultJavaPackageDao("cn.com.reachmedia.rmhandle.dao");
+
+        initPointBean(schema);
+        initPointWorkBean(schema);
+        initCommDoorPicBean(schema);
+        initImageCacheBean(schema);
+        initCompImageBean(schema);
+        new DaoGenerator().generateAll(schema, args[0]);
+    }
+
+    private static void initCompImageBean(Schema schema){
+        Entity compImageBean = schema.addEntity("CompImageBean");//table name
+        compImageBean.addLongProperty("id").primaryKey().index().autoincrement();
+        compImageBean.addStringProperty("userid");
+        compImageBean.addStringProperty("workid");
+        compImageBean.addStringProperty("pointid");
+        compImageBean.addStringProperty("source_path");
+        compImageBean.addStringProperty("target_path");
+        compImageBean.addBooleanProperty("water_mask");//0:no need  1:need
+        compImageBean.addDateProperty("create_time");
+        compImageBean.addDateProperty("compress_time");
+        compImageBean.addIntProperty("state");//0:uncompress  1:compress
+
     }
 
     private static void initImageCacheBean(Schema schema){

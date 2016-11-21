@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,9 +42,11 @@ import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
 import cn.com.reachmedia.rmhandle.bean.CommDoorPicBean;
+import cn.com.reachmedia.rmhandle.bean.CompImageBean;
 import cn.com.reachmedia.rmhandle.bean.PointBean;
 import cn.com.reachmedia.rmhandle.bean.PointWorkBean;
 import cn.com.reachmedia.rmhandle.db.utils.CommPoorPicDbUtil;
+import cn.com.reachmedia.rmhandle.db.utils.CompImageDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointBeanDbUtil;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
@@ -129,35 +132,6 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
 
     private FileDb fileDb;
 
-    private Map<String,Boolean> compFileFlag = new HashMap<>();
-
-    public void setCompFileFlag(String file,boolean status){
-        compFileFlag.put(file,status);
-        checkCommit(false);
-    }
-
-    public void checkCommit(boolean commitImm){
-        boolean hasFinish = true;
-        for(String file:compFileFlag.keySet()){
-            if(!compFileFlag.get(file)){
-                hasFinish = false;
-                break;
-            }
-        }
-        if(hasFinish){//如果结束了
-            if(mProgressDialog!=null && mProgressDialog.isShowing() || commitImm){
-                ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
-                ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        closeProgressDialog();
-                        getActivity().finish();
-                    }
-                }, 500);
-            }
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -424,6 +398,20 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
     private static final String COMMIT_SUCCESS = "提交成功!";
     boolean insertOrUpdate;
 
+    private CompImageBean getCompImageBean(String sourcePath, String targetPath, Date time,boolean isWaterMark){
+        CompImageBean compImageBean = new CompImageBean();
+        compImageBean.setSource_path(sourcePath);
+        compImageBean.setTarget_path(targetPath);
+        compImageBean.setCreate_time(time);
+        compImageBean.setCompress_time(time);
+        compImageBean.setState(0);
+        compImageBean.setWater_mask(isWaterMark);
+        compImageBean.setUserid(bean.getUserId());
+        compImageBean.setWorkid(bean.getWorkId());
+        compImageBean.setPointid(bean.getPointId());
+        return compImageBean;
+    }
+
     @OnClick(R.id.bt_done)
     public void goDone() {
         if(!isPhotoEmpty()){
@@ -440,18 +428,53 @@ public class NewPointDetailFragment extends BaseToolbarFragment {
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            PointWorkBean pointWorkBean = getPointWorkBean(1, 0, "", 0, "");
+                            final PointWorkBean pointWorkBean = getPointWorkBean(1, 0, "", 0, "");
                             if (pointWorkBean == null) {
                                 dialog.dismiss();
                                 ToastHelper.showInfo(getActivity(), NEED_IMAGES);
                             } else {
-                                if (insertOrUpdate) {
-                                    PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
-                                } else {
-                                    PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
-                                }
+                                new AsyncTask<List<PictureBean>,Integer,Integer>(){
+                                    @Override
+                                    protected Integer doInBackground(List<PictureBean>... lists) {
+                                        int count=0;
+                                        for(PictureBean tempbean:lists[0]){
+                                            try {
+                                                if(FileUtils.copyFile(tempbean.getSubPath(),tempbean.getMainPath())){
+                                                    CompImageBean compImageBean = getCompImageBean(tempbean.getSubPath(),tempbean.getMainPath(),pointWorkBean.getWorkTime(),tempbean.isWaterMark());
+                                                    CompImageDbUtil.getIns().insertOneData(compImageBean);
+                                                    count++;
+                                                }
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                                continue;
+                                            }
+                                        }
+                                        return count;
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(Integer integer) {
+                                        if (insertOrUpdate) {
+                                            PointWorkBeanDbUtil.getIns().insertOneData(pointWorkBean);
+                                        } else {
+                                            PointWorkBeanDbUtil.getIns().updateOneData(pointWorkBean);
+                                        }
+                                        ServiceHelper.getIns().startPointWorkWithPicService(getActivity());
+                                        ToastHelper.showInfo(getActivity(), COMMIT_SUCCESS);
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                closeProgressDialog();
+                                                getActivity().finish();
+                                            }
+                                        }, 500);
+                                    }
+                                }.execute(fileDb.copyFile());
                                 showCommitProgressDialog();
-                                checkCommit(true);
+
+
+
+
                             }
 
                         }

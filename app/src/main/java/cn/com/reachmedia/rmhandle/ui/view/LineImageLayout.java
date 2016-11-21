@@ -196,9 +196,6 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
                     PictureBean tempBean = new PictureBean(file, PictureBean.PictureType.TYPE_4,fileId,filePath);
                     resultDatas.add(tempBean);
                     photoName++;
-                    CopyFileTask task = new CopyFileTask();
-                    task.execute(tempBean);
-                    fragment.setCompFileFlag(tempBean.getMainPath(),false);
                     buffer.append("" + file.getAbsolutePath() + " " + file.length()+"\n");
                 }
 //                System.out.println("filedetail:==> "+buffer.toString());
@@ -210,34 +207,6 @@ public class LineImageLayout extends FrameLayout implements PointDetailLine{
         return true;
     }
 
-    class CopyFileTask extends AsyncTask<PictureBean,Integer,String>{
-
-        @Override
-        protected String doInBackground(PictureBean... lists) {
-            PictureBean bean = lists[0];
-            try {
-                if(FileUtils.copyFile(bean.getSubPath(),bean.getMainPath())){
-                    long lastModifyTime = System.currentTimeMillis();
-                    fragment.mergeImage(bean,lastModifyTime);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "";
-            }
-            return bean.getMainPath();
-        }
-
-        @Override
-        protected void onPostExecute(String file) {
-            if(fragment!=null && !"".equals(file)){
-                if(!"".equals(file)){
-                    fragment.setCompFileFlag(file,true);
-                }else{
-                    fragment.checkCommit(false);
-                }
-            }
-        }
-    }
 
     public void setAddPhotosClickEvent(int index){
         if(index<addPhotos.length){
