@@ -95,6 +95,8 @@ public class CompImageService extends Service{
             try{
                 if (b != 0) {
                     source = ImageUtils.rotateBitMap(ImageUtils.getBitmapByPath(bean.getTarget_path()), b);
+                    long time32 = System.currentTimeMillis();
+                    System.out.println("time2:  "+(time32-time2));
                 } else {
                     source = ImageUtils.getBitmapByPath(bean.getTarget_path());
                     long time32 = System.currentTimeMillis();

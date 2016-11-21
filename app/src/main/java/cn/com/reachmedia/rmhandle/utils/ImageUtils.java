@@ -147,8 +147,10 @@ public class ImageUtils {
         Bitmap temp = null;
         if (temp == null) {
             try {
-                temp = comp(BitmapFactory.decodeFile(path));
-//                temp = compLocal(BitmapFactory.decodeFile(path));
+                final BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = false;
+                options.inSampleSize = 3;
+                temp = compNew(BitmapFactory.decodeFile(path,options));
             } catch (Exception e) {
                 e.printStackTrace();
             } catch (Error e) {
@@ -300,6 +302,34 @@ public class ImageUtils {
         return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
 
+    //计算图片的缩放值
+    public static int calculateInSampleSize(BitmapFactory.Options options,int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int heightRatio = Math.round((float) height/ (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        return inSampleSize;
+    }
+
+    public static Bitmap compNew(Bitmap image) throws Exception{
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int options = 40;
+        image.compress(Bitmap.CompressFormat.JPEG, options, baos);
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+        Bitmap bitmap = null;
+        try{
+            bitmap = BitmapFactory.decodeStream(isBm, null, null);
+        }catch (OutOfMemoryError e){
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
     /**
      * 图片按比例压缩
      * @param image
@@ -321,12 +351,10 @@ public class ImageUtils {
         int options = 50;
         image.compress(Bitmap.CompressFormat.JPEG, options, baos);
 //        long time2 = System.currentTimeMillis();
-//        System.out.println("  comp==> 1 "+(time2-time1));
-        while ( baos.toByteArray().length / 1024>100) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+//        System.out.println("  comp==> 1 "+( baos.toByteArray().length / 1024));
+        if ( (baos.toByteArray().length / 1024)>500 ) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
-            System.out.println("===--==> options:  "+options);
-            options -= 10;//每次都减少10
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+            image.compress(Bitmap.CompressFormat.JPEG, 10, baos);//这里压缩options%，把压缩后的数据存放到baos中
         }
 
 //        long time3 = System.currentTimeMillis();
@@ -343,14 +371,14 @@ public class ImageUtils {
         float hh = 800f;//这里设置高度为800f
         float ww = 480f;//这里设置宽度为480f
         //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 3;//be=1表示不缩放
+        int be = 4;//be=1表示不缩放
         if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
             be = (int) (newOpts.outWidth / ww);
         } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
             be = (int) (newOpts.outHeight / hh);
         }
         if (be <= 0)
-            be = 3;
+            be = 4;
         newOpts.inSampleSize = be;//设置缩放比例
         //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
