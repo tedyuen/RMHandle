@@ -381,7 +381,7 @@ public class CardEditLineImage2 extends FrameLayout {
             }
         }
         if(tempIndex!=-1){
-            ViewHelper.getPictureImagePager(getContext(), imageDatas, 1);
+            ViewHelper.getPictureImagePager(getContext(), imageDatas, tempIndex);
             return;
         }
         ToastHelper.showAlert(fragment.getActivity(),"暂无图片,上传图片请点击修改进行操作。");

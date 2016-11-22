@@ -187,7 +187,7 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
             }
         }
         if(tempIndex!=-1){
-            ViewHelper.getPictureImagePager(getContext(), imageDatas, 1);
+            ViewHelper.getPictureImagePager(getContext(), imageDatas, tempIndex);
             return;
         }
     }
