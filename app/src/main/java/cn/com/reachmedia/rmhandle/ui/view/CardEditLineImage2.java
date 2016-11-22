@@ -70,7 +70,7 @@ public class CardEditLineImage2 extends FrameLayout {
         PointListModel pointListModel = fragment.pointListModel;
 
         String[] preGate;
-        if(pointListModel.getCGatePics()!=null ){
+        if(pointListModel.getCPestPics()!=null ){
             preGate = pointListModel.getCPestPics().split("@&");
         }else{
             preGate = pointListModel.getCPestPic().split("@&");
@@ -167,7 +167,7 @@ public class CardEditLineImage2 extends FrameLayout {
                                     }
                                     else if (which == 1) {
                                         //查看大图
-                                        goViewDoorPhoto(0);
+                                        goViewDoorPhoto(1);
                                     }
                                 }
                             })

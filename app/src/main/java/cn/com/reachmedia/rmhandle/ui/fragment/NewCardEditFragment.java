@@ -114,9 +114,6 @@ public class NewCardEditFragment extends BaseToolbarFragment {
         lineImage1.init(this);
         lineImage2.init(this);
 
-
-
-
         if(!lineImage1.updateAddPhotosClickState(getActivity(),savedInstanceState)){
             Toast.makeText(getActivity(), getString(R.string.toast_sdcard_error),
                     Toast.LENGTH_SHORT).show();
@@ -128,9 +125,6 @@ public class NewCardEditFragment extends BaseToolbarFragment {
                     Toast.LENGTH_SHORT).show();
             //这里需要结束activity
         }
-
-
-
     }
 
     public void initBean(){

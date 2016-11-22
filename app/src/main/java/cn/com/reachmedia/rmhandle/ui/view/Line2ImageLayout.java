@@ -52,7 +52,6 @@ import cn.com.reachmedia.rmhandle.utils.pictureutils.camera.PhotoPickManger;
  */
 public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
 
-
     @Bind(R.id.iv_comm_photo_1)
     ImageView ivCommPhoto1;
     @Bind(R.id.rl_comm_photo_1)
@@ -66,12 +65,12 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
     @Bind(R.id.rl_comm_photo_2)
     RelativeLayout rlCommPhoto2;
 
-
-    List<ImageAllBean> commImageDatas;//小区放大的资料
     NewPointDetailFragment fragment;
 
     PhotoPickManger pickManger;
     PictureBean resultDatas;
+    PictureBean resultDatas1;
+    PictureBean resultDatas2;
     Activity activity;
 
     public Line2ImageLayout(Context context, AttributeSet attrs) {
@@ -93,44 +92,115 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
      * 设置小区照片
      */
     public void setCommunityPhoto(PointListModel pointListModel, CommDoorPicBean commBean){
-        // 这里
-        commImageDatas = new ArrayList<>();
-        if (!StringUtils.isEmpty(pointListModel.getCGatePics())) {
-            String[] gatePath = pointListModel.getCGatePics().split("@&");
-            String[] gatePath2 = pointListModel.getCGatePic().split("@&");
-            if(!StringUtils.isEmpty(gatePath[0])){
-                ImageAllBean allBean = new ImageAllBean(gatePath2[0],ImageAllBean.URL_IMG);
-                commImageDatas.add(allBean);
-                ImageCacheUtils.getInstance().displayLocalOrUrl(getContext(),gatePath[0],ivCommPhoto1);
-            }else if(gatePath.length>1 && !StringUtils.isEmpty(gatePath[1])){
-                ImageAllBean allBean = new ImageAllBean(gatePath2[1],ImageAllBean.URL_IMG);
-                commImageDatas.add(allBean);
-                ImageCacheUtils.getInstance().displayLocalOrUrl(getContext(),gatePath[1],ivCommPhoto1);
+
+        String[] preGate;
+        if(pointListModel.getCGatePics()!=null ){
+            preGate = pointListModel.getCGatePics().split("@&");
+        }else{
+            preGate = pointListModel.getCGatePic().split("@&");
+        }
+        if(!StringUtils.isEmpty(preGate[0])){
+            resultDatas1 = new PictureBean();
+            resultDatas1.setFileId("");
+            resultDatas1.setMainPath(preGate[0]);
+            resultDatas1.setSubPath(preGate[0].replace("t_","s_"));
+            resultDatas1.setType(PictureBean.PictureType.TYPE_3);
+        }else if(preGate.length>1 && !StringUtils.isEmpty(preGate[1])){
+            resultDatas1 = new PictureBean();
+            resultDatas1.setFileId("");
+            resultDatas1.setMainPath(preGate[1]);
+            resultDatas1.setSubPath(preGate[1].replace("t_","s_"));
+            resultDatas1.setType(PictureBean.PictureType.TYPE_3);
+        }
+
+        String[] prePest;
+        if(pointListModel.getCPestPics()!=null ){
+            prePest = pointListModel.getCPestPics().split("@&");
+        }else{
+            prePest = pointListModel.getCPestPic().split("@&");
+        }
+        if(!StringUtils.isEmpty(prePest[0])){
+            resultDatas2 = new PictureBean();
+            resultDatas2.setFileId("");
+            resultDatas2.setMainPath(prePest[0]);
+            resultDatas2.setSubPath(prePest[0].replace("t_","s_"));
+            resultDatas2.setType(PictureBean.PictureType.TYPE_3);
+        }else if(prePest.length>1 && !StringUtils.isEmpty(prePest[1])){
+            resultDatas2 = new PictureBean();
+            resultDatas2.setFileId("");
+            resultDatas2.setMainPath(prePest[1]);
+            resultDatas2.setSubPath(prePest[1].replace("t_","s_"));
+            resultDatas2.setType(PictureBean.PictureType.TYPE_3);
+        }
+
+        if(!fragment.commInsertOrUpdate){//有本地未提交数据
+            if(commBean!=null){
+                if(!StringUtils.isEmpty(commBean.getCommunityFile1())){
+                    resultDatas1 = new PictureBean();
+                    resultDatas1.setMainPath(commBean.getCommunityFile1());
+                    resultDatas1.setFileId(commBean.getCommunityFileId1());
+                    resultDatas1.setType(PictureBean.PictureType.TYPE_1);
+                }else if(!StringUtils.isEmpty(commBean.getCommunityFile2())){
+                    resultDatas1 = new PictureBean();
+                    resultDatas1.setMainPath(commBean.getCommunityFile2());
+                    resultDatas1.setFileId(commBean.getCommunityFileId2());
+                    resultDatas1.setType(PictureBean.PictureType.TYPE_1);
+                }
+
+                if(!StringUtils.isEmpty(commBean.getCommunitySpace1())){
+                    resultDatas2 = new PictureBean();
+                    resultDatas2.setMainPath(commBean.getCommunitySpace1());
+                    resultDatas2.setFileId(commBean.getCommunitySpaceId1());
+                    resultDatas2.setType(PictureBean.PictureType.TYPE_1);
+                }else if(!StringUtils.isEmpty(commBean.getCommunitySpace2())){
+                    resultDatas2 = new PictureBean();
+                    resultDatas2.setMainPath(commBean.getCommunitySpace2());
+                    resultDatas2.setFileId(commBean.getCommunitySpaceId2());
+                    resultDatas2.setType(PictureBean.PictureType.TYPE_1);
+                }
             }
         }
 
-        if (!StringUtils.isEmpty(pointListModel.getCPestPics())) {
-            String[] pestPath = pointListModel.getCPestPics().split("@&");
-            String[] pestPath2 = pointListModel.getCPestPic().split("@&");
-            if(!StringUtils.isEmpty(pestPath[0])){
-                ImageAllBean allBean = new ImageAllBean(pestPath2[0],ImageAllBean.URL_IMG);
-                commImageDatas.add(allBean);
-                ImageCacheUtils.getInstance().displayLocalOrUrl(getContext(),pestPath[0],ivCommPhoto3);
-            }else if(pestPath.length>1 && !StringUtils.isEmpty(pestPath[1])){
-                ImageAllBean allBean = new ImageAllBean(pestPath2[1],ImageAllBean.URL_IMG);
-                commImageDatas.add(allBean);
-                ImageCacheUtils.getInstance().displayLocalOrUrl(getContext(),pestPath[1],ivCommPhoto3);
+        if(resultDatas1!=null){
+            resultDatas1.displayImage(ivCommPhoto1);
+        }
+        if(resultDatas2!=null){
+            resultDatas2.displayImage(ivCommPhoto3);
+        }
+
+    }
+
+    public void goViewDoorPhoto(int index){
+        int tempIndex = -1;
+        List<PictureBean> imageDatas = new ArrayList<>();
+        if(resultDatas1!=null){
+
+            imageDatas.add(resultDatas1);
+            tempIndex = index;
+        }
+        if(resultDatas2!=null){
+            imageDatas.add(resultDatas2);
+            if(tempIndex!=-1){
+                tempIndex = index;
+            }else{
+                tempIndex = 0;
             }
+        }
+        if(tempIndex!=-1){
+            ViewHelper.getPictureImagePager(getContext(), imageDatas, 1);
+            return;
         }
     }
 
     @OnClick(R.id.rl_comm_photo_1)
     public void goViewCommPhoto1(){
-        ViewHelper.getAllImagePager(getContext(), commImageDatas, 0);
+        goViewDoorPhoto(0);
+//        ViewHelper.getAllImagePager(getContext(), commImageDatas, 0);
     }
     @OnClick(R.id.rl_comm_photo_3)
     public void goViewCommPhoto2(){
-        ViewHelper.getAllImagePager(getContext(), commImageDatas, 1);
+        goViewDoorPhoto(1);
+//        ViewHelper.getAllImagePager(getContext(), commImageDatas, 1);
     }
 
 
@@ -153,16 +223,12 @@ public class Line2ImageLayout extends FrameLayout implements PointDetailLine{
         pickManger = new PhotoPickManger("pickDoor",activity, savedInstanceState,new PhotoPickManger.OnPhotoPickFinsh() {
             @Override
             public void onPhotoPick(List<File> list) {
-//                StringBuffer buffer = new StringBuffer();
                 for(File file:list){
                     String fileId = ImageUtils.getPointPicId(fragment.workId, fragment.pointId, "door", fragment.bean.getUserId());
                     String filePath = ImageUtils.getPointPicPath(fileId, LineImageLayout.photo_path);
                     PictureBean tempBean = new PictureBean(file, PictureBean.PictureType.TYPE_4,fileId,filePath);
                     tempBean.setWaterMark(true);
                     resultDatas = tempBean;
-//                    CopyFileTask task = new CopyFileTask();
-//                    task.execute(tempBean);
-//                    buffer.append("" + file.getAbsolutePath() + " " + file.length()+"\n");
                 }
                 refreshAllImage();
             }
