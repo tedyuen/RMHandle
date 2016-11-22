@@ -85,12 +85,11 @@ public class GoMapAppDialogFragment extends SupportBlurDialogFragment{
         }else {
             baiduMap.setVisibility(View.GONE);
         }
-//        if (IntentUtils.isAvilible(context, "com.autonavi.minimap")) {//传入指定应用包名
-//            gaodeMap.setVisibility(View.VISIBLE);
-//        }else {
-//            gaodeMap.setVisibility(View.GONE);
-//        }
-        gaodeMap.setVisibility(View.GONE);
+        if (IntentUtils.isAvilible(context, "com.autonavi.minimap")) {//传入指定应用包名
+            gaodeMap.setVisibility(View.VISIBLE);
+        }else {
+            gaodeMap.setVisibility(View.GONE);
+        }
 
         return view;
     }

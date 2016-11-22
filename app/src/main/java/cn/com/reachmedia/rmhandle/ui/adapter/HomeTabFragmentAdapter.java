@@ -112,19 +112,23 @@ public class HomeTabFragmentAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    if(IntentUtils.isAvilible(mContext, "com.baidu.BaiduMap")) {
+                    if(IntentUtils.isAvilible(mContext, "com.baidu.BaiduMap") || IntentUtils.isAvilible(mContext,"com.autonavi.minimap")) {
                         SharedPreferencesHelper mSharedPreferencesHelper = SharedPreferencesHelper.getInstance();
                         GoMapAppDialogFragment dialog1 = new GoMapAppDialogFragment(mContext,
                                 mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),
                                 mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE),
-                                "", "",
+                                mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE),
+                                mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE),
+//                                "", "",
                                 data.getLon(), data.getLat(),
-                                "", "", data.getAddress());
+                                data.getLon(), data.getLat(),
+//                                "", "",
+                                data.getAddress());
                         dialog1.show(mContext.getSupportFragmentManager(),null);
 //                        ToastHelper.showInfo(mContext, "安装百度地图");
 
                     }else {
-                        ToastHelper.showAlert(mContext, "手机没有安装百度地图");
+                        ToastHelper.showAlert(mContext, "手机没有安装百度或高德地图");
                     }
                 }
             });
