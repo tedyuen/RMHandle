@@ -26,6 +26,8 @@ public class BaseParam {
 
     public String infversion;
 
+    public String modelversion;
+
     public String imeino;
 
     public String timestamp;
@@ -45,6 +47,7 @@ public class BaseParam {
         model = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_PHONE_MODEL);
         timestamp = System.currentTimeMillis()+"";
         md5s = MD5.getMD5KeyStr(timestamp).toUpperCase();
+        modelversion = android.os.Build.VERSION.RELEASE+":"+android.os.Build.VERSION.SDK_INT;
     }
 
     public String toJson(){
