@@ -29,6 +29,8 @@ public class AppSpContact {
     public static final String SP_KEY_LONGITUDE = "longitude";
 
     public static final String SP_KEY_ON_LINE_TIME = "onlinetime";
+    public static final String SP_KEY_MAC_ADDRESS = "mac_address";
+    public static final String SP_KEY_PHONE_MODEL = "phone_model";
 
     public static final String SP_KEY_INDEX_COMMUNITID = "index_communitid";
     public static final String SP_KEY_INDEX_COMMUNITNAME = "index_communitname";

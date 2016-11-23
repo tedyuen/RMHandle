@@ -5,7 +5,11 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.google.gson.Gson;
@@ -16,6 +20,7 @@ import com.squareup.okhttp.OkHttpClient;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.reflect.Field;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.ArrayList;
@@ -71,6 +76,7 @@ public class App extends Application {
         setUpSharedPreferencesHelper(getApplicationContext());//初始化SharedPreferences
         SharedPreferencesHelper mSharedPreferencesHelper = SharedPreferencesHelper.getInstance();
         initVersionInfo(mSharedPreferencesHelper);
+        initPhoneInfo(mSharedPreferencesHelper);
         ServiceHelper.getIns().startUploadErrorLogService(this);
         setUpApiService();//初始化APP API
 //        EventBus.getDefault().register(this);//注册接收定位信息事件
@@ -87,6 +93,25 @@ public class App extends Application {
         }
         mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_ON_LINE_TIME, TimeUtils.getNowStr());
         ServiceHelper.getIns().startOnlineTimeWorkService(this);
+    }
+
+    public void initPhoneInfo(SharedPreferencesHelper mSharedPreferencesHelper){
+        WifiManager wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifi.getConnectionInfo();
+        mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_MAC_ADDRESS, info.getMacAddress());
+
+        Field[] fields = Build.class.getDeclaredFields();
+        for (Field field : fields) {
+            try {
+                field.setAccessible(true);
+                if("MODEL".equals(field.getName())){
+                    mSharedPreferencesHelper.putString(AppSpContact.SP_KEY_PHONE_MODEL, field.get(null).toString());
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void initVersionInfo(SharedPreferencesHelper mSharedPreferencesHelper){

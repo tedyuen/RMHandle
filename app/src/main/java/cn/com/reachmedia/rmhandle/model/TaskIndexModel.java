@@ -110,6 +110,11 @@ public class TaskIndexModel extends BaseModel implements Parcelable {
         private String distance;
         private String lon;
         private String lat;
+        private String baiduLon;
+        private String baiduLat;
+        private String gaodeLon;
+        private String gaodeLat;
+
         private int locA;
         private int locS;
         private int isCard;
@@ -126,6 +131,38 @@ public class TaskIndexModel extends BaseModel implements Parcelable {
          */
 
         private List<CListBean> cList;
+
+        public String getBaiduLon() {
+            return baiduLon;
+        }
+
+        public void setBaiduLon(String baiduLon) {
+            this.baiduLon = baiduLon;
+        }
+
+        public String getBaiduLat() {
+            return baiduLat;
+        }
+
+        public void setBaiduLat(String baiduLat) {
+            this.baiduLat = baiduLat;
+        }
+
+        public String getGaodeLon() {
+            return gaodeLon;
+        }
+
+        public void setGaodeLon(String gaodeLon) {
+            this.gaodeLon = gaodeLon;
+        }
+
+        public String getGaodeLat() {
+            return gaodeLat;
+        }
+
+        public void setGaodeLat(String gaodeLat) {
+            this.gaodeLat = gaodeLat;
+        }
 
         public int getWorkCheck() {
             return workCheck;

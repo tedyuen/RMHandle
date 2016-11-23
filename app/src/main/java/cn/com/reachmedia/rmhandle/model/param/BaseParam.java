@@ -32,11 +32,17 @@ public class BaseParam {
 
     public String md5s;
 
+    public String macaddress;
+
+    public String model;
+
     public BaseParam(){
         clienttype = "ad_ph";
         clientversion = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_VERSION_NAME);
         infversion = "1";
         imeino = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_DEVICE_ID);
+        macaddress = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_MAC_ADDRESS);
+        model = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_PHONE_MODEL);
         timestamp = System.currentTimeMillis()+"";
         md5s = MD5.getMD5KeyStr(timestamp).toUpperCase();
     }

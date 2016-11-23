@@ -438,7 +438,6 @@ public class HomeActivity extends BaseActionBarActivity implements HomeUiDataUpd
 
             @Override
             public void onDenied(String permission) {
-                System.out.println("permission:  ==>  "+permission);
                 if("android.permission.ACCESS_COARSE_LOCATION".equals(permission)){
                     ToastHelper.showAlert(activity,"没有定位权限无法使用，请前往设置");
                     new Handler().postDelayed(new Runnable() {

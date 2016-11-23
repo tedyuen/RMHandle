@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.com.reachmedia.rmhandle.R;
 import cn.com.reachmedia.rmhandle.utils.IntentUtils;
+import cn.com.reachmedia.rmhandle.utils.StringUtils;
 import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
 
 /**
@@ -85,7 +86,7 @@ public class GoMapAppDialogFragment extends SupportBlurDialogFragment{
         }else {
             baiduMap.setVisibility(View.GONE);
         }
-        if (IntentUtils.isAvilible(context, "com.autonavi.minimap")) {//传入指定应用包名
+        if (IntentUtils.isAvilible(context, "com.autonavi.minimap") && !StringUtils.isEmpty(gaoDeLon) && !StringUtils.isEmpty(gaoDeLat)) {//传入指定应用包名
             gaodeMap.setVisibility(View.VISIBLE);
         }else {
             gaodeMap.setVisibility(View.GONE);
