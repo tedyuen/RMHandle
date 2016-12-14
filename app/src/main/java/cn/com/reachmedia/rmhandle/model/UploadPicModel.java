@@ -48,6 +48,15 @@ public class UploadPicModel extends BaseModel implements Parcelable {
 
     private String workId;
     private String point;
+    private String[] errFileIds;
+
+    public String[] getErrFileIds() {
+        return errFileIds;
+    }
+
+    public void setErrFileIds(String[] errFileIds) {
+        this.errFileIds = errFileIds;
+    }
 
     public String getWorkId() {
         return workId;

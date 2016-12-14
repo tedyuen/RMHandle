@@ -140,6 +140,15 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".ui.UnUploadPointListActivity"
+            android:theme="@style/AppTheme.Toolbar"
+            android:screenOrientation="portrait"
+            android:label="@string/title_un_upload_point">
+        </activity>
+
+
+
+
         <activity android:name=".ui.ImageCacheActivity"
             android:theme="@style/AppTheme.Toolbar"
             android:screenOrientation="portrait"

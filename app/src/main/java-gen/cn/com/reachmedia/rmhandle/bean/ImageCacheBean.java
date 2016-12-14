@@ -21,7 +21,8 @@ public class ImageCacheBean {
         this.id = id;
     }
 
-    public ImageCacheBean(String url, String path, java.util.Date start_time, java.util.Date create_time, Long index, String community_id) {
+    public ImageCacheBean(Long id, String url, String path, java.util.Date start_time, java.util.Date create_time, Long index, String community_id) {
+        this.id = id;
         this.url = url;
         this.path = path;
         this.start_time = start_time;
@@ -30,8 +31,7 @@ public class ImageCacheBean {
         this.community_id = community_id;
     }
 
-    public ImageCacheBean(Long id, String url, String path, java.util.Date start_time, java.util.Date create_time, Long index, String community_id) {
-        this.id = id;
+    public ImageCacheBean(String url, String path, java.util.Date start_time, java.util.Date create_time, Long index, String community_id) {
         this.url = url;
         this.path = path;
         this.start_time = start_time;

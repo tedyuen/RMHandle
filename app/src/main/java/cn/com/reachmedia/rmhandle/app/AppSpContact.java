@@ -37,6 +37,9 @@ public class AppSpContact {
     public static final String SP_KEY_INDEX_STARTTIME = "index_communitstarttime";
     public static final String SP_KEY_INDEX_ENDTIME = "index_communitendtime";
 
+    public static final String SP_KEY_UNUP_COMID = "unupload_communityid";
+    public static final String SP_KEY_UNUP_COMNAME = "unupload_communityname";
+
     //首页tab
     public static final int SP_KEY_UNDONE = 0;//未完成
     public static final int SP_KEY_DONE = 1;//已完成

@@ -70,6 +70,7 @@ public class PointPicWOwifiService extends Service {
                                 }
                                 uploadSingle();
                             }else if (AppApiContact.ErrorCode.ERROR_LESS_FILE.equals(data.rescode)) {
+                                checkData(data.getWorkId(),data.getPoint(),data.getErrFileIds());
                                 //文件未上传
                                 if(dataList!=null && dataList.size()>0){
                                     dataList.remove(0);
@@ -154,6 +155,45 @@ public class PointPicWOwifiService extends Service {
                     uploadPicController.uploadPic(uploadPicParam, file1, file2, file3, doorFile, file1Id, file2Id, file3Id, communityDoorId, communityDoorXY, communityDoorTime);
                 }
             }
+        }
+    }
+
+    /**
+     * 检查有没有错误数据，设置nativestate=0
+     * @param workId
+     * @param pointId
+     * @param errFileIds
+     */
+    private void checkData(String workId,String pointId,String[] errFileIds){
+        try{
+            PointWorkBean bean = pointWorkBeanDbUtil.getPointWorkBeanByWPID(workId,pointId);
+            String[] fileIds = new String[0];
+            if(bean.getFileIdData()!=null){
+                fileIds = bean.getFileIdData().split(PointWorkBeanDbUtil.FILE_SPLIT);
+            }
+
+            boolean checked = false;//false为正常，不用操作。
+            if(fileIds.length>0 && errFileIds!=null && errFileIds.length>0){
+                for(int i=0;i<fileIds.length;i++){
+                    boolean temp = false;//没有一样的
+                    for(int j=0;j<errFileIds.length;j++){
+                        if(fileIds[i].equals(errFileIds[j])){
+                            temp = true;//有一样的
+                            break;
+                        }
+                    }
+                    if(!temp){//没有一样的
+                        checked = true;//需要重置了
+                        break;
+                    }
+                }
+            }
+
+            if(checked){//重置这条数据
+                pointWorkBeanDbUtil.resetNativeState(workId,pointId);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

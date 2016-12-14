@@ -110,6 +110,19 @@ public class PointWorkBeanDbUtil {
         }
     }
 
+    public void resetNativeState(String workId,String pointId){
+        PointWorkBean bean = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.WorkId.eq(workId),
+                        PointWorkBeanDao.Properties.PointId.eq(pointId),
+                        PointWorkBeanDao.Properties.NativeState.notEq("0"))
+                .limit(1)
+                .unique();
+        if(bean!=null){
+            bean.setNativeState("0");
+            pointWorkBeanDaoHelper.getDao().update(bean);
+        }
+    }
+
     public void changeNativeStateUnunique(String workId,String pointId,String preState,String nativeState){
         PointWorkBean bean = pointWorkBeanDaoHelper.getDao().queryBuilder()
                 .where(PointWorkBeanDao.Properties.WorkId.eq(workId),
@@ -147,6 +160,16 @@ public class PointWorkBeanDbUtil {
                 .where(PointWorkBeanDao.Properties.NativeState.notEq(2),
                         PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)))
                 .count();
+    }
+
+    public List<PointWorkBean> getUnUploadDateByComid(String communityId){
+        List<PointWorkBean> list = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.NativeState.notEq(2),
+                        PointWorkBeanDao.Properties.UserId.eq(SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID)),
+                        PointWorkBeanDao.Properties.Communityid.eq(communityId))
+                .orderDesc(PointWorkBeanDao.Properties.Communityname,PointWorkBeanDao.Properties.Cname,PointWorkBeanDao.Properties.WorkTime)
+                .list();
+        return list;
     }
 
     public List<PointWorkBean> getSynchronize(int type){

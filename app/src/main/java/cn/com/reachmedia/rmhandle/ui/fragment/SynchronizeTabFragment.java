@@ -84,6 +84,7 @@ public class SynchronizeTabFragment extends BaseFragment implements SwipeRefresh
         dataList = new ArrayList<>();
 
         String tempComName = "";
+        String tempComId = "";
         StringBuffer tempCNameBuffer=null;
         SynchronzieBean tempBean = null;
         for(PointWorkBean bean:list){
@@ -93,6 +94,7 @@ public class SynchronizeTabFragment extends BaseFragment implements SwipeRefresh
                 }
                 tempBean = new SynchronzieBean();
                 tempComName = bean.getCommunityname();
+                tempComId = bean.getCommunityid();
                 tempCNameBuffer = new StringBuffer();
                 if(!StringUtils.isEmpty(bean.getCname())){
                     tempCNameBuffer.append(bean.getCname());
@@ -100,6 +102,7 @@ public class SynchronizeTabFragment extends BaseFragment implements SwipeRefresh
                 tempBean.setPhotoCount(bean.getFileCount());
                 tempBean.setPointCount(1);
                 tempBean.setCname(tempCNameBuffer.toString());
+                tempBean.setCommunityId(tempComId);
                 tempBean.setCommunityName(tempComName);
                 tempBean.setPhotoTime(TimeUtils.dateAddByDateForString(bean.getWorkTime(),"MM-dd HH:mm",0));
                 tempBean.setPointTime(TimeUtils.dateAddByDateForString(bean.getWorkTime(),"MM-dd HH:mm",0));

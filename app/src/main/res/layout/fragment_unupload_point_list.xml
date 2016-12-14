@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <cn.com.reachmedia.rmhandle.ui.view.PageListView
+        android:id="@+id/page_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@color/transparent"
+        android:listSelector="@color/transparent"
+        android:layout_marginTop="?attr/actionBarSize"
+        />
+    <include layout="@layout/tool_bar_base_sb"/>
+</RelativeLayout>

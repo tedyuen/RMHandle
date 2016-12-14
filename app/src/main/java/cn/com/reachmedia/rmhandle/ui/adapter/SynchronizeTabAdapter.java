@@ -1,6 +1,7 @@
 package cn.com.reachmedia.rmhandle.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.com.reachmedia.rmhandle.R;
+import cn.com.reachmedia.rmhandle.app.AppSpContact;
+import cn.com.reachmedia.rmhandle.ui.UnUploadPointListActivity;
 import cn.com.reachmedia.rmhandle.ui.bean.SynchronzieBean;
+import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 
 /**
  * Author:    tedyuen
@@ -78,7 +82,7 @@ public class SynchronizeTabAdapter extends BaseAdapter {
         } else {
             bean = (ViewHolder) convertView.getTag(R.id.tag);
         }
-        SynchronzieBean data = mLists.get(position);
+        final SynchronzieBean data = mLists.get(position);
         if(data!=null){
             bean.tvCommunityName.setText(data.getCommunityName());
             bean.tvCustomer.setText(data.getCname());
@@ -94,6 +98,14 @@ public class SynchronizeTabAdapter extends BaseAdapter {
                     bean.tvPhotoCount.setText("已上传图片："+data.getPhotoCount());
                     break;
             }
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SharedPreferencesHelper.getInstance().putString(AppSpContact.SP_KEY_UNUP_COMID,data.getCommunityId());
+                    SharedPreferencesHelper.getInstance().putString(AppSpContact.SP_KEY_UNUP_COMNAME,data.getCommunityName());
+                    mContext.startActivity(new Intent(mContext, UnUploadPointListActivity.class));
+                }
+            });
         }
         return convertView;
     }

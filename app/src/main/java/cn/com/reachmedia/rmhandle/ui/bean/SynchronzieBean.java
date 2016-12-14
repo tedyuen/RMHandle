@@ -13,12 +13,21 @@ package cn.com.reachmedia.rmhandle.ui.bean;
  */
 public class SynchronzieBean {
 
+    private String communityId;
     private String communityName;
     private String cname;
     private String pointTime;
     private String photoTime;
     private int pointCount;
     private int photoCount;
+
+    public String getCommunityId() {
+        return communityId;
+    }
+
+    public void setCommunityId(String communityId) {
+        this.communityId = communityId;
+    }
 
     public String getCommunityName() {
         return communityName;
