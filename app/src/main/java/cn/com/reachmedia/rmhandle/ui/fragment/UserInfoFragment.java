@@ -33,6 +33,7 @@ import cn.com.reachmedia.rmhandle.db.helper.ImageCacheDaoHelper;
 import cn.com.reachmedia.rmhandle.db.utils.PointWorkBeanDbUtil;
 import cn.com.reachmedia.rmhandle.network.AppNetworkInfo;
 import cn.com.reachmedia.rmhandle.service.ServiceHelper;
+import cn.com.reachmedia.rmhandle.ui.FixErrorActivity;
 import cn.com.reachmedia.rmhandle.ui.HomeActivity;
 import cn.com.reachmedia.rmhandle.ui.LoginActivity;
 import cn.com.reachmedia.rmhandle.ui.OfflineMapActivity;
@@ -171,6 +172,12 @@ public class UserInfoFragment extends BaseToolbarFragment {
             }
         }
     };
+
+
+    @OnClick(R.id.rl_fix_error)
+    public void goFixError(){
+        startActivity(new Intent(getActivity(), FixErrorActivity.class));
+    }
 
 
     @OnClick(R.id.ll_bottom_1)

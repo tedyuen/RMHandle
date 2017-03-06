@@ -355,6 +355,39 @@
                 </RelativeLayout>
                 <!-- 清空点位图片 -->
 
+                <!-- 清空点位图片 -->
+                <RelativeLayout
+                    android:id="@+id/rl_fix_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/panel_height"
+                    android:paddingLeft="@dimen/padding_lr"
+                    android:paddingRight="@dimen/padding_lr">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="上传修复"
+                        android:textColor="@color/username_color"
+                        android:textSize="15sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_fix_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/username_color"
+                        android:layout_marginRight="28dp"
+                        android:textSize="15sp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/arrow_right"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+                <!-- 清空点位图片 -->
+
                 <!-- 离线地图 -->
                 <RelativeLayout
                     android:id="@+id/rl_water_mark_switch"
