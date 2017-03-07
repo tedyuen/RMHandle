@@ -1,5 +1,6 @@
 package cn.com.reachmedia.rmhandle.db.utils;
 
+import java.util.Date;
 import java.util.List;
 
 import cn.com.reachmedia.rmhandle.app.AppSpContact;
@@ -86,6 +87,14 @@ public class PointWorkBeanDbUtil {
         List<PointWorkBean> list = pointWorkBeanDaoHelper.getDao().queryBuilder()
                 .where(PointWorkBeanDao.Properties.UserId.eq(userId),
                         PointWorkBeanDao.Properties.NativeState.notEq(nativeState))
+                .list();
+        return list;
+    }
+
+    public List<PointWorkBean> getPointWorkBeanByTime(String userId, Date startTime,Date endTime){
+        List<PointWorkBean> list = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.UserId.eq(userId),
+                        PointWorkBeanDao.Properties.WorkTime.between(startTime,endTime))
                 .list();
         return list;
     }

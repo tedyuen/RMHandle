@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,11 +43,13 @@ public class FixErrorFragment extends BaseToolbarFragment {
 
     private PointWorkBeanDbUtil pointWorkBeanDbUtil;
     List<PointWorkBean> dataList;
-    List<PointWorkBean> needFixDataList;
+    List<PointWorkBean> lastDataList;
     Map<String,List<PointWorkBean>> needFixDataMap;
+    Map<String,List<PointWorkBean>> lastNeedFixDataMap;
 
     TaskIndexModel taskIndexModel;
     List<TaskIndexModel.PListBean> pList;
+    List<TaskIndexModel.PListBean> pLastList;
 
     @Bind(R.id.tv_log)
     TextView tv_log;
@@ -72,8 +76,8 @@ public class FixErrorFragment extends BaseToolbarFragment {
         ButterKnife.bind(this, rootView);
         needTitle();
         pointWorkBeanDbUtil = PointWorkBeanDbUtil.getIns();
-        needFixDataList = new ArrayList<>();
         needFixDataMap = new HashMap<>();
+        lastNeedFixDataMap = new HashMap<>();
 
         handler = new Handler(){
             public void handleMessage(Message msg) {
@@ -81,13 +85,13 @@ public class FixErrorFragment extends BaseToolbarFragment {
                 super.handleMessage(msg);
             }
         };
-        tv_log.setText("开始修复...\n");
+
 
         getTaskIndex();
         return rootView;
     }
 
-    // 获取点位数据
+    // 获取周一点位数据
     private void getPointList(){
         if(pList!=null && pList.size()>0){
             TaskIndexModel.PListBean bean = pList.get(0);
@@ -170,12 +174,14 @@ public class FixErrorFragment extends BaseToolbarFragment {
                 getPointList();
             }
         }else{
-            tv_log.append("修复完毕!");
+            tv_log.append("周一数据修复完毕!\n");
+            getLastTaskIndex();
         }
     }
 
-    // 获取本地出错数据
+    // 获取本地出错数据 周一
     private void getErrorData(){
+        tv_log.setText("开始修复周一数据...\n");
         String userId = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID);
         if(userId!=null){
             dataList = pointWorkBeanDbUtil.getUploadUn(userId,"2");
@@ -193,14 +199,129 @@ public class FixErrorFragment extends BaseToolbarFragment {
                         tempList.add(bean);
                         needFixDataMap.put(bean.getCommunityid(),tempList);
                     }
-                    needFixDataList.add(bean);
                 }
             }
             getPointList();
         }
     }
 
-    // 获取小区数据
+    // 获取上周末点位数据
+    private void getLastPointList() {
+        if (pLastList != null && pLastList.size() > 0) {
+            TaskIndexModel.PListBean bean = pLastList.get(0);
+            if (lastNeedFixDataMap.containsKey(bean.getCommunityid())) {//有这个小区
+                StringBuffer topSb = new StringBuffer();
+                topSb.append("====================\n");
+                topSb.append("扫描小区:" + bean.getCommunity() + "\n");
+                tv_log.append(topSb.toString());
+                final List<PointWorkBean> errorList = lastNeedFixDataMap.get(bean.getCommunityid());
+                PointListController pointListController = new PointListController(new UiDisplayListener<PointListModel>() {
+                    @Override
+                    public void onSuccessDisplay(PointListModel data) {
+                        if (data != null) {
+                            if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
+                                try {
+                                    for (PointWorkBean temp1 : errorList) {
+                                        for (PointListModel.NewListBean temp2 : data.getNewList()) {
+                                            if (temp1.getPointId().equals(temp2.getPointId()) &&
+                                                    !temp1.getWorkId().equals(temp2.getWorkId()) &&
+                                                    temp2.getWorkUp() == 1) {
+                                                StringBuffer sb1 = new StringBuffer();
+                                                sb1.append("\t----------------------------\n");
+                                                sb1.append("\t发现一个需要修复的点位:" + temp1.getPointId() + "\n");
+                                                PointWorkBean checked = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(temp2.getWorkId(), temp2.getPointId());
+                                                if (checked == null) {
+                                                    try {
+                                                        int tempName = Integer.parseInt(temp2.getDoor());
+                                                        sb1.append("\t" + tempName + "号楼 " + (temp2.getGround() == 0 ? "地下" : "地上") + "\n");
+                                                    } catch (Exception e) {
+                                                        sb1.append("\t" + temp2.getDoor() + " " + (temp2.getGround() == 0 ? "地下" : "地上") + "\n");
+                                                    }
+                                                    // 这里要入库
+                                                    temp1.setWorkId(temp2.getWorkId());
+                                                    temp1.setNativeState("0");
+                                                    sb1.append("\t修复成功!\n");
+                                                } else {
+                                                    temp1.setNativeState("2");
+                                                    sb1.append("\t已经重复完成!\n");
+                                                }
+                                                pointWorkBeanDbUtil.updateOneData(temp1);
+                                                tv_log.append(sb1.toString());
+                                            }
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    if (pLastList != null && pLastList.size() > 0) {
+                                        pLastList.remove(0);
+                                    }
+                                    getLastPointList();
+                                }
+
+                            }
+                        }
+                        if (pLastList != null && pLastList.size() > 0) {
+                            pLastList.remove(0);
+                        }
+                        getLastPointList();
+                    }
+
+                    @Override
+                    public void onFailDisplay(String errorMsg) {
+                        if (pLastList != null && pLastList.size() > 0) {
+                            pLastList.remove(0);
+                        }
+                        getLastPointList();
+                    }
+                });
+                PointListParam param = new PointListParam();
+                param.communityid = bean.getCommunityid();
+                param.startime = fixTime;
+                param.endtime = "2017-03-12";
+                param.space = "";
+                param.customer = "";
+                pointListController.getTaskIndex(param);
+            } else {
+                if (pLastList != null && pLastList.size() > 0) {
+                    pLastList.remove(0);
+                }
+                getLastPointList();
+            }
+        } else {
+            tv_log.append("上周末数据修复完毕!\n");
+        }
+    }
+
+    // 获取本地出错数据 周六周日
+    private void getErrorDateLastWeekend(){
+        tv_log.append("开始修复上周末数据...\n");
+        String userId = SharedPreferencesHelper.getInstance().getString(AppSpContact.SP_KEY_USER_ID);
+        if(userId!=null){
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                Date startTime = sdf.parse("2017-03-04 00:00:00");
+                Date endTime = sdf.parse("2017-03-05 23:59:59");
+                lastDataList = pointWorkBeanDbUtil.getPointWorkBeanByTime(userId,startTime,endTime);
+                System.out.println("lastDataList size: "+lastDataList.size());
+                for(PointWorkBean bean:lastDataList){
+//                    System.out.println("小区id: "+bean.getCommunityid());
+                    if(lastNeedFixDataMap.containsKey(bean.getCommunityid())){
+                        lastNeedFixDataMap.get(bean.getCommunityid()).add(bean);
+                    }else{
+                        List<PointWorkBean> tempList = new ArrayList<>();
+                        tempList.add(bean);
+                        lastNeedFixDataMap.put(bean.getCommunityid(),tempList);
+                    }
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            getLastPointList();
+        }
+
+    }
+
+    // 获取周一小区数据
     private void getTaskIndex(){
         TaskIndexParam param = new TaskIndexParam();
         TaskIndexController taskIndexController = new TaskIndexController(new UiDisplayListener<TaskIndexModel>() {
@@ -229,13 +350,38 @@ public class FixErrorFragment extends BaseToolbarFragment {
         param.lat = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE);
         param.customer = "";
         taskIndexController.getTaskIndex(param);
-//        System.out.println("state:"+AppSpContact.SP_KEY_UNDONE);
-//        System.out.println("starttime:"+param.startime);
-//        System.out.println("endtime:"+param.endtime);
-//        System.out.println("space:"+param.space);
-//        System.out.println("customer:"+param.customer);
     }
 
+    // 获取上周末小区数据
+    private void getLastTaskIndex(){
+        TaskIndexParam param = new TaskIndexParam();
+        TaskIndexController taskIndexController = new TaskIndexController(new UiDisplayListener<TaskIndexModel>() {
+            @Override
+            public void onSuccessDisplay(TaskIndexModel data) {
+                if (data != null) {
+                    if (AppApiContact.ErrorCode.SUCCESS.equals(data.rescode)) {
+                        taskIndexModel = data;
+                        pLastList = data.getPList();
+                        getErrorDateLastWeekend();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailDisplay(String errorMsg) {
+
+            }
+        });
+
+        param.state = AppSpContact.SP_KEY_UNDONE;
+        param.startime = fixTime;
+        param.endtime = "2017-03-12";
+        param.space = "";
+        param.lon = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LONGITUDE);
+        param.lat = mSharedPreferencesHelper.getString(AppSpContact.SP_KEY_LATITUDE);
+        param.customer = "";
+        taskIndexController.getTaskIndex(param);
+    }
 
 
     @Override
