@@ -24,7 +24,7 @@ public class HttpBaseCallBack<T> implements Callback<T> {
     public void success(T data, Response response) {
         LogUtils.d(TAG, "success--> url = " + response.getUrl());
         if (data instanceof BaseModel) {
-            LogUtils.json(TAG, ((BaseModel) data).toJson());
+//            LogUtils.json(TAG, ((BaseModel) data).toJson());
 //            LogUtils.d(TAG,"success: "+((BaseModel) data).resdesc);
         }
     }

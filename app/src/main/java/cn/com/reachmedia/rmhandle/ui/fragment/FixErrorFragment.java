@@ -229,6 +229,7 @@ public class FixErrorFragment extends BaseToolbarFragment {
                                                 StringBuffer sb1 = new StringBuffer();
                                                 sb1.append("\t----------------------------\n");
                                                 sb1.append("\t发现一个需要修复的点位:" + temp1.getPointId() + "\n");
+
                                                 PointWorkBean checked = pointWorkBeanDbUtil.getPointWorkBeanByWPIDAll(temp2.getWorkId(), temp2.getPointId());
                                                 if (checked == null) {
                                                     try {
@@ -302,9 +303,46 @@ public class FixErrorFragment extends BaseToolbarFragment {
                 Date startTime = sdf.parse("2017-03-04 00:00:00");
                 Date endTime = sdf.parse("2017-03-05 23:59:59");
                 lastDataList = pointWorkBeanDbUtil.getPointWorkBeanByTime(userId,startTime,endTime);
+
+//                Date startTime = sdf.parse("2017-03-06 00:00:00");
+//                Date endTime = sdf.parse("2017-03-06 23:59:59");
+//                lastDataList = pointWorkBeanDbUtil.getPointWorkBeanByTimeId(userId,startTime,endTime
+//                 ,new String[]{"828","164",
+//                        });
+
+//828  164
                 System.out.println("lastDataList size: "+lastDataList.size());
+
+//                List<PointWorkBean> list = pointWorkBeanDbUtil.getPointWorkBeanByCommunityId(userId,"1569");
+//                System.out.println("=========== 1569 size: "+list.size());
+//                for(PointWorkBean temp:list){
+//                    System.out.println(temp.getCommunityname()+":"+temp.getWorkTime());
+//                }
+////
+//                List<PointWorkBean> list2 = pointWorkBeanDbUtil.getPointWorkBeanByCommunityId(userId,"1429");
+//                System.out.println("=========== 1429 size: "+list2.size());
+//                for(PointWorkBean temp:list2){
+//                    System.out.println(temp.getCommunityname()+":"+temp.getWorkTime());
+//                }
+//                System.out.println("===========");
+//
+//                List<PointWorkBean> list3 = pointWorkBeanDbUtil.getPointWorkBeanByCommunityId(userId,"715");
+//                System.out.println("=========== 715 size: "+list3.size());
+//                for(PointWorkBean temp:list3){
+//                    System.out.println(temp.getCommunityname()+":"+temp.getWorkTime());
+//                }
+//                System.out.println("===========");
+//
+//                List<PointWorkBean> list4 = pointWorkBeanDbUtil.getPointWorkBeanByCommunityId(userId,"702");
+//                System.out.println("=========== 702 size: "+list4.size());
+//                for(PointWorkBean temp:list4){
+//                    System.out.println(temp.getCommunityname()+":"+temp.getWorkTime());
+//                }
+//                System.out.println("===========");
+
+
                 for(PointWorkBean bean:lastDataList){
-//                    System.out.println("小区id: "+bean.getCommunityid());
+                    System.out.println("小区id: "+bean.getCommunityid());
                     if(lastNeedFixDataMap.containsKey(bean.getCommunityid())){
                         lastNeedFixDataMap.get(bean.getCommunityid()).add(bean);
                     }else{

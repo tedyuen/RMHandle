@@ -10,6 +10,7 @@ import cn.com.reachmedia.rmhandle.db.helper.PointWorkBeanDaoHelper;
 import cn.com.reachmedia.rmhandle.model.PointListModel;
 import cn.com.reachmedia.rmhandle.utils.SharedPreferencesHelper;
 import cn.com.reachmedia.rmhandle.utils.TimeUtils;
+import de.greenrobot.dao.query.QueryBuilder;
 
 /**
  * Author:    tedyuen
@@ -99,6 +100,27 @@ public class PointWorkBeanDbUtil {
         return list;
     }
 
+    public List<PointWorkBean> getPointWorkBeanByTimeId(String userId, Date startTime,Date endTime,String[] communityIds){
+        List<PointWorkBean> list = null;
+
+        QueryBuilder<PointWorkBean> qb = pointWorkBeanDaoHelper.getDao().queryBuilder();
+        for(int i=0;i<communityIds.length;i++){
+            qb.whereOr(PointWorkBeanDao.Properties.UserId.eq(userId),
+                    PointWorkBeanDao.Properties.WorkTime.between(startTime,endTime),
+                    PointWorkBeanDao.Properties.Communityid.eq(communityIds[i]));
+        }
+        list = qb.list();
+
+        return list;
+    }
+
+    public List<PointWorkBean> getPointWorkBeanByCommunityId(String userId, String communityId){
+        List<PointWorkBean> list = pointWorkBeanDaoHelper.getDao().queryBuilder()
+                .where(PointWorkBeanDao.Properties.UserId.eq(userId),
+                        PointWorkBeanDao.Properties.Communityid.eq(communityId))
+                .list();
+        return list;
+    }
 
 
     public void delete(PointWorkBean bean){
