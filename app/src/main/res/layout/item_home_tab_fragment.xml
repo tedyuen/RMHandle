@@ -10,18 +10,16 @@
         android:layout_width="match_parent"
         android:paddingLeft="@dimen/padding_lr"
         android:paddingRight="@dimen/padding_lr"
-        android:layout_height="22dp">
+        android:layout_height="wrap_content">
         <!-- 公寓名 -->
         <TextView
             android:id="@+id/tv_apartment_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/username_color"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_centerVertical="true"
-            android:maxWidth="150dp"
-            android:maxLines="1"
-            android:ellipsize="end"
+            android:maxWidth="180dp"
             android:textStyle="bold"
             />
         <!-- 公寓名 -->
@@ -78,14 +76,12 @@
         android:layout_marginTop="6dp"
         android:paddingLeft="@dimen/padding_lr"
         android:paddingRight="@dimen/padding_lr"
-        android:layout_height="22dp">
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_target"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="180dp"
-            android:maxLines="1"
-            android:ellipsize="end"
+            android:maxWidth="200dp"
             android:textColor="@color/username_color"
             android:layout_marginRight="15dp"
             android:textSize="14sp"
@@ -127,6 +123,7 @@
                     android:id="@+id/iv_pai"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:src="@mipmap/home_pai_icon"
                     android:layout_marginRight="5dp"/>
 
